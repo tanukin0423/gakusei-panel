@@ -1,0 +1,38 @@
+{
+  "name": "就活の木｜556マトリックス",
+  "short_name": "556マトリックス",
+  "description": "自分に合う職種を探す｜556職業マトリックス診断",
+  "start_url": "./jobmatrix_556.html",
+  "scope": "./jobmatrix_556.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#1a3a2a",
+  "theme_color": "#2d6b4a",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "matrix-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "matrix-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "matrix-icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "matrix-icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>就活の木 ｜ 職種マトリクス 556</title>
+
+<!-- ── PWA（ホーム画面アイコン登録）対応 ── -->
+<link rel="manifest" href="manifest-matrix.json">
+<meta name="theme-color" content="#2d6b4a">
+<link rel="icon" type="image/png" href="matrix-favicon.png">
+<link rel="apple-touch-icon" href="matrix-apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="556マトリックス">
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap');
 
@@ -2252,6 +2263,12 @@ function showNearbyJobs(targetX, targetY) {
   nearbyDiv.style.cssText = 'border-bottom:2px solid #d4a843;margin-bottom:2px;';
   nearbyDiv.innerHTML = html;
   target.parentNode.insertBefore(nearbyDiv, target);
+}
+
+// PWA：ホーム画面アイコン登録（インストール）対応のためService Workerを登録
+// ※就活の木本体（index.html）のsw.jsとは別物。このページ単体のスコープに限定して登録する
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw-matrix.js', { scope: './jobmatrix_556.html' }).catch(()=>{});
 }
 </script>
 
