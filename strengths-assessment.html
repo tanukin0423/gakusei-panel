@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>強み診断｜就活の木</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#2d6a4f;--gm:#52b788;--gl:#74c69d;--gp:#b7e4c7;
+  --gbg:#f1faf4;--glight:#d8f3dc;--gold:#c9a84c;--goldl:#f0d080;
+  --wh:#fefffe;--sh:rgba(45,106,79,0.15);--text:#1a2e1f;--muted:#6b8f71;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--gbg);min-height:100vh;color:var(--text);}
+header{background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--wh);padding:14px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 16px var(--sh);}
+.logo{font-size:24px;}
+.htitle{font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;color:var(--goldl);letter-spacing:0.06em;}
+.hsub{font-size:10px;color:var(--gp);margin-top:2px;}
+.wrap{max-width:560px;margin:0 auto;padding:24px 16px 60px;}
+
+/* ウェルカム */
+.welcome-hero{text-align:center;padding:28px 16px 20px;}
+.hero-icon{font-size:56px;display:block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.welcome-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:20px;font-weight:900;color:var(--gd);line-height:1.5;margin-bottom:10px;}
+.welcome-lead{font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:20px;}
+.karioji-card{background:var(--wh);border:2px solid var(--gp);border-radius:16px;padding:16px;display:flex;gap:12px;margin-bottom:20px;box-shadow:0 3px 12px var(--sh);}
+.karioji-icon{font-size:30px;flex-shrink:0;background:var(--glight);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;}
+.karioji-name{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.1em;margin-bottom:4px;}
+.karioji-text{font-size:11px;color:var(--text);line-height:1.8;}
+.karioji-text strong{color:var(--gd);}
+
+/* 8強みグリッド */
+.strengths-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.s-chip{background:var(--wh);border:1.5px solid var(--gp);border-radius:12px;padding:10px;text-align:center;box-shadow:0 2px 6px var(--sh);}
+.s-chip .s-ic{font-size:18px;margin-bottom:3px;}
+.s-chip .s-name{font-size:11px;font-weight:700;color:var(--gd);}
+.s-chip .s-sub{font-size:9px;color:var(--muted);margin-top:2px;}
+
+.info-card{background:var(--wh);border:1.5px solid var(--gp);border-radius:12px;padding:14px;margin-bottom:20px;box-shadow:0 2px 8px var(--sh);}
+.info-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);padding:4px 0;}
+.info-row span:first-child{font-size:16px;}
+.info-row strong{color:var(--gd);}
+.btn-start{width:100%;background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--wh);border:none;border-radius:16px;padding:18px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 20px rgba(45,106,79,0.35);transition:transform 0.15s;letter-spacing:0.06em;}
+.btn-start:hover{transform:translateY(-2px);}
+
+/* 質問画面 */
+#screen-question{display:none;}
+.q-header{background:var(--wh);border-radius:16px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px var(--sh);}
+.q-progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.q-label-txt{font-size:11px;color:var(--muted);}
+.q-type-tag{font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px;background:var(--glight);color:var(--gd);}
+.q-pct-txt{font-size:11px;color:var(--muted);}
+.q-progress-bar{height:6px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--gm),var(--gl));border-radius:10px;transition:width 0.4s ease;}
+
+.q-card{background:var(--wh);border-radius:20px;padding:22px 18px;box-shadow:0 4px 20px var(--sh);border:1.5px solid var(--gp);margin-bottom:16px;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.q-num{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.12em;margin-bottom:8px;}
+.q-text{font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:700;color:var(--gd);line-height:1.6;margin-bottom:18px;}
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt{display:flex;align-items:center;gap:12px;background:var(--gbg);border:2px solid var(--gp);border-radius:12px;padding:13px 15px;cursor:pointer;transition:all 0.18s;text-align:left;width:100%;}
+.opt:hover{border-color:var(--gm);background:var(--glight);}
+.opt.selected{background:linear-gradient(135deg,#e8f5ee,#d0ede0);border-color:var(--gd);box-shadow:0 2px 10px rgba(45,106,79,0.2);}
+.opt-score{font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;color:var(--gp);width:28px;flex-shrink:0;text-align:center;}
+.opt.selected .opt-score{color:var(--gd);}
+.opt-text{font-size:13px;color:var(--text);line-height:1.5;}
+
+.nav-btns{display:flex;gap:10px;}
+.btn-prev{flex:0 0 80px;background:none;border:2px solid var(--gp);border-radius:12px;padding:13px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.btn-prev:hover{border-color:var(--gm);color:var(--gm);}
+.btn-prev:disabled{opacity:0.3;pointer-events:none;}
+.btn-next{flex:1;background:var(--gd);color:var(--wh);border:none;border-radius:12px;padding:14px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;opacity:0.4;pointer-events:none;}
+.btn-next.active{opacity:1;pointer-events:auto;}
+.btn-next.active:hover{background:var(--gm);}
+
+/* 結果画面 */
+#screen-result{display:none;}
+.result-hero{text-align:center;background:linear-gradient(145deg,#1e4d2f,#2d6a4f);border-radius:20px;padding:26px 20px;margin-bottom:16px;border:2px solid var(--gold);box-shadow:0 6px 24px rgba(45,106,79,0.35);}
+.result-label{font-size:11px;color:var(--gp);letter-spacing:0.1em;margin-bottom:10px;}
+.top-strengths-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.top-badge{background:rgba(201,168,76,0.2);border:2px solid var(--gold);border-radius:14px;padding:10px 16px;text-align:center;}
+.top-badge.rank1{background:rgba(201,168,76,0.3);border-color:var(--goldl);}
+.top-badge .tb-rank{font-size:10px;color:var(--gp);margin-bottom:4px;}
+.top-badge .tb-ic{font-size:24px;margin-bottom:4px;}
+.top-badge .tb-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:900;color:var(--goldl);}
+
+/* バーチャート */
+.chart-card{background:var(--wh);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px var(--sh);border:1.5px solid var(--gp);}
+.chart-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;color:var(--gd);margin-bottom:14px;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.bar-ic{font-size:16px;width:22px;flex-shrink:0;text-align:center;}
+.bar-name{font-size:10px;font-weight:700;color:var(--gd);width:70px;flex-shrink:0;line-height:1.3;}
+.bar-wrap{flex:1;height:12px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gm),var(--gl));transition:width 0.8s ease;}
+.bar-fill.top1{background:linear-gradient(90deg,var(--gd),var(--gm));}
+.bar-fill.top2{background:linear-gradient(90deg,#3a8a60,var(--gm));}
+.bar-score{font-size:11px;font-weight:700;color:var(--muted);width:36px;text-align:right;}
+
+/* 強み詳細カード */
+.sec-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:900;color:var(--gd);margin:16px 0 10px;display:flex;align-items:center;gap:6px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--gp);}
+.strength-card{background:var(--wh);border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 3px 12px var(--sh);border:2px solid var(--gl);}
+.strength-card.top1{border-color:var(--gold);background:linear-gradient(135deg,#fffdf0,#fffff8);}
+.strength-card.top2{border-color:var(--gl);}
+.sc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sc-ic{font-size:28px;}
+.sc-rank{font-size:10px;font-weight:700;color:var(--gm);margin-bottom:2px;}
+.strength-card.top1 .sc-rank{color:var(--gold);}
+.sc-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:17px;font-weight:900;color:var(--gd);}
+.sc-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.sc-section{margin-bottom:10px;}
+.sc-section h4{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.08em;margin-bottom:4px;}
+.sc-section p{font-size:12px;color:var(--text);line-height:1.75;}
+
+/* ES活用ボックス */
+.es-box{background:linear-gradient(135deg,#e8f5ee,#d8f3dc);border:2px solid var(--gl);border-radius:14px;padding:16px;margin-bottom:16px;}
+.es-box h4{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;color:var(--gd);margin-bottom:8px;}
+.es-box p{font-size:12px;color:var(--text);line-height:1.8;}
+.es-box strong{color:var(--gd);}
+
+.karioji-result{background:linear-gradient(135deg,#1e4d2f,#2a5e3d);border-radius:16px;padding:18px;margin-bottom:16px;display:flex;gap:12px;}
+.karioji-result .karioji-name{color:var(--goldl);}
+.karioji-result .karioji-text{color:var(--gp);}
+.karioji-result .karioji-text strong{color:var(--goldl);}
+.btn-back{width:100%;background:none;border:2px solid var(--gp);border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.btn-back:hover{border-color:var(--gm);color:var(--gm);}
+footer{background:var(--gd);color:var(--gp);text-align:center;font-size:10px;padding:10px;}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">🌳</span>
+  <div>
+    <div class="htitle">強み診断｜就活の木</div>
+    <div class="hsub">8つの領域からあなたの得意を発見する</div>
+  </div>
+</header>
+
+<!-- ①ウェルカム -->
+<div id="screen-welcome">
+  <div class="wrap">
+    <div class="welcome-hero">
+      <span class="hero-icon">💪</span>
+      <div class="welcome-title">あなたの「得意」を<br>言葉にしよう</div>
+      <div class="welcome-lead">
+        強みは「すごいこと」じゃなくていい。<br>
+        <strong>「自然にできること」「人から褒められること」</strong>——<br>
+        それがあなたの強みです。32問で発見しましょう。
+      </div>
+    </div>
+
+    <div class="karioji-card">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text">「自分には強みがない」と思っている学生ほど、実は<strong>気づいていない強みを持っています</strong>。「他の人より少し得意かな」という感覚で、素直に答えてみてください。</div>
+      </div>
+    </div>
+
+    <div class="strengths-grid">
+      <div class="s-chip"><div class="s-ic">🔍</div><div class="s-name">分析力</div><div class="s-sub">論理的に考える</div></div>
+      <div class="s-chip"><div class="s-ic">💡</div><div class="s-name">創造力</div><div class="s-sub">アイデアを生む</div></div>
+      <div class="s-chip"><div class="s-ic">⚡</div><div class="s-name">実行力</div><div class="s-sub">確実にやり遂げる</div></div>
+      <div class="s-chip"><div class="s-ic">💬</div><div class="s-name">コミュニケーション力</div><div class="s-sub">人と関わる</div></div>
+      <div class="s-chip"><div class="s-ic">🏹</div><div class="s-name">リーダーシップ</div><div class="s-sub">人を導く</div></div>
+      <div class="s-chip"><div class="s-ic">🤝</div><div class="s-name">協調性</div><div class="s-sub">チームで動く</div></div>
+      <div class="s-chip"><div class="s-ic">📚</div><div class="s-name">学習力</div><div class="s-sub">吸収して成長する</div></div>
+      <div class="s-chip"><div class="s-ic">🌊</div><div class="s-name">持続力</div><div class="s-sub">粘り強く続ける</div></div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-row"><span>⏱️</span><span>所要時間：<strong>約5分</strong>（32問）</span></div>
+      <div class="info-row"><span>📊</span><span>結果：<strong>上位3つの強み</strong>＋自己PR活用アドバイス</span></div>
+      <div class="info-row"><span>💡</span><span>回答方法：<strong>4択</strong>（行動頻度・他者評価・態度）</span></div>
+      <div class="info-row"><span>🔓</span><span>無料・登録不要・何度でも試せます</span></div>
+    </div>
+
+    <button class="btn-start" onclick="startAssessment()">💪 診断をスタートする</button>
+  </div>
+</div>
+
+<!-- ②質問画面 -->
+<div id="screen-question">
+  <div class="wrap">
+    <div class="q-header">
+      <div class="q-progress-label">
+        <span class="q-label-txt" id="q-label">質問 1 / 32</span>
+        <span class="q-type-tag" id="q-type-tag">行動頻度</span>
+        <span class="q-pct-txt" id="q-pct">0%</span>
+      </div>
+      <div class="q-progress-bar"><div class="q-progress-fill" id="q-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num" id="q-num">QUESTION 01</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>← 戻る</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">次へ →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ③結果画面 -->
+<div id="screen-result">
+  <div class="wrap">
+    <div class="result-hero">
+      <div class="result-label">あなたのトップ強み</div>
+      <div class="top-strengths-row" id="top-badges"></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">📊 8つの強みスコア</div>
+      <div id="bar-chart"></div>
+    </div>
+
+    <div class="sec-title">✨ 強み詳細＆自己PR活用法</div>
+    <div id="strength-cards"></div>
+
+    <div class="es-box" id="es-box"></div>
+
+    <div class="karioji-result">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text" id="karioji-comment"></div>
+      </div>
+    </div>
+
+    <button class="btn-back" onclick="restart()">🔄 もう一度診断する</button>
+    <button class="btn-back" onclick="goBack()" style="margin-top:8px;border-color:var(--gm);color:var(--gm);">← 自分発見ナビに戻る</button>
+  </div>
+</div>
+
+<footer>🌳 就活の木 ｜ Tama University Career Support</footer>
+
+<script>
+// ── 8強み定義 ──
+const STRENGTH_INFO = {
+  AN:{name:'分析力',ic:'🔍',desc:'論理的に考え、問題を深く分析する力',
+    career:'データサイエンティスト、コンサルタント、研究職、経営企画、品質管理など。データや論理を駆使する職種で活躍できます。',
+    interview:'「データを分析して課題を発見し、解決策を提案した経験」を具体的に語れると説得力が増します。',
+    grow:'仮説を立てて検証するサイクルを習慣化すると、さらに強みが磨かれます。'},
+  CR:{name:'創造力',ic:'💡',desc:'新しいアイデアを生み出し、革新する力',
+    career:'マーケティング、商品企画、デザイン、新規事業開発、クリエイティブ職など。ゼロから価値を生み出す場で強みが活きます。',
+    interview:'「既存の方法に疑問を持ち、新しいアプローチを実行した経験」を成果とセットで語りましょう。',
+    grow:'異分野の知識を積極的にインプットすると、アイデアの組み合わせの幅が広がります。'},
+  EX:{name:'実行力',ic:'⚡',desc:'計画を確実に実行し、目標を達成する力',
+    career:'プロジェクトマネージャー、営業、オペレーション、事業推進など。確実な成果を求められる職種で評価されます。',
+    interview:'「どのように優先順位をつけ、障害を乗り越えて目標を達成したか」のプロセスを語ると差別化できます。',
+    grow:'大きな目標をマイルストーンに分解し、進捗を可視化する習慣が実行力をさらに高めます。'},
+  CO:{name:'コミュニケーション力',ic:'💬',desc:'人と関わり、効果的に伝える力',
+    career:'営業、コンサルタント、人事、PR、カスタマーサクセスなど。対人関係が核となるあらゆる職種で強みになります。',
+    interview:'「相手の状況を理解して伝え方を変えた経験」や「難しい相手との関係を構築した経験」が印象的です。',
+    grow:'「伝える」だけでなく「聴く力」を意識的に磨くと、さらに深い人間関係を築けます。'},
+  LD:{name:'リーダーシップ',ic:'🏹',desc:'人を導き、影響を与える力',
+    career:'管理職候補、プロジェクトリーダー、経営幹部候補、コンサルタントなど。組織を動かす立場で活躍できます。',
+    interview:'「チームが困難に直面したとき、どのように方向性を示して引っ張ったか」を行動と結果をセットで語りましょう。',
+    grow:'メンバーの強みを引き出す「サーバントリーダーシップ」の観点も取り入れると、リーダーとしての幅が広がります。'},
+  TE:{name:'協調性',ic:'🤝',desc:'チームで協力して働く力',
+    career:'チーム開発職、医療・福祉、教育、プロジェクト型業務など。連携が不可欠な職種で特に評価されます。',
+    interview:'「多様な意見をまとめてチームとして成果を出した経験」や「対立を乗り越えて協力関係を築いたエピソード」が有効です。',
+    grow:'チームへの貢献に加えて、自分の意見を適切に主張するスキルも磨くと、より影響力のあるメンバーになれます。'},
+  LE:{name:'学習力',ic:'📚',desc:'新しいことを学び、適応する力',
+    career:'IT・テクノロジー職、コンサルタント、研究職、スタートアップなど。変化の速い環境で力を発揮します。',
+    interview:'「短期間で新しいスキルを習得して成果に繋げた経験」や「失敗から何を学んだか」を語ると成長意欲が伝わります。',
+    grow:'学んだことをアウトプットする習慣（人に教える・記事を書くなど）を持つと、学習の定着率が格段に上がります。'},
+  PE:{name:'持続力',ic:'🌊',desc:'困難に耐え、継続する力',
+    career:'研究職、エンジニア、職人、長期営業など。粘り強さと継続力が成果に直結する職種で強みが際立ちます。',
+    interview:'「困難でも諦めずに取り組み、最終的に結果を出した経験」を、期間・障害の大きさとセットで語りましょう。',
+    grow:'長期目標だけでなく、短期の小目標を設定して達成感を積み重ねると、持続力がさらに強化されます。'},
+};
+
+// ── 32問（8強み×4問）──
+// type: behavior=行動頻度 / feedback=他者評価 / attitude=態度・姿勢
+const QUESTIONS = [
+  // 分析力 AN（4問）
+  {q:'問題に直面したとき、まず何をしますか？',s:'AN',type:'behavior',
+    opts:[{t:'原因を論理的に分析してから動く',v:3},{t:'情報を集めて検討する',v:2},{t:'直感で判断する',v:1},{t:'まず人に相談する',v:0}]},
+  {q:'他の人から「論理的だ」「分析的だ」と言われることは？',s:'AN',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  {q:'複雑な資料やデータを見たとき、どう感じますか？',s:'AN',type:'attitude',
+    opts:[{t:'理解したくてワクワクする',v:3},{t:'理解しようと努力する',v:2},{t:'少し抵抗を感じる',v:1},{t:'できれば避けたい',v:0}]},
+  {q:'最近、物事の原因や因果関係を深く考えたことは？',s:'AN',type:'behavior',
+    opts:[{t:'日常的にある',v:3},{t:'週に数回',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  // 創造力 CR（4問）
+  {q:'ブレインストーミングでの、あなたの役割は？',s:'CR',type:'behavior',
+    opts:[{t:'多くのアイデアを次々と出す',v:3},{t:'いくつかアイデアを出す',v:2},{t:'他人のアイデアを発展させる',v:1},{t:'聞く役に回ることが多い',v:0}]},
+  {q:'他の人から「発想が面白い」「ユニークだ」と言われることは？',s:'CR',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  {q:'ルーティンワークと創造的な仕事、どちらが好きですか？',s:'CR',type:'attitude',
+    opts:[{t:'創造的な仕事が大好き',v:3},{t:'創造的な仕事が好き',v:2},{t:'どちらでもいい',v:1},{t:'ルーティンの方が安心',v:0}]},
+  {q:'既存の方法があるときでも、新しい方法を試しますか？',s:'CR',type:'behavior',
+    opts:[{t:'いつも試したくなる',v:3},{t:'よく試す',v:2},{t:'たまに試す',v:1},{t:'ほとんど試さない',v:0}]},
+  // 実行力 EX（4問）
+  {q:'締め切りに対する、あなたのスタイルは？',s:'EX',type:'behavior',
+    opts:[{t:'必ず余裕を持って完了させる',v:3},{t:'締め切りは守る',v:2},{t:'時々遅れることがある',v:1},{t:'よく遅れる',v:0}]},
+  {q:'他の人から「頼りになる」「確実だ」と言われることは？',s:'EX',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  {q:'タスクが多いとき、どう対応しますか？',s:'EX',type:'behavior',
+    opts:[{t:'優先順位をつけて効率的に処理',v:3},{t:'リストを作って順番に処理',v:2},{t:'できるものから処理',v:1},{t:'圧倒されてしまうことがある',v:0}]},
+  {q:'立てた計画を最後まで実行できる割合は？',s:'EX',type:'attitude',
+    opts:[{t:'90%以上は実行できる',v:3},{t:'70〜89%くらい',v:2},{t:'50〜69%くらい',v:1},{t:'50%未満',v:0}]},
+  // コミュニケーション力 CO（4問）
+  {q:'初対面の人と会話するとき、どう感じますか？',s:'CO',type:'attitude',
+    opts:[{t:'楽しみで自然に話せる',v:3},{t:'問題なく話せる',v:2},{t:'少し緊張する',v:1},{t:'かなり緊張する',v:0}]},
+  {q:'自分の考えを他人にわかりやすく説明することは？',s:'CO',type:'behavior',
+    opts:[{t:'とても得意',v:3},{t:'得意な方',v:2},{t:'普通',v:1},{t:'苦手',v:0}]},
+  {q:'他の人の感情や気持ちに気づくことは？',s:'CO',type:'behavior',
+    opts:[{t:'すぐに気づく',v:3},{t:'よく気づく',v:2},{t:'時々気づく',v:1},{t:'あまり気づかない',v:0}]},
+  {q:'他の人から「話しやすい」「伝え方が上手」と言われることは？',s:'CO',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  // リーダーシップ LD（4問）
+  {q:'グループで意見が分かれたとき、あなたの役割は？',s:'LD',type:'behavior',
+    opts:[{t:'方向性を示してまとめる',v:3},{t:'意見を調整する',v:2},{t:'自分の意見を言う',v:1},{t:'多数派に従う',v:0}]},
+  {q:'重要な決断を下すことに対して、あなたは？',s:'LD',type:'attitude',
+    opts:[{t:'責任を持って決断できる',v:3},{t:'決断できる',v:2},{t:'少し躊躇する',v:1},{t:'できれば避けたい',v:0}]},
+  {q:'困難な状況で、周りを励ましたことは？',s:'LD',type:'behavior',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  {q:'他の人から「リーダー向き」「引っ張る力がある」と言われることは？',s:'LD',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  // 協調性 TE（4問）
+  {q:'チーム作業での、あなたの主な役割は？',s:'TE',type:'behavior',
+    opts:[{t:'調整役・サポート役',v:3},{t:'協力的なメンバー',v:2},{t:'個人作業担当',v:1},{t:'できれば単独がいい',v:0}]},
+  {q:'他のメンバーが困っているとき、どうしますか？',s:'TE',type:'behavior',
+    opts:[{t:'すぐに手を差し伸べる',v:3},{t:'できる範囲で手伝う',v:2},{t:'頼まれたら手伝う',v:1},{t:'自分の仕事を優先する',v:0}]},
+  {q:'チーム作業と一人での作業、どちらが好きですか？',s:'TE',type:'attitude',
+    opts:[{t:'チームが断然好き',v:3},{t:'チームが好き',v:2},{t:'どちらでもいい',v:1},{t:'一人の方が好き',v:0}]},
+  {q:'他の人から「協力的だ」「チームプレイヤーだ」と言われることは？',s:'TE',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  // 学習力 LE（4問）
+  {q:'新しいツールやシステムの導入に対して、あなたは？',s:'LE',type:'attitude',
+    opts:[{t:'ワクワクして早く使いたい',v:3},{t:'前向きに学ぶ',v:2},{t:'必要なら学ぶ',v:1},{t:'少し抵抗を感じる',v:0}]},
+  {q:'失敗したとき、どう対応しますか？',s:'LE',type:'behavior',
+    opts:[{t:'原因を分析して次に活かす',v:3},{t:'次に活かそうとする',v:2},{t:'気持ちを切り替えて進む',v:1},{t:'引きずってしまう',v:0}]},
+  {q:'知らないことに直面したとき、どう感じますか？',s:'LE',type:'attitude',
+    opts:[{t:'知りたくて興奮する',v:3},{t:'学ぶ機会だと思う',v:2},{t:'少し不安になる',v:1},{t:'できれば避けたい',v:0}]},
+  {q:'他の人から「学習意欲が高い」「成長が早い」と言われることは？',s:'LE',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+  // 持続力 PE（4問）
+  {q:'困難な状況に直面したとき、どうしますか？',s:'PE',type:'behavior',
+    opts:[{t:'必ず乗り越えるまで続ける',v:3},{t:'粘り強く取り組む',v:2},{t:'できる範囲で頑張る',v:1},{t:'早めに方向転換する',v:0}]},
+  {q:'ストレスが多い時期、どう対応しますか？',s:'PE',type:'behavior',
+    opts:[{t:'冷静に対処し続ける',v:3},{t:'なんとか乗り切る',v:2},{t:'かなり疲弊する',v:1},{t:'圧倒されてしまう',v:0}]},
+  {q:'単調な作業を長時間続けることは？',s:'PE',type:'behavior',
+    opts:[{t:'問題なくできる',v:3},{t:'できる',v:2},{t:'少し苦手',v:1},{t:'とても苦手',v:0}]},
+  {q:'他の人から「粘り強い」「根気がある」と言われることは？',s:'PE',type:'feedback',
+    opts:[{t:'よくある',v:3},{t:'時々ある',v:2},{t:'たまにある',v:1},{t:'ほとんどない',v:0}]},
+];
+
+const TYPE_LABELS = {behavior:'行動頻度',feedback:'他者評価',attitude:'態度・姿勢'};
+const MAX_SCORE = 12; // 4問×3点
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(undefined);
+
+function startAssessment(){
+  document.getElementById('screen-welcome').style.display='none';
+  document.getElementById('screen-question').style.display='block';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  const pct = Math.round((current/QUESTIONS.length)*100);
+  document.getElementById('q-label').textContent = `質問 ${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('q-type-tag').textContent = TYPE_LABELS[q.type]||'';
+  document.getElementById('q-pct').textContent = pct+'%';
+  document.getElementById('q-fill').style.width = pct+'%';
+  document.getElementById('q-num').textContent = `QUESTION ${String(current+1).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  const container = document.getElementById('q-options');
+  container.innerHTML = '';
+  q.opts.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt'+(answers[current]===i?' selected':'');
+    btn.innerHTML = `<span class="opt-score">${opt.v}</span><span class="opt-text">${opt.t}</span>`;
+    btn.onclick = ()=>selectOption(i);
+    container.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  const isLast = current===QUESTIONS.length-1;
+  nextBtn.textContent = isLast?'結果を見る 🌳':'次へ →';
+  nextBtn.className = 'btn-next'+(answers[current]!==undefined?' active':'');
+  document.getElementById('btn-prev').disabled = current===0;
+  const card=document.querySelector('.q-card');
+  if(card){card.style.animation='none';requestAnimationFrame(()=>{card.style.animation='';});}
+}
+
+function selectOption(i){
+  answers[current]=i;
+  renderQuestion();
+  setTimeout(()=>{
+    if(answers[current]!==undefined){
+      if(current<QUESTIONS.length-1){current++;renderQuestion();}
+      else{showResult();}
+    }
+  },350);
+}
+
+function nextQuestion(){
+  if(answers[current]===undefined)return;
+  if(current<QUESTIONS.length-1){current++;renderQuestion();}
+  else{showResult();}
+}
+function prevQuestion(){
+  if(current>0){current--;renderQuestion();}
+}
+
+function showResult(){
+  document.getElementById('screen-question').style.display='none';
+  document.getElementById('screen-result').style.display='block';
+  window.scrollTo(0,0);
+
+  // スコア集計
+  const scores={AN:0,CR:0,EX:0,CO:0,LD:0,TE:0,LE:0,PE:0};
+  QUESTIONS.forEach((q,i)=>{
+    if(answers[i]!==undefined) scores[q.s]+=q.opts[answers[i]].v;
+  });
+
+  // ソート
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+
+  // トップバッジ
+  const badgesEl=document.getElementById('top-badges');
+  badgesEl.innerHTML='';
+  sorted.slice(0,3).forEach(([k,v],idx)=>{
+    const info=STRENGTH_INFO[k];
+    const div=document.createElement('div');
+    div.className='top-badge'+(idx===0?' rank1':'');
+    div.innerHTML=`<div class="tb-rank">${idx===0?'★ 第1位':idx===1?'◎ 第2位':'△ 第3位'}</div><div class="tb-ic">${info.ic}</div><div class="tb-name">${info.name}</div>`;
+    badgesEl.appendChild(div);
+  });
+
+  // バーチャート
+  const chartEl=document.getElementById('bar-chart');
+  chartEl.innerHTML='';
+  sorted.forEach(([k,v],idx)=>{
+    const info=STRENGTH_INFO[k];
+    const pct=Math.round((v/MAX_SCORE)*100);
+    const row=document.createElement('div');
+    row.className='bar-row';
+    const fillClass=idx===0?'bar-fill top1':idx===1?'bar-fill top2':'bar-fill';
+    row.innerHTML=`
+      <div class="bar-ic">${info.ic}</div>
+      <div class="bar-name">${info.name}</div>
+      <div class="bar-wrap"><div class="${fillClass}" style="width:0%" data-w="${pct}"></div></div>
+      <div class="bar-score">${v}/${MAX_SCORE}</div>
+    `;
+    chartEl.appendChild(row);
+  });
+  setTimeout(()=>{
+    chartEl.querySelectorAll('.bar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});
+  },100);
+
+  // 強み詳細カード（上位2つ）
+  const cardsEl=document.getElementById('strength-cards');
+  cardsEl.innerHTML='';
+  sorted.slice(0,2).forEach(([k,v],idx)=>{
+    const info=STRENGTH_INFO[k];
+    const card=document.createElement('div');
+    card.className='strength-card'+(idx===0?' top1':' top2');
+    card.innerHTML=`
+      <div class="sc-head">
+        <span class="sc-ic">${info.ic}</span>
+        <div>
+          <div class="sc-rank">${idx===0?'★ あなたの最大の強み':'◎ 第2の強み'}</div>
+          <div class="sc-name">${info.name}</div>
+          <div class="sc-desc">${info.desc}</div>
+        </div>
+      </div>
+      <div class="sc-section"><h4>🎯 向いている職種・仕事</h4><p>${info.career}</p></div>
+      <div class="sc-section"><h4>💬 面接・ESでの活かし方</h4><p>${info.interview}</p></div>
+      <div class="sc-section"><h4>🌱 さらに伸ばすには</h4><p>${info.grow}</p></div>
+    `;
+    cardsEl.appendChild(card);
+  });
+
+  // ES活用ボックス
+  const top1=STRENGTH_INFO[sorted[0][0]];
+  const top2=STRENGTH_INFO[sorted[1][0]];
+  document.getElementById('es-box').innerHTML=`
+    <h4>📝 自己PR・ガクチカへの活用ヒント</h4>
+    <p>あなたの強みは<strong>「${top1.name}」と「${top2.name}」</strong>です。<br>
+    エントリーシートでは、この2つの強みが発揮されたエピソードを具体的に書きましょう。<br>
+    <strong>「いつ・どこで・どんな状況で・どう行動して・何が変わったか」</strong>を意識して書くと、採用担当者の心に響く自己PRができます。キャリ爺に相談してみてください😊</p>
+  `;
+
+  // キャリ爺コメント
+  const topInfo=STRENGTH_INFO[sorted[0][0]];
+  document.getElementById('karioji-comment').innerHTML=
+    `あなたの最大の強みは<strong>「${topInfo.name}」${topInfo.ic}</strong>です。${topInfo.desc}——この力は、就活の自己PRで必ず武器になります。<br>「強みなんてない」と思っていたあなた、どうですか？ちゃんとありましたよ😊`;
+}
+
+function restart(){
+  current=0;
+  answers=new Array(QUESTIONS.length).fill(undefined);
+  document.getElementById('screen-result').style.display='none';
+  document.getElementById('screen-welcome').style.display='block';
+  window.scrollTo(0,0);
+}
+function goBack(){
+  alert('自分発見ナビに戻ります。\n（パネル統合後はここで切り替わります）');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キャリアアンカー診断｜就活の木</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#2d6a4f;--gm:#52b788;--gl:#74c69d;--gp:#b7e4c7;
+  --gbg:#f1faf4;--glight:#d8f3dc;--gold:#c9a84c;--goldl:#f0d080;
+  --wh:#fefffe;--sh:rgba(45,106,79,0.15);--text:#1a2e1f;--muted:#6b8f71;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--gbg);min-height:100vh;color:var(--text);}
+header{background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--wh);padding:14px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 16px var(--sh);}
+.logo{font-size:24px;}
+.htitle{font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;color:var(--goldl);letter-spacing:0.06em;}
+.hsub{font-size:10px;color:var(--gp);margin-top:2px;}
+.wrap{max-width:560px;margin:0 auto;padding:24px 16px 60px;}
+
+/* ウェルカム */
+.welcome-hero{text-align:center;padding:28px 16px 20px;}
+.hero-icon{font-size:56px;display:block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.welcome-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:20px;font-weight:900;color:var(--gd);line-height:1.5;margin-bottom:10px;}
+.welcome-lead{font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:20px;}
+.karioji-card{background:var(--wh);border:2px solid var(--gp);border-radius:16px;padding:16px;display:flex;gap:12px;margin-bottom:20px;box-shadow:0 3px 12px var(--sh);}
+.karioji-icon{font-size:30px;flex-shrink:0;background:var(--glight);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;}
+.karioji-name{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.1em;margin-bottom:4px;}
+.karioji-text{font-size:11px;color:var(--text);line-height:1.8;}
+.karioji-text strong{color:var(--gd);}
+
+/* 8アンカーグリッド */
+.anchors-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.a-chip{background:var(--wh);border:1.5px solid var(--gp);border-radius:12px;padding:10px;box-shadow:0 2px 6px var(--sh);}
+.a-chip .a-ic{font-size:16px;margin-bottom:3px;}
+.a-chip .a-name{font-size:10px;font-weight:700;color:var(--gd);line-height:1.4;}
+.a-chip .a-sub{font-size:9px;color:var(--muted);margin-top:2px;}
+
+.info-card{background:var(--wh);border:1.5px solid var(--gp);border-radius:12px;padding:14px;margin-bottom:20px;box-shadow:0 2px 8px var(--sh);}
+.info-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);padding:4px 0;}
+.info-row span:first-child{font-size:16px;}
+.info-row strong{color:var(--gd);}
+.btn-start{width:100%;background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--wh);border:none;border-radius:16px;padding:18px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 20px rgba(45,106,79,0.35);transition:transform 0.15s;letter-spacing:0.06em;}
+.btn-start:hover{transform:translateY(-2px);}
+
+/* 質問画面 */
+#screen-question{display:none;}
+.q-header{background:var(--wh);border-radius:16px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px var(--sh);}
+.q-progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.q-label-txt{font-size:11px;color:var(--muted);}
+.q-anchor-tag{font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px;background:var(--glight);color:var(--gd);}
+.q-pct-txt{font-size:11px;color:var(--muted);}
+.q-progress-bar{height:6px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--gm),var(--gl));border-radius:10px;transition:width 0.4s ease;}
+
+.q-card{background:var(--wh);border-radius:20px;padding:22px 18px;box-shadow:0 4px 20px var(--sh);border:1.5px solid var(--gp);margin-bottom:16px;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.q-num{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.12em;margin-bottom:8px;}
+.q-text{font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:700;color:var(--gd);line-height:1.65;margin-bottom:18px;}
+
+/* 4択ボタン */
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt{display:flex;align-items:center;gap:12px;background:var(--gbg);border:2px solid var(--gp);border-radius:12px;padding:13px 15px;cursor:pointer;transition:all 0.18s;text-align:left;width:100%;}
+.opt:hover{border-color:var(--gm);background:var(--glight);}
+.opt.selected{background:linear-gradient(135deg,#e8f5ee,#d0ede0);border-color:var(--gd);box-shadow:0 2px 10px rgba(45,106,79,0.2);}
+.opt-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--gp);flex-shrink:0;transition:all 0.18s;}
+.opt.selected .opt-dot{background:var(--gd);border-color:var(--gd);}
+.opt-text{font-size:13px;color:var(--text);line-height:1.5;flex:1;}
+.opt-val{font-family:'Zen Kaku Gothic New',sans-serif;font-size:11px;font-weight:700;color:var(--gp);flex-shrink:0;}
+.opt.selected .opt-val{color:var(--gd);}
+
+.nav-btns{display:flex;gap:10px;}
+.btn-prev{flex:0 0 80px;background:none;border:2px solid var(--gp);border-radius:12px;padding:13px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.btn-prev:hover{border-color:var(--gm);color:var(--gm);}
+.btn-prev:disabled{opacity:0.3;pointer-events:none;}
+.btn-next{flex:1;background:var(--gd);color:var(--wh);border:none;border-radius:12px;padding:14px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;opacity:0.4;pointer-events:none;}
+.btn-next.active{opacity:1;pointer-events:auto;}
+.btn-next.active:hover{background:var(--gm);}
+
+/* 結果画面 */
+#screen-result{display:none;}
+.result-hero{text-align:center;background:linear-gradient(145deg,#1e4d2f,#2d6a4f);border-radius:20px;padding:26px 20px;margin-bottom:16px;border:2px solid var(--gold);box-shadow:0 6px 24px rgba(45,106,79,0.35);}
+.result-label{font-size:11px;color:var(--gp);letter-spacing:0.1em;margin-bottom:12px;}
+.top-anchors-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.top-badge{background:rgba(201,168,76,0.15);border:2px solid var(--gold);border-radius:14px;padding:10px 14px;text-align:center;min-width:90px;}
+.top-badge.rank1{background:rgba(201,168,76,0.3);border-color:var(--goldl);}
+.top-badge .tb-rank{font-size:10px;color:var(--gp);margin-bottom:4px;}
+.top-badge .tb-ic{font-size:22px;margin-bottom:4px;}
+.top-badge .tb-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:11px;font-weight:900;color:var(--goldl);line-height:1.3;}
+
+/* バーチャート */
+.chart-card{background:var(--wh);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px var(--sh);border:1.5px solid var(--gp);}
+.chart-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;color:var(--gd);margin-bottom:14px;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.bar-ic{font-size:14px;width:20px;flex-shrink:0;text-align:center;}
+.bar-name{font-size:10px;font-weight:700;color:var(--gd);width:68px;flex-shrink:0;line-height:1.3;}
+.bar-wrap{flex:1;height:12px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gm),var(--gl));transition:width 0.8s ease;}
+.bar-fill.top1{background:linear-gradient(90deg,var(--gd),var(--gm));}
+.bar-fill.top2{background:linear-gradient(90deg,#3a8a60,var(--gm));}
+.bar-score{font-size:11px;font-weight:700;color:var(--muted);width:36px;text-align:right;}
+
+/* アンカー詳細カード */
+.sec-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:900;color:var(--gd);margin:16px 0 10px;display:flex;align-items:center;gap:6px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--gp);}
+.anchor-card{background:var(--wh);border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 3px 12px var(--sh);border:2px solid var(--gl);}
+.anchor-card.top1{border-color:var(--gold);background:linear-gradient(135deg,#fffdf0,#fffff8);}
+.anchor-card.top2{border-color:var(--gl);}
+.ac-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ac-ic{font-size:28px;}
+.ac-rank{font-size:10px;font-weight:700;color:var(--gm);margin-bottom:2px;}
+.anchor-card.top1 .ac-rank{color:var(--gold);}
+.ac-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;color:var(--gd);}
+.ac-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.ac-traits{font-size:12px;color:var(--text);line-height:1.8;margin-bottom:10px;background:var(--glight);border-radius:8px;padding:10px 12px;}
+.ac-section{margin-bottom:10px;}
+.ac-section h4{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.08em;margin-bottom:4px;}
+.ac-section p{font-size:12px;color:var(--text);line-height:1.75;}
+.career-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.career-tag{background:var(--glight);color:var(--gd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;border:1px solid var(--gl);}
+
+/* 選択のヒント */
+.decision-box{background:linear-gradient(135deg,#fff9e6,#fffbf0);border:2px solid var(--gold);border-radius:14px;padding:16px;margin-bottom:16px;}
+.decision-box h4{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.decision-box p{font-size:12px;color:var(--text);line-height:1.8;}
+.decision-box strong{color:var(--gd);}
+
+.karioji-result{background:linear-gradient(135deg,#1e4d2f,#2a5e3d);border-radius:16px;padding:18px;margin-bottom:16px;display:flex;gap:12px;}
+.karioji-result .karioji-name{color:var(--goldl);}
+.karioji-result .karioji-text{color:var(--gp);}
+.karioji-result .karioji-text strong{color:var(--goldl);}
+.btn-back{width:100%;background:none;border:2px solid var(--gp);border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.btn-back:hover{border-color:var(--gm);color:var(--gm);}
+footer{background:var(--gd);color:var(--gp);text-align:center;font-size:10px;padding:10px;}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">🌳</span>
+  <div>
+    <div class="htitle">キャリアアンカー診断｜就活の木</div>
+    <div class="hsub">Schein's Career Anchor — あなたの「譲れないもの」を発見する</div>
+  </div>
+</header>
+
+<!-- ①ウェルカム -->
+<div id="screen-welcome">
+  <div class="wrap">
+    <div class="welcome-hero">
+      <span class="hero-icon">⚓</span>
+      <div class="welcome-title">あなたが仕事で<br>「絶対に外せないもの」は何ですか？</div>
+      <div class="welcome-lead">
+        キャリアアンカーとは、心理学者シャインが提唱した<strong>「仕事で最も大切にしている価値観」</strong>のこと。<br>
+        迷ったとき・選択肢で悩んだとき——この軸があれば、答えが見えてきます。
+      </div>
+    </div>
+
+    <div class="karioji-card">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text">「なんとなく合わない」「なんか違う」と感じるのは、<strong>アンカーが引っかかっているサイン</strong>です。自分の譲れないものを知れば、就活の軸がぶれなくなりますよ。</div>
+      </div>
+    </div>
+
+    <div class="anchors-grid">
+      <div class="a-chip"><div class="a-ic">🎓</div><div class="a-name">専門性</div><div class="a-sub">プロを極めたい</div></div>
+      <div class="a-chip"><div class="a-ic">👑</div><div class="a-name">管理・統括</div><div class="a-sub">組織をリードしたい</div></div>
+      <div class="a-chip"><div class="a-ic">🕊️</div><div class="a-name">自律・独立</div><div class="a-sub">自由に働きたい</div></div>
+      <div class="a-chip"><div class="a-ic">🏠</div><div class="a-name">安定・保障</div><div class="a-sub">安心して働きたい</div></div>
+      <div class="a-chip"><div class="a-ic">🚀</div><div class="a-name">起業・創造</div><div class="a-sub">新しいものを生む</div></div>
+      <div class="a-chip"><div class="a-ic">🌍</div><div class="a-name">奉仕・貢献</div><div class="a-sub">社会の役に立ちたい</div></div>
+      <div class="a-chip"><div class="a-ic">⚡</div><div class="a-name">純粋な挑戦</div><div class="a-sub">困難に挑み続けたい</div></div>
+      <div class="a-chip"><div class="a-ic">🌿</div><div class="a-name">ライフスタイル</div><div class="a-sub">人生全体を大切に</div></div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-row"><span>⏱️</span><span>所要時間：<strong>約5分</strong>（32問）</span></div>
+      <div class="info-row"><span>📊</span><span>結果：<strong>上位3つのアンカー</strong>＋就活への活用アドバイス</span></div>
+      <div class="info-row"><span>💡</span><span>回答方法：<strong>4択</strong>（非常にそう思う〜そう思わない）</span></div>
+      <div class="info-row"><span>🔓</span><span>無料・登録不要・何度でも試せます</span></div>
+    </div>
+
+    <button class="btn-start" onclick="startAssessment()">⚓ 診断をスタートする</button>
+  </div>
+</div>
+
+<!-- ②質問画面 -->
+<div id="screen-question">
+  <div class="wrap">
+    <div class="q-header">
+      <div class="q-progress-label">
+        <span class="q-label-txt" id="q-label">質問 1 / 32</span>
+        <span class="q-anchor-tag" id="q-anchor-tag">専門性</span>
+        <span class="q-pct-txt" id="q-pct">0%</span>
+      </div>
+      <div class="q-progress-bar"><div class="q-progress-fill" id="q-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num" id="q-num">QUESTION 01</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>← 戻る</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">次へ →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ③結果画面 -->
+<div id="screen-result">
+  <div class="wrap">
+    <div class="result-hero">
+      <div class="result-label">あなたのキャリアアンカー</div>
+      <div class="top-anchors-row" id="top-badges"></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">📊 8アンカーのスコア</div>
+      <div id="bar-chart"></div>
+    </div>
+
+    <div class="sec-title">⚓ アンカー詳細＆就活への活用法</div>
+    <div id="anchor-cards"></div>
+
+    <div class="decision-box" id="decision-box"></div>
+
+    <div class="karioji-result">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text" id="karioji-comment"></div>
+      </div>
+    </div>
+
+    <button class="btn-back" onclick="restart()">🔄 もう一度診断する</button>
+    <button class="btn-back" onclick="goBack()" style="margin-top:8px;border-color:var(--gm);color:var(--gm);">← 自分発見ナビに戻る</button>
+  </div>
+</div>
+
+<footer>🌳 就活の木 ｜ Tama University Career Support</footer>
+
+<script>
+// ── 8アンカー定義 ──
+const ANCHOR_INFO = {
+  TE:{name:'専門性',ic:'🎓',desc:'特定分野のエキスパートを目指す',
+    traits:'深い専門知識・技術的な卓越性・「プロ」としての評価・継続的な学習',
+    careers:['研究者・科学者','エンジニア・技術職','医師・薬剤師','弁護士・公認会計士','コンサルタント','職人・技術専門職'],
+    advice:'専門性を深められる職場環境を選びましょう。資格取得・大学院進学・業界専門誌など、継続的なスキルアップを重視。面接では「どの分野のプロを目指すのか」を明確に語れるようにしておきましょう。',
+    interview:'「継続的に学習してきた分野・資格」や「専門知識を活かして成果を出した経験」を具体的に語ることで、専門家志向の強さが伝わります。'},
+  GM:{name:'管理・統括',ic:'👑',desc:'組織全体をリードしたい',
+    traits:'組織運営・リーダーシップ・総合的な意思決定・大きな責任',
+    careers:['経営者・事業部長','プロジェクトマネージャー','経営企画職','管理職・マネージャー','コンサルタント','ゼネラルマネージャー'],
+    advice:'マネジメントスキルを磨き、組織全体を見渡す経験を積みましょう。学生時代からリーダー経験を積むことが将来への道を開きます。大手企業や総合職でのキャリアステップを意識しましょう。',
+    interview:'「チームをまとめた経験」「対立をどう解決したか」「メンバーの成長にどう貢献したか」を語ると管理職適性が伝わります。'},
+  AU:{name:'自律・独立',ic:'🕊️',desc:'自分のやり方で自由に働く',
+    traits:'独立性・自己決定・ルールに縛られない・自分のペースで進める',
+    careers:['フリーランス','起業家・独立コンサルタント','研究者','芸術家・クリエイター','専門職（医師・弁護士等）','リモートワーク可能な職種'],
+    advice:'自律性の高い働き方ができる環境を選びましょう。組織に依存しない個人の専門性を磨くことが重要です。副業・フリーランス経験も積極的に検討してください。',
+    interview:'「自分で考えて行動した経験」「誰かに指示されるより自主的に動いた事例」を挙げると、自律志向の強さが伝わります。'},
+  SE:{name:'安定・保障',ic:'🏠',desc:'安定した雇用と継続性を重視',
+    traits:'長期的な雇用・経済的安定・予測可能性・充実した福利厚生',
+    careers:['公務員（国家・地方）','大手企業・インフラ系','教育機関','金融機関・銀行','医療・福祉職','大手メーカー'],
+    advice:'安定した組織を選び、長期的なキャリアを築くことを重視しましょう。雇用の継続性と福利厚生を企業研究の重要ポイントに置いてください。',
+    interview:'「長期的な視点で取り組んだこと」「責任感を持って継続した経験」を語ると、安定志向と責任感の両立が伝わります。'},
+  EC:{name:'起業・創造',ic:'🚀',desc:'新しいものをゼロから生み出したい',
+    traits:'創造性・革新・起業家精神・新規事業開発・ゼロからの価値創造',
+    careers:['起業家・スタートアップ創業','新規事業開発担当','ベンチャー企業','イノベーター・プロダクトマネージャー','クリエイティブ職','投資家・VC'],
+    advice:'創造的で革新的な環境を選びましょう。スタートアップのインターンを経験し、実際の起業家精神を肌で感じることをお勧めします。小さな起業（副業・学生団体）から始めるのも◎。',
+    interview:'「新しいアイデアを実行に移した経験」「既存の方法に疑問を持ち改善した事例」を語ることで、起業家マインドが伝わります。'},
+  SV:{name:'奉仕・貢献',ic:'🌍',desc:'社会や人々の役に立つ仕事をしたい',
+    traits:'社会貢献・利他主義・価値観に基づいた仕事・意味のある働き方',
+    careers:['非営利団体・NPO','医療・看護・福祉職','教育・保育職','カウンセラー・ソーシャルワーカー','SDGs関連職','国際機関・行政'],
+    advice:'社会的使命を持つ組織を選びましょう。「なぜその仕事が社会に必要か」を深く考えることが、長期的なモチベーション維持につながります。ボランティア経験も大きなアピールポイントに。',
+    interview:'「ボランティア・社会活動の経験」「誰かの役に立てた具体的なエピソード」を語ると、奉仕志向の本質が伝わります。'},
+  CH:{name:'純粋な挑戦',ic:'⚡',desc:'困難な課題に挑み続けたい',
+    traits:'挑戦・競争・難題の克服・達成感・限界を超える経験',
+    careers:['プロジェクトマネージャー','外資系コンサルタント','営業（高目標型）','起業家・投資家','スポーツ・競技関連職','特殊ミッション型職種'],
+    advice:'常に新しい挑戦ができる刺激的な環境を選びましょう。困難な目標を設定し、その達成過程を楽しめる職場かどうかを企業研究の軸に置いてください。',
+    interview:'「困難な課題をどう乗り越えたか」「失敗から何を学んだか」を具体的に語ることで、挑戦志向と粘り強さが伝わります。'},
+  LS:{name:'ライフスタイル',ic:'🌿',desc:'仕事と生活全体のバランスを大切に',
+    traits:'ワークライフバランス・柔軟性・家族の時間・趣味・人生全体の充実',
+    careers:['フレックス・リモート勤務可能な企業','地方公務員','時短勤務対応職','NPO・社会起業','教育職（授業時間制）','フリーランス'],
+    advice:'柔軟な働き方ができる環境を優先しましょう。企業研究では「リモートワーク・フレックス・育休取得率」を必ず確認。人生全体の充実を重視することは、長期的なウェルビーイングにつながります。',
+    interview:'「時間管理が上手い経験」「仕事以外で充実した活動をしている話」を語ることで、バランス感覚と自己管理能力が伝わります。'},
+};
+
+// ── 32問（8アンカー×4問）──
+const QUESTIONS = [
+  // 専門性 TE（4問）
+  {q:'特定の専門分野で深い知識・技能を身につけることは、あなたにとって重要ですか？',a:'TE',r:false},
+  {q:'その分野の「エキスパート」として認められることに、強い価値を感じますか？',a:'TE',r:false},
+  {q:'専門知識を深めるために、継続的な学習が必要な職を選びたいですか？',a:'TE',r:false},
+  {q:'一つの分野を極めることより、様々な経験を幅広く積む方が魅力的ですか？',a:'TE',r:true},
+  // 管理・統括 GM（4問）
+  {q:'チームやプロジェクトをリーダーシップで指揮することに興味がありますか？',a:'GM',r:false},
+  {q:'複数の部門を統括し、組織全体の成功に貢献することに魅力を感じますか？',a:'GM',r:false},
+  {q:'人を育成し、経営・意思決定に関わることが充実感を与えると思いますか？',a:'GM',r:false},
+  {q:'管理職よりも、現場で手を動かす仕事の方が向いていると思いますか？',a:'GM',r:true},
+  // 自律・独立 AU（4問）
+  {q:'自分のペースで、自分のやり方で仕事をしたいですか？',a:'AU',r:false},
+  {q:'組織のルールや制約に縛られずに働く環境を求めていますか？',a:'AU',r:false},
+  {q:'会社に依存するより、個人の専門性で独立して活動したいと考えますか？',a:'AU',r:false},
+  {q:'組織の一員として安定した環境で働くことを優先したいですか？',a:'AU',r:true},
+  // 安定・保障 SE（4問）
+  {q:'安定した雇用と給与が得られることは、仕事を選ぶ際に最も重要ですか？',a:'SE',r:false},
+  {q:'将来的な雇用の不安定さより、安心して長く働ける環境を優先しますか？',a:'SE',r:false},
+  {q:'公務員や大手企業など、安定した組織を職場として強く意識していますか？',a:'SE',r:false},
+  {q:'リスクを取ってでも、成長や成功の大きなチャンスを求めたいですか？',a:'SE',r:true},
+  // 起業・創造 EC（4問）
+  {q:'新しいアイデアやビジネスを生み出すことに強い情熱を感じますか？',a:'EC',r:false},
+  {q:'自分のアイデアを形にして、事業を立ち上げることに興味がありますか？',a:'EC',r:false},
+  {q:'革新的・創造的な仕事に携わることは、あなたにとって重要ですか？',a:'EC',r:false},
+  {q:'既存の枠組みの中で着実に仕事をするより、常に新しいことに挑戦したいですか？',a:'EC',r:false},
+  // 奉仕・貢献 SV（4問）
+  {q:'社会や人々の役に立つ仕事をすることは、あなたにとって最も重要ですか？',a:'SV',r:false},
+  {q:'自分の仕事が社会にどう貢献しているかが、仕事選びの大きな判断基準ですか？',a:'SV',r:false},
+  {q:'利益より社会貢献を優先する仕事や組織に魅力を感じますか？',a:'SV',r:false},
+  {q:'自分の信念・価値観に沿った仕事をすることを最優先に考えていますか？',a:'SV',r:false},
+  // 純粋な挑戦 CH（4問）
+  {q:'困難で挑戦的な問題を解決することに、強い充実感を感じますか？',a:'CH',r:false},
+  {q:'競争的な環境で自分の能力を試したいですか？',a:'CH',r:false},
+  {q:'難しい目標に向かって努力する過程こそが、最大のやりがいだと思いますか？',a:'CH',r:false},
+  {q:'安定よりも、刺激と挑戦のある環境を強く求めていますか？',a:'CH',r:false},
+  // ライフスタイル LS（4問）
+  {q:'仕事と生活のバランスを大切にしたいですか？',a:'LS',r:false},
+  {q:'家族や趣味など、仕事以外の時間を充実させることは、あなたにとって重要ですか？',a:'LS',r:false},
+  {q:'フレックスやリモートワークなど、柔軟な働き方ができる環境を優先したいですか？',a:'LS',r:false},
+  {q:'仕事一筋より、人生全体の充実を最も重視していますか？',a:'LS',r:false},
+];
+
+const OPTIONS = [
+  {t:'非常にそう思う', v:3},
+  {t:'そう思う',       v:2},
+  {t:'やや思う',       v:1},
+  {t:'そう思わない',   v:0},
+];
+
+const ANCHOR_LABELS = {
+  TE:'専門性',GM:'管理・統括',AU:'自律・独立',SE:'安定・保障',
+  EC:'起業・創造',SV:'奉仕・貢献',CH:'純粋な挑戦',LS:'ライフスタイル'
+};
+
+const MAX_SCORE = 12; // 4問×3点
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(undefined);
+
+function startAssessment(){
+  document.getElementById('screen-welcome').style.display='none';
+  document.getElementById('screen-question').style.display='block';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  const pct = Math.round((current/QUESTIONS.length)*100);
+  document.getElementById('q-label').textContent = `質問 ${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('q-anchor-tag').textContent = ANCHOR_LABELS[q.a];
+  document.getElementById('q-pct').textContent = pct+'%';
+  document.getElementById('q-fill').style.width = pct+'%';
+  document.getElementById('q-num').textContent = `QUESTION ${String(current+1).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  const container = document.getElementById('q-options');
+  container.innerHTML='';
+  OPTIONS.forEach((opt,i)=>{
+    // 逆転項目の場合は選択肢の順番はそのまま、採点時に反転
+    const btn=document.createElement('button');
+    btn.className='opt'+(answers[current]===i?' selected':'');
+    btn.innerHTML=`<span class="opt-dot"></span><span class="opt-text">${opt.t}</span><span class="opt-val">${opt.v}点</span>`;
+    btn.onclick=()=>selectOption(i);
+    container.appendChild(btn);
+  });
+
+  const nextBtn=document.getElementById('btn-next');
+  const isLast=current===QUESTIONS.length-1;
+  nextBtn.textContent=isLast?'結果を見る 🌳':'次へ →';
+  nextBtn.className='btn-next'+(answers[current]!==undefined?' active':'');
+  document.getElementById('btn-prev').disabled=current===0;
+  const card=document.querySelector('.q-card');
+  if(card){card.style.animation='none';requestAnimationFrame(()=>{card.style.animation='';});}
+}
+
+function selectOption(i){
+  answers[current]=i;
+  renderQuestion();
+  setTimeout(()=>{
+    if(answers[current]!==undefined){
+      if(current<QUESTIONS.length-1){current++;renderQuestion();}
+      else{showResult();}
+    }
+  },350);
+}
+
+function nextQuestion(){
+  if(answers[current]===undefined)return;
+  if(current<QUESTIONS.length-1){current++;renderQuestion();}
+  else{showResult();}
+}
+function prevQuestion(){
+  if(current>0){current--;renderQuestion();}
+}
+
+function showResult(){
+  document.getElementById('screen-question').style.display='none';
+  document.getElementById('screen-result').style.display='block';
+  window.scrollTo(0,0);
+
+  // スコア集計（逆転項目は反転）
+  const scores={TE:0,GM:0,AU:0,SE:0,EC:0,SV:0,CH:0,LS:0};
+  QUESTIONS.forEach((q,i)=>{
+    if(answers[i]===undefined)return;
+    const raw=OPTIONS[answers[i]].v;
+    const score=q.r?(3-raw):raw;
+    scores[q.a]+=score;
+  });
+
+  // ソート
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+
+  // トップバッジ
+  const badgesEl=document.getElementById('top-badges');
+  badgesEl.innerHTML='';
+  sorted.slice(0,3).forEach(([k,v],idx)=>{
+    const info=ANCHOR_INFO[k];
+    const div=document.createElement('div');
+    div.className='top-badge'+(idx===0?' rank1':'');
+    div.innerHTML=`<div class="tb-rank">${idx===0?'★ 第1位':idx===1?'◎ 第2位':'△ 第3位'}</div><div class="tb-ic">${info.ic}</div><div class="tb-name">${info.name}</div>`;
+    badgesEl.appendChild(div);
+  });
+
+  // バーチャート
+  const chartEl=document.getElementById('bar-chart');
+  chartEl.innerHTML='';
+  sorted.forEach(([k,v],idx)=>{
+    const info=ANCHOR_INFO[k];
+    const pct=Math.round((v/MAX_SCORE)*100);
+    const row=document.createElement('div');
+    row.className='bar-row';
+    const fillClass=idx===0?'bar-fill top1':idx===1?'bar-fill top2':'bar-fill';
+    row.innerHTML=`
+      <div class="bar-ic">${info.ic}</div>
+      <div class="bar-name">${info.name}</div>
+      <div class="bar-wrap"><div class="${fillClass}" style="width:0%" data-w="${pct}"></div></div>
+      <div class="bar-score">${v}/${MAX_SCORE}</div>
+    `;
+    chartEl.appendChild(row);
+  });
+  setTimeout(()=>{
+    chartEl.querySelectorAll('.bar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});
+  },100);
+
+  // アンカー詳細カード（上位2）
+  const cardsEl=document.getElementById('anchor-cards');
+  cardsEl.innerHTML='';
+  sorted.slice(0,2).forEach(([k,v],idx)=>{
+    const info=ANCHOR_INFO[k];
+    const card=document.createElement('div');
+    card.className='anchor-card'+(idx===0?' top1':' top2');
+    card.innerHTML=`
+      <div class="ac-head">
+        <span class="ac-ic">${info.ic}</span>
+        <div>
+          <div class="ac-rank">${idx===0?'★ あなたの第1アンカー（最も大切にしていること）':'◎ 第2アンカー'}</div>
+          <div class="ac-name">${info.name}</div>
+          <div class="ac-desc">${info.desc}</div>
+        </div>
+      </div>
+      <div class="ac-traits">${info.traits}</div>
+      <div class="ac-section"><h4>🎯 向いている職種・職場</h4>
+        <div class="career-tags">${info.careers.map(c=>`<span class="career-tag">${c}</span>`).join('')}</div>
+      </div>
+      <div class="ac-section"><h4>💡 就活での活用アドバイス</h4><p>${info.advice}</p></div>
+      <div class="ac-section"><h4>💬 面接・ESでの活かし方</h4><p>${info.interview}</p></div>
+    `;
+    cardsEl.appendChild(card);
+  });
+
+  // 就活の軸ボックス
+  const top1=ANCHOR_INFO[sorted[0][0]];
+  const top2=ANCHOR_INFO[sorted[1][0]];
+  document.getElementById('decision-box').innerHTML=`
+    <h4>⚓ あなたの「就活の軸」はこれです</h4>
+    <p>あなたが仕事で最も大切にしているのは<strong>「${top1.name}」</strong>、次いで<strong>「${top2.name}」</strong>です。<br>
+    面接で「就活の軸は何ですか？」と聞かれたら、この2つを軸に答えましょう。<br>
+    企業選びでも、<strong>この軸を満たせる会社かどうか</strong>を必ず確認してください。合わない会社に入ると、長続きしません。</p>
+  `;
+
+  // キャリ爺コメント
+  const topInfo=ANCHOR_INFO[sorted[0][0]];
+  document.getElementById('karioji-comment').innerHTML=
+    `あなたのアンカーは<strong>「${topInfo.name}」${topInfo.ic}</strong>——${topInfo.desc}。<br>「なんとなく合わない」と感じる会社は、きっとこのアンカーが引っかかっているサインです。このアンカーを軸に会社選びをすれば、入社後に後悔する確率がぐっと下がりますよ😊`;
+}
+
+function restart(){
+  current=0;
+  answers=new Array(QUESTIONS.length).fill(undefined);
+  document.getElementById('screen-result').style.display='none';
+  document.getElementById('screen-welcome').style.display='block';
+  window.scrollTo(0,0);
+}
+function goBack(){
+  alert('自分発見ナビに戻ります。\n（パネル統合後はここで切り替わります）');
+}
+</script>
+</body>
+</html>

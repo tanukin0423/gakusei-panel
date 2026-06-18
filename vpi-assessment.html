@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPI 職業興味検査｜就活の木</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#2d6a4f; --gm:#52b788; --gl:#74c69d; --gp:#b7e4c7;
+  --gbg:#f1faf4; --glight:#d8f3dc; --gold:#c9a84c; --goldl:#f0d080;
+  --br:#5c3d1e; --wh:#fefffe; --sh:rgba(45,106,79,0.15);
+  --text:#1a2e1f; --muted:#6b8f71;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--gbg);min-height:100vh;color:var(--text);}
+
+header{
+  background:linear-gradient(135deg,var(--gd),var(--gm));
+  color:var(--wh);padding:14px 20px;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 2px 16px var(--sh);
+}
+.logo{font-size:24px;}
+.htitle{font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;color:var(--goldl);letter-spacing:0.06em;}
+.hsub{font-size:10px;color:var(--gp);margin-top:2px;}
+
+.wrap{max-width:560px;margin:0 auto;padding:24px 16px 60px;}
+
+/* ── ウェルカム ── */
+.welcome-hero{text-align:center;padding:28px 16px 20px;}
+.hero-icon{font-size:56px;display:block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.welcome-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:20px;font-weight:900;color:var(--gd);line-height:1.5;margin-bottom:10px;}
+.welcome-lead{font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:20px;}
+
+.karioji-card{background:var(--wh);border:2px solid var(--gp);border-radius:16px;padding:16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:20px;box-shadow:0 3px 12px var(--sh);}
+.karioji-icon{font-size:30px;flex-shrink:0;background:var(--glight);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;}
+.karioji-name{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.1em;margin-bottom:4px;}
+.karioji-text{font-size:11px;color:var(--text);line-height:1.8;}
+.karioji-text strong{color:var(--gd);}
+
+/* ホランド6タイプ紹介 */
+.holland-intro{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px;}
+.h-chip{background:var(--wh);border:1.5px solid var(--gp);border-radius:10px;padding:10px 8px;text-align:center;box-shadow:0 2px 6px var(--sh);}
+.h-chip .h-ic{font-size:18px;margin-bottom:4px;}
+.h-chip .h-name{font-size:10px;font-weight:700;color:var(--gd);}
+.h-chip .h-sub{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.4;}
+
+.info-card{background:var(--wh);border:1.5px solid var(--gp);border-radius:12px;padding:14px;margin-bottom:20px;box-shadow:0 2px 8px var(--sh);}
+.info-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);padding:4px 0;}
+.info-row span:first-child{font-size:16px;}
+.info-row strong{color:var(--gd);}
+
+.btn-start{width:100%;background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--wh);border:none;border-radius:16px;padding:18px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 20px rgba(45,106,79,0.35);transition:transform 0.15s;letter-spacing:0.06em;}
+.btn-start:hover{transform:translateY(-2px);}
+
+/* ── 質問画面 ── */
+#screen-question{display:none;}
+.q-header{background:var(--wh);border-radius:16px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px var(--sh);}
+.q-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;}
+.q-progress-bar{height:6px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--gm),var(--gl));border-radius:10px;transition:width 0.4s ease;}
+
+/* タイプバッジ */
+.type-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;}
+
+.q-card{background:var(--wh);border-radius:20px;padding:22px 18px;box-shadow:0 4px 20px var(--sh);border:1.5px solid var(--gp);margin-bottom:16px;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.q-num{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.12em;margin-bottom:8px;}
+.q-text{font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:700;color:var(--gd);line-height:1.6;margin-bottom:18px;}
+
+/* 4段階評価 */
+.rating-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.rating-btn{
+  background:var(--gbg);border:2px solid var(--gp);border-radius:12px;
+  padding:12px 8px;cursor:pointer;transition:all 0.2s;text-align:center;
+}
+.rating-btn:hover{border-color:var(--gm);background:var(--glight);}
+.rating-btn.selected{background:linear-gradient(135deg,#e8f5ee,#d0ede0);border-color:var(--gd);box-shadow:0 2px 10px rgba(45,106,79,0.2);}
+.rating-num{font-family:'Zen Kaku Gothic New',sans-serif;font-size:22px;font-weight:900;color:var(--gd);margin-bottom:4px;}
+.rating-btn.selected .rating-num{color:var(--gd);}
+.rating-label{font-size:10px;color:var(--muted);line-height:1.4;}
+.rating-btn.selected .rating-label{color:var(--gd);font-weight:700;}
+
+/* 前へ・次へ */
+.nav-btns{display:flex;gap:10px;}
+.btn-prev{flex:0 0 80px;background:none;border:2px solid var(--gp);border-radius:12px;padding:13px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.btn-prev:hover{border-color:var(--gm);color:var(--gm);}
+.btn-prev:disabled{opacity:0.3;pointer-events:none;}
+.btn-next{flex:1;background:var(--gd);color:var(--wh);border:none;border-radius:12px;padding:14px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;opacity:0.4;pointer-events:none;}
+.btn-next.active{opacity:1;pointer-events:auto;}
+.btn-next.active:hover{background:var(--gm);}
+
+/* ── 結果画面 ── */
+#screen-result{display:none;}
+
+.result-hero{text-align:center;background:linear-gradient(145deg,#1e4d2f,#2d6a4f);border-radius:20px;padding:26px 20px;margin-bottom:16px;border:2px solid var(--gold);box-shadow:0 6px 24px rgba(45,106,79,0.35);}
+.result-label{font-size:11px;color:var(--gp);letter-spacing:0.1em;margin-bottom:8px;}
+.code-display{font-family:'Zen Kaku Gothic New',sans-serif;font-size:42px;font-weight:900;color:var(--goldl);letter-spacing:0.15em;margin-bottom:6px;}
+.code-name{font-size:14px;color:var(--gp);margin-bottom:4px;}
+
+/* レーダー風バーチャート */
+.chart-card{background:var(--wh);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px var(--sh);border:1.5px solid var(--gp);}
+.chart-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;color:var(--gd);margin-bottom:14px;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.bar-type{font-size:10px;font-weight:700;color:var(--gd);width:20px;flex-shrink:0;}
+.bar-name{font-size:10px;color:var(--muted);width:56px;flex-shrink:0;}
+.bar-wrap{flex:1;height:12px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gm),var(--gl));transition:width 0.8s ease;}
+.bar-fill.top1{background:linear-gradient(90deg,var(--gd),var(--gm));}
+.bar-fill.top2{background:linear-gradient(90deg,#3a8a60,var(--gm));}
+.bar-score{font-size:11px;font-weight:700;color:var(--muted);width:28px;text-align:right;}
+
+/* タイプ詳細カード */
+.type-card{background:var(--wh);border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 3px 12px var(--sh);border:2px solid var(--gl);}
+.type-card.top1{border-color:var(--gold);background:linear-gradient(135deg,#fffdf0,#fffff8);}
+.type-rank{font-size:10px;font-weight:700;color:var(--gm);margin-bottom:6px;}
+.type-card.top1 .type-rank{color:var(--gold);}
+.type-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.type-ic{font-size:28px;}
+.type-name-lg{font-family:'Zen Kaku Gothic New',sans-serif;font-size:17px;font-weight:900;color:var(--gd);}
+.type-desc{font-size:11px;color:var(--muted);}
+.type-body{font-size:12px;color:var(--text);line-height:1.8;margin-bottom:10px;}
+.career-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.career-tag{background:var(--glight);color:var(--gd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;border:1px solid var(--gl);}
+
+.karioji-result{background:linear-gradient(135deg,#1e4d2f,#2a5e3d);border-radius:16px;padding:18px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start;}
+.karioji-result .karioji-name{color:var(--goldl);}
+.karioji-result .karioji-text{color:var(--gp);}
+.karioji-result .karioji-text strong{color:var(--goldl);}
+
+.sec-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:900;color:var(--gd);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--gp);}
+
+.btn-back{width:100%;background:none;border:2px solid var(--gp);border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.btn-back:hover{border-color:var(--gm);color:var(--gm);}
+
+footer{background:var(--gd);color:var(--gp);text-align:center;font-size:10px;padding:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🌳</span>
+  <div>
+    <div class="htitle">VPI 職業興味検査｜就活の木</div>
+    <div class="hsub">Holland Theory — 6つの興味タイプで適職を発見</div>
+  </div>
+</header>
+
+<!-- ①ウェルカム -->
+<div id="screen-welcome">
+  <div class="wrap">
+    <div class="welcome-hero">
+      <span class="hero-icon">💼</span>
+      <div class="welcome-title">あなたはどんな仕事に<br>惹かれますか？</div>
+      <div class="welcome-lead">
+        ホランド理論に基づく職業興味検査（VPI型）。<br>
+        30の問いに答えるだけで、あなたの<strong>興味タイプ（ホランドコード）</strong>が分かります。<br>
+        「なんとなく好き・嫌い」という感覚を大切に答えてみてください。
+      </div>
+    </div>
+
+    <div class="karioji-card">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text">「好きなこと」と「向いている仕事」は繋がっています。<strong>「なんとなく面白そう」という直感</strong>が、実はとても大切なヒント。正直に答えてみてね。</div>
+      </div>
+    </div>
+
+    <div class="holland-intro">
+      <div class="h-chip"><div class="h-ic">🔧</div><div class="h-name">R 現実的</div><div class="h-sub">作る・動かす</div></div>
+      <div class="h-chip"><div class="h-ic">🔬</div><div class="h-name">I 研究的</div><div class="h-sub">調べる・分析</div></div>
+      <div class="h-chip"><div class="h-ic">🎨</div><div class="h-name">A 芸術的</div><div class="h-sub">創る・表現</div></div>
+      <div class="h-chip"><div class="h-ic">🤝</div><div class="h-name">S 社会的</div><div class="h-sub">助ける・教える</div></div>
+      <div class="h-chip"><div class="h-ic">📢</div><div class="h-name">E 企業的</div><div class="h-sub">動かす・説得</div></div>
+      <div class="h-chip"><div class="h-ic">📋</div><div class="h-name">C 慣習的</div><div class="h-sub">整える・正確に</div></div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-row"><span>⏱️</span><span>所要時間：<strong>約5分</strong>（30問）</span></div>
+      <div class="info-row"><span>📊</span><span>結果：<strong>ホランドコード（上位3タイプ）</strong>と適職例</span></div>
+      <div class="info-row"><span>💡</span><span>回答方法：<strong>4段階</strong>（当てはまらない〜当てはまる）</span></div>
+      <div class="info-row"><span>🔓</span><span>無料・登録不要・何度でも試せます</span></div>
+    </div>
+
+    <button class="btn-start" onclick="startAssessment()">💼 診断をスタートする</button>
+  </div>
+</div>
+
+<!-- ②質問画面 -->
+<div id="screen-question">
+  <div class="wrap">
+    <div class="q-header">
+      <div class="q-progress-label">
+        <span id="q-label">質問 1 / 30</span>
+        <span id="q-pct">0%</span>
+      </div>
+      <div class="q-progress-bar"><div class="q-progress-fill" id="q-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num" id="q-num">QUESTION 01</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="rating-wrap" id="q-ratings"></div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>← 戻る</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">次へ →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ③結果画面 -->
+<div id="screen-result">
+  <div class="wrap">
+
+    <div class="result-hero">
+      <div class="result-label">あなたのホランドコード</div>
+      <div class="code-display" id="r-code"></div>
+      <div class="code-name" id="r-codename"></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">📊 6タイプ別スコア</div>
+      <div id="bar-chart"></div>
+    </div>
+
+    <div class="sec-title">🎯 あなたの興味タイプ詳細</div>
+    <div id="type-cards"></div>
+
+    <div class="karioji-result">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text" id="karioji-comment"></div>
+      </div>
+    </div>
+
+    <button class="btn-back" onclick="restart()">🔄 もう一度診断する</button>
+    <button class="btn-back" onclick="goBack()" style="margin-top:8px;border-color:var(--gm);color:var(--gm);">← 自分発見ナビに戻る</button>
+
+  </div>
+</div>
+
+<footer>🌳 就活の木 ｜ Tama University Career Support</footer>
+
+<script>
+// ── ホランド6タイプ定義 ──
+const TYPE_INFO = {
+  R:{name:'現実的',full:'Realistic（現実的）',ic:'🔧',
+    desc:'機械・道具・身体を使う実践的な仕事',
+    traits:'実践的、技術志向、具体的な成果を重視',
+    workstyle:'手を動かして目に見える成果を作ることに満足感を得ます。実用的で具体的な環境が合っています。',
+    careers:['機械エンジニア','電気技術者','建設・土木','製造業技術者','農業・林業','パイロット','工業デザイナー','整備士'],
+    color:'#e8965a'},
+  I:{name:'研究的',full:'Investigative（研究的）',ic:'🔬',
+    desc:'調査・研究・分析する知的な仕事',
+    traits:'論理的、分析的、知的好奇心旺盛',
+    workstyle:'複雑な問題を深く考え、データや事実から答えを導くことに充実感を得ます。',
+    careers:['研究員・科学者','データアナリスト','医師・薬剤師','プログラマー','大学教授','コンサルタント','統計学者','SEシステムエンジニア'],
+    color:'#5a8ee8'},
+  A:{name:'芸術的',full:'Artistic（芸術的）',ic:'🎨',
+    desc:'創造・表現・感性を活かす仕事',
+    traits:'創造的、感性豊か、独創的、自由志向',
+    workstyle:'ルールに縛られず、自分のセンスや感性を自由に表現できる環境が合っています。',
+    careers:['デザイナー','クリエイター','作家・編集者','音楽家','映像制作','建築家','ジャーナリスト','ウェブデザイナー'],
+    color:'#c45ae8'},
+  S:{name:'社会的',full:'Social（社会的）',ic:'🤝',
+    desc:'人を助ける・教える・支える仕事',
+    traits:'協調的、共感的、教育的、人間関係重視',
+    workstyle:'人と関わり、誰かの役に立てることに深い満足感を得ます。温かい人間関係を大切にします。',
+    careers:['教師・講師','看護師・医療職','カウンセラー','ソーシャルワーカー','人事担当','福祉職員','キャリアコンサルタント','営業（サポート型）'],
+    color:'#5ae8a0'},
+  E:{name:'企業的',full:'Enterprising（企業的）',ic:'📢',
+    desc:'リード・説得・起業する仕事',
+    traits:'指導力、説得力、野心的、エネルギッシュ',
+    workstyle:'目標達成や影響力を発揮できる環境を好みます。チームを引っ張り、成果を出すことに喜びを感じます。',
+    careers:['経営者・起業家','営業職','管理職・マネージャー','政治家','広報・PR','イベントプロデューサー','コンサルタント','ベンチャー企業'],
+    color:'#e8d45a'},
+  C:{name:'慣習的',full:'Conventional（慣習的）',ic:'📋',
+    desc:'データ処理・事務・正確さが求められる仕事',
+    traits:'几帳面、正確、組織的、実務的',
+    workstyle:'明確なルールと秩序のある環境で、正確さが求められる作業に安定した満足感を得ます。',
+    careers:['会計士・経理','公務員','事務・秘書','銀行員','品質管理','税務職員','データ管理','医療事務'],
+    color:'#5adde8'}
+};
+
+// ── 30問（各タイプ5問）──
+// 各問: {q, type, reverse}
+// 逆転項目(reverse:true)は採点時に (5-score) で反転
+const QUESTIONS = [
+  // R 現実的（5問）
+  {q:'機械や工具を使って何かを作ったり修理したりすることに興味がありますか？',type:'R',reverse:false},
+  {q:'屋外や実際に身体を使う仕事に魅力を感じますか？',type:'R',reverse:false},
+  {q:'農業・建設・製造業などの実務的な分野に興味がありますか？',type:'R',reverse:false},
+  {q:'手作業で目に見える成果を作ることに満足感を覚えますか？',type:'R',reverse:false},
+  {q:'理論よりも、実際に手を動かして解決することが得意だと思いますか？',type:'R',reverse:false},
+  // I 研究的（5問）
+  {q:'科学的な問題を解決したり、データを分析することに興味がありますか？',type:'I',reverse:false},
+  {q:'複雑な問題を論理的に考えることに充実感を感じますか？',type:'I',reverse:false},
+  {q:'新しい知識を学んだり、なぜそうなるのか原因を探ることが好きですか？',type:'I',reverse:false},
+  {q:'実験・観察・研究を通じて物事を深く理解したいと思いますか？',type:'I',reverse:false},
+  {q:'すぐに行動するより、じっくり考えてから動く方が得意ですか？',type:'I',reverse:false},
+  // A 芸術的（5問）
+  {q:'絵を描いたり、音楽を作ったり、創作することが好きですか？',type:'A',reverse:false},
+  {q:'創造的・独創的なアイデアを考えることに喜びを感じますか？',type:'A',reverse:false},
+  {q:'美しいものやデザインに強い関心がありますか？',type:'A',reverse:false},
+  {q:'型にはまらない自由な働き方に魅力を感じますか？',type:'A',reverse:false},
+  {q:'自分のセンスや感性を活かせる仕事がしたいと思いますか？',type:'A',reverse:false},
+  // S 社会的（5問）
+  {q:'人を助けたり、サポートしたりすることが好きですか？',type:'S',reverse:false},
+  {q:'人と話したり、教えたり、伝えたりすることに喜びを感じますか？',type:'S',reverse:false},
+  {q:'他者の成長や幸せに貢献することにやりがいを感じますか？',type:'S',reverse:false},
+  {q:'相談に乗ったり、誰かの気持ちに寄り添うことが得意ですか？',type:'S',reverse:false},
+  {q:'社会的な問題の解決や、人の役に立つ仕事に関心がありますか？',type:'S',reverse:false},
+  // E 企業的（5問）
+  {q:'人を説得したり、影響を与えたりすることが得意だと思いますか？',type:'E',reverse:false},
+  {q:'リーダーシップを発揮して、チームをまとめることに興味がありますか？',type:'E',reverse:false},
+  {q:'ビジネスや起業、目標達成に強い関心がありますか？',type:'E',reverse:false},
+  {q:'競争的な環境で自分の力を試したいですか？',type:'E',reverse:false},
+  {q:'プロジェクトを企画・推進して成果を出すことに満足感を覚えますか？',type:'E',reverse:false},
+  // C 慣習的（5問）
+  {q:'決まった手順やルールに従って仕事をすることが得意ですか？',type:'C',reverse:false},
+  {q:'データや数字を正確に扱ったり、書類を整理することが好きですか？',type:'C',reverse:false},
+  {q:'細かい作業や事務処理を丁寧にこなすことが得意ですか？',type:'C',reverse:false},
+  {q:'安定した環境で、計画的に着実に仕事を進めたいですか？',type:'C',reverse:false},
+  {q:'正確さと効率性が求められる仕事に向いていると思いますか？',type:'C',reverse:false},
+];
+
+const RATINGS = [
+  {val:1,label:'当てはまらない'},
+  {val:2,label:'あまり当てはまらない'},
+  {val:3,label:'やや当てはまる'},
+  {val:4,label:'当てはまる'},
+];
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(undefined);
+
+function startAssessment(){
+  document.getElementById('screen-welcome').style.display='none';
+  document.getElementById('screen-question').style.display='block';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+  document.getElementById('q-label').textContent = `質問 ${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('q-pct').textContent = pct + '%';
+  document.getElementById('q-fill').style.width = pct + '%';
+  document.getElementById('q-num').textContent = `QUESTION ${String(current+1).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  const wrap = document.getElementById('q-ratings');
+  wrap.innerHTML = '';
+  RATINGS.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'rating-btn' + (answers[current] === r.val ? ' selected' : '');
+    btn.innerHTML = `<div class="rating-num">${r.val}</div><div class="rating-label">${r.label}</div>`;
+    btn.onclick = () => selectRating(r.val);
+    wrap.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  const isLast = current === QUESTIONS.length - 1;
+  nextBtn.textContent = isLast ? '結果を見る 🌳' : '次へ →';
+  nextBtn.className = 'btn-next' + (answers[current] !== undefined ? ' active' : '');
+  document.getElementById('btn-prev').disabled = current === 0;
+
+  const card = document.querySelector('.q-card');
+  if(card){card.style.animation='none';requestAnimationFrame(()=>{card.style.animation='';});}
+}
+
+function selectRating(val){
+  answers[current] = val;
+  renderQuestion();
+  // 選択後0.3秒で自動進行
+  setTimeout(()=>{
+    if(answers[current] !== undefined){
+      if(current < QUESTIONS.length - 1){ current++; renderQuestion(); }
+      else { showResult(); }
+    }
+  }, 350);
+}
+
+function nextQuestion(){
+  if(answers[current] === undefined) return;
+  if(current < QUESTIONS.length - 1){ current++; renderQuestion(); }
+  else { showResult(); }
+}
+
+function prevQuestion(){
+  if(current > 0){ current--; renderQuestion(); }
+}
+
+function showResult(){
+  document.getElementById('screen-question').style.display='none';
+  document.getElementById('screen-result').style.display='block';
+  window.scrollTo(0,0);
+
+  // スコア計算
+  const scores = {R:0,I:0,A:0,S:0,E:0,C:0};
+  QUESTIONS.forEach((q,i)=>{
+    if(answers[i] === undefined) return;
+    const s = q.reverse ? (5 - answers[i]) : answers[i];
+    scores[q.type] += s;
+  });
+
+  // ソート
+  const sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  const maxRaw = sorted[0][1];
+
+  // ホランドコード（上位3）
+  const code = sorted.slice(0,3).map(e=>e[0]).join('');
+  document.getElementById('r-code').textContent = code;
+  document.getElementById('r-codename').textContent =
+    sorted.slice(0,3).map(e=>TYPE_INFO[e[0]].name).join(' × ');
+
+  // バーチャート
+  const chartEl = document.getElementById('bar-chart');
+  chartEl.innerHTML = '';
+  sorted.forEach(([t, s], idx)=>{
+    const pct = maxRaw > 0 ? Math.round((s / maxRaw) * 100) : 0;
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    const fillClass = idx===0?'bar-fill top1':idx===1?'bar-fill top2':'bar-fill';
+    row.innerHTML = `
+      <div class="bar-type">${t}</div>
+      <div class="bar-name">${TYPE_INFO[t].ic} ${TYPE_INFO[t].name}</div>
+      <div class="bar-wrap"><div class="${fillClass}" style="width:0%" data-w="${pct}"></div></div>
+      <div class="bar-score">${s}点</div>
+    `;
+    chartEl.appendChild(row);
+  });
+  setTimeout(()=>{
+    chartEl.querySelectorAll('.bar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});
+  },100);
+
+  // タイプカード（上位3）
+  const tcEl = document.getElementById('type-cards');
+  tcEl.innerHTML = '';
+  sorted.slice(0,3).forEach(([t],idx)=>{
+    const info = TYPE_INFO[t];
+    const card = document.createElement('div');
+    card.className = 'type-card' + (idx===0?' top1':'');
+    card.innerHTML = `
+      <div class="type-rank">${idx===0?'★ 第1タイプ（最も強い興味）':idx===1?'◎ 第2タイプ':'△ 第3タイプ'}</div>
+      <div class="type-head">
+        <span class="type-ic">${info.ic}</span>
+        <div>
+          <div class="type-name-lg">${info.full}</div>
+          <div class="type-desc">${info.desc}</div>
+        </div>
+      </div>
+      <div class="type-body">${info.workstyle}</div>
+      <div class="career-tags">${info.careers.map(c=>`<span class="career-tag">${c}</span>`).join('')}</div>
+    `;
+    tcEl.appendChild(card);
+  });
+
+  // キャリ爺コメント
+  const top = TYPE_INFO[sorted[0][0]];
+  const comments = {
+    R:`<strong>「作る・動かす」</strong>ことへの情熱がありますね。手を動かして目に見える成果を出せる仕事に向いています。インターンで現場を体験してみましょう。`,
+    I:`<strong>「考える・探究する」</strong>力が強いですね。データや知識を深く掘り下げることを楽しめる仕事が合っています。研究職やコンサルを調べてみましょう。`,
+    A:`<strong>「創る・表現する」</strong>センスを持っていますね。自分の感性を活かせるクリエイティブな仕事を探してみましょう。ポートフォリオを作るのも良いですよ。`,
+    S:`<strong>「助ける・支える」</strong>気持ちが強いですね。人と関わり、誰かの役に立てる仕事が天職かもしれません。キャリ爺と同じ方向性ですね😊`,
+    E:`<strong>「動かす・引っ張る」</strong>リーダー気質がありますね。目標を掲げてチームを動かす仕事、経営・営業・起業方向を探ってみましょう。`,
+    C:`<strong>「整える・正確に」</strong>という強みがありますね。数字や書類を丁寧に扱える仕事、経理・事務・公務員などが向いています。`,
+  };
+  document.getElementById('karioji-comment').innerHTML = comments[sorted[0][0]] || '診断お疲れ様でした。結果を参考に、次のステップへ進みましょう。';
+}
+
+function restart(){
+  current = 0;
+  answers = new Array(QUESTIONS.length).fill(undefined);
+  document.getElementById('screen-result').style.display='none';
+  document.getElementById('screen-welcome').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function goBack(){
+  // パネル統合後に画面切り替え
+  alert('自分発見ナビに戻ります。\n（パネル統合後はここで切り替わります）');
+}
+</script>
+</body>
+</html>

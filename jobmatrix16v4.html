@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職業マトリックス 16分割版</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:#f5f7fa;color:#333;padding:16px;display:flex;flex-direction:column;align-items:center;}
+h1{text-align:center;font-size:1.3em;color:#2c3e50;margin-bottom:6px;font-weight:700;width:100%;max-width:620px;}
+.subtitle{text-align:center;font-size:0.82em;color:#7f8c8d;margin-bottom:14px;width:100%;max-width:620px;}
+
+/* 軸ラベル */
+.top-note{text-align:center;font-size:0.78em;color:#888;margin-bottom:4px;}
+.bot-note{text-align:center;font-size:0.78em;color:#888;margin-top:4px;}
+.x-label{text-align:center;font-size:0.78em;color:#888;margin-top:4px;}
+
+/* グリッド */
+.grid-outer{display:grid;grid-template-columns:36px 1fr;gap:0;width:100%;max-width:580px;}
+.y-label{display:flex;align-items:center;justify-content:center;}
+.y-label span{writing-mode:vertical-lr;font-size:0.75em;color:#888;font-weight:500;white-space:nowrap;}
+.col-labels{display:grid;grid-template-columns:36px repeat(4,1fr);gap:3px;margin-bottom:3px;width:100%;max-width:580px;}
+.col-label{font-size:0.72em;color:#aaa;text-align:center;line-height:1.3;padding:2px 0;}
+
+.matrix-outer{max-width:580px;margin:0 auto;}
+.matrix{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
+.cell{border-radius:6px;padding:6px 7px;display:flex;flex-direction:column;gap:2px;cursor:pointer;transition:all 0.15s;border:2px solid transparent;position:relative;aspect-ratio:1/1;overflow:hidden;}
+.cell:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.12);}
+.cell.active{border-color:#2c3e50;box-shadow:0 4px 14px rgba(0,0,0,0.18);}
+.cell-label{font-size:clamp(9px,1.5vw,12px);font-weight:700;line-height:1.25;word-break:keep-all;}
+.cell-group{font-size:clamp(7px,1.1vw,10px);opacity:0.75;line-height:1.25;margin-top:1px;}
+.cell-count{font-size:clamp(7px,1.1vw,11px);position:absolute;bottom:4px;right:5px;opacity:0.6;font-weight:500;}
+
+/* 4象限カラー */
+.hh{background:#c8f5d8;}  /* 高目標・高関わり 緑 */
+.hl{background:#ffd0d4;}  /* 高目標・低関わり ピンク */
+.lh{background:#fff5b0;}  /* 低目標・高関わり 黄 */
+.ll{background:#c8e4ff;}  /* 低目標・低関わり 青 */
+.hh .cell-label,.hh .cell-group{color:#0a5c3a;}
+.hl .cell-label,.hl .cell-group{color:#7a2020;}
+.lh .cell-label,.lh .cell-group{color:#6b4c00;}
+.ll .cell-label,.ll .cell-group{color:#0a3d6b;}
+
+/* 凡例 */
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;justify-content:center;width:100%;max-width:620px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:0.78em;color:#555;}
+.legend-dot{width:13px;height:13px;border-radius:3px;flex-shrink:0;}
+
+/* 詳細パネル */
+.detail-panel{background:#fff;border-radius:10px;padding:16px;margin-top:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08);display:none;width:100%;max-width:580px;}
+.detail-panel.show{display:block;width:100%;max-width:580px;}
+.detail-header{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.detail-title{font-size:1.05em;font-weight:700;color:#2c3e50;}
+.detail-tag{font-size:0.78em;color:#999;background:#f0f0f0;padding:2px 8px;border-radius:10px;}
+.detail-count{font-size:0.78em;color:#999;}
+
+/* グループセクション */
+.group-section{margin-bottom:12px;}
+.group-name{font-size:0.8em;font-weight:700;color:#555;border-left:3px solid #ccc;padding-left:8px;margin-bottom:6px;}
+.group-name.hh-border{border-color:#2ecc71;}
+.group-name.hl-border{border-color:#e74c3c;}
+.group-name.lh-border{border-color:#f1c40f;}
+.group-name.ll-border{border-color:#3498db;}
+
+.jobs-list{display:flex;flex-wrap:wrap;gap:5px;}
+.job-chip{font-size:0.8em;padding:3px 10px;border-radius:14px;line-height:1.5;cursor:default;transition:opacity 0.1s;}
+.job-chip:hover{opacity:0.8;}
+.job-chip a{color:inherit;text-decoration:none;}
+.job-chip.has-link{cursor:pointer;}
+.job-chip.has-link a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px;}
+.job-chip.has-video a{text-decoration:underline wavy;text-underline-offset:3px;text-decoration-thickness:1.5px;}
+.job-chip.has-link.has-video a{text-decoration:underline double;text-underline-offset:3px;}
+.chip-hh{background:#d4f7e4;color:#0a5c3a;}
+.chip-hl{background:#fde0e2;color:#7a2020;}
+.chip-lh{background:#fff9d0;color:#6b4c00;}
+.chip-ll{background:#d8eeff;color:#0a3d6b;}
+
+.detail-note{font-size:0.75em;color:#aaa;margin-top:8px;padding-top:8px;border-top:1px dashed #eee;}
+.hint-box{text-align:center;padding:20px;color:#bbb;font-size:0.85em;}
+
+/* フッター著作権 */
+.copyright-footer {
+  width:100%;max-width:580px;
+  text-align:center;
+  font-size:0.75em;
+  color:#aaa;
+  margin-top:20px;
+  padding:10px 0 18px;
+  border-top:1px solid #e0e0e0;
+  line-height:1.8;
+}
+.copyright-footer a {
+  color:#aaa;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+
+@media(max-width:600px){
+  .matrix-outer,.col-labels,.grid-outer,.x-label{max-width:100%;}
+  .y-label{display:none;}
+  .grid-outer{grid-template-columns:1fr;}
+  .col-labels{grid-template-columns:repeat(4,1fr);}
+  .col-labels>div:first-child{display:none;}
+  .detail-panel{margin-top:10px;}
+  h1{font-size:1.1em;}
+  body{padding:10px;}
+}
+
+/* tooltip */
+.job-chip{position:relative;}
+.job-chip .tooltip{
+  display:none;
+  position:fixed;
+  background:#2c3e50;
+  color:#fff;
+  font-size:0.78em;
+  padding:5px 9px;
+  border-radius:6px;
+  z-index:9999;
+  pointer-events:none;
+  line-height:1.5;
+  width:max-content;
+  max-width:min(300px, 85vw);
+  white-space:normal;
+  text-align:left;
+  animation:tipFadeIn 0.15s ease;
+}
+@keyframes tipFadeIn{
+  from{opacity:0; transform:translateY(4px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.job-chip .tooltip::after{
+  content:'';
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%);
+  border:5px solid transparent;
+  border-top-color:#2c3e50;
+}
+/* tooltip表示はJSで制御 */
+.tooltip-video{display:block;margin-top:5px;padding-top:5px;border-top:1px solid rgba(255,255,255,0.25);font-size:0.9em;color:#a8d8ff;letter-spacing:0.02em;}
+.tooltip-video a{color:#a8d8ff;text-decoration:underline;pointer-events:all;}
+
+/* ===== 補正ダイアログ ===== */
+#hosei-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9000;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+}
+#hosei-dialog {
+  background:#fff;border-radius:16px;padding:24px 20px;max-width:440px;width:100%;
+  box-shadow:0 8px 32px rgba(0,0,0,0.2);
+}
+.hosei-title {
+  font-size:1.05em;font-weight:700;color:#2c3e50;text-align:center;margin-bottom:6px;
+}
+.hosei-sub {
+  font-size:0.8em;color:#888;text-align:center;margin-bottom:18px;line-height:1.6;
+}
+.hosei-question {
+  font-size:0.9em;font-weight:700;color:#444;margin-bottom:10px;
+  background:#f5f7fa;border-radius:8px;padding:10px 12px;border-left:4px solid #3498db;
+}
+.hosei-btns {
+  display:flex;flex-direction:column;gap:8px;margin-bottom:16px;
+}
+.hosei-btn {
+  padding:10px 14px;border-radius:10px;border:2px solid #e0e0e0;
+  background:#fafafa;font-size:0.88em;cursor:pointer;text-align:left;
+  transition:all 0.15s;color:#333;font-family:'Noto Sans JP',sans-serif;
+}
+.hosei-btn:hover { background:#eef6ff;border-color:#3498db; }
+.hosei-btn.selected { background:#d6eeff;border-color:#2980b9;font-weight:700; }
+.hosei-step { font-size:0.72em;color:#aaa;text-align:center;margin-bottom:4px; }
+.hosei-next-btn {
+  width:100%;padding:11px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,#2980b9,#3498db);
+  color:#fff;font-size:0.9em;font-weight:700;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;margin-top:4px;
+}
+.hosei-next-btn:disabled { background:#ccc;cursor:default; }
+.hosei-skip {
+  display:block;text-align:center;font-size:0.78em;color:#bbb;
+  margin-top:10px;cursor:pointer;text-decoration:underline;
+}
+
+/* ===== 診断結果・隣接セル・印刷 ===== */
+.cell.shindan-result {
+  border:3px solid #e74c3c !important;
+  box-shadow:0 0 0 3px rgba(231,76,60,0.25);
+  position:relative;
+}
+.cell.shindan-result::before {
+  content:'★ あなたの診断結果';
+  position:absolute;
+  top:-22px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#e74c3c;
+  color:#fff;
+  font-size:9px;
+  padding:2px 6px;
+  border-radius:8px;
+  white-space:nowrap;
+  z-index:10;
+}
+.cell.adjacent {
+  border:2px dashed #e67e22 !important;
+  position:relative;
+}
+.cell.adjacent-selected {
+  border:2px dashed #e67e22 !important;
+  box-shadow:0 0 0 3px rgba(230,126,34,0.3);
+}
+.cell.adjacent::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:rgba(230,126,34,0.06);
+  border-radius:6px;
+  pointer-events:none;
+}
+.cell.adjacent-selected::after {
+  content:'✓';
+  position:absolute;
+  top:4px;
+  right:6px;
+  font-size:12px;
+  color:#e67e22;
+  font-weight:bold;
+  pointer-events:none;
+}
+
+/* ===== 職種検索 ===== */
+#search-box {
+  width:100%;max-width:580px;margin:10px auto 0;
+  background:#fff;border-radius:10px;padding:12px 14px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+.search-row {
+  display:flex;gap:8px;align-items:center;margin-bottom:8px;
+}
+#search-input {
+  flex:1;border:1.5px solid #ddd;border-radius:8px;
+  padding:7px 12px;font-size:0.88em;font-family:inherit;
+  outline:none;transition:border-color 0.15s;
+}
+#search-input:focus { border-color:#3498db; }
+#search-clear {
+  background:none;border:none;font-size:1.1em;cursor:pointer;
+  color:#aaa;padding:4px 6px;line-height:1;
+}
+#search-clear:hover { color:#555; }
+.search-filters {
+  display:flex;flex-wrap:wrap;gap:6px;
+}
+.filter-btn {
+  font-size:0.75em;padding:3px 10px;border-radius:12px;
+  border:1.5px solid #ddd;background:#fff;cursor:pointer;
+  transition:all 0.15s;font-family:inherit;
+}
+.filter-btn:hover { opacity:0.8; }
+.filter-btn.active-hl { background:#ffd0d4;border-color:#e74c3c;color:#7a2020; }
+.filter-btn.active-hh { background:#c8f5d8;border-color:#2ecc71;color:#0a5c3a; }
+.filter-btn.active-ll { background:#c8e4ff;border-color:#3498db;color:#0a3d6b; }
+.filter-btn.active-lh { background:#fff5b0;border-color:#f1c40f;color:#6b4c00; }
+.filter-btn.active-all { background:#2c3e50;border-color:#2c3e50;color:#fff; }
+#search-results {
+  width:100%;max-width:580px;margin:8px auto 0;
+  background:#fff;border-radius:10px;padding:12px 14px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.08);display:none;
+}
+#search-results.show { display:block; }
+.search-result-count {
+  font-size:0.8em;color:#888;margin-bottom:8px;
+}
+.search-result-item {
+  display:flex;align-items:center;gap:8px;
+  padding:5px 0;border-bottom:1px dashed #f0f0f0;
+  font-size:0.83em;
+}
+.search-result-item:last-child { border-bottom:none; }
+.result-cell-label {
+  font-size:0.75em;padding:2px 7px;border-radius:10px;
+  white-space:nowrap;flex-shrink:0;
+}
+.result-job-name { color:#2c3e50;font-weight:500; }
+.result-job-name a { color:inherit;text-decoration:underline;text-underline-offset:2px; }
+.job-chip.search-hit {
+  box-shadow:0 0 0 2.5px #e67e22;
+  transform:scale(1.08);
+  z-index:2;
+  position:relative;
+}
+
+/* 印刷コントロールパネル */
+#print-panel {
+  display:none;
+  width:100%;
+  max-width:580px;
+  background:#fff8f0;
+  border:1px solid #e67e22;
+  border-radius:10px;
+  padding:14px 16px;
+  margin-top:10px;
+}
+#print-panel.show { display:block; }
+.print-panel-title {
+  font-size:0.85em;
+  font-weight:700;
+  color:#e67e22;
+  margin-bottom:8px;
+}
+.print-panel-desc {
+  font-size:0.78em;
+  color:#888;
+  margin-bottom:10px;
+  line-height:1.5;
+}
+.print-btn {
+  background:#e67e22;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:8px 20px;
+  font-size:0.85em;
+  font-weight:700;
+  cursor:pointer;
+  margin-right:8px;
+  transition:opacity 0.15s;
+}
+.print-btn:hover { opacity:0.85; }
+.print-btn.secondary {
+  background:#fff;
+  color:#e67e22;
+  border:1.5px solid #e67e22;
+}
+.print-selected-list {
+  font-size:0.78em;
+  color:#555;
+  margin-bottom:8px;
+  line-height:1.6;
+}
+
+/* 印刷スタイル */
+@media print {
+  body * { visibility:hidden !important; }
+  #print-area, #print-area * { visibility:visible !important; }
+  #print-area {
+    position:fixed;
+    top:0; left:0;
+    width:100%;
+    background:#fff;
+  }
+  .print-block {
+    page-break-inside:avoid;
+    margin-bottom:16px;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ddd;
+  }
+  .print-block.hh { background:#d4f7e4 !important; border-color:#2ecc71; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .print-block.hl { background:#fde0e2 !important; border-color:#e74c3c; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .print-block.lh { background:#fff9d0 !important; border-color:#f1c40f; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .print-block.ll { background:#d8eeff !important; border-color:#3498db; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .print-block-title { font-size:13px; font-weight:700; margin-bottom:8px; padding-bottom:6px; border-bottom:1.5px solid rgba(0,0,0,0.15); }
+  .print-block-title.hh { color:#0a5c3a; border-bottom-color:#2ecc71; }
+  .print-block-title.hl { color:#7a2020; border-bottom-color:#e74c3c; }
+  .print-block-title.lh { color:#6b4c00; border-bottom-color:#f1c40f; }
+  .print-block-title.ll { color:#0a3d6b; border-bottom-color:#3498db; }
+  .print-group-name { font-size:10px; font-weight:700; color:#555; border-left:3px solid #aaa; padding-left:5px; margin:6px 0 4px; }
+  .print-job-chip { display:inline-block; font-size:10px; padding:2px 7px; border-radius:10px; margin:2px; }
+  .hh .print-job-chip { background:#c8f5d8; color:#0a5c3a; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .hl .print-job-chip { background:#ffd0d4; color:#7a2020; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .lh .print-job-chip { background:#fff5b0; color:#6b4c00; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .ll .print-job-chip { background:#c8e4ff; color:#0a3d6b; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .print-header { text-align:center; margin-bottom:16px; padding-bottom:10px; border-bottom:2px solid #2d5a27; }
+  .print-header h2 { font-size:16px; color:#2d5a27; margin-bottom:4px; }
+  .print-header p { font-size:10px; color:#888; }
+}
+</style>
+</head>
+<body>
+<h1>🌱 職業マトリックス 16分割版</h1>
+<div class="subtitle">「目標管理の強さ」×「人との関わりの強さ」で職業を16のゾーンに分類</div>
+
+<div class="top-note">↑ 成果・達成志向 強い（目標管理 ◎）</div>
+
+<div class="col-labels">
+  <div></div>
+  <div class="col-label">関わり◆<br>ほぼ独立</div>
+  <div class="col-label">関わり◇<br>やや少</div>
+  <div class="col-label">関わり〇<br>やや多</div>
+  <div class="col-label">関わり◎<br>対人中核</div>
+</div>
+
+<div class="grid-outer">
+  <div class="y-label"><span>↑ 成果志向　仕事の向き合い方　プロセス志向 ↓</span></div>
+  <div class="matrix" id="matrix"></div>
+</div>
+
+<div class="x-label">← 協調的（関わり少）　　人との関わり方　　積極的（関わり多） →</div>
+<div class="bot-note">↓ プロセス・品質志向 強い（目標管理 ◆）</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#ffd0d4"></div>高目標・低関わり</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#c8f5d8"></div>高目標・高関わり</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#c8e4ff"></div>低目標・低関わり</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#fff5b0"></div>低目標・高関わり</div>
+</div>
+
+<!-- 職種検索ボックス -->
+<div id="search-box">
+  <div class="search-row">
+    <input id="search-input" type="text" placeholder="🔍 職種名を入力（例：営業、エンジニア）" oninput="doSearch()">
+    <button id="search-clear" onclick="clearSearch()" title="クリア">✕</button>
+  </div>
+  <div class="search-filters">
+    <button class="filter-btn active-all" id="fb-all"   onclick="setFilter('all')">すべて</button>
+    <button class="filter-btn" id="fb-hl" onclick="setFilter('hl')" style="background:#ffd0d4;border-color:#e74c3c;color:#7a2020;">高目標・低関わり</button>
+    <button class="filter-btn" id="fb-hh" onclick="setFilter('hh')" style="background:#c8f5d8;border-color:#2ecc71;color:#0a5c3a;">高目標・高関わり</button>
+    <button class="filter-btn" id="fb-lh" onclick="setFilter('lh')" style="background:#fff5b0;border-color:#f1c40f;color:#6b4c00;">低目標・高関わり</button>
+    <button class="filter-btn" id="fb-ll" onclick="setFilter('ll')" style="background:#c8e4ff;border-color:#3498db;color:#0a3d6b;">低目標・低関わり</button>
+  </div>
+</div>
+<div id="search-results"></div>
+
+<div class="detail-panel" id="detailPanel">
+  <div class="hint-box">セルをクリックすると職業一覧が表示されます</div>
+</div>
+
+<script>
+const cells = [
+  // row0: 目標◎
+  {
+    q:"目標◎×関わり◆", label:"専門技術・金融分析", cls:"hl",
+    groups:[
+      { name:"金融・投資", border:"hl-border", jobs:[
+        {name:"◎金融アナリスト（ＩＲ広報担当）", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/445", video:null, tip:"企業の財務状況を分析し、投資家向けに情報を発信する専門職。数字とロジックで勝負する仕事です。"},
+        {name:"◎投資アナリスト", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/457", video:null, tip:"株式や債券の価値を評価し、投資戦略を立案する専門職。金融市場の動きを読む力が求められます。"},
+        {name:"◎ポートフォリオマネージャー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/470", video:null, tip:"投資家から預かった資産を最適に配分・運用する責任職。高い目標と専門性が問われます。"},
+        {name:"〇アクチュアリー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/468", video:null, tip:"確率・統計を用いて保険料や年金を設計する専門家。数理のスペシャリストとして活躍します。"},
+      ]},
+      { name:"データサイエンス", border:"hl-border", jobs:[
+        {name:"◇データサイエンティスト", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/323", video:null, tip:"データを分析し、ビジネスに活用できる洞察を導き出す専門家。統計×ITの力でビジネスを動かします。"},
+        {name:"◇データエンジニア", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/523", video:null, tip:"膨大なデータを分析できるよう整理・管理し、データサイエンティストをサポートする技術職です。"},
+        {name:"◇ＡＩエンジニア", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/325", video:null, tip:"AIモデルを開発し、データから学習させて予測や分類を行うエンジニア。今最も注目される職種の一つです。"},
+        {name:"◆統計学者", url:null, video:null, tip:"統計的手法を用いてデータの傾向や関係性を分析する専門家。研究機関や大学などで活躍します。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◎×関わり◇", label:"開発・品質管理", cls:"hl",
+    groups:[
+      { name:"ソフトウェア開発", border:"hl-border", jobs:[
+        {name:"〇ソフトウェアエンジニア", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/316", video:null, tip:"顧客ニーズに合わせてソフトウェアを設計・開発するエンジニア。現代社会を動かすITの最前線です。"},
+        {name:"〇システムエンジニア（ＷＥＢサイト開発）", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/314", video:null, tip:"ウェブサイトを設計し開発するエンジニア。デザインからサーバーまで幅広い知識が求められます。"},
+        {name:"〇フルスタックデベロッパー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/312", video:null, tip:"フロントエンドとバックエンドの両方を開発できるエンジニア。幅広いスキルで重宝される存在です。"},
+        {name:"〇モバイルアプリ開発者", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/317", video:null, tip:"iOSやAndroidのスマホアプリを開発するエンジニア。日常生活に密着したサービスを作る仕事です。"},
+        {name:"◇機械学習エンジニア", url:null, video:null, tip:"AIモデルを構築しデータから学習させる技術者。AIエンジニアと近いが機械学習に特化した職種です。"},
+        {name:"◇ビッグデータエンジニア", url:null, video:null, tip:"大規模データを効率的に処理・管理するシステムを構築する技術者。データ基盤を支える縁の下の力持ちです。"},
+      ]},
+      { name:"品質管理・テスト", border:"hl-border", jobs:[
+        {name:"〇生産・品質管理技術者", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/296", video:null, tip:"製品の品質基準を設定・監視し、改善を指導する技術職。ものづくりの品質を守る重要な役割です。"},
+        {name:"◇ソフトウェアテスター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/540", video:null, tip:"ソフトウェアのバグや不具合を特定する検証職。使いやすいシステムを守るための大切な仕事です。"},
+        {name:"〇プロダクトテスター", url:null, video:null, tip:"製品の安全性・耐久性・使いやすさを検証する職種。ユーザー目線で品質を守る仕事です。"},
+        {name:"◇QAアナリスト", url:null, video:null, tip:"品質保証プロセスを分析・改善する専門家。ソフトウェア開発現場などで品質を担保します。"},
+        {name:"◇検査技師", url:null, video:null, tip:"製品が仕様や規格に適合しているか確認する技術職。正確さとこだわりが活きる仕事です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◎×関わり〇", label:"専門営業・コンサル", cls:"hh",
+    groups:[
+      { name:"コンサル・提案型", border:"hh-border", jobs:[
+        {name:"◎経営コンサルタント", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/81", video:null, tip:"企業の経営課題を分析し、最適な解決策を提案する専門職。クライアントの成長を一緒に考える仕事です。"},
+        {name:"◎ITコンサルタント", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/362", video:null, tip:"IT戦略を立案し、システム導入を支援するコンサルタント。IT×ビジネスの両方の知識が武器になります。"},
+        {name:"◎ビジネス開発担当", url:null, video:null, tip:"新規市場や商品の機会を見つけ、事業を拡大するポジション。BizDevとも呼ばれる新規開拓の専門家です。"},
+        {name:"◎セールスエンジニア", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/462", video:null, tip:"技術的な製品の利点を説明し、販売を促進する技術営業職。エンジニアと営業の橋渡し役です。"},
+        {name:"◎アカウントマネージャー", url:null, video:null, tip:"主要顧客との長期的な関係を構築・維持する営業職。信頼関係が最大の武器になります。"},
+        {name:"◎WEBマーケティング営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/240", video:null, tip:"Webマーケティング（ネット広告・販売促進）を提案・販売する営業職。デジタルビジネスの最前線です。"},
+      ]},
+      { name:"メーカー系営業", border:"hh-border", jobs:[
+        {name:"◎技術営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/462", video:null, tip:"技術的な製品の仕様を説明し、導入を促進する営業職。専門知識と対人力の両方が求められます。"},
+        {name:"◎製品セールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/58", video:null, tip:"自社製品の利点を説明し、販売・納入を行う営業職。製品への深い理解が信頼につながります。"},
+        {name:"◎製造業セールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/58", video:null, tip:"工場の生産性向上に寄与する製品を提案する営業職。ものづくり現場を支える仕事です。"},
+        {name:"◎機械部品セールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/462", video:null, tip:"機械の性能向上に必要な部品を提案・販売する営業職。技術知識が差別化の鍵になります。"},
+        {name:"◎産業機械セールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/462", video:null, tip:"大規模な産業機械の導入を提案・交渉する営業職。大きな商談を動かすやりがいがあります。"},
+      ]},
+      { name:"IT・PG系営業", border:"hh-border", jobs:[
+        {name:"◎ソフトウェアセールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/452", video:null, tip:"企業の業務改善に役立つソフトを提案する営業職。IT化の波に乗る成長職種です。"},
+        {name:"◎クラウドサービス営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/452", video:null, tip:"クラウド移行の利点を説明し、導入を促進する営業職。DX推進を担う重要ポジションです。"},
+        {name:"◎ネットワークソリューション営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/452", video:null, tip:"ネットワーク最適化案を提案・導入する営業職。企業のインフラを支えるソリューション営業です。"},
+        {name:"◎データベースセールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/452", video:null, tip:"データ管理の効率化を提案・支援する営業職。デジタル化が進む時代の注目職種です。"},
+        {name:"◎サイバーセキュリティ営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/452", video:null, tip:"セキュリティリスクを説明し、対策を提案する営業職。情報安全を守る使命感ある仕事です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◎×関わり◎", label:"成果型営業・MR", cls:"hh",
+    groups:[
+      { name:"接客提案型営業", border:"hh-border", jobs:[
+        {name:"◎不動産営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/59", video:null, tip:"顧客のニーズに合った物件を提案・交渉する営業職。人生最大の買い物に寄り添う仕事です。"},
+        {name:"◎MR（医薬情報担当者）", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/63", video:null, tip:"医師に新薬の効果や使用法を説明・提案する営業職。医療と患者をつなぐ重要な役割を担います。"},
+        {name:"◎証券・保険・銀行系営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/463", video:null, tip:"資産運用や金融商品を提案する営業職。顧客の人生設計をサポートする責任ある仕事です。"},
+        {name:"◎事業性融資担当", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/454", video:null, tip:"企業向けの融資を提案・実行する金融職。企業の成長を資金面から支える仕事です。"},
+        {name:"◎保険営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/453", video:null, tip:"顧客のライフプランに合わせた保険を提案する営業職。万が一のときに守る「安心」を届ける仕事です。"},
+        {name:"◎商社営業", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/58", video:null, tip:"国内外の多様な商品・サービスを法人に提案・販売する営業職。目標管理・対人関与ともに最高レベルのハードな仕事です。"},
+      ]},
+      { name:"ルートセールス", border:"hh-border", jobs:[
+        {name:"◎飲料販売員", url:null, video:null, tip:"店舗を巡回し、飲料の補充・新商品提案を行うルート営業職。顔なじみの関係が仕事の基盤になります。"},
+        {name:"◎食品メーカー営業・配達セールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/527", video:null, tip:"飲食店に食材を定期的に配達・販売するルート営業職。食の現場を毎日支える仕事です。"},
+        {name:"◎薬品セールス", url:null, video:null, tip:"薬局・ドラッグストアに医薬品を定期的に補充・提案するルート営業職。MR（医師への新薬提案）とは異なり、小売現場への安定供給が主な仕事です。※jobtag未収録"},
+        {name:"◎日用品セールス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/71", video:null, tip:"小売店に日用品を定期的に補充・提案するルート営業職。生活に密着した商品を届ける仕事です。"},
+      ]},
+    ]
+  },
+
+  // row1: 目標〇
+  {
+    q:"目標〇×関わり◆", label:"研究・データ分析", cls:"hl",
+    groups:[
+      { name:"リサーチ・分析", border:"hl-border", jobs:[
+        {name:"◆研究科学者", url:null, video:null, tip:"特定分野で仮説を立て、実験・検証を行う研究職。大学・研究機関・企業のR&D部門などで活躍します。"},
+        {name:"◆臨床研究員", url:null, video:null, tip:"新薬や治療法の有効性・安全性を検証する研究職。製薬会社・病院などで医療の進歩を支えます。"},
+        {name:"◇政策アナリスト", url:null, video:null, tip:"政策の影響を評価し、改善案を提案する専門家。官公庁・シンクタンクなどで社会をよりよくする仕事です。"},
+        {name:"◇環境アナリスト", url:null, video:null, tip:"環境問題の原因を分析し、対策を提案する専門家。地球の未来のために働く使命感ある職種です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標〇×関わり◇", label:"品質・IT保守", cls:"hl",
+    groups:[
+      { name:"ITサポート・保守", border:"hl-border", jobs:[
+        {name:"◆ITサポートスタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/320", video:null, tip:"社内の技術的問題を解決し、業務を支援するIT職。縁の下の力持ちとして職場を守る仕事です。"},
+        {name:"◆システム保守担当", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/319", video:null, tip:"システムの稼働状態を監視・維持する技術職。安定したシステム運用を支える重要なポジションです。"},
+        {name:"◆ネットワーク監視スタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/321", video:null, tip:"ネットワークの安定性・安全性を確保する技術職。見えないところで情報インフラを守る仕事です。"},
+        {name:"◆ハードウェアメンテナンス", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/318", video:null, tip:"PCやサーバーの修理・交換を行う技術職。機器を守ることで職場の業務を止めない仕事です。"},
+        {name:"◆バックアップ管理担当", url:null, video:null, tip:"定期的にデータのバックアップを取り管理する情報システム職。万が一に備える縁の下の力持ちです。"},
+      ]},
+      { name:"テクニカルワーク", border:"hl-border", jobs:[
+      ]},
+    ]
+  },
+  {
+    q:"目標〇×関わり〇", label:"企画・マーケティング", cls:"hh",
+    groups:[
+      { name:"企画・調査・調整", border:"hh-border", jobs:[
+        {name:"◇市場調査アナリスト", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/456", video:null, tip:"消費者動向や市場ニーズを調査・分析する専門家。データからビジネスの方向性を導き出します。"},
+        {name:"〇カスタマーリレーションマネージャー", url:null, video:null, tip:"長期的な顧客満足度を管理し、関係を深める職種。顧客との絆が最大の財産になる仕事です。"},
+        {name:"〇イベントプランナー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/566", video:null, tip:"クライアントの要望に合わせてイベントを企画する専門職。人が集まる場を作り出すクリエイティブな仕事です。"},
+        {name:"〇イベントコーディネーター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/566", video:null, tip:"イベント当日の進行をスムーズに管理する専門職。細やかな調整力と冷静な判断力が求められます。"},
+        {name:"〇パーティーオーガナイザー", url:null, video:null, tip:"パーティーの企画・運営を担当するイベント職。人を笑顔にする場を演出する仕事です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標〇×関わり◎", label:"提案型接客・販売", cls:"hh",
+    groups:[
+      { name:"接客・提案型販売", border:"hh-border", jobs:[
+        {name:"〇自動車ディーラー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/60", video:null, tip:"顧客のライフスタイルに合った車を提案・販売する営業職。人生の節目に寄り添う大切な仕事です。"},
+        {name:"〇旅行代理店", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/109", video:null, tip:"顧客の希望に沿った旅行プランを提案・手配する専門職。夢のある旅を一緒に作る仕事です。"},
+        {name:"〇ツアーコンダクター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/110", video:null, tip:"旅行全行程に同行して進行管理する添乗員。現地ガイド（ツアーガイド）とは異なり、旅程全体のコーディネートが仕事です。"},
+        {name:"〇アパレル・ファッションアドバイザー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/73", video:null, tip:"顧客の好みに合ったコーディネートを提案する販売職。ファッションで人を輝かせる仕事です。"},
+        {name:"〇美容部員", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/464", video:null, tip:"化粧品の使い方や効果を説明・提案する販売職。美しさと自信を届ける仕事です。"},
+        {name:"〇携帯電話販売員", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/450", video:null, tip:"最適な機種やプランを提案する販売職。テクノロジーと人の暮らしをつなぐ仕事です。"},
+        {name:"〇家電アドバイザー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/67", video:null, tip:"顧客のニーズに合った家電を提案する販売職。生活をより便利に豊かにするお手伝いをします。"},
+        {name:"〇美容師", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/116", video:null, tip:"顧客の希望に合わせたヘアスタイルを提供する美容職。外見から自信と笑顔を引き出す仕事です。"},
+        {name:"〇塾講師", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/396", video:null, tip:"小グループで補習や受験指導を行う教育職。合格という明確な目標に向けて生徒と走る仕事です。"},
+      ]},
+    ]
+  },
+
+  // row2: 目標◇
+  {
+    q:"目標◇×関わり◆", label:"クリエイティブ専門", cls:"ll",
+    groups:[
+      { name:"クリエイティブワーク", border:"ll-border", jobs:[
+        {name:"◇広告デザイナー・イラストレーター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/332", video:null, tip:"商業用のイラストや挿絵を制作するクリエイター。表現力で人の心を動かす仕事です。"},
+        {name:"◇ライター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/209", video:null, tip:"記事や広告のテキストを執筆するクリエイター。言葉の力で伝える仕事です。"},
+        {name:"◇コピーライター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/335", video:null, tip:"広告の印象的なフレーズを考案するクリエイター。たった一言で世界を変える可能性がある仕事です。"},
+        {name:"◇ウェブデザイナー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/326", video:null, tip:"ウェブサイトのレイアウトやグラフィックを設計するデザイナー。見た目と使いやすさを両立させます。"},
+        {name:"◇ゲームクリエイター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/330", video:null, tip:"スマートフォン・PCなどのゲームを制作するクリエイター。エンタメで世界中の人を楽しませる仕事です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◇×関わり◇", label:"テクニカル・製造", cls:"ll",
+    groups:[
+      { name:"製造・技術系", border:"ll-border", jobs:[
+        {name:"◆技術文書作成者", url:null, video:null, tip:"マニュアルや仕様書など技術文書を執筆するテクニカルライター。わかりやすく伝える力が武器になります。"},
+        {name:"◆ラボテクニシャン", url:null, video:null, tip:"研究室で実験や分析を実施するラボの技術補助職。科学の現場を縁の下から支える仕事です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◇×関わり〇", label:"カスタマーサポート", cls:"lh",
+    groups:[
+      { name:"カスタマーサポート", border:"lh-border", jobs:[
+        {name:"◇カスタマーサポートエージェント", url:null, video:null, tip:"顧客の問題を理解し、解決を助けるサポート職。困っている人に寄り添う共感力が大切です。"},
+        {name:"◇コールセンターオペレーター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/64", video:null, tip:"電話で顧客の質問や苦情に対応するサポート職。声と言葉で信頼を築く仕事です。"},
+        {name:"◇テクニカルサポート", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/320", video:null, tip:"技術的な問題を遠隔で解決支援するサポート職。IT知識と対人力を組み合わせた職種です。"},
+        {name:"◇チャットサポート担当", url:null, video:null, tip:"オンラインチャットで顧客に即時サポートを提供する職種。素早い対応力と文章力が武器になります。"},
+      ]},
+      { name:"ウェルネス・美容", border:"lh-border", jobs:[
+        {name:"◇栄養士", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/171", video:null, tip:"個人の健康目標に合わせた食事を提案する専門職。食から健康をサポートするやりがいある仕事です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◇×関わり◎", label:"ウェルネス・イベント", cls:"lh",
+    groups:[
+      { name:"ウェルネス・パーソナルケア", border:"lh-border", jobs:[
+        {name:"〇パーソナルトレーナー", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/120", video:null, tip:"個人の目標に合わせたトレーニングを指導する専門職。体の変化を一緒に喜べるやりがいがあります。"},
+        {name:"◇ヨガインストラクター", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/120", video:null, tip:"心身の調和を目指すヨガを教えるインストラクター。穏やかさと集中力で人を導く仕事です。"},
+        {name:"〇エステティシャン", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/117", video:null, tip:"顔や身体の手入れを行う美容の専門職。リラクゼーションと美をトータルに提供します。"},
+      ]},
+      { name:"エンターテイメント", border:"lh-border", jobs:[
+        {name:"◆レクリエーションスタッフ", url:null, video:null, tip:"グループ活動を通じて楽しみを提供するスタッフ。福祉施設・リゾート・学童などで笑顔を作る仕事です。"},
+      ]},
+    ]
+  },
+
+  // row3: 目標◆
+  {
+    q:"目標◆×関わり◆", label:"事務・データ管理", cls:"ll",
+    groups:[
+      { name:"データ入力・管理", border:"ll-border", jobs:[
+        {name:"◆データ入力スタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/429", video:null, tip:"正確かつ迅速にデータをシステムに入力する事務職。正確さと集中力が活きる仕事です。"},
+        {name:"◆一般事務", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/428", video:null, tip:"様々な定型的な事務の仕事。企業活動を多方面からサポートする縁の下の力持ちです。"},
+        {name:"◆出荷・受荷事務", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/542", video:null, tip:"資材・製品などの受け入れ・検品・保管・発送に関する事務職。物流の要を担う仕事です。"},
+        {name:"◆生産・工程管理事務", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/437", video:null, tip:"生産・工程管理をする上で生じるデータ入力や書類作成を行う事務職。ものづくりを数字で支えます。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◆×関わり◇", label:"製造・物流作業", cls:"ll",
+    groups:[
+      { name:"製造・検査", border:"ll-border", jobs:[
+        {name:"◇機械製品の組み立て・管理スタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/265", video:null, tip:"機械製品の組み立て・品質基準への適合を確認する技術職。精密なものづくりを支える仕事です。"},
+        {name:"◇ＰＣの組み立て・管理スタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/531", video:null, tip:"PCの組み立て・品質基準への適合を確認する技術職。IT機器の品質を守る仕事です。"},
+        {name:"◇検査工（食品）", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/548", video:null, tip:"食品・製品の安全性・耐久性を検証する検査職。正確さと責任感が求められる大切な仕事です。"},
+        {name:"◇食品技術者", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/288", video:null, tip:"加工食品の開発・品質管理を行う技術職。安全でおいしい食品を届けるための専門家です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◆×関わり〇", label:"医療・介護・教育", cls:"lh",
+    groups:[
+      { name:"医療・介護", border:"lh-border", jobs:[
+        {name:"◇看護師", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/156", video:null, tip:"患者の健康管理と日常生活の支援を行う医療職。命に寄り添う使命感とやりがいがある仕事です。"},
+        {name:"◆介護福祉士", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/133", video:null, tip:"高齢者や障害者の生活を総合的に支える介護職。人の尊厳を大切にする温かい仕事です。"},
+        {name:"◆理学療法士", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/167", video:null, tip:"運動機能の回復・維持・向上を支援するリハビリ職。患者の「できた！」を一緒に喜べる仕事です。"},
+        {name:"◆作業療法士", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/168", video:null, tip:"日常生活動作の改善を支援するリハビリ職。生活の質を高めるサポートをする専門家です。"},
+        {name:"◆臨床心理士", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/411", video:null, tip:"心理的問題の診断・治療を行う心理職。心に寄り添い、回復を支える専門家です。"},
+      ]},
+      { name:"教育・支援", border:"lh-border", jobs:[
+        {name:"◇教師", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/180", video:null, tip:"生徒に知識を伝え、成長を支援する教育職。人の可能性を引き出す最もやりがいのある仕事の一つです。"},
+        {name:"◆保育士", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/131", video:null, tip:"乳幼児の発達と健康を促進する保育職。子どもの成長を間近で見守れる温かい仕事です。"},
+        {name:"◆特別支援教育の教師", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/395", video:null, tip:"特別なニーズを持つ生徒を個別に支援する教育職。一人ひとりに寄り添う専門的な教育の仕事です。"},
+        {name:"◆学習支援スタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/242", video:null, tip:"学習困難を抱える生徒を助けるサポート職。できないを「できる」に変える手助けをします。"},
+        {name:"◆臨床心理士（スクールカウンセラー）", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/411", video:null, tip:"学校で子どもの心をサポートするカウンセラー。不登校・いじめ・家庭問題など幅広い相談に対応します。"},
+        {name:"◇キャリアコンサルタント", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/136", video:null, tip:"就職・転職・キャリアに関する相談を支援する専門職。国家資格を持つキャリア支援の専門家です。"},
+      ]},
+    ]
+  },
+  {
+    q:"目標◆×関わり◎", label:"接客・サービス業", cls:"lh",
+    groups:[
+      { name:"サービス業", border:"lh-border", jobs:[
+        {name:"◆レストランスタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/417", video:null, tip:"お客様に快適な食事体験を提供するサービス職。食と笑顔で人をもてなす仕事です。"},
+        {name:"◆ホテルスタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/414", video:null, tip:"宿泊客の滞在を快適にサポートするサービス職。上質なおもてなしで特別な時間を演出します。"},
+        {name:"◆コンシェルジュ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/416", video:null, tip:"旅行者の要望に合わせたサービスを手配する専門職。お客様の「したい」を形にするプロです。"},
+        {name:"◆エアラインスタッフ", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/205", video:null, tip:"機内で乗客の安全と快適さを確保するサービス職。空の上で世界中の人をもてなす仕事です。"},
+        {name:"◆ツアーガイド", url:null, video:null, tip:"現地で観光スポットを案内・解説する仕事。ツアーコンダクター（添乗員）とは異なり、特定の場所に特化した専門ガイドです。"},
+      ]},
+      { name:"販売・小売・配送", border:"lh-border", jobs:[
+        {name:"〇デパート店員", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/54", video:null, tip:"商品紹介から会計まで顧客対応をする販売職。百貨店の上質なサービスを提供する仕事です。"},
+        {name:"〇スーパーマーケット店員", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/57", video:null, tip:"顧客対応から会計まで幅広く担当する販売職。地域の食生活を支える身近な仕事です。"},
+        {name:"〇ルート配送員", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/482", video:null, tip:"決まったルートで商品を配達し、在庫管理を行う物流職。地域のお店を毎日支える大切な仕事です。"},
+        {name:"◆ホームセンター店員", url:"https://shigoto.mhlw.go.jp/User/Occupation/Detail/71", video:null, tip:"日用品・園芸・工具など幅広い商品を扱う大型小売店のスタッフ。専門知識でお客様の暮らしをサポートします。"},
+      ]},
+    ]
+  },
+];
+
+function showTip(chip, tip) {
+  // 全tooltip非表示
+  document.querySelectorAll('.tooltip').forEach(t => {
+    t.style.display = 'none';
+  });
+
+  // 画面外に一旦表示してサイズ計測
+  tip.style.display = 'block';
+  tip.style.top = '-9999px';
+  tip.style.left = '-9999px';
+
+  const rect = chip.getBoundingClientRect();
+  const tipW = tip.offsetWidth;
+  const tipH = tip.offsetHeight;
+  const vw = window.innerWidth;
+  const margin = 8;
+
+  // 上下位置
+  let top = rect.top - tipH - 8;
+  if(top < margin) top = rect.bottom + 8;
+
+  // 左右位置
+  let left = rect.left + rect.width / 2 - tipW / 2;
+  if(left < margin) left = margin;
+  if(left + tipW > vw - margin) left = vw - tipW - margin;
+
+  tip.style.top = top + 'px';
+  tip.style.left = left + 'px';
+}
+function hideTip(tip){
+  tip.style.display = 'none';
+}
+
+document.addEventListener('touchstart', e => {
+  if(!e.target.closest('.job-chip'))
+    document.querySelectorAll('.tooltip.active').forEach(t => hideTip(t));
+});
+
+const chipCls = {hh:'chip-hh', hl:'chip-hl', lh:'chip-lh', ll:'chip-ll'};
+const matrix = document.getElementById('matrix');
+const panel  = document.getElementById('detailPanel');
+
+cells.forEach(c => {
+  const div = document.createElement('div');
+  div.className = `cell ${c.cls}`;
+  const total = c.groups.reduce((s,g)=>s+g.jobs.length,0);
+  div.innerHTML = `
+    <div class="cell-label">${c.label}</div>
+    <div class="cell-group">${c.q}</div>
+    <div class="cell-count">${total}職種</div>
+  `;
+  div.onclick = () => {
+    document.querySelectorAll('.cell').forEach(el=>el.classList.remove('active'));
+    div.classList.add('active');
+    panel.className = 'detail-panel show';
+    panel.innerHTML = ''; // 前の表示をクリア
+
+    // 診断から来ていない場合の印刷選択
+    if(shindanRow === -1) {
+      const allCells = document.querySelectorAll('.cell');
+      let clickedIdx = -1;
+      allCells.forEach((cell, i) => { if(cell === div) clickedIdx = i; });
+
+      if(clickedIdx >= 0) {
+        // 選択トグル（複数選択対応）
+        if(selectedBlocks.has(clickedIdx)) {
+          selectedBlocks.delete(clickedIdx);
+          div.classList.remove('adjacent-selected');
+        } else {
+          selectedBlocks.add(clickedIdx);
+          div.classList.add('adjacent-selected');
+        }
+      }
+      document.getElementById('print-panel').classList.add('show');
+      updatePrintPanel(allCells);
+    }
+
+    const groupsHtml = c.groups.map(g => {
+      const jobsHtml = g.jobs.map(j => {
+        const hasLink = !!j.url;
+        const hasVideo = !!j.video;
+        const hasTip = !!j.tip;
+        let cls = `job-chip ${chipCls[c.cls]}`;
+        if(hasLink) cls += ' has-link';
+        if(hasVideo) cls += ' has-video';
+        const videoLabel = hasVideo
+          ? `<span class="tooltip-video"><a href="${j.video}" target="_blank" rel="noopener">▶ 動画で見てみよう →</a></span>`
+          : (!hasLink ? `<span class="tooltip-video">▶ 動画準備中...</span>` : '');
+        const tipHtml = hasTip ? `<span class="tooltip">${j.tip}${videoLabel}</span>` : '';
+
+        // リンクなし・動画なし → tooltipのみ
+        if(!hasLink && !hasVideo){
+          return `<span class="${cls}">${j.name}${tipHtml}</span>`;
+        }
+        // jobtagのみ
+        if(hasLink && !hasVideo){
+          return `<span class="${cls}"><a href="${j.url}" target="_blank" rel="noopener">${j.name}</a>${tipHtml}</span>`;
+        }
+        // 動画のみ（将来用）
+        if(!hasLink && hasVideo){
+          return `<span class="${cls}"><a href="${j.video}" target="_blank" rel="noopener">${j.name}</a></span>`;
+        }
+        // 両方あり（将来用）：jobtag優先、動画は別リンクで表示
+        return `<span class="${cls}"><a href="${j.url}" target="_blank" rel="noopener">${j.name}</a><a href="${j.video}" target="_blank" rel="noopener" style="font-size:0.8em;margin-left:3px;text-decoration:underline wavy;text-underline-offset:2px;">▶</a></span>`;
+      }).join('');
+      return `
+        <div class="group-section">
+          <div class="group-name ${g.border}">${g.name}</div>
+          <div class="jobs-list">${jobsHtml}</div>
+        </div>`;
+    }).join('');
+
+    panel.innerHTML = `
+      <div class="detail-header">
+        <div class="detail-title">${c.label}</div>
+        <div class="detail-tag">${c.q}</div>
+        <div class="detail-count">${c.groups.reduce((s,g)=>s+g.jobs.length,0)}職種</div>
+      </div>
+      ${groupsHtml}
+      <div class="detail-note">下線あり（実線）＝jobtag（厚生労働省）の職業情報へリンク　／　下線あり（波線）＝動画リンク（準備中）</div>
+    `;
+    // detailパネル描画後にtooltipイベントを登録
+    panel.querySelectorAll('.job-chip').forEach(chip => {
+      const tip = chip.querySelector('.tooltip');
+      if(!tip) return;
+      chip.addEventListener('mouseenter', () => showTip(chip, tip));
+      chip.addEventListener('mouseleave', () => hideTip(tip));
+      chip.addEventListener('touchstart', e => {
+        e.stopPropagation();
+        tip.classList.contains('active') ? hideTip(tip) : showTip(chip, tip);
+      }, {passive:true});
+    });
+  };
+  matrix.appendChild(div);
+  div.querySelectorAll('.job-chip').forEach(chip => {
+    const tip = chip.querySelector('.tooltip');
+    if(!tip) return;
+    chip.addEventListener('mouseenter', () => showTip(chip, tip));
+    chip.addEventListener('mouseleave', () => hideTip(tip));
+    chip.addEventListener('touchstart', e => {
+      e.preventDefault();
+      tip.classList.contains('active') ? hideTip(tip) : showTip(chip, tip);
+    }, {passive:false});
+  });
+});
+</script>
+
+<script>
+// ===== 職種検索機能 =====
+let currentFilter = 'all';
+
+function setFilter(cls) {
+  currentFilter = cls;
+  ['all','hl','hh','lh','ll'].forEach(f => {
+    const btn = document.getElementById('fb-' + f);
+    if(!btn) return;
+    // activeクラスをリセット
+    btn.classList.remove('active-all','active-hl','active-hh','active-lh','active-ll');
+  });
+  const activeBtn = document.getElementById('fb-' + cls);
+  if(activeBtn) activeBtn.classList.add('active-' + cls);
+  doSearch();
+}
+
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  const resultsEl = document.getElementById('search-results');
+
+  // ハイライトをリセット
+  document.querySelectorAll('.job-chip').forEach(el => el.classList.remove('search-hit'));
+
+  if(!q && currentFilter === 'all') {
+    resultsEl.classList.remove('show');
+    resultsEl.innerHTML = '';
+    return;
+  }
+
+  const hits = [];
+  cells.forEach((c, ci) => {
+    if(currentFilter !== 'all' && c.cls !== currentFilter) return;
+    c.groups.forEach(g => {
+      g.jobs.forEach(j => {
+        if(!q || j.name.replace(/[◎〇◇◆]/g,'').toLowerCase().includes(q.toLowerCase())) {
+          hits.push({ cellIdx: ci, cellLabel: c.label, cls: c.cls, job: j });
+        }
+      });
+    });
+  });
+
+  // chip要素にハイライト（detailパネルが開いている場合）
+  document.querySelectorAll('.job-chip').forEach(chip => {
+    const chipText = chip.textContent.replace(/[◎〇◇◆]/g,'').trim();
+    if(!q || chipText.includes(q)) {
+      const parentCell = chip.closest ? null : null;
+      chip.classList.add('search-hit');
+    }
+  });
+
+  // 結果リスト表示
+  if(hits.length === 0) {
+    resultsEl.innerHTML = '<div class="search-result-count">「' + q + '」に一致する職種が見つかりませんでした</div>';
+    resultsEl.classList.add('show');
+    return;
+  }
+
+  const clsLabel = {hh:'高目標・高関わり', hl:'高目標・低関わり', lh:'低目標・高関わり', ll:'低目標・低関わり'};
+  const clsBg   = {hh:'#c8f5d8', hl:'#ffd0d4', lh:'#fff5b0', ll:'#c8e4ff'};
+  const clsColor= {hh:'#0a5c3a', hl:'#7a2020', lh:'#6b4c00', ll:'#0a3d6b'};
+
+  let html = `<div class="search-result-count">🔍 ${hits.length}件の職種が見つかりました</div>`;
+  hits.forEach(h => {
+    const nameClean = h.job.name.replace(/^[◎〇◇◆]/,'');
+    const linkHtml = h.job.url
+      ? `<a href="${h.job.url}" target="_blank" rel="noopener">${nameClean}</a>`
+      : nameClean;
+    html += `
+      <div class="search-result-item">
+        <span class="result-cell-label" style="background:${clsBg[h.cls]};color:${clsColor[h.cls]};">${h.cellLabel}</span>
+        <span class="result-job-name">${linkHtml}</span>
+      </div>`;
+  });
+  resultsEl.innerHTML = html;
+  resultsEl.classList.add('show');
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  currentFilter = 'all';
+  setFilter('all');
+  document.querySelectorAll('.job-chip').forEach(el => el.classList.remove('search-hit'));
+  const resultsEl = document.getElementById('search-results');
+  resultsEl.classList.remove('show');
+  resultsEl.innerHTML = '';
+}
+</script>
+
+<script>
+// ===== 診断結果・隣接セル・印刷機能 =====
+let shindanRow = -1, shindanCol = -1;
+let selectedBlocks = new Set(); // 印刷選択中のセルインデックス
+
+// ===== 補正ダイアログ =====
+let hoseiFinalRow = -1, hoseiFinalCol = -1;
+let hoseiBaseRow = -1, hoseiBaseCol = -1;
+let hoseiStep = 1;
+let hoseiQ1 = null, hoseiQ2 = null;
+
+// URLパラメータから診断結果を受け取る
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const row = parseInt(params.get('row'));
+  const col = parseInt(params.get('col'));
+  if(isNaN(row) || isNaN(col)) return;
+  hoseiBaseRow = row;
+  hoseiBaseCol = col;
+  shindanRow = row;
+  shindanCol = col;
+
+  setTimeout(() => {
+    showHoseiDialog(row, col);
+  }, 400);
+})();
+
+function showHoseiDialog(row, col) {
+  const overlay = document.createElement('div');
+  overlay.id = 'hosei-overlay';
+  overlay.innerHTML = `
+    <div id="hosei-dialog">
+      <div class="hosei-title">🌱 診断結果を確認します</div>
+      <div class="hosei-sub">2つの質問に答えると、あなたの特性をより正確に反映した結果にシフトできます。</div>
+      <div class="hosei-step" id="hosei-step-label">質問 1 / 2</div>
+      <div class="hosei-question" id="hosei-q-text">
+        アルバイトや学校生活で、<strong>人と関わる場面</strong>（接客・グループワーク・部活等）について、あなたはどう感じますか？
+      </div>
+      <div class="hosei-btns" id="hosei-btn-area">
+        <button class="hosei-btn" onclick="selectHosei(1,'avoid')">😟　できれば避けたい・苦手意識がある</button>
+        <button class="hosei-btn" onclick="selectHosei(1,'neutral')">😐　どちらともいえない・場合による</button>
+        <button class="hosei-btn" onclick="selectHosei(1,'like')">😊　むしろ好き・あまり苦にならない</button>
+      </div>
+      <button class="hosei-next-btn" id="hosei-next-btn" onclick="hoseiNext()" disabled>次へ →</button>
+      <span class="hosei-skip" onclick="skipHosei()">補正せずそのまま結果を見る</span>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function selectHosei(step, val) {
+  if(step === 1) hoseiQ1 = val;
+  else hoseiQ2 = val;
+  document.querySelectorAll('.hosei-btn').forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('hosei-next-btn').disabled = false;
+}
+
+function hoseiNext() {
+  if(hoseiStep === 1) {
+    // Q2へ
+    hoseiStep = 2;
+    document.getElementById('hosei-step-label').textContent = '質問 2 / 2';
+    document.getElementById('hosei-q-text').innerHTML = `
+      数字目標がある代わりに、<strong>頑張りが給与・評価に直結する仕事</strong>（営業・販売・技術職など）についてはどう思いますか？
+    `;
+    document.getElementById('hosei-btn-area').innerHTML = `
+      <button class="hosei-btn" onclick="selectHosei(2,'avoid')">😟　やっぱり数字で追われるのは嫌だ</button>
+      <button class="hosei-btn" onclick="selectHosei(2,'neutral')">😐　給与に反映されるならまあいいかも</button>
+      <button class="hosei-btn" onclick="selectHosei(2,'like')">😊　評価が明確なのはむしろやる気が出る</button>
+      <button class="hosei-btn" onclick="selectHosei(2,'fired')" style="border-color:#e67e22;background:#fff8f0;">💪　全然OK！目標があった方が燃えるタイプ（部活・スポーツ経験あり等）</button>
+    `;
+    document.getElementById('hosei-next-btn').textContent = '結果を見る →';
+    document.getElementById('hosei-next-btn').disabled = true;
+  } else {
+    // 補正計算して結果表示
+    applyHosei();
+  }
+}
+
+function applyHosei() {
+  let row = hoseiBaseRow;
+  let col = hoseiBaseCol;
+
+  // 横軸補正（対人：右＝積極的関与）
+  if(hoseiQ1 === 'like' && col < 3) col += 1;
+  else if(hoseiQ1 === 'avoid' && col > 0) col -= 1;
+
+  // 縦軸補正（目標管理：上＝成果志向）
+  if(hoseiQ2 === 'fired') {
+    // 💪全然OK → 最大2マス上シフト
+    if(row >= 2) row -= 2;
+    else if(row === 1) row -= 1;
+  } else if(hoseiQ2 === 'like' && row > 0) {
+    row -= 1;
+  } else if(hoseiQ2 === 'neutral' && hoseiQ1 === 'like' && row > 0) {
+    row -= 1;
+  }
+
+  // 補正量を判定メッセージに反映
+  const shifted = (row !== hoseiBaseRow || col !== hoseiBaseCol);
+  hoseiFinalRow = row;
+  hoseiFinalCol = col;
+  shindanRow = row;
+  shindanCol = col;
+
+  // ダイアログを閉じる
+  document.getElementById('hosei-overlay').remove();
+
+  // 補正メッセージ用バナー（後でinitShindanHighlightのバナーに上書きされないよう先にフラグ）
+  window._hoseiShifted = shifted;
+  window._hoseiBaseRow = hoseiBaseRow;
+  window._hoseiBaseCol = hoseiBaseCol;
+
+  setTimeout(() => {
+    initShindanHighlight(row, col);
+    // 補正バナーを差し替え
+    const banner = document.getElementById('shindan-banner');
+    if(banner) {
+      if(shifted) {
+        const isFired = hoseiQ2 === 'fired';
+        banner.style.background = isFired
+          ? 'linear-gradient(135deg,#e67e22,#f39c12)'
+          : 'linear-gradient(135deg,#27ae60,#2ecc71)';
+        banner.innerHTML = isFired ? `
+          💪 <strong>チャレンジ補正後の適職診断結果</strong>にジャンプしました<br>
+          <span style="font-size:0.88em;opacity:0.9">目標志向・打たれ強さを反映して上方シフトしました</span><br>
+          <span style="font-size:0.82em;opacity:0.75">★赤枠＝補正後の結果　どのブロックもクリックで印刷選択できます</span>
+        ` : `
+          🔄 <strong>補正後の適職診断結果</strong>にジャンプしました<br>
+          <span style="font-size:0.88em;opacity:0.9">あなたの回答をもとに、より等身大の位置に調整しました</span><br>
+          <span style="font-size:0.82em;opacity:0.75">★赤枠＝補正後の結果　どのブロックもクリックで印刷選択できます</span>
+        `;
+      } else {
+        banner.innerHTML = `
+          🎯 <strong>適職診断の結果</strong>からジャンプしました<br>
+          <span style="font-size:0.88em;opacity:0.9">補正なし・診断の通りの位置です</span><br>
+          <span style="font-size:0.82em;opacity:0.75">★赤枠＝あなたの診断結果　どのブロックもクリックで印刷選択できます</span>
+        `;
+      }
+    }
+  }, 300);
+}
+
+function skipHosei() {
+  document.getElementById('hosei-overlay').remove();
+  setTimeout(() => {
+    initShindanHighlight(hoseiBaseRow, hoseiBaseCol);
+  }, 200);
+}
+
+function initShindanHighlight(row, col) {
+  const cells = document.querySelectorAll('.cell');
+  const idx = row * 4 + col;
+  if(!cells[idx]) return;
+
+  // 診断結果セルを強調
+  cells[idx].classList.add('shindan-result');
+  selectedBlocks.add(idx); // 診断結果は自動で印刷対象
+
+  // 隣接セル（上下左右＋斜め）を点線で囲む（視覚ガイドとして残す）
+  const adjOffsets = [
+    [-1,-1],[-1,0],[-1,1],
+    [0,-1],        [0,1],
+    [1,-1], [1,0], [1,1]
+  ];
+  adjOffsets.forEach(([dr, dc]) => {
+    const ar = row + dr;
+    const ac = col + dc;
+    if(ar >= 0 && ar < 4 && ac >= 0 && ac < 4) {
+      cells[ar * 4 + ac].classList.add('adjacent');
+    }
+  });
+
+  // 全セルでクリック→印刷選択ON/OFF（診断結果セルは常に対象）
+  cells.forEach((cell, i) => {
+    if(i === idx) return;
+    cell.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleAdjacent(i, cell);
+    }, true);
+  });
+
+  // スクロール
+  cells[idx].scrollIntoView({behavior:'smooth', block:'center'});
+
+  // バナー表示
+  const banner = document.createElement('div');
+  banner.id = 'shindan-banner';
+  banner.style.cssText = `
+    background:linear-gradient(135deg,#c0392b,#e74c3c);
+    color:#fff;padding:12px 16px;border-radius:8px;
+    margin-bottom:12px;font-size:0.85em;line-height:1.6;
+    text-align:center;width:100%;max-width:580px;
+  `;
+  banner.innerHTML = `
+    🎯 <strong>適職診断の結果</strong>からジャンプしました<br>
+    <span style="font-size:0.9em;opacity:0.9">★赤枠＝あなたの診断結果　点線＝隣接ブロック　どのブロックもクリックで印刷選択できます</span>
+  `;
+  const topNote = document.querySelector('.top-note');
+  if(topNote) topNote.parentNode.insertBefore(banner, topNote);
+
+  // 印刷パネルを表示
+  document.getElementById('print-panel').classList.add('show');
+  updatePrintPanel(cells);
+
+  // 診断結果セルの詳細を自動表示
+  cells[idx].click();
+}
+
+function toggleAdjacent(idx, cell) {
+  if(selectedBlocks.has(idx)) {
+    selectedBlocks.delete(idx);
+    cell.classList.remove('adjacent-selected');
+  } else {
+    selectedBlocks.add(idx);
+    cell.classList.add('adjacent-selected');
+  }
+  updatePrintPanel(document.querySelectorAll('.cell'));
+}
+
+function updatePrintPanel(cells) {
+  const list = document.getElementById('print-selected-list');
+  const names = [...selectedBlocks].map(i => {
+    const label = cells[i].querySelector('.cell-label');
+    const isResult = i === (shindanRow * 4 + shindanCol);
+    return `${isResult ? '★' : '✓'} ${label ? label.textContent : 'ブロック'}`;
+  });
+  list.innerHTML = '印刷対象：' + names.join('　／　');
+}
+
+function executePrint() {
+  const domCells = document.querySelectorAll('.cell');
+  const printArea = document.getElementById('print-area');
+
+  // 印刷エリアをリセット
+  printArea.style.display = 'block';
+  const today = new Date().toLocaleDateString('ja-JP');
+  printArea.innerHTML = `
+    <div class="print-header">
+      <h2>🌳 適職診断 - 職業一覧</h2>
+      <p>就活の木 ｜ キャリ爺監修　${today}</p>
+    </div>`;
+
+  // cellsデータから直接取得
+  const sortedBlocks = [...selectedBlocks].sort((a,b) => a - b);
+
+  sortedBlocks.forEach(idx => {
+    const c = cells[idx];
+    const isResult = idx === (shindanRow * 4 + shindanCol);
+    const domCell = domCells[idx];
+    const label = domCell.querySelector('.cell-label')?.textContent || c.label || '';
+    const group = c.q || '';
+
+    // 象限カラークラスを取得
+    const cls = c.cls; // hh/hl/lh/ll
+
+    // グループ別に職業を整理
+    let jobsHtml = '';
+    c.groups.forEach(g => {
+      jobsHtml += `<div class="print-group-name">${g.name}</div>`;
+      jobsHtml += `<div>`;
+      g.jobs.forEach(j => {
+        jobsHtml += `<span class="print-job-chip">${j.name}</span>`;
+      });
+      jobsHtml += `</div>`;
+    });
+
+    const block = document.createElement('div');
+    block.className = `print-block ${cls}`;
+    block.innerHTML = `
+      <div class="print-block-title ${cls}">${isResult ? '★ ' : ''}${label}　<span style="font-size:10px;font-weight:normal;opacity:0.7;">${group}</span></div>
+      ${jobsHtml}
+    `;
+    printArea.appendChild(block);
+  });
+
+  // 印刷実行
+  setTimeout(() => window.print(), 150);
+}
+
+function resetPrintSelection() {
+  const cells = document.querySelectorAll('.cell');
+  selectedBlocks.clear();
+  cells.forEach(cell => cell.classList.remove('adjacent-selected'));
+  // 診断から来た場合は診断結果を残す
+  if(shindanRow >= 0) {
+    const resultIdx = shindanRow * 4 + shindanCol;
+    selectedBlocks.add(resultIdx);
+  }
+  updatePrintPanel(cells);
+}
+</script>
+
+<div id="print-panel">
+  <div class="print-panel-title" id="print-panel-title">🖨️ 印刷するブロックを選択してください</div>
+  <div class="print-panel-desc" id="print-panel-desc">
+    セルをクリックで選択／もう一度クリックで解除。<br>
+    複数選択してまとめて印刷できます。
+  </div>
+  <div class="print-selected-list" id="print-selected-list"></div>
+  <button class="print-btn" onclick="executePrint()">選択したブロックを印刷</button>
+  <button class="print-btn secondary" onclick="resetPrintSelection()">選択をリセット</button>
+</div>
+<div id="print-area" style="display:none;"></div>
+
+<!-- ===== 556職種マトリクス 誘導バナー ===== -->
+<style>
+.next-tool-banner {
+  width: 100%;
+  max-width: 580px;
+  margin: 24px auto 0;
+  background: linear-gradient(135deg, #2d6b4a 0%, #3d8a5f 100%);
+  border-radius: 14px;
+  padding: 20px 24px;
+  color: #d0ede0;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.next-tool-banner::before {
+  content: '🌳';
+  position: absolute;
+  right: 20px;
+  top: 14px;
+  font-size: 3rem;
+  opacity: 0.15;
+  pointer-events: none;
+}
+.ntb-label {
+  font-size: 0.68em;
+  color: #6de0b0;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.ntb-title {
+  font-size: 1.05em;
+  font-weight: 700;
+  color: #f0faf5;
+  margin-bottom: 6px;
+  line-height: 1.45;
+}
+.ntb-desc {
+  font-size: 0.78em;
+  color: #a0d8c0;
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.ntb-btn {
+  display: inline-block;
+  background: #d4a843;
+  color: #1a3a2a;
+  font-weight: 700;
+  font-size: 0.88em;
+  padding: 10px 26px;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Noto Sans JP', sans-serif;
+  box-shadow: 0 3px 10px rgba(212,168,67,0.35);
+  transition: background 0.18s, transform 0.18s;
+}
+.ntb-btn:hover {
+  background: #e8bc55;
+  transform: translateY(-1px);
+}
+.ntb-note {
+  font-size: 0.7em;
+  color: #7abf9a;
+  margin-top: 10px;
+  line-height: 1.65;
+}
+</style>
+
+<div class="next-tool-banner">
+  <div class="ntb-label">Step Up ▶ さらに詳しく探したい方へ</div>
+  <div class="ntb-title">🌳 556職種マトリクスで、もっと深く探してみよう</div>
+  <div class="ntb-desc">
+    16分割で「だいたいこのあたり」がわかったら、次は556職種の詳細マップへ。<br>
+    あなたの象限に近い職種群が強調表示されます。
+  </div>
+  <a class="ntb-btn" id="btn-to-556" href="jobmatrix_556.html" target="_blank" rel="noopener">
+    🗺️ 556職種マトリクスを開く →
+  </a>
+  <div class="ntb-note" id="ntb-note-text">
+    ※ 診断結果から来た場合、あなたの座標が自動で引き継がれます
+  </div>
+</div>
+
+<script>
+// ── 556バナー：診断座標をURLパラメータに乗せる ──
+(function() {
+  // jobmatrix16v4がURLパラメータ(?row=&col=)を受け取っている場合に座標を取得
+  const params = new URLSearchParams(location.search);
+  const row = parseInt(params.get('row'));  // 0=成果重視 ～ 3=プロセス重視
+  const col = parseInt(params.get('col'));  // 0=協調的  ～ 3=積極的
+
+  const btn = document.getElementById('btn-to-556');
+  const note = document.getElementById('ntb-note-text');
+
+  if (!isNaN(row) && !isNaN(col)) {
+    // row・col → 556のx,y座標に変換
+    // col: 0→-4.5, 1→-1.5, 2→+1.5, 3→+4.5
+    // row: 0→+4.5, 1→+1.5, 2→-1.5, 3→-4.5  ※rowは上が成果なので反転
+    const cx = Math.round((col - 1.5) * 3);
+    const cy = Math.round((1.5 - row) * 3);
+    btn.href = 'jobmatrix_556.html?cx=' + cx + '&cy=' + cy;
+    note.textContent = '★ あなたの診断座標（x=' + cx + ', y=' + cy + '）が自動で引き継がれます';
+  }
+})();
+</script>
+
+<footer style="
+  width:100%;
+  text-align:center;
+  font-size:0.75em;
+  color:#aaa;
+  margin-top:24px;
+  padding:12px 0 20px;
+  border-top:1px solid #e0e0e0;
+  line-height:2;
+  font-family:'Noto Sans JP',sans-serif;
+">
+  © 2025 就活の木　本ツールの無断複製・転用・二次配布を禁じます。<br>
+  職業情報リンク先：<a href="https://shigoto.mhlw.go.jp/User/" target="_blank" rel="noopener" style="color:#aaa;">job tag（職業情報提供サイト）</a>（厚生労働省）／出典表記に基づきリンク利用
+</footer>
+</body>
+</html>

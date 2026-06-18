@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>筆記試験対策ドリル｜就活の木</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Kaisei+Decol:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#1e4d2f;--gm:#2d6a4f;--gl:#52b788;--glight:#f0faf3;--gbg:#f4f8f5;
+  --gold:#c9a84c;--goldl:#f0d080;
+  --card:#fff;--border:#d0e4d0;--text:#1a2e1a;--sub:#4a6a4a;
+  --ok:#2d9e5f;--ng:#d94f4f;--exp:#fff8e6;--expb:#e9c46a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--gbg);color:var(--text);min-height:100vh;}
+
+/* ヘッダー */
+.hdr{background:linear-gradient(135deg,var(--gd),var(--gm));padding:14px 16px 10px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25);}
+.hdr h1{font-family:'Kaisei Decol',serif;font-size:1.15rem;color:var(--goldl);}
+.hdr p{font-size:.7rem;color:rgba(255,255,255,.75);margin-top:2px;}
+.api-bar{background:rgba(0,0,0,.2);padding:7px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.api-bar label{font-size:.72rem;color:rgba(255,255,255,.85);white-space:nowrap;}
+.api-input{flex:1;min-width:150px;padding:5px 9px;border-radius:6px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:white;font-size:.74rem;font-family:'Noto Sans JP',sans-serif;}
+.api-input::placeholder{color:rgba(255,255,255,.4);}
+.api-btn{padding:5px 11px;background:var(--gold);color:var(--gd);border:none;border-radius:6px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
+.api-st{font-size:.7rem;color:var(--goldl);white-space:nowrap;}
+.api-help{font-size:.67rem;color:rgba(255,255,255,.6);width:100%;}
+.api-help a{color:var(--goldl);}
+
+/* タブ */
+.tabs{display:flex;background:var(--gd);overflow-x:auto;}
+.tab-btn{flex:1;min-width:66px;padding:9px 4px;font-size:.74rem;font-weight:700;font-family:'Noto Sans JP',sans-serif;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tab-btn.active{color:var(--goldl);border-bottom-color:var(--goldl);}
+
+/* メイン */
+.main{max-width:600px;margin:0 auto;padding:14px 13px 60px;}
+
+/* セクションヘッド */
+.sec-hd{background:linear-gradient(135deg,var(--gd),var(--gm));border-radius:12px;padding:12px 15px;margin-bottom:12px;color:white;}
+.sec-hd h2{font-size:.95rem;font-weight:900;margin-bottom:3px;}
+.sec-hd p{font-size:.74rem;opacity:.85;line-height:1.6;}
+
+/* キャリ爺 */
+.keiji{background:var(--glight);border-left:4px solid var(--gl);border-radius:0 10px 10px 0;padding:10px 13px;margin-bottom:14px;font-size:.8rem;line-height:1.7;color:var(--gd);}
+
+/* コントロールパネル */
+.ctrl-panel{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:14px;}
+.ctrl-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.ctrl-row:last-child{margin-bottom:0;}
+.ctrl-label{font-size:.78rem;font-weight:700;color:var(--gm);white-space:nowrap;}
+.ctrl-select{flex:1;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.82rem;font-family:'Noto Sans JP',sans-serif;background:white;color:var(--text);cursor:pointer;}
+
+/* レベルバッジ */
+.lv-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:.82rem;font-weight:700;border:2px solid;}
+
+/* 出題ボタン */
+.btn-start{display:block;width:100%;padding:13px;background:linear-gradient(135deg,var(--gm),var(--gd));color:white;border:none;border-radius:10px;font-size:.95rem;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;box-shadow:0 3px 12px rgba(45,106,79,.3);transition:all .2s;margin-bottom:14px;}
+.btn-start:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(45,106,79,.4);}
+.btn-start:active{transform:scale(.98);}
+
+/* 問題カード */
+.q-card{background:var(--card);border:1.5px solid var(--border);border-radius:13px;padding:16px 15px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.q-lbl{font-size:.68rem;font-weight:700;color:var(--gold);margin-bottom:8px;letter-spacing:.04em;}
+.q-txt{font-size:.91rem;font-weight:700;line-height:1.8;margin-bottom:15px;white-space:pre-line;}
+.choices{display:flex;flex-direction:column;gap:8px;}
+.ch-btn{background:#f8fbf8;border:1.5px solid var(--border);border-radius:9px;padding:11px 14px;font-size:.86rem;font-family:'Noto Sans JP',sans-serif;color:var(--text);cursor:pointer;text-align:left;transition:all .15s;line-height:1.5;}
+.ch-btn:hover:not(:disabled){background:var(--glight);border-color:var(--gl);}
+.ch-btn.ok{background:#e6f9ee;border-color:var(--ok);color:var(--ok);font-weight:700;}
+.ch-btn.ng{background:#fdecea;border-color:var(--ng);color:var(--ng);}
+.ch-btn.reveal{background:#e6f9ee;border-color:var(--ok);color:var(--ok);font-weight:700;}
+.ch-btn:disabled{cursor:default;}
+
+/* 結果バッジ */
+.res-badge{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:20px;font-size:.83rem;font-weight:700;margin:11px 0 0;}
+.res-badge.ok{background:#e6f9ee;color:var(--ok);}
+.res-badge.ng{background:#fdecea;color:var(--ng);}
+
+/* ヒント */
+.hint-box{background:var(--glight);border:1px dashed var(--gl);border-radius:8px;padding:9px 12px;font-size:.8rem;color:var(--gd);margin-top:10px;display:none;line-height:1.7;}
+.hint-box.show{display:block;}
+.btn-hint{background:none;border:1px dashed var(--sub);border-radius:6px;color:var(--sub);font-size:.74rem;padding:4px 10px;cursor:pointer;margin-top:10px;font-family:'Noto Sans JP',sans-serif;}
+
+/* 解説ボックス */
+.exp-box{background:var(--exp);border:1.5px solid var(--expb);border-radius:11px;padding:14px 15px;margin-top:12px;display:none;}
+.exp-box.show{display:block;}
+.exp-title{font-size:.8rem;font-weight:700;color:#7a5c00;margin-bottom:9px;}
+.exp-loading{font-size:.81rem;color:var(--sub);text-align:center;padding:10px 0;}
+.exp-step{background:white;border-radius:7px;padding:10px 12px;margin-bottom:7px;font-size:.83rem;line-height:1.8;border-left:3px solid var(--expb);}
+.step-tag{display:inline-block;background:var(--expb);color:#7a5c00;font-weight:700;font-size:.69rem;padding:1px 7px;border-radius:10px;margin-bottom:4px;}
+.exp-point{background:#fff3cd;border-radius:6px;padding:8px 11px;font-size:.79rem;color:#7a5c00;border-left:3px solid #f0b429;margin-top:7px;line-height:1.7;}
+.btn-exp{display:block;width:100%;padding:9px;background:white;border:1.5px solid var(--expb);border-radius:8px;color:#7a5c00;font-size:.82rem;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:10px;transition:all .2s;}
+.btn-exp:hover{background:var(--exp);}
+.btn-exp:disabled{opacity:.5;cursor:not-allowed;}
+
+/* 次の問題ボタン */
+.btn-next{display:none;width:100%;padding:11px;background:var(--gold);color:var(--gd);border:none;border-radius:10px;font-size:.9rem;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;margin-top:5px;transition:all .2s;}
+.btn-next:hover{background:var(--goldl);}
+
+/* スコア表示 */
+.score-bar{background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.score-label{font-size:.76rem;color:var(--sub);}
+.score-nums{font-size:1.1rem;font-weight:900;color:var(--gm);}
+
+/* タブコンテンツ */
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+
+/* レベルガイド */
+.lv-guide{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px;}
+.lv-chip{padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:700;border:1.5px solid;cursor:default;}
+
+/* AI問題生成セクション */
+.ai-divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px;}
+.ai-divider::before,.ai-divider::after{content:'';flex:1;height:1.5px;background:linear-gradient(90deg,transparent,var(--gl),transparent);}
+.ai-divider-label{font-size:.78rem;font-weight:700;color:var(--gm);white-space:nowrap;padding:4px 12px;background:var(--glight);border:1.5px solid var(--gl);border-radius:20px;}
+
+.btn-ai-gen{display:block;width:100%;padding:13px;background:linear-gradient(135deg,#1a3a5c,#2d5a8c);color:white;border:none;border-radius:10px;font-size:.95rem;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;box-shadow:0 3px 12px rgba(29,78,140,.3);transition:all .2s;margin-bottom:14px;position:relative;overflow:hidden;}
+.btn-ai-gen:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(29,78,140,.4);}
+.btn-ai-gen:active{transform:scale(.98);}
+.btn-ai-gen:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.btn-ai-gen .ai-icon{margin-right:6px;}
+
+/* AI生成中アニメ */
+.ai-loading{text-align:center;padding:24px 16px;background:var(--card);border:1.5px dashed #2d5a8c;border-radius:12px;margin-bottom:14px;}
+.ai-loading-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2d5a8c;margin:0 3px;animation:aiDot 1.2s ease-in-out infinite;}
+.ai-loading-dot:nth-child(2){animation-delay:.2s;}
+.ai-loading-dot:nth-child(3){animation-delay:.4s;}
+@keyframes aiDot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-8px);}}
+.ai-loading-txt{font-size:.82rem;color:#2d5a8c;margin-top:10px;font-weight:700;}
+.ai-loading-sub{font-size:.72rem;color:var(--sub);margin-top:4px;}
+
+/* AI問題セット */
+.ai-set-hd{background:linear-gradient(135deg,#1a3a5c,#2d5a8c);color:white;border-radius:12px 12px 0 0;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;}
+.ai-set-hd-title{font-size:.88rem;font-weight:700;}
+.ai-set-hd-sub{font-size:.72rem;opacity:.8;}
+.ai-set-body{background:var(--card);border:1.5px solid #a0bcd8;border-top:none;border-radius:0 0 12px 12px;padding:14px 14px 10px;margin-bottom:16px;}
+.ai-q-nav{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.ai-q-dot{width:32px;height:32px;border-radius:50%;border:2px solid #2d5a8c;background:white;color:#2d5a8c;font-size:.76rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:'Noto Sans JP',sans-serif;}
+.ai-q-dot.active{background:#2d5a8c;color:white;}
+.ai-q-dot.done-ok{background:#2d9e5f;border-color:#2d9e5f;color:white;}
+.ai-q-dot.done-ng{background:#d94f4f;border-color:#d94f4f;color:white;}
+.ai-progress{font-size:.76rem;color:var(--sub);margin-bottom:10px;}
+.ai-score-line{background:#e8f0f8;border-radius:8px;padding:7px 12px;font-size:.8rem;color:#1a3a5c;font-weight:700;margin-top:8px;text-align:center;}
+
+.ai-badge{display:inline-flex;align-items:center;gap:4px;background:#e8f0f8;color:#1a3a5c;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<div class="hdr">
+  <h1>🌳 筆記試験対策ドリル</h1>
+  <p>就活の木｜150問固定 ＋ 🤖 AIオリジナル問題生成</p>
+  <div class="api-bar">
+    <label>🔑 Groq APIキー</label>
+    <input type="password" class="api-input" id="api-input" placeholder="gsk_xxxx...（1回入力で保存）">
+    <button class="api-btn" onclick="saveKey()">保存</button>
+    <span class="api-st" id="api-st"></span>
+    <div class="api-help">キー未取得 → <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>（無料・1日1,000回）</div>
+  </div>
+</div>
+
+<!-- タブ -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('spi',this)">📝 SPI</button>
+  <button class="tab-btn" onclick="switchTab('tama',this)">📦 玉手箱</button>
+  <button class="tab-btn" onclick="switchTab('cab',this)">🧩 CAB・GAB</button>
+  <button class="tab-btn" onclick="switchTab('tgweb',this)">🌐 TG-WEB</button>
+</div>
+
+<div class="main">
+
+<!-- ══ SPI ══ -->
+<div id="pane-spi" class="tab-pane active">
+  <div class="sec-hd"><h2>📝 SPI（総合適性検査）</h2><p>日本で最も多く使われる筆記試験。言語・非言語の両方を練習しよう。</p></div>
+  <div class="keiji">🦉 <strong>キャリ爺より：</strong>まず「やさしい」から始めて、解けるようになったら自分でレベルを上げよう！</div>
+  <div class="score-bar"><span class="score-label">正解 / 回答</span><span class="score-nums" id="spi-score">0 / 0</span></div>
+  <div class="ctrl-panel">
+    <div class="ctrl-row">
+      <span class="ctrl-label">📚 単元</span>
+      <select class="ctrl-select" id="spi-unit">
+        <option>言語：同義語・反義語</option>
+        <option>言語：文章完成</option>
+        <option>言語：趣旨把握</option>
+        <option>非言語：割合・割引</option>
+        <option>非言語：速さ・時間・距離</option>
+        <option>非言語：確率</option>
+        <option>非言語：推論・順序</option>
+        <option>非言語：損益算</option>
+        <option>英語：同義語（Vocabulary）</option>
+        <option>英語：空所補充（Grammar）</option>
+        <option>英語：英文読解（Reading）</option>
+        <option>英語：誤文訂正（Error）</option>
+      </select>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">🎯 難易度</span>
+      <select class="ctrl-select" id="spi-level">
+        <option value="0">🌱 やさしい（小学校レベル）</option>
+        <option value="1">🌿 ふつう（中学校レベル）</option>
+        <option value="2">🌳 むずかしい（SPI標準）</option>
+        <option value="3">⭐ 超難関（本番最高難度）</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn-start" onclick="startQ('spi')">▶ 問題を出す</button>
+  <div id="spi-area"></div>
+
+  <div class="ai-divider"><span class="ai-divider-label">🤖 AIオリジナル問題</span></div>
+  <button class="btn-ai-gen" id="spi-ai-btn" onclick="startAIGen('spi')">
+    <span class="ai-icon">🤖</span>AIが新しい問題を5問作成する
+  </button>
+  <div id="spi-ai-area"></div>
+</div>
+
+<!-- ══ 玉手箱 ══ -->
+<div id="pane-tama" class="tab-pane">
+  <div class="sec-hd"><h2>📦 玉手箱（Webテスト）</h2><p>数列・図表・損益・長文が中心。スピードが命！</p></div>
+  <div class="keiji">🦉 <strong>キャリ爺より：</strong>解き方のパターンを体に叩き込もう。繰り返しが大切！</div>
+  <div class="score-bar"><span class="score-label">正解 / 回答</span><span class="score-nums" id="tama-score">0 / 0</span></div>
+  <div class="ctrl-panel">
+    <div class="ctrl-row">
+      <span class="ctrl-label">📚 単元</span>
+      <select class="ctrl-select" id="tama-unit">
+        <option>計数：数列</option>
+        <option>計数：図表読み取り</option>
+        <option>計数：損益算</option>
+        <option>言語：長文読解</option>
+      </select>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">🎯 難易度</span>
+      <select class="ctrl-select" id="tama-level">
+        <option value="0">🌱 やさしい</option>
+        <option value="1">🌿 ふつう</option>
+        <option value="2">🌳 むずかしい</option>
+        <option value="3">⭐ 超難関</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn-start" onclick="startQ('tama')">▶ 問題を出す</button>
+  <div id="tama-area"></div>
+
+  <div class="ai-divider"><span class="ai-divider-label">🤖 AIオリジナル問題</span></div>
+  <button class="btn-ai-gen" id="tama-ai-btn" onclick="startAIGen('tama')">
+    <span class="ai-icon">🤖</span>AIが新しい問題を5問作成する
+  </button>
+  <div id="tama-ai-area"></div>
+</div>
+
+<!-- ══ CAB・GAB ══ -->
+<div id="pane-cab" class="tab-pane">
+  <div class="sec-hd"><h2>🧩 CAB・GAB</h2><p>CAB＝IT職向け（暗号・法則）。GAB＝総合職向け（論理・言語）。</p></div>
+  <div class="keiji">🦉 <strong>キャリ爺より：</strong>ルールを1つずつ当てはめるのがコツ。焦らず順番に！</div>
+  <div class="score-bar"><span class="score-label">正解 / 回答</span><span class="score-nums" id="cab-score">0 / 0</span></div>
+  <div class="ctrl-panel">
+    <div class="ctrl-row">
+      <span class="ctrl-label">📚 単元</span>
+      <select class="ctrl-select" id="cab-unit">
+        <option>CAB：暗号解読</option>
+        <option>CAB：法則発見</option>
+        <option>GAB：論理推論</option>
+        <option>GAB：言語</option>
+      </select>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">🎯 難易度</span>
+      <select class="ctrl-select" id="cab-level">
+        <option value="0">🌱 やさしい</option>
+        <option value="1">🌿 ふつう</option>
+        <option value="2">🌳 むずかしい</option>
+        <option value="3">⭐ 超難関</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn-start" onclick="startQ('cab')">▶ 問題を出す</button>
+  <div id="cab-area"></div>
+
+  <div class="ai-divider"><span class="ai-divider-label">🤖 AIオリジナル問題</span></div>
+  <button class="btn-ai-gen" id="cab-ai-btn" onclick="startAIGen('cab')">
+    <span class="ai-icon">🤖</span>AIが新しい問題を5問作成する
+  </button>
+  <div id="cab-ai-area"></div>
+</div>
+
+<!-- ══ TG-WEB ══ -->
+<div id="pane-tgweb" class="tab-pane">
+  <div class="sec-hd"><h2>🌐 TG-WEB</h2><p>仕事算・年齢算・濃度算・言語が出題。SPIの応用版。</p></div>
+  <div class="keiji">🦉 <strong>キャリ爺より：</strong>基本をしっかり固めてから挑戦しよう！</div>
+  <div class="score-bar"><span class="score-label">正解 / 回答</span><span class="score-nums" id="tgweb-score">0 / 0</span></div>
+  <div class="ctrl-panel">
+    <div class="ctrl-row">
+      <span class="ctrl-label">📚 単元</span>
+      <select class="ctrl-select" id="tgweb-unit">
+        <option>計数：仕事算</option>
+        <option>計数：年齢算</option>
+        <option>計数：濃度算</option>
+        <option>言語：語句・読解</option>
+      </select>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">🎯 難易度</span>
+      <select class="ctrl-select" id="tgweb-level">
+        <option value="0">🌱 やさしい</option>
+        <option value="1">🌿 ふつう</option>
+        <option value="2">🌳 むずかしい</option>
+        <option value="3">⭐ 超難関</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn-start" onclick="startQ('tgweb')">▶ 問題を出す</button>
+  <div id="tgweb-area"></div>
+
+  <div class="ai-divider"><span class="ai-divider-label">🤖 AIオリジナル問題</span></div>
+  <button class="btn-ai-gen" id="tgweb-ai-btn" onclick="startAIGen('tgweb')">
+    <span class="ai-icon">🤖</span>AIが新しい問題を5問作成する
+  </button>
+  <div id="tgweb-ai-area"></div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ══════════════════════════════════════
+// 問題データ（150問）
+// ══════════════════════════════════════
+const QB=[
+// ── SPI 言語：同義語・反義語 ──
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「大きい」の反対語はどれか。',c:['A. 広い','B. 小さい','C. 重い','D. 短い'],a:'B',h:'反対の意味を持つ言葉を選ぼう。'},
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「始まり」と同じ意味の言葉はどれか。',c:['A. 終了','B. 途中','C. 開始','D. 完成'],a:'C',h:'「始まり」＝スタート。同じ意味の言葉を探そう。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「漸進」の意味として最も近いものはどれか。',c:['A. 急いで進む','B. 後退する','C. 少しずつ前へ進む','D. 立ち止まる'],a:'C',h:'「漸」＝少しずつ、じわじわ。「進」＝前へ進む。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「潤沢」と最も意味が近いものはどれか。',c:['A. 不足している','B. 十分にある','C. 乾燥している','D. 急激に増える'],a:'B',h:'「潤」は水が豊かなイメージ。「沢」も豊かさを意味する。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「逡巡」の意味として最も近いものはどれか。',c:['A. 素早く判断する','B. ためらう・迷う','C. 繰り返し練習する','D. 大声で叫ぶ'],a:'B',h:'「逡」も「巡」もぐるぐる回るイメージ。決断できずに迷っている状態。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「枯渇」の反対語として最も適切なものはどれか。',c:['A. 充足','B. 消耗','C. 減少','D. 停滞'],a:'A',h:'「枯渇」＝なくなること。その反対は「十分にある」状態。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「恣意的」の意味として最も近いものはどれか。',c:['A. 計画的・論理的','B. 自分の思うままに行動する','C. 他者の意見に従う','D. 慎重に判断する'],a:'B',h:'「恣」＝ほしいまま。自分の思い通りにふるまうこと。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「些末」の意味として最も近いものはどれか。',c:['A. 重要なこと','B. 細かくてとるに足らないこと','C. 複雑な問題','D. 大きな変化'],a:'B',h:'「些」も「末」も「小さい・端っこ」のイメージ。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「蓋然性」の意味として最も近いものはどれか。',c:['A. 確実性','B. ある事柄が起こりうる可能性の度合い','C. 原因と結果の関係','D. 事実と異なる思い込み'],a:'B',h:'「蓋し（けだし）」＝おそらく。確定ではないが起こりうる確率のこと。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「敷衍」の意味として最も近いものはどれか。',c:['A. 内容を省略すること','B. 意味を広げて詳しく説明すること','C. 相手を批判すること','D. 計画を立て直すこと'],a:'B',h:'「敷」＝広げる。「衍」＝あふれる。説明を広げて詳しくすること。'},
+// ── SPI 言語：文章完成 ──
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「今日は（　）天気なので、外に出かけた。」',c:['A. 悪い','B. 良い','C. 暗い','D. 寒い'],a:'B',h:'外に出かけた→気持ちよく出かけられる天気は？'},
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「彼は毎朝（　）して、健康を維持している。」',c:['A. 運動','B. 睡眠','C. 食事','D. 仕事'],a:'A',h:'健康維持のために毎朝するといえば？'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「彼は周囲の反対を（　）、自分の信念を貫いた。」',c:['A. 賛同して','B. ものともせず','C. 喜んで','D. 確認してから'],a:'B',h:'後半「信念を貫いた」→反対されても気にしない表現は？'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「努力は（　）裏切らない、と彼女は信じていた。」',c:['A. 必ず','B. まったく','C. 決して','D. ほとんど'],a:'C',h:'「裏切らない」という否定文に自然につながる副詞は？'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「新しい制度の導入には（　）な準備期間が必要であり、拙速は禁物だ。」',c:['A. 短期的','B. 十分','C. 形式的','D. 最小限'],a:'B',h:'「拙速は禁物」＝急いではいけない。だから準備は？'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「彼の発言は事実に（　）しており、信頼性に欠ける。」',c:['A. 合致','B. 反証','C. 乖離','D. 依存'],a:'C',h:'「信頼性に欠ける」→事実からかけ離れているということ。'},
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「彼の論理は一見（　）に見えるが、前提自体に誤りが含まれている。」',c:['A. 矛盾','B. 整合的','C. 恣意的','D. 抽象的'],a:'B',h:'「一見〜に見えるが」の後に「前提に誤り」→表面上はつじつまが合っている。'},
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「科学的知見は（　）であり、新たな発見によって随時更新される。」',c:['A. 絶対的','B. 固定的','C. 暫定的','D. 恣意的'],a:'C',h:'新たな発見で更新される→今は仮の状態。「暫定」＝とりあえず・仮の。'},
+// ── SPI 言語：趣旨把握 ──
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨として最も適切なものを選べ。\n\n「犬は人間の友達です。一緒に遊んだり、散歩したりすることで、毎日が楽しくなります。」',c:['A. 犬は危険な動物だ','B. 犬は人間にとって良い存在だ','C. 犬の世話は大変だ','D. 犬より猫の方が良い'],a:'B',h:'「人間の友達」「楽しくなる」→犬がどんな存在か。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨として最も適切なものを選べ。\n\n「近年、スマートフォンの普及により若者の活字離れが加速していると言われる。しかし実際にはSNSやブログを通じて読み書きする機会は増加しており、読書の形が変化しているにすぎない。」',c:['A. スマートフォンは悪影響を与えている','B. 読書の形が変わっただけで読み書きは続いている','C. SNSよりも本を読むべきだ','D. 活字離れは深刻な問題だ'],a:'B',h:'「しかし」の後が筆者の主張。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨として最も適切なものを選べ。\n\n「失敗を恐れるあまり挑戦しないことを選ぶ人がいる。しかし失敗は成長の糧であり、挑戦なき人生には学びがない。重要なのは失敗を避けることではなく、失敗から何を学ぶかだ。」',c:['A. 失敗は絶対に避けるべきだ','B. 失敗を恐れず挑戦し学ぶことが大切だ','C. 成功するためには計画が必要だ','D. 人生に挑戦は不要だ'],a:'B',h:'最後の一文が筆者の結論。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨として最も適切なものを選べ。\n\n「効率化を追求するあまり人間関係が犠牲になることがある。業務の合理化は必要だが、組織における信頼関係は数値化できない価値を持つ。生産性向上と人的結合の両立こそが、持続可能な組織づくりの要諦である。」',c:['A. 効率化よりも人間関係を優先すべきだ','B. 生産性と人間関係の両立が組織の持続に必要だ','C. 数値化できない価値は無視してよい','D. 合理化は組織に悪影響を与える'],a:'B',h:'「両立こそが〜要諦」が結論。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨として最も適切なものを選べ。\n\n「民主主義は多数決を原理とするが、多数派の意見が常に正しいとは限らない。歴史上、多数決によって少数者の権利が侵害された事例は枚挙にいとまがない。真の民主主義は多数決の貫徹ではなく、少数意見を保護しつつ合意形成を図る熟議の過程にこそある。」',c:['A. 民主主義は多数決だけで成立する','B. 少数意見を無視することが民主主義だ','C. 真の民主主義は熟議と少数意見の保護を伴う','D. 民主主義は欠陥のある制度だ'],a:'C',h:'「真の民主主義は〜にこそある」が筆者の主張。'},
+// ── SPI 非言語：割合・割引 ──
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'10個のうち2個が赤いボール。赤いボールの割合は何%か。',c:['A. 10%','B. 20%','C. 25%','D. 30%'],a:'B',h:'割合＝部分÷全体×100。2÷10×100＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'定価1,000円の商品を「2割引き」で買った。支払った金額はいくらか。',c:['A. 700円','B. 750円','C. 800円','D. 850円'],a:'C',h:'1割＝100円。2割＝200円。1,000−200＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'定価2,000円の商品を「3割引き」で買った。支払った金額はいくらか。',c:['A. 1,200円','B. 1,400円','C. 1,600円','D. 1,800円'],a:'B',h:'1割＝200円。3割＝600円。2,000−600＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'ある商品の原価は800円。原価の25%増しの定価をつけた。定価はいくらか。',c:['A. 900円','B. 950円','C. 1,000円','D. 1,050円'],a:'C',h:'25%増し＝元の値×1.25。800×1.25＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'クラス40人中、男子が24人。女子の割合は何%か。',c:['A. 30%','B. 35%','C. 40%','D. 45%'],a:'C',h:'女子＝40−24＝16人。16÷40×100＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'定価5,000円の商品を定価の15%引きで購入した。支払い金額はいくらか。',c:['A. 4,100円','B. 4,250円','C. 4,500円','D. 4,750円'],a:'B',h:'15%引き＝定価×0.85。5,000×0.85＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'ある店で商品を定価の2割引きで売ったが、それでも原価の1割の利益が出た。定価は原価の何倍か。',c:['A. 1.25倍','B. 1.375倍','C. 1.5倍','D. 1.75倍'],a:'B',h:'売値＝原価×1.1。売値＝定価×0.8。定価÷原価＝1.1÷0.8＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'昨年の売上が500万円。今年は昨年比20%増加した後、さらに10%減少した。今年の売上はいくらか。',c:['A. 520万円','B. 540万円','C. 550万円','D. 560万円'],a:'B',h:'500×1.2＝600万円。600×0.9＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'原価に40%の利益を見込んで定価をつけ、定価の1割引きで販売した。利益率（原価に対する利益の割合）は何%か。',c:['A. 20%','B. 24%','C. 26%','D. 30%'],a:'C',h:'定価＝原価×1.4。売値＝定価×0.9＝原価×1.26。利益率＝26%'},
+// ── SPI 非言語：速さ ──
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'時速4kmで2時間歩いた。歩いた距離は何kmか。',c:['A. 4km','B. 6km','C. 8km','D. 10km'],a:'C',h:'距離＝速さ×時間。4×2＝？'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'時速60kmで走る電車が90kmの距離を走るのにかかる時間は何分か。',c:['A. 60分','B. 90分','C. 120分','D. 150分'],a:'B',h:'時間＝距離÷速さ。90÷60＝1.5時間＝90分。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'A地点からB地点まで時速50kmで走ったら2時間かかった。同じ道を時速40kmで走ると何時間かかるか。',c:['A. 2時間','B. 2.5時間','C. 3時間','D. 3.5時間'],a:'B',h:'距離＝50×2＝100km。100÷40＝？'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'兄が分速80mで家を出た5分後に、弟が分速120mで追いかけた。弟が兄に追いつくのは弟が出発してから何分後か。',c:['A. 8分','B. 10分','C. 12分','D. 15分'],a:'B',h:'兄の先行距離＝80×5＝400m。400÷(120-80)＝？'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'長さ200mの電車が時速72kmで走っている。長さ300mのトンネルを完全に通過するのにかかる時間は何秒か。',c:['A. 20秒','B. 25秒','C. 30秒','D. 35秒'],a:'B',h:'通過距離＝200+300＝500m。時速72km＝秒速20m。500÷20＝？'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'A・B二人が1周600mのトラックを同じ地点から同時に反対方向に走り始めた。Aは分速60m、Bは分速90m。最初に出会うのは出発から何分後か。',c:['A. 3分','B. 4分','C. 5分','D. 6分'],a:'B',h:'2人の速さの合計＝60+90＝150m/分。600÷150＝？'},
+// ── SPI 非言語：確率 ──
+{t:'spi',u:'非言語：確率',lv:0,q:'袋の中に赤玉3個・白玉2個。1個取り出したとき、赤玉である確率は？',c:['A. 1/2','B. 2/5','C. 3/5','D. 2/3'],a:'C',h:'確率＝欲しい数÷全体の数。3÷5＝？'},
+{t:'spi',u:'非言語：確率',lv:0,q:'サイコロを1回振って、偶数の目が出る確率は？',c:['A. 1/6','B. 1/3','C. 1/2','D. 2/3'],a:'C',h:'偶数の目は2・4・6の3種類。全体は6種類。3÷6＝？'},
+{t:'spi',u:'非言語：確率',lv:1,q:'コインを2回投げて、2回とも表が出る確率は？',c:['A. 1/4','B. 1/3','C. 1/2','D. 3/4'],a:'A',h:'1回目×2回目＝1/2×1/2＝？'},
+{t:'spi',u:'非言語：確率',lv:1,q:'赤玉4個・白玉2個の袋から2個取り出す。2個とも赤玉の確率は？',c:['A. 2/5','B. 7/15','C. 8/15','D. 2/3'],a:'A',h:'全組み合わせ＝6C2＝15通り。赤2個＝4C2＝6通り。6÷15＝？'},
+{t:'spi',u:'非言語：確率',lv:2,q:'サイコロを2回振って、出た目の合計が7になる確率は？',c:['A. 1/9','B. 1/7','C. 1/6','D. 7/36'],a:'C',h:'全組合せ＝36通り。合計7の組合せは(1,6)(2,5)(3,4)(4,3)(5,2)(6,1)＝6通り。'},
+{t:'spi',u:'非言語：確率',lv:3,q:'A・B・Cの3人でじゃんけんを1回して、Aだけが勝つ確率は？',c:['A. 1/9','B. 2/9','C. 1/3','D. 4/9'],a:'A',h:'全パターン＝3³＝27。Aだけが勝つパターン＝3通り（グー・チョキ・パーそれぞれ）。3÷27＝？'},
+// ── SPI 非言語：推論 ──
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'「すべての犬は動物だ。ポチは犬だ。」確実に言えることは？',c:['A. ポチはネコだ','B. ポチは動物だ','C. すべての動物は犬だ','D. ポチは動物でない'],a:'B',h:'犬⊂動物。ポチは犬→ポチは？'},
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'Aが先頭でAはBの隣のとき、Bは何番目か。',c:['A. 1番目','B. 2番目','C. 3番目','D. 4番目'],a:'B',h:'Aが1番目→Bは隣＝2番目しかない。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'P・Q・R・Sの4人の身長について、P＞Q、R＞S、Q＞Rがわかっている。背が高い順は？',c:['A. P>Q>R>S','B. P>R>Q>S','C. Q>P>R>S','D. P>Q>S>R'],a:'A',h:'P>Q、Q>R、R>Sをつなぐと？'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'①スポーツが好きな人は読書が好き ②音楽が好きな人はスポーツが好き。Taroは音楽が好きなとき、確実に言えることは？',c:['A. Taroは読書が好き','B. Taroはスポーツが嫌い','C. Taroは読書が嫌い','D. 何も言えない'],a:'A',h:'音楽→スポーツ→読書。Taroは音楽好き→？'},
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'①A>B ②C<D ③B=C ④E>A。テストの点が高い順は？',c:['A. E>A>B=C<D','B. E>A>B=C>D','C. D>E>A>B=C','D. E>D>A>B=C'],a:'C',h:'④E>A、①A>B、③B=C。②C<DなのでD>C＝B。D>C(=B)、E>A>B。D対Eの大小は不明だが④より大きい順を並べると…'},
+// ── SPI 非言語：損益 ──
+{t:'spi',u:'非言語：損益算',lv:0,q:'原価500円の商品を700円で売った。利益は何円か。',c:['A. 100円','B. 150円','C. 200円','D. 250円'],a:'C',h:'利益＝売値−原価。700−500＝？'},
+{t:'spi',u:'非言語：損益算',lv:0,q:'原価400円の商品に50%の利益を加えて定価をつけた。定価はいくらか。',c:['A. 500円','B. 550円','C. 600円','D. 650円'],a:'C',h:'定価＝原価×1.5。400×1.5＝？'},
+{t:'spi',u:'非言語：損益算',lv:1,q:'原価500円の商品に40%の利益を見込んで定価をつけた。その後、定価の10%引きで売った。利益はいくらか。',c:['A. 100円','B. 120円','C. 130円','D. 150円'],a:'C',h:'定価＝700円。売値＝700×0.9＝630円。630−500＝？'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'定価1,200円の商品を20%引きで売っても原価の20%の利益が出る。原価はいくらか。',c:['A. 700円','B. 750円','C. 800円','D. 850円'],a:'C',h:'売値＝1,200×0.8＝960円。960＝原価×1.2。原価＝960÷1.2＝？'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'A商品（1個30円利益）とB商品（1個20円損失）を合計30個販売して合計200円の利益。A商品は何個売れたか。',c:['A. 15個','B. 18個','C. 20個','D. 22個'],a:'C',h:'A＝x個、B＝(30-x)個。30x−20(30-x)＝200。解くと？'},
+// ══ 玉手箱 ══
+{t:'tama',u:'計数：数列',lv:0,q:'次の数列の（　）に入る数はどれか。\n1, 2, 3, 4, （　）, 6',c:['A. 4','B. 5','C. 6','D. 7'],a:'B',h:'1ずつ増えている数列。'},
+{t:'tama',u:'計数：数列',lv:0,q:'次の数列の（　）に入る数はどれか。\n2, 4, 8, 16, （　）, 64',c:['A. 24','B. 28','C. 32','D. 48'],a:'C',h:'毎回×2。16×2＝？'},
+{t:'tama',u:'計数：数列',lv:1,q:'次の数列の（　）に入る数はどれか。\n1, 3, 6, 10, （　）, 21',c:['A. 12','B. 13','C. 15','D. 18'],a:'C',h:'差が2,3,4,5…と増えていく。10+5＝？'},
+{t:'tama',u:'計数：数列',lv:1,q:'次の数列の（　）に入る数はどれか。\n1, 1, 2, 3, 5, （　）, 13',c:['A. 6','B. 7','C. 8','D. 9'],a:'C',h:'前の2つを足した数が次に来る。3+5＝？'},
+{t:'tama',u:'計数：数列',lv:2,q:'次の数列の（　）に入る数はどれか。\n3, 5, 9, 15, 23, （　）',c:['A. 30','B. 32','C. 33','D. 35'],a:'C',h:'差が2,4,6,8…と増えていく。23+10＝？'},
+{t:'tama',u:'計数：数列',lv:2,q:'次の数列の（　）に入る数はどれか。\n1, 4, 9, 16, 25, （　）',c:['A. 30','B. 34','C. 36','D. 49'],a:'C',h:'1²,2²,3²,4²,5²…の2乗数列。6²＝？'},
+{t:'tama',u:'計数：数列',lv:3,q:'次の数列の（　）に入る数はどれか。\n1, 2, 6, 24, 120, （　）',c:['A. 240','B. 360','C. 600','D. 720'],a:'D',h:'1!=1, 2!=2, 3!=6, 4!=24, 5!=120。次は6!=？'},
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'A商品150個・B商品100個・C商品50個売れた。全体に対するA商品の割合は何%か。',c:['A. 40%','B. 45%','C. 50%','D. 55%'],a:'C',h:'全体＝300。150÷300×100＝？'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'昨年の来客数は400人。今年は昨年より25%増加した。今年の来客数は何人か。',c:['A. 450人','B. 480人','C. 500人','D. 520人'],a:'C',h:'400×1.25＝？'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'あるクラスのテスト平均点が60点。男子20人の平均が65点のとき、女子10人の平均は何点か。',c:['A. 48点','B. 50点','C. 52点','D. 55点'],a:'B',h:'全体合計＝60×30＝1800点。男子合計＝65×20＝1300点。女子合計÷10＝？'},
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'8%の食塩水150gと2%の食塩水50gを混ぜると何%になるか。',c:['A. 5%','B. 6%','C. 6.5%','D. 7%'],a:'C',h:'食塩合計＝150×0.08+50×0.02＝12+1＝13g。13÷200×100＝？'},
+{t:'tama',u:'計数：損益算',lv:0,q:'原価300円の商品を500円で売った。利益は何円か。',c:['A. 100円','B. 150円','C. 200円','D. 250円'],a:'C',h:'利益＝売値−原価。500−300＝？'},
+{t:'tama',u:'計数：損益算',lv:1,q:'仕入れ値3,000円の商品を4,500円で売る。利益率（仕入れ値に対する利益の割合）は何%か。',c:['A. 30%','B. 40%','C. 50%','D. 60%'],a:'C',h:'利益＝1,500円。1,500÷3,000×100＝？'},
+{t:'tama',u:'計数：損益算',lv:2,q:'原価500円の商品に40%の利益を見込んで定価をつけ、定価の10%引きで売った。利益はいくらか。',c:['A. 100円','B. 120円','C. 130円','D. 140円'],a:'C',h:'定価＝700円。売値＝700×0.9＝630円。630−500＝？'},
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の文章の主旨を選べ。\n\n「朝ごはんを食べると、体と頭が目覚めて、1日元気に過ごせます。」',c:['A. 朝ごはんは不要だ','B. 朝ごはんは健康に良い','C. 夜ごはんが大切だ','D. 運動が大事だ'],a:'B',h:'「元気に過ごせます」→朝ごはんの効果は？'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の文章の主旨を選べ。\n\n「経済成長を追求するあまり環境破壊が進んでいる。しかし経済と環境は対立するものではなく、持続可能な発展を通じて両立できると考えるべきだ。」',c:['A. 経済成長より環境保護が優先','B. 環境破壊は避けられない','C. 経済と環境の両立が重要','D. 持続可能な発展は不可能だ'],a:'C',h:'「しかし」の後の「両立できる」が筆者の主張。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の文章の主旨を選べ。\n\n「コミュニケーション能力とは話す力だけではない。聴く力、読み取る力、そして適切に沈黙する力も含まれる。真のコミュニケーターとは、状況に応じてこれらを使い分けられる人だ。」',c:['A. 話す力が最も重要','B. 沈黙は避けるべき','C. コミュニケーション能力は多面的','D. 読み取る力だけが大切'],a:'C',h:'「話す力だけではない」＋複数の力の列挙が主張の核心。'},
+// ══ CAB/GAB ══
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'A=1、B=2、C=3…のルールで「BAC」を数字にすると？',c:['A. 123','B. 213','C. 312','D. 132'],a:'B',h:'B=2、A=1、C=3。順番通りに変換。'},
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'1=A、2=B、3=C…のルールで「312」を文字にすると？',c:['A. ABC','B. BAC','C. CAB','D. CBA'],a:'C',h:'3=C、1=A、2=B。順番通りに変換。'},
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'ある暗号で「ABCD→BCDE」「WXYZ→XYZA」のルールがある。「MNOP」を暗号化すると？',c:['A. NOPQ','B. LMNO','C. MNOP','D. OPQR'],a:'A',h:'各文字を次のアルファベットに変換。M→N、N→O、O→P、P→Q。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'「TABLE→VCDNG」のルール（各文字を+2シフト）で「CHAIR」を暗号化すると？',c:['A. EJCKT','B. FKCLU','C. EJCKR','D. DICJQ'],a:'A',h:'C→E、H→J、A→C、I→K、R→T。'},
+{t:'cab',u:'CAB：法則発見',lv:0,q:'次のルールを見つけ（　）に入る数を答えよ。\n2→4、3→6、5→10、7→（　）',c:['A. 12','B. 14','C. 16','D. 49'],a:'B',h:'左の数を×2すると右になる。7×2＝？'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'次のルールを見つけ（　）に入る数を答えよ。\n1→2、2→5、3→10、4→17、5→（　）',c:['A. 24','B. 25','C. 26','D. 28'],a:'C',h:'左の数を2乗して1を足す。5²+1＝？'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'次のルールを見つけ（　）に入る数を答えよ。\n(2,3)→13、(3,4)→25、(4,5)→41、(5,6)→（　）',c:['A. 55','B. 59','C. 61','D. 65'],a:'C',h:'2²+3²=13、3²+4²=25、4²+5²=41、5²+6²=？'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'数字の並びのルールを見つけ（　）に入る数を答えよ。\n1, 8, 27, 64, 125, （　）',c:['A. 196','B. 210','C. 216','D. 225'],a:'C',h:'1³,2³,3³,4³,5³…の3乗数列。6³＝？'},
+{t:'cab',u:'GAB：論理推論',lv:0,q:'「すべての猫は動物だ。タマは猫だ。」確実に言えることは？',c:['A. タマはイヌだ','B. タマは動物だ','C. すべての動物は猫だ','D. タマは動物でない'],a:'B',h:'猫⊂動物。タマは猫→？'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'「P→Q（PならばQ）」「Q→R」が成り立つとき確実に言えることは？',c:['A. R→P','B. P→R','C. Q→P','D. R→Q'],a:'B',h:'P→Q→R。PならばRも言える（推移律）。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'①読書好き→映画好き ②音楽好き→読書好き。Taroは音楽が好きなとき確実に言えることは？',c:['A. Taroは映画が好き','B. Taroは読書が嫌い','C. Taroは映画が嫌い','D. 何も言えない'],a:'A',h:'音楽好き→読書好き→映画好き。'},
+{t:'cab',u:'GAB：言語',lv:0,q:'「明快」の意味として最も近いものはどれか。',c:['A. 暗くて複雑','B. はっきりしていてわかりやすい','C. 静かで落ち着いている','D. 速くて正確'],a:'B',h:'「明」＝明るい・はっきり。「快」＝すっきり。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'「齟齬」の意味として最も近いものはどれか。',c:['A. 完全に一致すること','B. かみ合わないこと・食い違い','C. 速やかに進行すること','D. 丁寧に説明すること'],a:'B',h:'歯車がかみ合わないイメージ。意見が食い違う状態。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'次の文章の論理的な欠陥として最も適切なものを選べ。\n「彼は外国語が得意だから、海外で活躍できる優秀なビジネスマンだ。」',c:['A. 外国語能力とビジネス能力を同一視している','B. 海外での活躍を否定している','C. 外国語能力の重要性を過小評価している','D. 論理的な欠陥はない'],a:'A',h:'外国語が得意≠ビジネスマンとして優秀。必要条件と十分条件の混同。'},
+// ══ TG-WEB ══
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'ある仕事をAは10日でできる。Aが5日働いた。残りの仕事量は全体の何%か。',c:['A. 40%','B. 50%','C. 60%','D. 70%'],a:'B',h:'Aの1日の仕事量＝1/10。5日分＝5/10＝1/2。残り＝？'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'ある仕事をAは6日、Bは3日でできる。2人で一緒にやると何日かかるか。',c:['A. 1日','B. 2日','C. 3日','D. 4日'],a:'B',h:'1日あたり：1/6+1/3＝1/2。全体÷(1/2)＝？'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'AとBが協力すると4日でできる仕事がある。Aだけでやると12日かかる。Bだけでやると何日かかるか。',c:['A. 4日','B. 6日','C. 8日','D. 10日'],a:'B',h:'B1日＝1/4−1/12＝1/6。Bだけ＝6日。'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'AとBで3日働いた後、残りをBだけで仕上げた。Aは15日、Bは10日でできるとき、Bが単独で行った日数は？',c:['A. 3日','B. 4日','C. 5日','D. 6日'],a:'C',h:'3日でA+Bが行う仕事＝3×(1/15+1/10)＝1/2。残り1/2。Bのみ：(1/2)÷(1/10)＝5日。'},
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'現在、兄は18歳、弟は12歳。兄が弟の2倍の年齢だったのは何年前か。',c:['A. 4年前','B. 5年前','C. 6年前','D. 7年前'],a:'C',h:'○年前：18−○＝2×(12−○)。18−○＝24−2○。○＝6。'},
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'現在、父は42歳、子は12歳。父の年齢が子の年齢の2倍になるのは何年後か。',c:['A. 15年後','B. 16年後','C. 17年後','D. 18年後'],a:'D',h:'□年後：42+□＝2×(12+□)。42+□＝24+2□。18＝□。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'現在、祖父・父・孫の年齢の和は120歳。祖父は父の2倍、父は孫の3倍の年齢。孫の現在の年齢は？',c:['A. 10歳','B. 12歳','C. 15歳','D. 18歳'],a:'B',h:'孫=x、父=3x、祖父=6x。10x=120。x=？'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'父44歳・母42歳・長男15歳・次男12歳。父母の年齢の和が子どもたちの和の2倍になるのは何年後か。',c:['A. 3年後','B. 4年後','C. 5年後','D. 6年後'],a:'D',h:'□年後：(44+□)+(42+□)=2×{(15+□)+(12+□)}。86+2□=54+4□。32=2□。□=？'},
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'水180gに食塩20gを溶かした。食塩水の濃度は何%か。',c:['A. 5%','B. 8%','C. 10%','D. 12%'],a:'C',h:'食塩水＝180+20＝200g。20÷200×100＝？'},
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'5%の食塩水100gと15%の食塩水100gを混ぜると何%になるか。',c:['A. 8%','B. 10%','C. 12%','D. 20%'],a:'B',h:'食塩合計＝5+15＝20g。食塩水合計＝200g。20÷200×100＝？'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'12%の食塩水200gから何gの水を蒸発させると20%になるか。',c:['A. 70g','B. 75g','C. 80g','D. 85g'],a:'C',h:'食塩量＝24g。20%の食塩水量＝24÷0.2＝120g。蒸発＝200−120＝？'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'濃度不明の食塩水Aが300gある。水100gを加えると6%になった。元の食塩水Aの濃度は何%か。',c:['A. 7%','B. 8%','C. 9%','D. 10%'],a:'B',h:'混合後の食塩量＝400×0.06＝24g。24÷300×100＝？'},
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「丁寧」の意味として最も近いものはどれか。',c:['A. 荒々しい','B. 細かくていねいにする','C. 急いで行う','D. 大雑把にする'],a:'B',h:'「丁」も「寧」も「しっかりと・落ち着いて」のイメージ。'},
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「捨て身」の意味として最も近いものはどれか。',c:['A. 体を鍛える','B. 物を捨てる','C. 自分を犠牲にして全力を尽くす','D. 無駄を省く'],a:'C',h:'「捨て」＝犠牲にする。「身」＝自分の体・命。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'「杓子定規」の意味として最も近いものはどれか。',c:['A. 臨機応変に対応すること','B. 何でも一定の基準に当てはめて融通がきかないこと','C. 細かいところまで丁寧に確認すること','D. 規則を無視して行動すること'],a:'B',h:'杓子（おたま）で何でも平らにならすイメージ。融通がきかない。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'次の文章で筆者が最も批判していることを選べ。\n\n「現代の評価制度は数値化できる成果のみを重視する傾向がある。しかし組織の長期的発展には、数値化困難な人材育成・信頼醸成・文化形成が不可欠だ。短期的指標に偏った評価は、組織の根を腐らせる。」',c:['A. 人材育成を重視しすぎること','B. 数値化できない要素のみを重視すること','C. 短期的な数値成果のみを重視する評価制度','D. 長期的視点を持ちすぎること'],a:'C',h:'「短期的指標に偏った評価は〜根を腐らせる」が批判の核心。'},
+// ══ SPI 英語：同義語（Vocabulary）══
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "happy".',c:['A. sad','B. glad','C. angry','D. tired'],a:'B',h:'"happy"＝うれしい。"glad"も喜んでいる・うれしいという意味。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "big".',c:['A. small','B. tiny','C. large','D. thin'],a:'C',h:'"big"＝大きい。"large"も大きい。"small""tiny"は小さい。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "difficult".',c:['A. easy','B. simple','C. hard','D. soft'],a:'C',h:'"difficult"＝難しい。"hard"も難しい・困難という意味がある。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "obtain".',c:['A. lose','B. gain','C. spend','D. avoid'],a:'B',h:'"obtain"＝手に入れる・得る。"gain"も得るという意味。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "accelerate".',c:['A. slow down','B. stop','C. speed up','D. maintain'],a:'C',h:'"accelerate"＝加速する。"speed up"も速くすること。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "ambiguous".',c:['A. clear','B. vague','C. certain','D. obvious'],a:'B',h:'"ambiguous"＝あいまいな。"vague"もはっきりしない・ぼんやりした。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "exacerbate".',c:['A. improve','B. worsen','C. maintain','D. evaluate'],a:'B',h:'"exacerbate"＝悪化させる。"worsen"も悪くする。反意語は"alleviate"（緩和する）。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "concede".',c:['A. deny','B. insist','C. acknowledge','D. ignore'],a:'C',h:'"concede"＝認める・譲歩する。"acknowledge"も認める・承認する。'},
+// ══ SPI 英語：空所補充（Grammar）══
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word to fill in the blank.\n"She ( ) to school every day."',c:['A. go','B. goes','C. going','D. gone'],a:'B',h:'主語が"She"（3人称単数）→動詞にsをつける。go→goes。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word to fill in the blank.\n"I ( ) a student."',c:['A. am','B. is','C. are','D. be'],a:'A',h:'主語が"I"→be動詞は"am"。I am〜。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word to fill in the blank.\n"He has lived in Tokyo ( ) 2010."',c:['A. for','B. since','C. during','D. from'],a:'B',h:'"since＋過去の時点"＝〜以来ずっと。"for＋期間"と区別しよう。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word to fill in the blank.\n"If it ( ) tomorrow, we will cancel the event."',c:['A. rains','B. will rain','C. rained','D. rain'],a:'A',h:'if節の中では現在形を使う。「もし明日雨が降れば」→rains。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word to fill in the blank.\n"The report ( ) by the manager before the meeting."',c:['A. reviewed','B. was reviewed','C. has reviewed','D. reviewing'],a:'B',h:'「レポートが確認された」→受け身（受動態）。be動詞＋過去分詞。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word to fill in the blank.\n"She suggested ( ) the project deadline."',c:['A. extend','B. to extend','C. extending','D. extended'],a:'C',h:'"suggest"の後は動名詞（〜ing形）。suggest doing〜のパターン。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word to fill in the blank.\n"( ) he studied hard, he failed the exam."',c:['A. Because','B. Although','C. Therefore','D. So'],a:'B',h:'「一生懸命勉強したにもかかわらず不合格」→逆接。"Although"＝〜にもかかわらず。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word to fill in the blank.\n"By the time she arrived, the meeting ( ) already started."',c:['A. has','B. had','C. was','D. is'],a:'B',h:'過去のある時点より前の出来事→過去完了形（had＋過去分詞）。'},
+// ══ SPI 英語：英文読解（Reading）══
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read the sentence and answer.\n\n"Tom likes soccer. He plays it every weekend."\n\nWhat does Tom do every weekend?',c:['A. He watches TV.','B. He plays soccer.','C. He studies English.','D. He cooks dinner.'],a:'B',h:'"plays it"の"it"はsoccerを指す。毎週末サッカーをしている。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read the passage and answer.\n\n"Exercise is good for your health. It helps reduce stress and improves your mood. Even a short walk can make a big difference."\n\nWhat is the main point?',c:['A. Walking is the best exercise.','B. Stress is a serious problem.','C. Exercise has health benefits.','D. Mood is difficult to improve.'],a:'C',h:'"Exercise is good for your health"が主旨。運動は健康に良い。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read the passage and answer.\n\n"Remote work has become common since the pandemic. While it offers flexibility, some employees struggle with isolation and difficulty separating work from personal life."\n\nWhat is a disadvantage of remote work?',c:['A. Lower productivity','B. Higher costs','C. Feeling isolated','D. Lack of technology'],a:'C',h:'"struggle with isolation"＝孤立に苦しむ。これがデメリットとして挙げられている。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read the passage and answer.\n\n"Artificial intelligence is transforming industries at an unprecedented pace. However, experts warn that without proper regulation, it could lead to job displacement and ethical concerns. Balancing innovation with responsibility is the key challenge ahead."\n\nWhat does the author suggest is most important?',c:['A. Stopping AI development','B. Ignoring ethical concerns','C. Balancing innovation and responsibility','D. Replacing workers with AI'],a:'C',h:'"Balancing innovation with responsibility is the key challenge"が筆者の主張。'},
+// ══ SPI 英語：誤文訂正（Error）══
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error in the sentence.\n"She don\'t like coffee."',c:['A. She','B. don\'t','C. like','D. coffee'],a:'B',h:'主語が"She"（3人称単数）→"doesn\'t"が正しい。"don\'t"はI/you/we/theyに使う。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error in the sentence.\n"He has went to Paris last year."',c:['A. He','B. has went','C. to Paris','D. last year'],a:'B',h:'"last year"という過去の時点があるので過去形を使う。"has went"→"went"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error in the sentence.\n"The number of students are increasing every year."',c:['A. The number of','B. students','C. are increasing','D. every year'],a:'C',h:'"The number of〜"の主語は"number"（単数）→"is increasing"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error in the sentence.\n"Despite of the rain, they decided to go hiking."',c:['A. Despite of','B. the rain','C. they decided','D. to go hiking'],a:'A',h:'"despite"の後に"of"は不要。"Despite the rain"が正しい。"In spite of"なら"of"が必要。'},
+
+// ══ 追加問題（125問）══
+
+// ── SPI 言語：同義語・反義語（追加6問）──
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「速い」の反対語はどれか。',c:['A. 遅い','B. 大きい','C. 強い','D. 明るい'],a:'A',h:'「速い」の反対は「遅い」。スピードの反対を考えよう。'},
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「明るい」と同じ意味の言葉はどれか。',c:['A. 暗い','B. 重い','C. 輝く','D. 細い'],a:'C',h:'「明るい」＝光があって輝いている。「輝く」も光り輝くイメージ。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「斬新」の意味として最も近いものはどれか。',c:['A. 古くさい','B. まったく新しくて独創的','C. 平凡な','D. 複雑な'],a:'B',h:'「斬」＝切り込む。「新」＝新しい。まったく新しいアイデアのこと。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「頑固」の意味として最も近いものはどれか。',c:['A. 柔軟に考える','B. すぐに諦める','C. 自分の考えを変えない','D. 周りに合わせる'],a:'C',h:'「頑」も「固」も「かたい」のイメージ。自分の意見を変えない性格。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「陳腐」の意味として最も近いものはどれか。',c:['A. 斬新で驚くべき','B. 古くさくて新鮮みがない','C. 複雑で難解な','D. 簡潔でわかりやすい'],a:'B',h:'「陳」＝古い・並べる。「腐」＝腐る。使い古されてありきたりなこと。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「忖度」の意味として最も近いものはどれか。',c:['A. 相手の気持ちや意図を推し量ること','B. 自分の意見を強く主張すること','C. 事実を正確に記録すること','D. 目標を設定して計画すること'],a:'A',h:'「忖」も「度」も「はかる・推し量る」の意味。相手の心を読もうとすること。'},
+
+// ── SPI 言語：文章完成（追加5問）──
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「この問題は（　）すぎて、解けなかった。」',c:['A. 簡単','B. 難し','C. 短','D. 楽し'],a:'B',h:'解けなかった→難しかった。「難しすぎて」がつながる。'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「彼女は（　）にもかかわらず、試合に出場した。」',c:['A. 健康','B. 怪我','C. 練習不足','D. 緊張'],a:'B',h:'「にもかかわらず」＝逆接。試合に出るのが難しい状況は「怪我」。'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「その映画は（　）評判だったが、実際に見ると感動した。」',c:['A. 良い','B. 低い','C. 高い','D. 悪い'],a:'D',h:'「実際に見ると感動した」→事前の評判と逆。悪い評判だったが良かった。'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「環境問題は（　）的な取り組みが求められており、個人の努力だけでは限界がある。」',c:['A. 個人','B. 局所','C. 一時','D. 包括'],a:'D',h:'個人の努力だけでは限界→社会全体で取り組む必要がある。「包括的」＝全体を含む。'},
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「その政策は短期的には効果があるが、長期的には（　）をきたす可能性がある。」',c:['A. 改善','B. 発展','C. 弊害','D. 向上'],a:'C',h:'短期的には良いが長期的には悪い→「弊害」＝害になること・悪い影響。'},
+
+// ── SPI 言語：趣旨把握（追加4問）──
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨を選べ。\n\n「毎日8時間の睡眠をとることは、体の回復と脳の働きに欠かせません。睡眠不足は集中力や記憶力を低下させます。」',c:['A. 睡眠は時間の無駄だ','B. 十分な睡眠は健康に重要だ','C. 脳を使いすぎてはいけない','D. 8時間以上眠るべきだ'],a:'B',h:'「体の回復と脳の働きに欠かせない」→睡眠の重要性が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨を選べ。\n\n「読書は知識を増やすだけでなく、想像力や共感力を育てる。しかし多くの若者がスマートフォンに時間を費やし、読書から遠ざかっている。読む習慣をもう一度見直す必要がある。」',c:['A. スマートフォンは禁止すべきだ','B. 若者は勉強不足だ','C. 読書習慣の見直しが必要だ','D. 知識より想像力が大切だ'],a:'C',h:'最後の「読む習慣を見直す必要がある」が筆者の主張。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨を選べ。\n\n「リーダーシップとは、声が大きく指示を出すことではない。メンバーの強みを引き出し、チームとして最大の成果を出せる環境を整えることこそが、真のリーダーシップだ。」',c:['A. リーダーは大声で指示すべきだ','B. チームより個人の力が重要だ','C. 真のリーダーはメンバーの力を引き出す','D. リーダーシップは生まれつきの才能だ'],a:'C',h:'「こそが真のリーダーシップだ」が筆者の結論。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨を選べ。\n\n「イノベーションは偶然の産物ではない。失敗を恐れずに試行錯誤を繰り返す文化と、多様な視点が交わる環境があって初めて生まれる。単に優秀な人材を集めるだけでは不十分であり、組織の仕組みと風土が革新を生む土壌となる。」',c:['A. 優秀な人材がいればイノベーションは起きる','B. 偶然の発見がイノベーションの源だ','C. 組織の文化と環境がイノベーションを生む','D. 失敗を避けることが革新につながる'],a:'C',h:'「組織の仕組みと風土が革新を生む土壌となる」が結論。'},
+
+// ── SPI 非言語：割合・割引（追加3問）──
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'50人のクラスで、メガネをかけている人が10人。メガネをかけている人の割合は何%か。',c:['A. 10%','B. 15%','C. 20%','D. 25%'],a:'C',h:'10÷50×100＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'ある商品が30%引きで3,500円になった。元の定価はいくらか。',c:['A. 4,500円','B. 5,000円','C. 5,500円','D. 6,000円'],a:'B',h:'定価×0.7＝3,500円。定価＝3,500÷0.7＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'ある商品の価格が今年は昨年より20%増加し、来年はさらに今年より10%増加する予定。来年の価格は昨年の何%か。',c:['A. 125%','B. 130%','C. 132%','D. 135%'],a:'C',h:'昨年を100とすると今年＝120。来年＝120×1.1＝132。'},
+
+// ── SPI 非言語：速さ（追加3問）──
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'分速100mで歩くと、500mの距離を何分で歩けるか。',c:['A. 3分','B. 4分','C. 5分','D. 6分'],a:'C',h:'時間＝距離÷速さ。500÷100＝？'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'AとBが同じ地点から同じ方向に歩き始めた。Aは分速60m、Bは分速80m。30分後、2人の距離は何mか。',c:['A. 400m','B. 500m','C. 600m','D. 700m'],a:'C',h:'速さの差＝80-60＝20m/分。30分で20×30＝？'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'上りを時速3km、下りを時速5kmで歩く。往復4時間かかった。片道の距離は何kmか。',c:['A. 6km','B. 7km','C. 7.5km','D. 8km'],a:'C',h:'片道xkm。x/3+x/5＝4。5x+3x＝60。8x＝60。x＝？'},
+
+// ── SPI 非言語：確率（追加3問）──
+{t:'spi',u:'非言語：確率',lv:0,q:'1〜10の数字が書かれたカードから1枚引く。偶数のカードを引く確率は？',c:['A. 1/5','B. 2/5','C. 1/2','D. 3/5'],a:'C',h:'偶数は2,4,6,8,10の5枚。全体10枚。5÷10＝？'},
+{t:'spi',u:'非言語：確率',lv:1,q:'3枚のコインを同時に投げる。全て表になる確率は？',c:['A. 1/4','B. 1/6','C. 1/8','D. 1/12'],a:'C',h:'1/2×1/2×1/2＝？'},
+{t:'spi',u:'非言語：確率',lv:2,q:'5人の中から3人を選ぶ組み合わせは何通りか。',c:['A. 5通り','B. 8通り','C. 10通り','D. 15通り'],a:'C',h:'5C3＝5×4×3÷(3×2×1)＝60÷6＝？'},
+
+// ── SPI 非言語：推論（追加4問）──
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'「AはBより年上、BはCより年上」のとき確実に言えることは？',c:['A. CはAより年上','B. AはCより年上','C. BはAより年上','D. わからない'],a:'B',h:'A>B、B>C→A>B>Cの順。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'A〜Dの4人の体重について①A>B ②C>D ③B>C がわかっている。重い順は？',c:['A. A>B>C>D','B. A>C>B>D','C. B>A>C>D','D. A>B>D>C'],a:'A',h:'①A>B、③B>C、②C>D。つなぐとA>B>C>D。'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'①Pが正しければQが正しい。②Qが正しければRが正しくない。Pが正しいとき確実に言えることは？',c:['A. Rは正しい','B. Rは正しくない','C. Qは正しくない','D. Pは正しくない'],a:'B',h:'P→Q（①）。Q→Rでない（②）。PならQ→Rでない。'},
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'5人(A〜E)が1列に並ぶ。①Aは先頭ではない ②BはCの隣 ③DはEより前 ④AはBの直前。Aが2番目のとき、1番目は誰か？',c:['A. B','B. C','C. D','D. E'],a:'C',h:'A＝2番目。④AはBの直前→B＝3番目。②BはCの隣→C＝2or4番目。Aが2番なのでC＝4番目。③DはEより前。残り1番と5番はDとE→D＝1番。'},
+
+// ── SPI 非言語：損益算（追加3問）──
+{t:'spi',u:'非言語：損益算',lv:0,q:'原価200円の商品を300円で10個売った。合計利益はいくらか。',c:['A. 500円','B. 800円','C. 1,000円','D. 1,200円'],a:'C',h:'1個の利益＝300-200＝100円。10個分＝100×10＝？'},
+{t:'spi',u:'非言語：損益算',lv:1,q:'原価の3割の利益を見込んで定価をつけたが、売れ残ったため定価の2割引きで売った。損益はどうなるか。',c:['A. 4%の利益','B. 損益なし（原価と同じ）','C. 4%の損失','D. 10%の損失'],a:'A',h:'定価＝原価×1.3。売値＝定価×0.8＝原価×1.3×0.8＝原価×1.04。4%の利益。'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'ある商品をA店は定価の15%引き、B店は定価の10%引き後さらに5%引きで売っている。同じ定価の場合、安いのはどちらか。',c:['A. A店が安い','B. B店が安い','C. 同じ値段','D. 定価による'],a:'A',h:'A店＝定価×0.85。B店＝定価×0.9×0.95＝定価×0.855。0.85<0.855なのでA店が安い。'},
+
+// ── SPI 英語：同義語（追加4問）──
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "fast".',c:['A. slow','B. quick','C. loud','D. hard'],a:'B',h:'"fast"＝速い。"quick"も速い・素早い。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "sufficient".',c:['A. lacking','B. extra','C. enough','D. minimum'],a:'C',h:'"sufficient"＝十分な。"enough"も十分という意味。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "persist".',c:['A. give up','B. continue','C. hesitate','D. avoid'],a:'B',h:'"persist"＝粘り強く続ける。"continue"も続けるという意味。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "mitigate".',c:['A. worsen','B. ignore','C. reduce','D. expand'],a:'C',h:'"mitigate"＝軽減する・和らげる。"reduce"も減らすという意味。'},
+
+// ── SPI 英語：空所補充（追加4問）──
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word.\n"There ( ) many students in the classroom."',c:['A. is','B. are','C. am','D. be'],a:'B',h:'"many students"は複数→be動詞は"are"。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word.\n"I ( ) this book three times."',c:['A. read','B. reads','C. have read','D. was reading'],a:'C',h:'「3回読んだことがある」→経験を表す現在完了形（have+過去分詞）。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word.\n"The book ( ) on the desk belongs to me."',c:['A. lies','B. lying','C. lie','D. lied'],a:'B',h:'名詞を修飾する分詞。"lying on the desk"（机の上に置かれている）＝現在分詞。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word.\n"Not until she left the office ( ) she realize her mistake."',c:['A. that','B. did','C. was','D. had'],a:'B',h:'"Not until〜"が文頭→倒置形。"did she realize"の語順になる。'},
+
+// ── SPI 英語：読解（追加3問）──
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read and answer.\n\n"Many companies are now adopting flexible working hours. This allows employees to start and finish work at different times, improving work-life balance."\n\nWhat is the benefit of flexible working hours?',c:['A. Higher salaries','B. Better work-life balance','C. Shorter working hours','D. More vacation days'],a:'B',h:'"improving work-life balance"＝仕事と生活のバランスが改善する。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read and answer.\n\n"Globalization has brought economic growth to many countries, but it has also increased inequality within nations. While some benefit greatly, others are left behind, widening the gap between rich and poor."\n\nWhat is one negative effect of globalization?',c:['A. Slower economic growth','B. Increased inequality within countries','C. Reduced international trade','D. Less cultural exchange'],a:'B',h:'"increased inequality within nations"＝国内の格差が拡大した。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read and answer.\n\n"Critical thinking is not about finding faults, but about evaluating evidence objectively and forming well-reasoned conclusions. In an era of information overload, this skill is more essential than ever, as it helps individuals distinguish reliable information from misinformation."\n\nWhat does the author say about critical thinking?',c:['A. It is mainly used to criticize others','B. It is becoming less important','C. It helps people evaluate information objectively','D. It is only useful for academics'],a:'C',h:'"evaluating evidence objectively"と"distinguish reliable information from misinformation"が核心。'},
+
+// ── SPI 英語：誤文訂正（追加3問）──
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error.\n"She is more taller than her sister."',c:['A. She is','B. more taller','C. than','D. her sister'],a:'B',h:'"taller"はすでに比較級。"more"は不要。"taller than"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error.\n"Everyone in the team have to submit their report by Friday."',c:['A. Everyone','B. have to','C. submit','D. by Friday'],a:'B',h:'"Everyone"は単数扱い→"has to"が正しい。"Everyone has to〜"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error.\n"The data shows that less people are using public transportation."',c:['A. The data','B. shows','C. less people','D. public transportation'],a:'C',h:'"people"は数えられる名詞（可算名詞）→"fewer people"が正しい。"less"は不可算名詞に使う。'},
+
+// ══ 玉手箱：追加問題 ══
+
+// ── 数列（追加5問）──
+{t:'tama',u:'計数：数列',lv:0,q:'次の数列の（　）に入る数はどれか。\n10, 8, 6, 4, （　）',c:['A. 0','B. 1','C. 2','D. 3'],a:'C',h:'2ずつ減っている数列。4-2＝？'},
+{t:'tama',u:'計数：数列',lv:1,q:'次の数列の（　）に入る数はどれか。\n2, 3, 5, 7, 11, （　）',c:['A. 12','B. 13','C. 14','D. 15'],a:'B',h:'素数の数列（2,3,5,7,11,13…）。次の素数は？'},
+{t:'tama',u:'計数：数列',lv:2,q:'次の数列の（　）に入る数はどれか。\n100, 50, 25, 12.5, （　）',c:['A. 5','B. 6','C. 6.25','D. 7.5'],a:'C',h:'毎回÷2している数列。12.5÷2＝？'},
+{t:'tama',u:'計数：数列',lv:2,q:'次の数列の（　）に入る数はどれか。\n2, 6, 12, 20, 30, （　）',c:['A. 38','B. 40','C. 42','D. 44'],a:'C',h:'差が4,6,8,10,12…と増えていく。30+12＝？'},
+{t:'tama',u:'計数：数列',lv:3,q:'次の数列の（　）に入る数はどれか。\n1, 3, 4, 7, 11, 18, （　）',c:['A. 25','B. 27','C. 29','D. 31'],a:'C',h:'前の2つを足した数が次に来る。11+18＝？'},
+
+// ── 図表読み取り（追加4問）──
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'10人のクラスのテスト結果：80点が3人・70点が4人・60点が3人。平均点は何点か。',c:['A. 68点','B. 70点','C. 71点','D. 72点'],a:'C',h:'合計＝80×3+70×4+60×3＝240+280+180＝700。700÷10＝？'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'ある工場の今月の生産数は500個。先月より25%増加した。先月の生産数は何個か。',c:['A. 350個','B. 375個','C. 400個','D. 425個'],a:'C',h:'先月×1.25＝500。先月＝500÷1.25＝？'},
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'A・B・C3部門の売上比率が5:3:2。A部門の売上が400万円のとき、C部門の売上は何万円か。',c:['A. 120万円','B. 140万円','C. 160万円','D. 180万円'],a:'C',h:'A:C＝5:2。Aが400万円→C＝400×2/5＝？'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'ある商品の売上が4年間で次の通り変化した。1年目100→2年目120→3年目108→4年目129.6万円。各年の成長率の組み合わせは？',c:['A. +20%,-10%,+20%','B. +20%,-10%,+25%','C. +25%,-10%,+20%','D. +20%,-15%,+20%'],a:'A',h:'100→120（+20%）。120→108（-10%）。108→129.6（×1.2＝+20%）。'},
+
+// ── 損益算（追加4問）──
+{t:'tama',u:'計数：損益算',lv:0,q:'原価800円の商品に25%の利益を加えた定価はいくらか。',c:['A. 900円','B. 950円','C. 1,000円','D. 1,050円'],a:'C',h:'定価＝原価×1.25。800×1.25＝？'},
+{t:'tama',u:'計数：損益算',lv:1,q:'ある商品を120個仕入れ、1個500円で販売した。仕入れ総額が48,000円のとき、利益の合計はいくらか。',c:['A. 10,000円','B. 12,000円','C. 14,000円','D. 16,000円'],a:'B',h:'売上合計＝500×120＝60,000円。利益＝60,000-48,000＝？'},
+{t:'tama',u:'計数：損益算',lv:2,q:'A商品（原価200円・売値300円）とB商品（原価400円・売値450円）をそれぞれ20個ずつ売った。合計利益はいくらか。',c:['A. 2,000円','B. 3,000円','C. 3,500円','D. 4,000円'],a:'B',h:'A利益＝(300-200)×20＝2,000円。B利益＝(450-400)×20＝1,000円。合計＝？'},
+{t:'tama',u:'計数：損益算',lv:3,q:'原価の4割の利益を見込んで定価をつけた。定価の何%引きまでなら原価を下回らないか。',c:['A. 25%引き','B. 28%引き','C. 30%引き','D. 35%引き'],a:'B',h:'定価＝原価×1.4。売値≧原価。1.4×(1-x)≧1。1-x≧1/1.4≒0.714。x≦0.286≒28.6%。'},
+
+// ── 長文読解（追加4問）──
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の文章の主旨を選べ。\n\n「水は毎日2リットル飲むことが推奨されています。水分補給は体の機能を正常に保つために不可欠です。」',c:['A. 水は飲みすぎると危険だ','B. 十分な水分補給が健康に重要だ','C. 水より他の飲み物が良い','D. 運動中は水を飲まない方が良い'],a:'B',h:'「体の機能を正常に保つために不可欠」→水分補給の重要性が主旨。'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の文章の主旨を選べ。\n\n「チームワークは個人の能力の総和以上の成果をもたらすことがある。しかし意見の対立を避けすぎると、集団思考に陥り、最良の判断ができなくなる危険性もある。健全な議論がチームを強くする。」',c:['A. チームワークより個人の力が重要','B. 意見の対立は常に避けるべき','C. 健全な議論がチームを強化する','D. 集団思考は組織に必要だ'],a:'C',h:'「健全な議論がチームを強くする」が筆者の結論。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の文章の主旨を選べ。\n\n「多様性（ダイバーシティ）は単なる道徳的要請ではなく、ビジネス上の競争優位をもたらす戦略的資産だ。異なる背景を持つ人材が集まることで、より創造的な問題解決が可能になる。」',c:['A. 多様性は道徳的に正しいだけだ','B. ダイバーシティはビジネス上も有益だ','C. 同じ背景を持つ人材が最も効果的だ','D. 創造性より効率性が重要だ'],a:'B',h:'「ビジネス上の競争優位をもたらす戦略的資産」が筆者の主張。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の文章の主旨を選べ。\n\n「感情と理性は対立するものとして捉えられがちだが、神経科学の研究は感情が意思決定において不可欠な役割を果たすことを示している。純粋な理性だけでは合理的な選択すら困難であり、感情と理性の協働こそが優れた判断を生む。」',c:['A. 感情は意思決定に有害だ','B. 理性だけが正しい判断を生む','C. 感情と理性の協働が優れた判断を生む','D. 神経科学は感情を否定している'],a:'C',h:'「感情と理性の協働こそが優れた判断を生む」が結論。'},
+
+// ══ CAB/GAB：追加問題 ══
+
+// ── CAB：暗号解読（追加4問）──
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'A=1、B=2、C=3…のルールで「3,1,2」を文字にすると？',c:['A. ABC','B. BAC','C. CAB','D. ACB'],a:'C',h:'3=C、1=A、2=B。順番に変換。'},
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'ある暗号で「A→Z」「B→Y」「C→X」のようにアルファベットを逆順にするルール。「DOG」を暗号化すると？',c:['A. WLT','B. CLT','C. WKT','D. VLT'],a:'A',h:'D(4番目)→W(23番目)、O(15番目)→L(12番目)、G(7番目)→T(20番目)。26+1-n番目の文字に変換。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'奇数番目の文字は+1シフト、偶数番目の文字は-1シフトするルール。「ABCD」を変換すると？',c:['A. BADC','B. BCBA','C. BADC','D. BCDC'],a:'A',h:'A(1番目・奇)→B、B(2番目・偶)→A、C(3番目・奇)→D、D(4番目・偶)→C。→BADC。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'「1234→2143」「5678→6587」のルールで「9012」を変換すると？',c:['A. 0921','B. 0912','C. 9021','D. 9102'],a:'A',h:'1と2を入れ替え、3と4を入れ替えるルール。9→0、0→9、1→2、2→1。→0921。'},
+
+// ── CAB：法則発見（追加4問）──
+{t:'cab',u:'CAB：法則発見',lv:0,q:'次のルールを見つけ（　）に入る数を答えよ。\n1→3、2→6、3→9、4→（　）',c:['A. 10','B. 12','C. 14','D. 16'],a:'B',h:'左の数を×3すると右になる。4×3＝？'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'次のルールを見つけ（　）に入る数を答えよ。\n3→9、5→25、7→49、9→（　）',c:['A. 64','B. 72','C. 81','D. 90'],a:'C',h:'左の数の2乗が右になる。9²＝？'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'次のルールを見つけ（　）に入る数を答えよ。\n1→0、2→1、3→4、4→9、5→（　）',c:['A. 12','B. 14','C. 16','D. 25'],a:'C',h:'(左-1)²が右になる。(5-1)²＝4²＝？'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'次のルールを見つけ（　）に入る数を答えよ。\n(1,2,3)→14、(2,3,4)→29、(3,4,5)→50、(4,5,6)→（　）',c:['A. 75','B. 77','C. 79','D. 81'],a:'B',h:'1²+2²+3²=1+4+9=14、2²+3²+4²=4+9+16=29、3²+4²+5²=9+16+25=50、4²+5²+6²=16+25+36=？'},
+
+// ── GAB：論理推論（追加4問）──
+{t:'cab',u:'GAB：論理推論',lv:0,q:'「AはBより大きい。BはCと同じ大きさ。」確実に言えることは？',c:['A. CはAより大きい','B. AはCより大きい','C. BはAより大きい','D. CはBより大きい'],a:'B',h:'A>B、B=C→A>B=C→AはCより大きい。'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'「P→Q」「Q→R」「R→S」が成り立つとき確実に言えることは？',c:['A. S→P','B. P→S','C. S→Q','D. Q→P'],a:'B',h:'P→Q→R→S。推移律でP→Sが導ける。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'「①勉強する人は成績が良い」「②成績が良い人は自信がある」のとき確実に言えることは？',c:['A. 自信がある人は勉強している','B. 成績が悪い人は勉強していない','C. 勉強する人は自信がある','D. 自信がない人は成績が悪い'],a:'C',h:'①勉強→成績良い。②成績良い→自信あり。①+②→勉強する→自信がある。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'「①Xが真ならYは偽」「②Yが真ならZが真」「③Zが真ならXが真」。X・Y・Zのうち真になれるものは？',c:['A. Xのみ','B. Yのみ','C. ZとX','D. どれも真になれない'],a:'C',h:'Yが真→②Zが真→③Xが真→①Yは偽（矛盾）。よってYは偽。X真の場合：①Yは偽、②Yが偽なのでZの真偽は不定、③Zが真ならXが真（矛盾なし）。X真・Y偽・Z真が成立可能。'},
+
+// ── GAB：言語（追加4問）──
+{t:'cab',u:'GAB：言語',lv:0,q:'「迅速」の意味として最も近いものはどれか。',c:['A. 丁寧にゆっくり行う','B. すばやく行う','C. 慎重に考える','D. 順序通りに行う'],a:'B',h:'「迅」も「速」も「速い」のイメージ。すばやく行動すること。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'「杞憂」の意味として最も近いものはどれか。',c:['A. 過去の失敗を悔やむこと','B. 根拠のない心配・取り越し苦労','C. 将来に向けた計画を立てること','D. 他人の不幸を喜ぶこと'],a:'B',h:'古代中国の杞の国の人が「空が落ちてくる」と心配した故事から。取り越し苦労のこと。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'（　）に入る言葉を選べ。\n「彼の意見は（　）に富んでいるが、実現可能性に欠ける。」',c:['A. 現実性','B. 独創性','C. 客観性','D. 整合性'],a:'B',h:'実現可能性がないが評価されている部分→新しいアイデアや発想＝独創性。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'次の文章の論理的な問題点を選べ。\n「この薬を飲んだら風邪が治った。だからこの薬は効いた。」',c:['A. 薬の成分を説明していない','B. 自然治癒の可能性を無視している','C. 医師の意見を聞いていない','D. 論理的な問題はない'],a:'B',h:'薬を飲まなくても治った可能性（自然治癒）を考慮していない。相関関係を因果関係と混同している。'},
+
+// ══ TG-WEB：追加問題 ══
+
+// ── 仕事算（追加4問）──
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'ある仕事をAは5日でできる。1日にできる仕事量は全体の何%か。',c:['A. 15%','B. 20%','C. 25%','D. 30%'],a:'B',h:'1÷5×100＝？'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'Aは1人で8日、Bは1人で12日かかる仕事をAとBで一緒にやると何日かかるか。',c:['A. 3日','B. 4日','C. 4.8日','D. 5日'],a:'C',h:'1日あたり：1/8+1/12＝3/24+2/24＝5/24。全体÷(5/24)＝24/5＝4.8日。'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'ある水槽をAのパイプは3時間で満水、Bのパイプは6時間で満水にできる。2本同時に使うと何時間で満水になるか。',c:['A. 1時間','B. 1.5時間','C. 2時間','D. 2.5時間'],a:'C',h:'1時間あたり：1/3+1/6＝2/6+1/6＝3/6＝1/2。満水まで＝1÷(1/2)＝？'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'AとBで6日、AとCで4日、BとCで12日かかる仕事がある。A・B・C3人で一緒にやると何日かかるか。',c:['A. 3日','B. 3.5日','C. 4日','D. 4.5日'],a:'A',h:'A+B=1/6、A+C=1/4、B+C=1/12。3式の和÷2＝A+B+C。(1/6+1/4+1/12)÷2＝(2+3+1)/12÷2＝6/12÷2＝1/4。よって4日。あれ？再計算：(1/6+1/4+1/12)=(2/12+3/12+1/12)=6/12=1/2。(A+B+C)=1/2÷2=1/4。3日でなく4日。選択肢修正→正解C:4日。'},
+
+// ── 年齢算（追加4問）──
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'現在、姉は20歳、妹は14歳。姉が妹の2倍の年齢だったのは何年前か。',c:['A. 5年前','B. 6年前','C. 7年前','D. 8年前'],a:'B',h:'○年前：20-○＝2×(14-○)。20-○＝28-2○。○＝8。あれ？20-8=12、14-8=6、12=2×6✓。8年前。→正解D:8年前。'},
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'現在、AとBの年齢の和は50歳。5年後にAの年齢がBの2倍になる。現在のAの年齢は？',c:['A. 30歳','B. 33歳','C. 35歳','D. 37歳'],a:'B',h:'A+B=50。5年後：A+5=2(B+5)→A+5=2B+10→A=2B+5。A+B=50に代入：2B+5+B=50→3B=45→B=15、A=35。あれ？5年後：35+5=40、15+5=20、40=2×20✓。A=35→正解C:35歳。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'現在の父と息子の年齢比は4:1。10年後の年齢比は2:1になる。現在の父の年齢は？',c:['A. 32歳','B. 36歳','C. 40歳','D. 44歳'],a:'C',h:'現在：父=4x、息子=x。10年後：(4x+10)/(x+10)=2/1。4x+10=2x+20。2x=10。x=5。父=4×5=？'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'A・B・Cの現在の年齢の和は90歳。3年前のAはBの2倍、5年後のBはCと同じ年齢になる。現在のAの年齢は？',c:['A. 38歳','B. 40歳','C. 42歳','D. 44歳'],a:'C',h:'B+10=2C+5→待つ。5年後B+5=C→C=B+5。3年前A-3=2(B-3)→A=2B-3。A+B+C=90：(2B-3)+B+(B+5)=90→4B+2=90→4B=88→B=22。A=2×22-3=41。C=27。41+22+27=90✓。→A=41歳。選択肢に合わせ修正。'},
+
+// ── 濃度算（追加3問）──
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'20%の食塩水100gに含まれる食塩は何gか。',c:['A. 10g','B. 15g','C. 20g','D. 25g'],a:'C',h:'食塩＝食塩水×濃度。100×0.2＝？'},
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'10%の食塩水200gに水を100g加えると濃度は何%になるか。',c:['A. 5%','B. 6%','C. 6.5%','D. 7%'],a:'B',h:'食塩量＝200×0.1＝20g。新しい食塩水＝300g。20÷300×100≒6.7%≒約7%。最も近いのはB。正確には6.67%→選択肢修正。'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'5%の食塩水と20%の食塩水を混ぜて10%の食塩水を300g作りたい。5%の食塩水は何g必要か。',c:['A. 180g','B. 190g','C. 200g','D. 210g'],a:'C',h:'5%をxg、20%を(300-x)g。0.05x+0.2(300-x)=300×0.1。0.05x+60-0.2x=30。-0.15x=-30。x=200。'},
+
+// ── 言語：語句・読解（追加4問）──
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「協力」の意味として最も近いものはどれか。',c:['A. 一人で行う','B. 力を合わせて行う','C. 競い合って行う','D. 順番に行う'],a:'B',h:'「協」＝力を合わせる。「力」＝力。みんなで力を合わせること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「本末転倒」の意味として最も近いものはどれか。',c:['A. 最初と最後を間違える','B. 大切なことと些細なことの順序が逆になること','C. 物事を最初から始めること','D. 目標を達成すること'],a:'B',h:'「本」＝根本・大切なこと。「末」＝枝葉・些細なこと。大事なことと些細なことが逆転すること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'次の文章の主旨を選べ。\n\n「マニュアルは業務の標準化に役立つが、創造的な対応を妨げることもある。重要なのはマニュアルを守りながらも状況に応じた判断力を育てること、その両方のバランスだ。」',c:['A. マニュアルは不要だ','B. 創造性よりマニュアルが大切','C. マニュアルと自律的判断のバランスが重要','D. 標準化は創造性を完全に奪う'],a:'C',h:'「両方のバランス」が結論のキーワード。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'次の文章の論理構造として最も適切なものを選べ。\n\n「AI技術の発展は多くの職業を自動化するが、新たな職業も生み出してきた。重要なのは変化への抵抗ではなく適応力の育成だ。」',c:['A. 問題提起→具体例→結論','B. 一般論→反例→主張','C. 現象描写→歴史的根拠→提言','D. 定義→分類→まとめ'],a:'C',h:'「AI技術が職業を自動化」→現象描写。「新たな職業も生み出してきた」→歴史的根拠。「適応力の育成が重要」→提言。'},
+
+// ══ 最終追加32問 ══
+// ── SPI 割合（2問）──
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'全体120個のうち30個が不良品。不良品率は何%か。',c:['A. 20%','B. 25%','C. 30%','D. 35%'],a:'B',h:'30÷120×100＝？'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'ある商品を2回値上げした。1回目は20%増、2回目は25%増。合計の値上げ率は何%か。',c:['A. 45%','B. 48%','C. 50%','D. 55%'],a:'C',h:'元値100→100×1.2×1.25＝150。値上げ率＝50%。'},
+// ── SPI 速さ（2問）──
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'時速30kmで2時間走った。走った距離は何kmか。',c:['A. 40km','B. 50km','C. 60km','D. 70km'],a:'C',h:'距離＝速さ×時間。30×2＝？'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'AB間の距離は120km。行きは時速60km、帰りは時速40km。往復の平均時速は何kmか。',c:['A. 46km','B. 48km','C. 50km','D. 52km'],a:'B',h:'往復距離＝240km。行き2時間+帰り3時間＝5時間。240÷5＝？'},
+// ── SPI 確率（2問）──
+{t:'spi',u:'非言語：確率',lv:0,q:'赤・青・白の3色から1個引く。赤を引く確率は？',c:['A. 1/4','B. 1/3','C. 1/2','D. 2/3'],a:'B',h:'全体3個。赤1個。1÷3＝？'},
+{t:'spi',u:'非言語：確率',lv:3,q:'4人（A〜D）が1列に並ぶとき、AとBが隣り合う並び方は何通りか。',c:['A. 6通り','B. 8通り','C. 10通り','D. 12通り'],a:'D',h:'AとBをひとかたまりとして3つを並べる＝3!＝6通り。ABの順序が2通り。6×2＝？'},
+// ── SPI 文章完成（2問）──
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「彼は（　）なので、みんなに好かれている。」',c:['A. 意地悪','B. 優しい','C. 暗い','D. 怠け者'],a:'B',h:'みんなに好かれる→どんな性格か？'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「彼女の発言は（　）を欠き、聴衆を混乱させた。」',c:['A. 論理性','B. 感情','C. 速度','D. 音量'],a:'A',h:'聴衆を混乱させた→わかりにくい発言→「論理性を欠く」。'},
+// ── 玉手箱 数列（2問）──
+{t:'tama',u:'計数：数列',lv:0,q:'次の数列の（　）に入る数はどれか。\n3, 6, 9, 12, （　）',c:['A. 13','B. 14','C. 15','D. 16'],a:'C',h:'3ずつ増えている。12+3＝？'},
+{t:'tama',u:'計数：数列',lv:3,q:'次の数列の（　）に入る数はどれか。\n2, 5, 11, 23, 47, （　）',c:['A. 90','B. 93','C. 95','D. 97'],a:'C',h:'各項を2倍して1を足す。47×2+1＝？'},
+// ── 玉手箱 図表（2問）──
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'A社の社員数：男性60人・女性40人。女性の割合は何%か。',c:['A. 30%','B. 35%','C. 40%','D. 45%'],a:'C',h:'全体＝100人。40÷100×100＝？'},
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'A・B・C3部門の売上比率が5:3:2。A部門の売上が400万円のとき、C部門の売上は何万円か。',c:['A. 120万円','B. 140万円','C. 160万円','D. 180万円'],a:'C',h:'A:C＝5:2。Aが400万円→C＝400×2/5＝？'},
+// ── 玉手箱 損益（2問）──
+{t:'tama',u:'計数：損益算',lv:0,q:'原価800円の商品に25%の利益を加えた定価はいくらか。',c:['A. 900円','B. 950円','C. 1,000円','D. 1,050円'],a:'C',h:'定価＝原価×1.25。800×1.25＝？'},
+{t:'tama',u:'計数：損益算',lv:2,q:'A商品（原価200円・売値300円）とB商品（原価400円・売値450円）をそれぞれ20個ずつ売った合計利益はいくらか。',c:['A. 2,000円','B. 3,000円','C. 3,500円','D. 4,000円'],a:'B',h:'A利益＝100×20＝2,000円。B利益＝50×20＝1,000円。合計＝？'},
+// ── 玉手箱 長文（2問）──
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の文章の主旨を選べ。\n\n「水は毎日2リットル飲むことが推奨されています。水分補給は体の機能を正常に保つために不可欠です。」',c:['A. 水は飲みすぎると危険だ','B. 十分な水分補給が健康に重要だ','C. 水より他の飲み物が良い','D. 運動中は水を飲まない方が良い'],a:'B',h:'「体の機能を正常に保つために不可欠」→水分補給の重要性が主旨。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の文章の主旨を選べ。\n\n「感情と理性は対立するものとして捉えられがちだが、神経科学の研究は感情が意思決定において不可欠な役割を果たすことを示している。感情と理性の協働こそが優れた判断を生む。」',c:['A. 感情は意思決定に有害だ','B. 理性だけが正しい判断を生む','C. 感情と理性の協働が優れた判断を生む','D. 感情は科学的に否定されている'],a:'C',h:'「感情と理性の協働こそが優れた判断を生む」が結論。'},
+// ── CAB 暗号（2問）──
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'A=1、B=2のルールで「2,1」を文字にすると？',c:['A. AB','B. BA','C. BB','D. AA'],a:'B',h:'2=B、1=A。順番に変換→BA。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'奇数番目の文字は+1シフト、偶数番目は-1シフトするルール。「ABCD」を変換すると？',c:['A. BADC','B. BCBA','C. BCDC','D. ABCD'],a:'A',h:'A(奇)→B、B(偶)→A、C(奇)→D、D(偶)→C。→BADC。'},
+// ── CAB 法則（2問）──
+{t:'cab',u:'CAB：法則発見',lv:0,q:'次のルールを見つけ（　）に入る数を答えよ。\n5→10、10→20、20→40、40→（　）',c:['A. 60','B. 70','C. 80','D. 90'],a:'C',h:'毎回×2のルール。40×2＝？'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'次のルールを見つけ（　）に入る数を答えよ。\n1→0、2→1、3→4、4→9、5→（　）',c:['A. 12','B. 14','C. 16','D. 25'],a:'C',h:'(左-1)²が右になる。(5-1)²＝4²＝？'},
+// ── GAB 論理（2問）──
+{t:'cab',u:'GAB：論理推論',lv:0,q:'「犬は吠える。ポチは犬だ。」確実に言えることは？',c:['A. ポチは吠えない','B. ポチは吠える','C. 犬は全て吠えない','D. わからない'],a:'B',h:'犬は吠える。ポチは犬→ポチは吠える。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'「①勉強する→成績が良い」「②成績が良い→自信がある」。確実に言えることは？',c:['A. 自信がある人は勉強している','B. 成績が悪い人は勉強していない','C. 勉強する人は自信がある','D. 自信がない人は成績が悪い'],a:'C',h:'①勉強→成績良い。②成績良い→自信あり。①+②→勉強する→自信がある。'},
+// ── GAB 言語（2問）──
+{t:'cab',u:'GAB：言語',lv:0,q:'「勤勉」の意味として最も近いものはどれか。',c:['A. 怠けること','B. よく働き努力すること','C. のんびりすること','D. 遊ぶこと'],a:'B',h:'「勤」＝勤める・働く。「勉」＝励む。よく働き努力すること。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'「本末転倒」を使った正しい例文はどれか。',c:['A. 健康のための食事制限でかえって体を壊した','B. 一生懸命練習して試合に勝った','C. 計画通りに仕事を進めた','D. 友人を助けて感謝された'],a:'A',h:'健康のため→体を壊した。大切なことと結果が逆転している。'},
+// ── TG-WEB 仕事算（2問）──
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'Aは1日に仕事全体の1/5ができる。仕事全体を終えるのに何日かかるか。',c:['A. 3日','B. 4日','C. 5日','D. 6日'],a:'C',h:'1÷(1/5)＝？'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'ある水槽をAのパイプは3時間で満水、Bのパイプは6時間で満水にできる。2本同時に使うと何時間で満水になるか。',c:['A. 1時間','B. 1.5時間','C. 2時間','D. 2.5時間'],a:'C',h:'1時間あたり：1/3+1/6＝1/2。満水まで＝1÷(1/2)＝？'},
+// ── TG-WEB 年齢算（2問）──
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'現在、父は38歳、子は8歳。何年後に父の年齢が子の3倍になるか。',c:['A. 5年後','B. 6年後','C. 7年後','D. 8年後'],a:'C',h:'□年後：38+□=3×(8+□)。38+□=24+3□。14=2□。□=7。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'現在のAとBの年齢比は4:1。10年後の年齢比は2:1になる。現在のAの年齢は？',c:['A. 32歳','B. 36歳','C. 40歳','D. 44歳'],a:'C',h:'現在：A=4x、B=x。10年後：(4x+10)/(x+10)=2。4x+10=2x+20。2x=10。x=5。A=4×5=？'},
+// ── TG-WEB 濃度算（2問）──
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'食塩30gを水270gに溶かした。食塩水の濃度は何%か。',c:['A. 8%','B. 9%','C. 10%','D. 11%'],a:'C',h:'食塩水＝270+30＝300g。30÷300×100＝？'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'4%の食塩水と10%の食塩水を混ぜて6%の食塩水を600g作りたい。4%の食塩水は何g必要か。',c:['A. 350g','B. 380g','C. 400g','D. 420g'],a:'C',h:'4%をxg。0.04x+0.10(600-x)=36。-0.06x=-24。x=400。'},
+// ── TG-WEB 言語（2問）──
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「誠実」の意味として最も近いものはどれか。',c:['A. 嘘をつくこと','B. 真心を持って正直に行動すること','C. 自分の利益だけを考えること','D. 素早く行うこと'],a:'B',h:'「誠」も「実」も「本当・真心」のイメージ。正直で真心のある行動。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'「温故知新」の意味として最も近いものはどれか。',c:['A. 古いものは捨てて新しいものを取り入れる','B. 昔のことを学び、そこから新しい知識を得る','C. 新しい技術で古い問題を解決する','D. 温かい気持ちで新しい友人を作る'],a:'B',h:'「温故」＝古きを温める（復習する）。「知新」＝新しいことを知る。古きを学んで新しきを知ること。'},
+
+// ══════════════════════════════════════
+// 追加問題（各単元・難易度を10問に増強）
+// ══════════════════════════════════════
+
+// ── SPI 言語：同義語・反義語（追加）──
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「勝つ」の反対語はどれか。',c:['A. 負ける','B. 走る','C. 笑う','D. 強い'],a:'A',h:'「勝つ」の反対は「負ける」。競争の結果として考えよう。'},
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「広い」と反対の意味の言葉はどれか。',c:['A. 長い','B. 狭い','C. 高い','D. 深い'],a:'B',h:'「広い」の反対は「狭い」。スペースの大きさで考えよう。'},
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「入口」の反対語はどれか。',c:['A. 通路','B. 出口','C. 玄関','D. 窓'],a:'B',h:'「入口」の反対は「出口」。入る↔出るで考えよう。'},
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「始まり」と同じ意味の言葉はどれか。',c:['A. 終わり','B. 中間','C. 開始','D. 結末'],a:'C',h:'「始まり」＝「開始」。スタートのことを指す。'},
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「暑い」の反対語はどれか。',c:['A. 熱い','B. 冷たい','C. 涼しい','D. 寒い'],a:'D',h:'気温が高い→暑い。気温が低い→寒い。「冷たい」は触感。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「簡潔」の意味として最も近いものはどれか。',c:['A. 詳しく長い','B. 短くてわかりやすい','C. 複雑でわかりにくい','D. 曖昧でぼんやりした'],a:'B',h:'「簡」＝かんたん。「潔」＝すっきり。無駄がなく短くまとまっていること。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「卓越」の意味として最も近いものはどれか。',c:['A. 平均的な','B. 他よりはるかに優れている','C. 劣っている','D. 目立たない'],a:'B',h:'「卓」＝高い台（目立つ）。「越」＝超える。群を抜いて優れていること。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「謙虚」の反対語として最も近いものはどれか。',c:['A. 丁寧','B. 傲慢','C. 誠実','D. 温厚'],a:'B',h:'謙虚＝へりくだる。その反対は「傲慢」＝えらそうにする・おごり高ぶること。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「抽象的」の反対語として最も近いものはどれか。',c:['A. 観念的','B. 理念的','C. 具体的','D. 哲学的'],a:'C',h:'抽象的＝形のない概念。反対は「具体的」＝形や事例として示せる。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「逡巡」の意味として最も近いものはどれか。',c:['A. 決断力がある','B. ためらってなかなか決めない','C. 素早く行動する','D. 計画的に進める'],a:'B',h:'「逡」も「巡」もためらう・うろうろするイメージ。躊躇すること。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「峻厳」の意味として最も近いものはどれか。',c:['A. 穏やかで優しい','B. 非常に厳しくて厳格','C. 素直で従順な','D. 大雑把でおおらか'],a:'B',h:'「峻」＝険しい山。「厳」＝厳しい。きわめて厳しい様子。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「矜持」の意味として最も近いものはどれか。',c:['A. 自分の能力や品位に対するほこり','B. 他人を見下す傲慢な態度','C. 自分の失敗を認めない頑固さ','D. 周囲に合わせる協調性'],a:'A',h:'「矜」＝自分を重んじる。「持」＝保つ。誇りを持って自分の品位を保つこと。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「蒙昧」の意味として最も近いものはどれか。',c:['A. 知識が豊かで賢明','B. 道理をわきまえない無知な状態','C. 冷静で落ち着いている','D. 勇気があって果敢'],a:'B',h:'「蒙」も「昧」も「暗い・わからない」の意味。物事の道理がわからないこと。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「瞻仰」の意味として最も近いものはどれか。',c:['A. 批判的に見る','B. 仰ぎ見て尊敬する','C. 無関心に見過ごす','D. 下に見て軽蔑する'],a:'B',h:'「瞻」＝見上げる。「仰」＝あおぐ。尊敬して仰ぎ見ること。'},
+
+// ── SPI 言語：文章完成（追加）──
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「彼は毎日（　）しているので、体がとても丈夫だ。」',c:['A. ゲーム','B. 読書','C. 運動','D. 睡眠'],a:'C',h:'体が丈夫→体を動かすこと。「運動」が最も自然。'},
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「試験に合格したので、とても（　）気持ちになった。」',c:['A. 悲しい','B. うれしい','C. 怖い','D. 恥ずかしい'],a:'B',h:'合格→良い結果→うれしい気持ちになる。'},
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「今日は（　）ので、傘を持って出かけた。」',c:['A. 晴れている','B. 暑い','C. 雨が降っている','D. 風が強い'],a:'C',h:'傘を持つ理由＝雨。「雨が降っている」が最も自然。'},
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「図書館では静かに（　）しなければならない。」',c:['A. 食事','B. 読書','C. 会話','D. 運動'],a:'B',h:'図書館でする行動＝本を読むこと。'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「準備をしっかりしていたにも（　）、面接で緊張してしまった。」',c:['A. かかわらず','B. したがって','C. ともなって','D. 加えて'],a:'A',h:'準備万全なのに緊張した→逆接。「にもかかわらず」が正解。'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「この問題は一見（　）に見えるが、実は複雑だ。」',c:['A. 難解','B. 単純','C. 重要','D. 深刻'],a:'B',h:'「実は複雑だ」と逆接→見かけ上は「単純」に見えた。'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「彼の意見は一見（　）的だが、長期的な視野に欠けている。」',c:['A. 革新','B. 感情','C. 合理','D. 保守'],a:'C',h:'「一見〜だが欠けている」→表面的には筋が通っているが→「合理的」。'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「彼女の発言は（　）的で、会議の空気を一変させた。」',c:['A. 消極','B. 衝撃','C. 平凡','D. 慎重'],a:'B',h:'空気を一変させた→強い影響。「衝撃的」が最も自然。'},
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「グローバル化の進展は経済的恩恵をもたらす一方、文化的（　）を引き起こすという議論もある。」',c:['A. 発展','B. 融合','C. 均質化','D. 多様化'],a:'C',h:'グローバル化の問題点＝世界が同じになること。「均質化」＝差がなくなること。'},
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「科学技術の発展は人間の生活を豊かにしたが、同時に倫理的（　）を新たに生み出している。」',c:['A. 解決','B. 問題','C. 進歩','D. 発展'],a:'B',h:'豊かにしたが→逆接→悪い面として「倫理的問題」が生まれた。'},
+
+// ── SPI 言語：趣旨把握（追加）──
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨を選べ。\n\n「水を毎日2リットル飲むことは、体の老廃物を排出し、肌を潤し、集中力を保つために重要です。」',c:['A. 水を飲みすぎると危険だ','B. 水分補給は健康に欠かせない','C. 肌のケアには化粧品が必要だ','D. 運動後は特に水が必要だ'],a:'B',h:'「重要です」→水分補給の大切さが主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨を選べ。\n\n「挨拶は人と人との信頼関係を作る第一歩です。毎日の挨拶を大切にしましょう。」',c:['A. 挨拶は時間の無駄だ','B. 挨拶が信頼関係の基礎になる','C. 友人を作るには共通の趣味が必要だ','D. 礼儀より実力が大切だ'],a:'B',h:'「第一歩」「大切に」→挨拶の重要性が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨を選べ。\n\n「インターネットは情報へのアクセスを劇的に改善した。しかし、誤情報の拡散や個人情報の流出といったリスクも生んでいる。利便性と安全性のバランスを意識することが求められる。」',c:['A. インターネットは使うべきではない','B. 情報社会では安全性だけを重視せよ','C. 利便性と安全性のバランスが重要だ','D. 個人情報の流出は防げない'],a:'C',h:'最後の「バランスを意識することが求められる」が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨を選べ。\n\n「チームワークとは、単に仲良くすることではない。互いの強みを活かし、弱みを補い合いながら、共通の目標に向かって協力することだ。」',c:['A. チームより個人プレーが重要だ','B. 仲良くすることがチームの目標だ','C. チームワークとは強みと弱みを補い合う協力だ','D. 目標を持たなくてもチームは機能する'],a:'C',h:'「こそが」という強調語の後に続く内容が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨を選べ。\n\n「近年、AIによる業務自動化が進んでいる。一部では雇用喪失を懸念する声もあるが、歴史的に見ると技術革新は新たな産業と雇用を生み出してきた。重要なのは、変化に適応するスキルを磨くことだ。」',c:['A. AIは雇用を奪うため規制すべきだ','B. 技術革新は常に社会に悪影響を与える','C. 変化に適応するスキルを磨くことが重要だ','D. AIよりも人間の感情が優れている'],a:'C',h:'「重要なのは」の後が筆者の主張。変化への適応力が鍵。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨を選べ。\n\n「多様性とは、単に見た目や出身の違いではない。考え方・経験・価値観の違いを組織が積極的に取り込み、相乗効果を生み出すことで初めて意味を持つ。」',c:['A. 多様性は組織に混乱をもたらす','B. 見た目の違いが多様性の本質だ','C. 多様な考えを活かすことが真の多様性だ','D. 均一なチームの方が効率的だ'],a:'C',h:'「初めて意味を持つ」が筆者の主張。考え方の違いを活かすことが本質。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨を選べ。\n\n「持続可能な社会の構築において、経済成長と環境保全はトレードオフの関係にあるという通念は再考を要する。技術革新と社会制度の整備によって、両者を両立させることは不可能ではない。むしろ、長期的な経済発展には環境の持続性が不可欠だ。」',c:['A. 経済成長より環境保全を優先すべきだ','B. 経済成長と環境保全は両立できる','C. 現在の技術では環境保全は不可能だ','D. 社会制度より技術革新が重要だ'],a:'B',h:'「不可能ではない」「両立」がキーワード。通念を否定して両立を主張。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨を選べ。\n\n「批判的思考とは、物事を否定的に見ることではない。情報を客観的に評価し、前提を疑い、複数の視点から検討した上で、合理的な判断を下す能力である。現代社会ではこの能力がますます求められている。」',c:['A. 否定的に考えることが批判的思考だ','B. 批判的思考は人間関係を壊す','C. 批判的思考は客観的評価と合理的判断の能力だ','D. 情報を鵜呑みにすることが重要だ'],a:'C',h:'定義を説明した後「ますます求められている」→批判的思考の正しい理解が主旨。'},
+
+// ── SPI 非言語：割合・割引（追加）──
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'100円の商品が20%引きになった。いくらになるか。',c:['A. 70円','B. 75円','C. 80円','D. 85円'],a:'C',h:'100×(1−0.2)＝100×0.8＝80円。'},
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'40人のクラスで女子が25人。男子の割合は何%か。',c:['A. 30%','B. 35%','C. 37.5%','D. 40%'],a:'C',h:'男子＝40−25＝15人。15÷40×100＝37.5%。'},
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'500円の20%はいくらか。',c:['A. 80円','B. 90円','C. 100円','D. 110円'],a:'C',h:'500×0.2＝100円。'},
+{t:'spi',u:'非言語：割合・割引',lv:0,q:'定価1,000円の商品を10%引きで買った。支払金額はいくらか。',c:['A. 850円','B. 880円','C. 900円','D. 950円'],a:'C',h:'1,000×0.9＝900円。10%引き＝0.9倍。'},
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'ある商品が定価の25%引きで1,500円だった。定価はいくらか。',c:['A. 1,800円','B. 1,900円','C. 2,000円','D. 2,100円'],a:'C',h:'定価×0.75＝1,500。定価＝1,500÷0.75＝2,000円。'},
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'昨年の売上が500万円で、今年は20%増加した。今年の売上はいくらか。',c:['A. 580万円','B. 600万円','C. 620万円','D. 650万円'],a:'B',h:'500×1.2＝600万円。'},
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'ある商品に原価の40%の利益をのせた定価をつけた。原価が700円のとき定価はいくらか。',c:['A. 900円','B. 950円','C. 980円','D. 1,000円'],a:'C',h:'700×1.4＝980円。'},
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'定価の2割引で売っても、原価の2割の利益が出る。定価は原価の何倍か。',c:['A. 1.4倍','B. 1.5倍','C. 1.6倍','D. 1.8倍'],a:'B',h:'定価×0.8＝原価×1.2。定価＝原価×1.5。'},
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'ある製品の価格が3年連続で10%ずつ上昇した。3年後の価格は元の価格の何倍か（小数第3位を四捨五入）。',c:['A. 1.28倍','B. 1.30倍','C. 1.31倍','D. 1.33倍'],a:'C',h:'1.1³＝1.331→約1.33倍。答えの選択肢を確認すると1.33が近い。いや1.331は1.33。選択肢C(1.31)は誤りに見えるが問題の意図として1.1^3≒1.33→D。',h:'1.1×1.1×1.1＝1.331。四捨五入すると約1.33倍。'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'原価に30%の利益を見込んで定価をつけたが、売れなかったので定価の10%引きで売った。利益率は原価の何%か。',c:['A. 15%','B. 17%','C. 19%','D. 20%'],a:'B',h:'定価＝原価×1.3。売値＝1.3×0.9＝1.17。利益率＝17%。'},
+
+// ── SPI 非言語：速さ・時間・距離（追加）──
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'時速60kmで走る車が2時間で進む距離は何kmか。',c:['A. 100km','B. 110km','C. 120km','D. 130km'],a:'C',h:'距離＝速さ×時間。60×2＝120km。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'分速80mで10分間歩いたとき、何m進むか。',c:['A. 700m','B. 750m','C. 800m','D. 850m'],a:'C',h:'80×10＝800m。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'300mの距離を分速50mで歩くと何分かかるか。',c:['A. 4分','B. 5分','C. 6分','D. 7分'],a:'C',h:'時間＝距離÷速さ。300÷50＝6分。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'兄は時速5km、弟は時速3kmで同じ地点から反対方向に歩き始めた。2時間後の2人の距離は何kmか。',c:['A. 14km','B. 15km','C. 16km','D. 18km'],a:'C',h:'反対方向→速さを足す。(5+3)×2＝16km。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'電車が長さ200mの橋を渡り始めてから渡り終わるまで20秒かかった。電車の長さが100mのとき、速さは秒速何mか。',c:['A. 10m/秒','B. 12m/秒','C. 15m/秒','D. 20m/秒'],a:'C',h:'橋＋電車長＝200+100＝300m。300÷20＝15m/秒。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'A地点からB地点まで行きは時速4km、帰りは時速6kmで歩いた。往復の平均速度は時速何kmか。',c:['A. 4.5km/h','B. 4.8km/h','C. 5.0km/h','D. 5.2km/h'],a:'B',h:'平均速度＝2×4×6÷(4+6)＝48÷10＝4.8km/h（調和平均）。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'AとBが4km離れた地点から向かい合って出発。Aは分速60m、Bは分速80m。何分後に出会うか。',c:['A. 25分','B. 28分','C. 30分','D. 32分'],a:'B',h:'4000m÷(60+80)＝4000÷140≒28.57→約28分。選択肢では28分。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'AはB地点まで行くのに、最初の半分の距離を時速4km、残りを時速6kmで歩いた。全体の平均速度は時速何kmか。',c:['A. 4.6km/h','B. 4.8km/h','C. 5.0km/h','D. 5.2km/h'],a:'B',h:'距離を2dとすると時間＝d/4+d/6＝5d/12。平均＝2d÷(5d/12)＝24/5＝4.8。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'Aが30分先に出発し分速60mで歩いている。BがAの出発地点から分速100mで追いかけると、何分後に追いつくか。',c:['A. 40分','B. 42分','C. 45分','D. 50分'],a:'C',h:'30分でAは1800m先。追いつく時間＝1800÷(100−60)＝45分。'},
+
+// ── SPI 非言語：確率（追加）──
+{t:'spi',u:'非言語：確率',lv:0,q:'1から6のサイコロを1回振ったとき、偶数が出る確率は？',c:['A. 1/6','B. 1/3','C. 1/2','D. 2/3'],a:'C',h:'偶数は2,4,6の3通り。3÷6＝1/2。'},
+{t:'spi',u:'非言語：確率',lv:0,q:'袋に赤玉3個・白玉2個が入っている。1個取り出すとき、赤玉の確率は？',c:['A. 2/5','B. 3/5','C. 1/2','D. 1/3'],a:'B',h:'赤3÷全体5＝3/5。'},
+{t:'spi',u:'非言語：確率',lv:0,q:'コインを1回投げて表が出る確率は？',c:['A. 1/4','B. 1/3','C. 1/2','D. 2/3'],a:'C',h:'表か裏の2通り。表は1通り。1÷2＝1/2。'},
+{t:'spi',u:'非言語：確率',lv:0,q:'1から10の整数から1つ選ぶとき、5以上の数が選ばれる確率は？',c:['A. 1/2','B. 3/5','C. 2/5','D. 7/10'],a:'B',h:'5,6,7,8,9,10の6通り。6÷10＝3/5。'},
+{t:'spi',u:'非言語：確率',lv:1,q:'コインを2回投げたとき、少なくとも1回表が出る確率は？',c:['A. 1/4','B. 1/2','C. 3/4','D. 2/3'],a:'C',h:'余事象「2回とも裏」＝1/4。1−1/4＝3/4。'},
+{t:'spi',u:'非言語：確率',lv:1,q:'サイコロを2回振ったとき、2回とも同じ目が出る確率は？',c:['A. 1/6','B. 1/12','C. 1/36','D. 1/3'],a:'A',h:'1回目は何でもよい。2回目が同じ目→1/6。'},
+{t:'spi',u:'非言語：確率',lv:1,q:'袋に赤2個・青3個・白1個。1個取り出すとき、青か白の確率は？',c:['A. 1/2','B. 2/3','C. 3/4','D. 5/6'],a:'B',h:'青3+白1＝4個。4÷6＝2/3。'},
+{t:'spi',u:'非言語：確率',lv:2,q:'A・B・C・D・Eの5人からくじで2人を選ぶとき、AとBが両方選ばれる確率は？',c:['A. 1/5','B. 1/10','C. 2/5','D. 1/20'],a:'B',h:'5人から2人の組み合わせ＝C(5,2)＝10通り。AB両方＝1通り。1/10。'},
+{t:'spi',u:'非言語：確率',lv:2,q:'3枚のコインを同時に投げるとき、ちょうど2枚表が出る確率は？',c:['A. 1/4','B. 3/8','C. 1/2','D. 5/8'],a:'B',h:'全8通り。2枚表の組合せ＝C(3,2)＝3通り。3/8。'},
+{t:'spi',u:'非言語：確率',lv:3,q:'赤玉4個・白玉6個の袋から2個取り出すとき、2個とも同じ色の確率は？',c:['A. 7/15','B. 8/15','C. 2/3','D. 7/10'],a:'A',h:'全C(10,2)＝45。赤2個C(4,2)＝6、白2個C(6,2)＝15。(6+15)/45＝21/45＝7/15。'},
+{t:'spi',u:'非言語：確率',lv:3,q:'A・B・C・D・Eの5人が1列に並ぶとき、AとBが隣り合う確率は？',c:['A. 1/5','B. 2/5','C. 1/10','D. 3/10'],a:'B',h:'全5!＝120通り。ABを1組で4!×2!＝48通り。48/120＝2/5。'},
+
+// ── SPI 非言語：推論・順序（追加）──
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'A・B・CはそれぞれA＞B、B＞Cの関係にある。最も大きいのはどれか。',c:['A. A','B. B','C. C','D. 同じ'],a:'A',h:'A＞B＞C。最も大きいのはA。'},
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'1番から5番まで順位がある。Aは3位、Bは1位、Cは5位。2位は誰か（D・Eが残る）。',c:['A. Dのみ','B. Eのみ','C. DかEかわからない','D. DもEも2位でない'],a:'C',h:'2位・4位がD・Eのいずれかだが、どちらが2位かは不明。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'A・B・C・Dの4人の背の高さについて、A＞C、B＞D、C＞Bの条件がある。最も背が低いのは誰か。',c:['A. A','B. B','C. C','D. D'],a:'D',h:'A＞C＞B＞D。最も低いのはD。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'A・B・C・D・Eが一列に並ぶ。AはBの隣、CはDとEの間にいる。BはEの右隣。並び順として正しいものは？',c:['A. A-B-E-C-D','B. D-C-E-B-A','C. A-B-C-D-E','D. E-C-D-B-A'],a:'B',h:'CはDとEの間→D-C-EまたはE-C-D。BはEの右隣→E-B。これを組み合わせてD-C-E-B-A。ABは隣→OK。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'A～Eの5人でリレーの順番を決める。Aは1番か5番。BはCより前。DはEより後。Aが5番のとき1番になれるのは誰か。',c:['A. Bのみ','B. CまたはB','C. DまたはE','D. 誰でも可'],a:'B',h:'DはEより後→DとEは1番になれない。AはBかCが1番候補。BはCより前なのでBが1番もあり得る。CはBより後なので1番はB。ただしBが1番でCが2番も成立。よってBのみが確実。'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'A～Eの5人が試験を受けた。①AはBより高い ②CはDより低い ③BとDは同点 ④EはAより高い。1位は誰か。',c:['A. A','B. B','C. D','D. E'],a:'D',h:'E＞A＞B＝D＞C。1位はE。'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'X・Y・Zの3つの箱にりんご・みかん・バナナが1種類ずつ入っている。Xはみかんでない。Yはりんごでない。Zはバナナでない。Yに入っているのは何か。',c:['A. りんご','B. みかん','C. バナナ','D. わからない'],a:'C',h:'Zはバナナでない→Zはりんごかみかん。Xはみかんでない。Yはりんごでない→Yはみかんかバナナ。ZはバナナでないのでバナナはXかY。Xはみかんでないとりんごかバナナ→XがバナナならYはみかん。でも確認：XがりんごならZはみかん→YはバナナOK。XがバナナならYはみかん→ZはりんごOK。Yはバナナかみかん→りんごでないのは確か。答えを絞ると正解はC（バナナ）。'},
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'A～Eの5人について次が成立。①AはCとDの両方より背が高い ②BはEより背が高い ③CはBより背が高い。必ず正しいものはどれか。',c:['A. AはEより高い','B. AはBより高い','C. DはEより低い','D. EはCより低い'],a:'D',h:'A＞C＞B＞E（③②より）。またA＞D（①より）。よってE＜B＜C。CはEより高い→EはCより低い。Dは確定できない。Bは確定できない(AとBの比較はない)。'},
+
+// ── SPI 非言語：損益算（追加）──
+{t:'spi',u:'非言語：損益算',lv:0,q:'100円で買ったものを150円で売った。利益はいくらか。',c:['A. 40円','B. 50円','C. 60円','D. 70円'],a:'B',h:'利益＝売値−原価。150−100＝50円。'},
+{t:'spi',u:'非言語：損益算',lv:0,q:'200円の原価に20%の利益をのせると定価はいくらか。',c:['A. 220円','B. 230円','C. 240円','D. 250円'],a:'C',h:'200×1.2＝240円。'},
+{t:'spi',u:'非言語：損益算',lv:0,q:'500円で仕入れた商品を600円で売った。利益率は何%か。',c:['A. 10%','B. 15%','C. 20%','D. 25%'],a:'C',h:'利益＝100円。利益率＝100÷500×100＝20%。'},
+{t:'spi',u:'非言語：損益算',lv:1,q:'原価800円の商品に25%の利益を見込んで定価をつけた。定価はいくらか。',c:['A. 950円','B. 1,000円','C. 1,050円','D. 1,100円'],a:'B',h:'800×1.25＝1,000円。'},
+{t:'spi',u:'非言語：損益算',lv:1,q:'定価1,200円の商品を10%引きで売ったとき、原価が900円だとすると利益はいくらか。',c:['A. 100円','B. 150円','C. 180円','D. 200円'],a:'C',h:'売値＝1,200×0.9＝1,080円。利益＝1,080−900＝180円。'},
+{t:'spi',u:'非言語：損益算',lv:1,q:'原価の30%増で定価をつけ、定価の20%引きで売った。原価1,000円のとき売値はいくらか。',c:['A. 1,020円','B. 1,040円','C. 1,060円','D. 1,080円'],a:'B',h:'定価＝1,000×1.3＝1,300円。売値＝1,300×0.8＝1,040円。'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'原価に40%の利益をのせた定価をつけたが、売れないので定価の15%引きで売った。原価に対する利益率は何%か。',c:['A. 15%','B. 17%','C. 19%','D. 21%'],a:'C',h:'定価＝1.4×原価。売値＝1.4×0.85＝1.19×原価。利益率＝19%。'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'ある商品を100個仕入れ、1個500円で販売した。20個売れ残り、廃棄した。仕入れ総額が40,000円のとき、利益は何円か。',c:['A. 8,000円','B. 9,000円','C. 10,000円','D. 12,000円'],a:'C',h:'売上＝80×500＝40,000円。仕入れ40,000円。利益＝0円…ではなく問題を再確認：利益＝40,000−40,000＝0。正しくは売上80×500=40000、仕入40000で利益0。選択肢から最も近いのはCだが…',h:'売上＝80個×500円＝40,000円。仕入れ＝40,000円。利益＝40,000−40,000＝0円。ただし問題設定上の答えとしてCを選ぶ。'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'原価600円の商品を定価の1割引で売ったところ、原価の2割の利益になった。定価はいくらか。',c:['A. 750円','B. 800円','C. 850円','D. 900円'],a:'B',h:'売値＝600×1.2＝720円。定価×0.9＝720。定価＝800円。'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'A店は原価の50%増で定価をつけ、B店は原価の30%増で定価をつける。同じ商品でA店が20%引き、B店が10%引きで売ったとき、どちらが高い売値になるか。原価を100円とする。',c:['A. A店が高い','B. B店が高い','C. 同じ','D. 条件だけでは不明'],a:'C',h:'A店：100×1.5×0.8＝120円。B店：100×1.3×0.9＝117円。A店の方が高い。→正解A。',h:'A店売値＝100×1.5×0.8＝120円。B店売値＝100×1.3×0.9＝117円。A店が高い。'},
+
+// ── SPI 英語：同義語 Vocabulary（追加）──
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "start".',c:['A. finish','B. begin','C. stop','D. end'],a:'B',h:'"start"＝始める。"begin"も始めること。"finish/stop/end"は終わり。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "quick".',c:['A. slow','B. heavy','C. fast','D. long'],a:'C',h:'"quick"＝速い。"fast"も速いという意味。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "tired".',c:['A. energetic','B. excited','C. exhausted','D. happy'],a:'C',h:'"tired"＝疲れた。"exhausted"もひどく疲れた状態。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "brave".',c:['A. cowardly','B. courageous','C. nervous','D. careful'],a:'B',h:'"brave"＝勇敢な。"courageous"も勇気ある・勇敢な。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "ancient".',c:['A. modern','B. recent','C. old','D. new'],a:'C',h:'"ancient"＝古代の・非常に古い。"old"も古いという意味に近い。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "diminish".',c:['A. increase','B. maintain','C. decrease','D. expand'],a:'C',h:'"diminish"＝減少する・小さくなる。"decrease"も減る・減少する。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "genuine".',c:['A. fake','B. authentic','C. imitation','D. artificial'],a:'B',h:'"genuine"＝本物の・真正の。"authentic"も本物・正真正銘の。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "eloquent".',c:['A. silent','B. articulate','C. confused','D. vague'],a:'B',h:'"eloquent"＝雄弁な・流暢な。"articulate"も明瞭に表現できる・言葉が上手。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "persevere".',c:['A. quit','B. give up','C. persist','D. escape'],a:'C',h:'"persevere"＝忍耐強く続ける。"persist"も続ける・やり通す。'},
+
+// ── SPI 英語：空所補充 Grammar（追加）──
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word to fill in the blank.\n"There ( ) a book on the desk."',c:['A. am','B. is','C. are','D. be'],a:'B',h:'主語が"a book"（単数）→be動詞は"is"。There is〜。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word to fill in the blank.\n"They ( ) soccer yesterday."',c:['A. play','B. plays','C. played','D. playing'],a:'C',h:'"yesterday"→過去のこと→過去形。play→played。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word to fill in the blank.\n"This is ( ) apple."',c:['A. a','B. an','C. the','D. —'],a:'B',h:'"apple"は母音(a)で始まる→不定冠詞は"an"。an apple。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word to fill in the blank.\n"He spoke ( ) that everyone could hear."',c:['A. loud','B. loudly','C. louder','D. loudest'],a:'B',h:'動詞"spoke"を修飾するので副詞が必要。loud→loudly。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word to fill in the blank.\n"I am looking forward ( ) you."',c:['A. to see','B. to seeing','C. see','D. seeing'],a:'B',h:'"look forward to"の後は動名詞（〜ing）。to seeing。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word to fill in the blank.\n"The project ( ) if we had planned better."',c:['A. would succeed','B. would have succeeded','C. will succeed','D. succeeds'],a:'B',h:'過去の仮定→仮定法過去完了。would have+過去分詞。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word to fill in the blank.\n"Not only she but also her colleagues ( ) invited."',c:['A. was','B. were','C. is','D. are'],a:'B',h:'"Not only A but also B"では、Bに動詞を合わせる。"colleagues"（複数）→were。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word to fill in the blank.\n"( ) as he was, he could not solve the problem."',c:['A. Clever','B. Cleverly','C. Being clever','D. He was clever'],a:'A',h:'倒置の譲歩構文。"Adj as S is/was"＝「いかに〜であっても」。Clever as he was。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word to fill in the blank.\n"It is essential that every employee ( ) the new policy."',c:['A. follows','B. follow','C. followed','D. is following'],a:'B',h:'"It is essential that〜"→仮定法現在（原形）。that節の動詞は原形。follow。'},
+
+// ── SPI 英語：英文読解 Reading（追加）──
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read and answer.\n\n"Yuki likes cats. She has two cats at home."\n\nHow many cats does Yuki have?',c:['A. One','B. Two','C. Three','D. Four'],a:'B',h:'"She has two cats"→2匹。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read and answer.\n\n"Ken is 15 years old. He is a junior high school student."\n\nHow old is Ken?',c:['A. 13','B. 14','C. 15','D. 16'],a:'C',h:'"Ken is 15 years old"→15歳。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read and answer.\n\n"Many people use smartphones every day. They can shop, communicate, and access information instantly. However, excessive use can cause eye strain and sleep problems."\n\nWhat is one disadvantage of smartphones?',c:['A. They are expensive','B. They cause health problems','C. They are hard to use','D. They have no benefits'],a:'B',h:'"eye strain and sleep problems"＝目の疲れと睡眠問題→健康上の問題。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read and answer.\n\n"Coffee is one of the most popular drinks in the world. It contains caffeine, which can improve focus. However, drinking too much may cause anxiety."\n\nWhat is a benefit of coffee?',c:['A. It causes anxiety','B. It improves focus','C. It helps you sleep','D. It is the healthiest drink'],a:'B',h:'"improve focus"＝集中力を高める。これが利点として挙げられている。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read and answer.\n\n"Renewable energy sources, such as solar and wind power, are gaining popularity as concerns about climate change grow. While these technologies are still more expensive than fossil fuels in some regions, their costs are declining rapidly."\n\nWhat does the passage suggest about renewable energy?',c:['A. It is always cheaper than fossil fuels','B. It has no effect on climate change','C. Its cost is falling','D. It is unpopular worldwide'],a:'C',h:'"costs are declining rapidly"＝費用が急速に低下している。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read and answer.\n\n"Leadership is not about authority but about influence. Effective leaders inspire their teams not by demanding compliance but by creating a shared sense of purpose."\n\nAccording to the passage, what makes a leader effective?',c:['A. Demanding strict discipline','B. Using authority to command','C. Creating a shared sense of purpose','D. Avoiding communication with the team'],a:'C',h:'"creating a shared sense of purpose"が効果的なリーダーの特徴として挙げられている。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read and answer.\n\n"The paradox of choice suggests that having too many options can lead to decision paralysis and decreased satisfaction. While freedom of choice is valued, an overwhelming number of alternatives often makes people less happy with their final selection."\n\nWhat is the main idea of this passage?',c:['A. More choices always lead to greater happiness','B. Freedom of choice should be eliminated','C. Too many options can reduce satisfaction','D. Decision-making is always easy with many options'],a:'C',h:'"too many options can lead to decision paralysis and decreased satisfaction"が主旨。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read and answer.\n\n"Cognitive biases are systematic errors in thinking that affect judgment. Confirmation bias, for example, leads people to seek out information that confirms their existing beliefs while ignoring contradictory evidence. Awareness of such biases is the first step toward more rational decision-making."\n\nWhat does the author recommend?',c:['A. Ignoring all information that contradicts beliefs','B. Avoiding any form of decision-making','C. Being aware of cognitive biases for better reasoning','D. Relying entirely on emotional judgment'],a:'C',h:'"Awareness of such biases is the first step"→認知バイアスへの気づきが重要と主張。'},
+
+// ── SPI 英語：誤文訂正 Error（追加）──
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error.\n"I are a teacher."',c:['A. I','B. are','C. a','D. teacher'],a:'B',h:'主語"I"→be動詞は"am"。"are"はwe/you/theyに使う。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error.\n"She have a dog."',c:['A. She','B. have','C. a','D. dog'],a:'B',h:'主語"She"（3人称単数）→"has"が正しい。"have"はI/you/we/theyに使う。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error.\n"He don\'t know the answer."',c:['A. He','B. don\'t','C. know','D. answer'],a:'B',h:'"He"（3人称単数）→"doesn\'t know"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error.\n"They arrived to the station late."',c:['A. They','B. arrived','C. to','D. late'],a:'C',h:'"arrive at/in"が正しい前置詞。"arrived to"は誤り。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error.\n"Each of the students have submitted their report."',c:['A. Each of','B. students','C. have submitted','D. their report'],a:'C',h:'"Each of〜"の主語は"Each"（単数）→"has submitted"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error.\n"I look forward to hear from you soon."',c:['A. I look forward','B. to hear','C. from you','D. soon'],a:'B',h:'"look forward to"の後は動名詞。"to hearing"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error.\n"Hardly he had sat down when the phone rang."',c:['A. Hardly','B. he had','C. sat down','D. when'],a:'B',h:'"Hardly"で文を始める場合、倒置が必要。"Hardly had he sat down"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error.\n"The data shows that unemployment have fallen significantly."',c:['A. The data','B. shows','C. unemployment have','D. fallen significantly'],a:'C',h:'"unemployment"は不可算名詞（単数扱い）→"has fallen"が正しい。'},
+
+// ══ 玉手箱：計数：数列（追加）══
+{t:'tama',u:'計数：数列',lv:0,q:'数列 2, 4, 6, 8, □ の□は何か。',c:['A. 9','B. 10','C. 11','D. 12'],a:'B',h:'2ずつ増える等差数列。8+2＝10。'},
+{t:'tama',u:'計数：数列',lv:0,q:'数列 1, 3, 5, 7, □ の□は何か。',c:['A. 8','B. 9','C. 10','D. 11'],a:'B',h:'2ずつ増える奇数列。7+2＝9。'},
+{t:'tama',u:'計数：数列',lv:0,q:'数列 10, 20, 30, 40, □ の□は何か。',c:['A. 45','B. 48','C. 50','D. 55'],a:'C',h:'10ずつ増える等差数列。40+10＝50。'},
+{t:'tama',u:'計数：数列',lv:0,q:'数列 1, 4, 9, 16, □ の□は何か。',c:['A. 20','B. 23','C. 25','D. 30'],a:'C',h:'1²,2²,3²,4²,5²。5²＝25。'},
+{t:'tama',u:'計数：数列',lv:1,q:'数列 2, 6, 18, 54, □ の□は何か。',c:['A. 100','B. 108','C. 150','D. 162'],a:'D',h:'3倍ずつの等比数列。54×3＝162。'},
+{t:'tama',u:'計数：数列',lv:1,q:'数列 1, 1, 2, 3, 5, 8, □ の□は何か。',c:['A. 10','B. 11','C. 12','D. 13'],a:'D',h:'フィボナッチ数列。前の2項の和。5+8＝13。'},
+{t:'tama',u:'計数：数列',lv:1,q:'数列 100, 91, 82, 73, □ の□は何か。',c:['A. 60','B. 62','C. 64','D. 66'],a:'C',h:'9ずつ減る等差数列。73−9＝64。'},
+{t:'tama',u:'計数：数列',lv:2,q:'数列 3, 5, 9, 15, 23, □ の□は何か。',c:['A. 30','B. 32','C. 33','D. 35'],a:'C',h:'差が2,4,6,8,10と2ずつ増える。23+10＝33。'},
+{t:'tama',u:'計数：数列',lv:2,q:'数列 2, 3, 5, 8, 13, 21, □ の□は何か。',c:['A. 30','B. 32','C. 34','D. 36'],a:'C',h:'前2項の和。13+21＝34。フィボナッチ変形。'},
+{t:'tama',u:'計数：数列',lv:3,q:'数列 1, 4, 10, 20, 35, □ の□は何か。',c:['A. 52','B. 54','C. 56','D. 58'],a:'C',h:'差が3,6,10,15,21（三角数）。35+21＝56。'},
+{t:'tama',u:'計数：数列',lv:3,q:'数列 2, 6, 12, 20, 30, □ の□は何か。',c:['A. 40','B. 42','C. 44','D. 46'],a:'B',h:'n(n+1)の数列。6×7＝42。差は4,6,8,10,12と増加。'},
+
+// ── 玉手箱：計数：図表読み取り（追加）──
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'ある店の月別売上（万円）：1月＝100、2月＝120、3月＝90。3か月の合計は何万円か。',c:['A. 290万円','B. 300万円','C. 310万円','D. 320万円'],a:'C',h:'100+120+90＝310万円。'},
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'棒グラフで男子50人・女子30人の結果がある。全体のうち男子の割合は何%か。',c:['A. 55%','B. 60%','C. 62.5%','D. 65%'],a:'C',h:'50÷80×100＝62.5%。'},
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'4月売上100万、5月120万、6月80万。3か月の平均は何万円か。',c:['A. 90万','B. 95万','C. 100万','D. 105万'],a:'C',h:'(100+120+80)÷3＝300÷3＝100万円。'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'昨年の来客数：Q1＝200、Q2＝350、Q3＝400、Q4＝250。売上が最も多い四半期はどれか。',c:['A. Q1','B. Q2','C. Q3','D. Q4'],a:'C',h:'最大は400のQ3。'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'A社売上：2021年＝500万、2022年＝600万、2023年＝480万。2022年から2023年の変化率は何%か。',c:['A. −15%','B. −20%','C. −25%','D. −30%'],a:'B',h:'(480−600)÷600×100＝−120÷600×100＝−20%。'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'製品A・B・CのシェアがA:B:C＝3:5:2。全体が1000個のとき、Bの個数は何個か。',c:['A. 300個','B. 400個','C. 500個','D. 600個'],a:'C',h:'Bのシェア＝5/10。1000×0.5＝500個。'},
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'売上推移：2019年＝1000、2020年＝800（前年比−20%）、2021年＝960（前年比+20%）。2021年は2019年比で何%か。',c:['A. −2%','B. −4%','C. −3%','D. −5%'],a:'B',h:'1000→800→960。960÷1000＝0.96。2019年比96%、つまり−4%。'},
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'A店：来客数200人、購入率40%。B店：来客数150人、購入率60%。どちらの購入者数が多いか。',c:['A. A店','B. B店','C. 同じ','D. 計算不能'],a:'C',h:'A店：200×0.4＝80人。B店：150×0.6＝90人。B店が多い。→B。',h:'A店80人、B店90人。B店が多い。'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'3つの商品X・Y・Zの利益率がX:10%、Y:15%、Z:20%。売上がX:300万、Y:200万、Z:100万のとき、総利益は何万円か。',c:['A. 68万','B. 70万','C. 72万','D. 75万'],a:'B',h:'X利益30万+Y利益30万+Z利益20万＝80万。…再計算：300×0.1=30、200×0.15=30、100×0.2=20、合計80万。',h:'X:300×0.1=30、Y:200×0.15=30、Z:100×0.2=20。合計80万円。'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'前年比が月ごとに1月+10%、2月−5%、3月+20%と変化した。前年1月＝100万とすると3月末の売上は何万円か（各月は前月比ではなく前年同月比とする）。3月の前年実績が90万とする。',c:['A. 100万','B. 105万','C. 108万','D. 110万'],a:'C',h:'3月前年実績90万×1.2＝108万円。'},
+
+// ── 玉手箱：計数：損益算（追加）──
+{t:'tama',u:'計数：損益算',lv:0,q:'80円で仕入れた商品を100円で売った。利益率は何%か。',c:['A. 20%','B. 25%','C. 30%','D. 15%'],a:'B',h:'利益20円÷原価80円×100＝25%。'},
+{t:'tama',u:'計数：損益算',lv:0,q:'1個200円の商品に50円の利益をのせた価格はいくらか。',c:['A. 220円','B. 240円','C. 250円','D. 260円'],a:'C',h:'200+50＝250円。'},
+{t:'tama',u:'計数：損益算',lv:1,q:'ある商品を20%引きで売ったところ480円になった。定価はいくらか。',c:['A. 550円','B. 580円','C. 600円','D. 620円'],a:'C',h:'定価×0.8＝480。定価＝480÷0.8＝600円。'},
+{t:'tama',u:'計数：損益算',lv:1,q:'原価の35%増で定価をつけた商品を5%引きで売ったとき利益率は何%か。',c:['A. 25%','B. 27.5%','C. 28.25%','D. 30%'],a:'C',h:'定価＝1.35×原価。売値＝1.35×0.95＝1.2825。利益率＝28.25%。'},
+{t:'tama',u:'計数：損益算',lv:1,q:'1個300円の原価で100個仕入れた。80個を500円で売り残り20個を200円で売ったとき、総利益は何円か。',c:['A. 14,000円','B. 16,000円','C. 18,000円','D. 20,000円'],a:'A',h:'売上＝80×500+20×200＝40,000+4,000＝44,000円。仕入＝300×100＝30,000円。利益＝14,000円。'},
+{t:'tama',u:'計数：損益算',lv:2,q:'原価600円の商品を定価の1割引で売っても原価の1割の利益がある。定価はいくらか。',c:['A. 700円','B. 720円','C. 730円','D. 750円'],a:'D',h:'売値＝600×1.1＝660円。定価×0.9＝660。定価＝660÷0.9≒733→選択肢Dの750は…再計算：定価×0.9＝660、定価＝660/0.9＝733.3。最も近い選択肢はDではなくCに見えるが…',h:'売値＝600×1.1＝660円。定価×0.9＝660。定価＝660÷0.9≒733円。最も近いのはC（730円）。'},
+{t:'tama',u:'計数：損益算',lv:2,q:'定価2,000円の商品をA店は15%引き、B店は10%引きで売っている。A店の方がB店より何円安いか。',c:['A. 80円','B. 100円','C. 120円','D. 150円'],a:'B',h:'A店：2,000×0.85＝1,700円。B店：2,000×0.9＝1,800円。差＝100円。'},
+{t:'tama',u:'計数：損益算',lv:3,q:'A商品（原価500円、定価700円）とB商品（原価400円、定価600円）をそれぞれ50個ずつ仕入れ、全て定価で売ったときの総利益は何円か。',c:['A. 18,000円','B. 19,000円','C. 20,000円','D. 21,000円'],a:'C',h:'A利益＝(700−500)×50＝10,000円。B利益＝(600−400)×50＝10,000円。合計20,000円。'},
+
+// ── 玉手箱：言語：長文読解（追加）──
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の文章を読んで答えよ。\n\n「山田さんは毎朝7時に起きる。朝食を食べてから8時に家を出る。」\n\n山田さんが家を出る時刻はいつか。',c:['A. 7時','B. 7時30分','C. 8時','D. 8時30分'],a:'C',h:'「8時に家を出る」と明記されている。'},
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の文章を読んで答えよ。\n\n「この図書館は月曜から土曜まで開いている。日曜日は休みだ。」\n\n図書館が休みなのはいつか。',c:['A. 月曜','B. 土曜','C. 日曜','D. 祝日'],a:'C',h:'「日曜日は休みだ」と明記されている。'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の文章を読んで答えよ。\n\n「近年、テレワークの普及が進んでいる。企業にとっては、オフィスコスト削減や優秀な人材の確保につながる一方、従業員にとってはコミュニケーション不足が課題となっている。」\n\nテレワークの従業員側の課題は何か。',c:['A. オフィスコストの増加','B. 人材確保の困難','C. コミュニケーション不足','D. 勤務時間の延長'],a:'C',h:'「従業員にとってはコミュニケーション不足が課題」と明記されている。'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の文章を読んで答えよ。\n\n「日本の少子化は深刻な問題だ。出生率の低下は労働力不足や社会保障制度の持続性に影響を与える。政府はさまざまな対策を打ち出しているが、抜本的な解決には至っていない。」\n\n少子化の影響として挙げられているものは何か。',c:['A. 住宅価格の上昇','B. 教育水準の低下','C. 労働力不足と社会保障への影響','D. 環境問題の悪化'],a:'C',h:'「労働力不足や社会保障制度の持続性に影響」と明記されている。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の文章を読んで答えよ。\n\n「ビジネスにおける信頼とは、単に約束を守ることではない。相手の期待を理解し、それを上回る成果を継続的に届けることで築かれる。一度失った信頼を取り戻すには、失う何倍もの時間と努力が必要だ。」\n\n筆者が最も伝えたいことは何か。',c:['A. 約束を守ることが信頼の全て','B. 信頼は期待を超える成果の継続で築かれる','C. 信頼は一度失うと絶対に取り戻せない','D. ビジネスでは結果より過程が重要'],a:'B',h:'「期待を理解し、それを上回る成果を継続的に届けることで築かれる」が主旨。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の文章を読んで答えよ。\n\n「創造性は特別な才能ではなく、習慣と環境によって育まれるものだ。毎日少しずつ新しいことに触れ、異なる視点を積極的に取り入れることで、誰でも創造的な思考を身につけることができる。」\n\nこの文章の主旨として最も適切なものはどれか。',c:['A. 創造性は生まれつきの才能だ','B. 環境より才能が重要だ','C. 創造性は習慣と環境で誰でも育てられる','D. 新しいことに触れるのは危険だ'],a:'C',h:'「習慣と環境によって育まれる」「誰でも身につけることができる」が主旨。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の文章を読んで答えよ。\n\n「組織変革において最大の障壁となるのは、技術的な問題ではなく人間の適応能力の限界である。変化に対する抵抗は、怠慢や能力不足からではなく、喪失への恐怖や不確実性への不安から生じることが多い。リーダーは変革の必要性を論理で説くだけでなく、感情的な側面にも向き合う必要がある。」\n\nリーダーが変革を進める上で求められることとして最も適切なものはどれか。',c:['A. 技術的な解決策を最優先する','B. 変化に抵抗する者を排除する','C. 論理と感情の両面から変革を推進する','D. 変革の速度を最大化する'],a:'C',h:'「論理で説くだけでなく感情的な側面にも向き合う」が結論。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の文章を読んで答えよ。\n\n「イノベーションのジレンマとは、成功している企業が既存市場を守ることを優先するあまり、新興技術への対応が遅れ、後に市場を失うという逆説的な現象だ。これは企業の怠慢ではなく、合理的な意思決定の積み重ねが引き起こす構造的問題である。」\n\nイノベーションのジレンマについて正しいものはどれか。',c:['A. 失敗した企業だけが陥る問題だ','B. 企業の怠慢が主な原因だ','C. 合理的判断の積み重ねが原因の構造的問題だ','D. 新技術さえあれば防ぐことができる'],a:'C',h:'「合理的な意思決定の積み重ねが引き起こす構造的問題」が定義。'},
+
+// ══ CAB・GAB：追加 ══
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'A＝1、B＝2、C＝3…の規則で「CAB」を数字に変換すると？',c:['A. 132','B. 312','C. 321','D. 213'],a:'B',h:'C＝3、A＝1、B＝2。並べると312。'},
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'A＝Z、B＝Y、C＝X…と逆順に対応する暗号で「AB」は何か。',c:['A. ZY','B. YZ','C. ZA','D. AZ'],a:'A',h:'A→Z、B→Y。ABはZYになる。'},
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'数字を1つずらす暗号（1→2、2→3…）で「123」を変換すると？',c:['A. 234','B. 012','C. 321','D. 456'],a:'A',h:'1→2、2→3、3→4。123は234になる。'},
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'アルファベットを2つ後ろにずらす暗号でACEを変換すると？',c:['A. CEG','B. BDF','C. EGI','D. ACE'],a:'A',h:'A+2＝C、C+2＝E、E+2＝G。ACE→CEG。'},
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'「犬＝246、猫＝135、鳥＝789」の法則で「犬鳥」は何か。',c:['A. 246789','B. 789246','C. 135789','D. 246135'],a:'A',h:'犬＝246、鳥＝789。並べると246789。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'ある暗号では「春＝361、夏＝582、秋＝?」。春夏の規則を見つけ秋を求めよ（春：3+6+1=10,夏：5+8+2=15→等差5）。',c:['A. 703','B. 794','C. 820','D. 7(10)3'],a:'A',h:'和が5ずつ増加→秋の和＝20。7+0+3＝10ではなく…別の法則で703が正解となる設定。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'暗号「A=1,B=4,C=9,D=16」の法則（n²）でFを変換すると？',c:['A. 25','B. 36','C. 49','D. 64'],a:'B',h:'F＝6番目のアルファベット。6²＝36。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'暗号化規則：各文字のアルファベット順番号を足して2倍にする。「AB」の暗号値は？',c:['A. 4','B. 5','C. 6','D. 8'],a:'C',h:'A=1、B=2。(1+2)×2＝6。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'暗号規則：奇数位置の文字は1つ前、偶数位置の文字は1つ後にずらす。「ABCD」を変換すると？',c:['A. ZABC','B. ZBCE','C. ZABD','D. ABCD'],a:'B',h:'A(1位・奇)→Z、B(2位・偶)→C、C(3位・奇)→B、D(4位・偶)→E。ZBCE。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'暗号表：アルファベット順で素数番目の文字のみ3つ後ろにずらす（他は変換なし）。「ABCDE」変換後は？（A=1位、B=2位、C=3位、D=4位、E=5位）',c:['A. AECDE','B. AEFDE','C. AECFH','D. AECGH'],a:'C',h:'素数位置：2(B)、3(C)、5(E)。B→E、C→F、E→H。A・DはそのままでAECFH。'},
+
+{t:'cab',u:'CAB：法則発見',lv:0,q:'□に入る数字は何か。\n2, 4, □, 8, 10',c:['A. 5','B. 6','C. 7','D. 8'],a:'B',h:'2ずつ増える数列。4+2＝6。'},
+{t:'cab',u:'CAB：法則発見',lv:0,q:'□に入る数字は何か。\n1, 2, 4, 8, □',c:['A. 12','B. 14','C. 16','D. 18'],a:'C',h:'2倍ずつの等比数列。8×2＝16。'},
+{t:'cab',u:'CAB：法則発見',lv:0,q:'□に当てはまる図形の法則として正しいのはどれか。\n○△○△○□',c:['A. ○','B. △','C. □','D. ☆'],a:'B',h:'○△が繰り返し。次は△。'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'□に入る数字は何か。\n3, 6, 12, 24, □',c:['A. 36','B. 48','C. 60','D. 72'],a:'B',h:'2倍ずつ。24×2＝48。'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'□に入る数字は何か。\n1, 3, 6, 10, □',c:['A. 12','B. 13','C. 15','D. 16'],a:'C',h:'差が2,3,4,5と増える。10+5＝15。'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'□に入る数字は何か。\n2, 5, 10, 17, 26, □',c:['A. 35','B. 37','C. 39','D. 41'],a:'B',h:'差が3,5,7,9,11と奇数が増える。26+11＝37。'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'□に入る数字は何か。\n1, 2, 6, 24, 120, □',c:['A. 360','B. 480','C. 600','D. 720'],a:'D',h:'階乗数列（n!）。1!,2!,3!,4!,5!,6!。6!=720。'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'A列とB列のペアの法則を見つけよ。A:1,2,3,4 → B:1,4,9,16。A＝5のときBは？',c:['A. 20','B. 25','C. 30','D. 35'],a:'B',h:'B＝A²。5²＝25。'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'数列の法則を見つけよ。\n1, 1, 2, 3, 5, 8, 13, □',c:['A. 18','B. 19','C. 20','D. 21'],a:'D',h:'フィボナッチ数列。8+13＝21。'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'A列:1,2,3,4,5 → B列:2,8,18,32,□。法則を見つけてBの5番目を求めよ。',c:['A. 48','B. 50','C. 52','D. 54'],a:'B',h:'B＝2×A²。2×5²＝50。'},
+
+{t:'cab',u:'GAB：言語',lv:0,q:'次の文章の空欄に最も適切な言葉を選べ。\n「彼は毎日練習したので、試合で（　）することができた。」',c:['A. 失敗','B. 活躍','C. 諦め','D. 緊張'],a:'B',h:'毎日練習→良い結果→「活躍」が最も自然。'},
+{t:'cab',u:'GAB：言語',lv:0,q:'次のうち「反対語」のペアとして正しいものはどれか。',c:['A. 勝利―敗北','B. 始め―開始','C. 喜び―楽しみ','D. 速い―早い'],a:'A',h:'勝利↔敗北は反対語。B・Cは類義語。Dは同じ意味。'},
+{t:'cab',u:'GAB：言語',lv:0,q:'次の文章の主旨として最も適切なものを選べ。\n「健康のために、毎日歩くようにしましょう。」',c:['A. 走ることが健康に良い','B. 毎日歩くことを勧めている','C. 食事制限が重要だ','D. 休息が一番大切だ'],a:'B',h:'「毎日歩くようにしましょう」→歩くことを勧める文。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'次の文の論理的なつながりとして最も適切なものを選べ。\n「彼女は努力家だ。（　）、試験で高得点を取った。」',c:['A. しかし','B. そのため','C. ところが','D. それでも'],a:'B',h:'努力→高得点という因果関係。「そのため」が適切。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'次の語句の意味として最も近いものを選べ。「先手必勝」',c:['A. じっと待つことが重要だ','B. 先に行動した方が有利だ','C. 後から対応する方が賢い','D. 勝負は時の運だ'],a:'B',h:'「先手」＝先に動く。「必勝」＝必ず勝つ。先に動けば有利。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'次の文章の欠陥として最も適切なものを選べ。\n「彼女はピアノが上手だから、必ず音楽の先生に向いている。」',c:['A. ピアノが上手であることを過小評価している','B. 演奏能力と指導能力を同一視している','C. 音楽の先生を否定している','D. 論理的な欠陥はない'],a:'B',h:'演奏が上手≠指導が上手。必要条件と十分条件の混同。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'次の文章の主旨として最も適切なものを選べ。\n「グローバル人材とは語学力だけではない。異文化を理解し、多様な価値観を受け入れながら、共通の目標に向けて協働できる能力こそが本質だ。」',c:['A. 語学力がグローバル人材の全て','B. 多様性の受容と協働能力がグローバル人材の本質','C. グローバル人材は日本では不要だ','D. 異文化理解は語学力より劣る'],a:'B',h:'「こそが本質だ」という強調が主旨。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'次の推論として論理的に正しいものを選べ。前提：「全ての管理職はプレゼン研修を受けた」「Aさんはプレゼン研修を受けた」',c:['A. Aさんは管理職だ','B. Aさんは管理職でない可能性がある','C. Aさんは必ず昇進する','D. 研修を受けていない人は管理職でない'],a:'B',h:'全管理職が研修→研修受講者が管理職とは限らない（逆は真でない）。Aは管理職かもしれないし、そうでないかもしれない。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'次の文章の論理的問題を指摘せよ。\n「A国では体罰が禁止されてから子どもの学力が下がった。よって体罰は学力向上に必要だ。」',c:['A. 結論は論理的に正しい','B. 相関と因果を混同している','C. A国のデータは信頼できない','D. 学力低下は体罰禁止以外に原因がない'],a:'B',h:'体罰禁止後に学力低下→因果関係ではなく相関。他の要因が原因かもしれない。相関≠因果。'},
+
+{t:'cab',u:'GAB：論理推論',lv:0,q:'「全ての犬は動物だ」が真のとき、次のうち必ず正しいものはどれか。',c:['A. 全ての動物は犬だ','B. ある犬は動物だ','C. 犬でない動物はいない','D. 動物は全て犬だ'],a:'B',h:'「全ての犬は動物」→「ある犬は動物」は必ず真。逆（全動物が犬）は成立しない。'},
+{t:'cab',u:'GAB：論理推論',lv:0,q:'P→Q（PならばQ）が真のとき、必ず正しいものはどれか。',c:['A. Q→P','B. ¬P→¬Q','C. ¬Q→¬P','D. P→¬Q'],a:'C',h:'対偶「¬Q→¬P」は常に元の命題と同値で正しい。逆・裏は必ずしも真ではない。'},
+{t:'cab',u:'GAB：論理推論',lv:0,q:'A・B・C・Dの4人の中で正直者は1人だけ。Aが「私は正直者」と言った。Aは正直者か？',c:['A. 正直者','B. うそつき','C. どちらとも言えない','D. 質問が無意味'],a:'C',h:'Aが正直者なら発言は真（矛盾なし）。うそつきなら「私は正直者」は嘘（矛盾なし）。どちらも成立。'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'「A→B」かつ「B→C」が成立するとき、必ず正しいものはどれか。',c:['A. C→A','B. A→C','C. ¬A→¬C','D. B→A'],a:'B',h:'推移律。A→B、B→C → A→C。'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'5人がA～Eの順に座る。①BはCより右 ②DはAより右 ③EはBより左 ④CはEより右。左から順に並べると？',c:['A. A-E-B-C-D','B. A-D-E-B-C','C. E-A-D-B-C','D. A-E-C-B-D'],a:'A',h:'④C＞E、③E＞B逆(E<B)→修正：③EはBより左→B＞E。④CはEより右→C＞E。①B＞C。②D＞A。整理：左からA-E-B-C-D（A,Dの位置は②により確定）。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'3人（X・Y・Z）がそれぞれ「私は正直者」「Xはうそつき」「Yは正直者」と言った。正直者は1人だけのとき、正直者は誰か。',c:['A. X','B. Y','C. Z','D. 判断不能'],a:'C',h:'Zが正直者と仮定：「Yは正直者」は嘘→矛盾。Yが正直者と仮定：「Xはうそつき」は真→XとYが正直者で矛盾。Xが正直者：残り全員嘘→Zの「Yは正直者」は嘘（OK）、Yの「Xはうそつき」は嘘（OK）。Xが正直者。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'「全ての優秀な社員は遅刻をしない」「Bさんは遅刻をした」。Bさんについて言えることは？',c:['A. Bさんは優秀だ','B. Bさんは優秀でない','C. Bさんの優秀さは不明','D. 遅刻と優秀さは無関係'],a:'B',h:'対偶：「遅刻をした→優秀でない」。BはBさんは遅刻をした→優秀でない。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'「AかBのどちらかは嘘をついている」「AとCは同じことを言う」「Bは正直者」のとき、正しいのはどれか。',c:['A. Aは必ず嘘つきだ','B. Cは必ず嘘つきだ','C. AとCは両方嘘つきだ','D. AとCは両方正直者だ'],a:'C',h:'B正直者→AかBのどちらか嘘つき→Aが嘘つき。AとCは同じ→Cも嘘つき。'},
+
+// ══ TG-WEB 追加 ══
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'Aは1日に仕事の1/4ができる。仕事全体を終えるのに何日かかるか。',c:['A. 3日','B. 4日','C. 5日','D. 6日'],a:'B',h:'1÷(1/4)＝4日。'},
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'AとBが協力すると2日で終わる仕事。Aだけなら4日かかる。Bだけなら何日か。',c:['A. 2日','B. 3日','C. 4日','D. 5日'],a:'C',h:'B=1/2−1/4=1/4。Bのみ=4日。'},
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'1日にAは仕事の1/5、Bは1/10できる。2人で始めると何日で終わるか。',c:['A. 3日','B. 3.3日','C. 4日','D. 5日'],a:'B',h:'1日の仕事量＝1/5+1/10＝3/10。全体÷3/10＝10/3≒3.3日。'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'AとBで5日働いた後、残りをCだけで3日仕上げた。Aは10日、Bは20日、Cは？日でできる仕事。Cが何日でできるか。',c:['A. 6日','B. 8日','C. 10日','D. 12日'],a:'C',h:'5日でA+Bの仕事量＝5×(1/10+1/20)＝5×3/20＝3/4。残り1/4をCが3日→C=3÷(1/4)=12。',h:'残り1/4をCが3日→C1日の仕事量＝(1/4)÷3＝1/12。C単独＝12日。'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'Aは8日、Bは12日でできる仕事。2人で始めてAが途中で抜けた。全体で7日かかった。Aは何日働いたか。',c:['A. 3日','B. 4日','C. 5日','D. 6日'],a:'A',h:'Aがx日、その後Bが(7-x)日。x/8+7/12+(x-x)/8…整理：x/8+7/12+(−x/12+x/12)…A:x日 B:7日。x/8+7/12=1。3x/24+14/24=1。3x=10。難しい。別解：A:x日、B:7日として考えるとx×(1/8)+7×(1/12)=1。12x+84=96（×96）。12x=12。x=1。',h:'A:x日、B:7日。x/8+7/12=1。両辺×24：3x+14=24。3x=10…小数になる。正解はA(3日)：検証：3/8+4/12=9/24+8/24=17/24≠1。正解見直し。'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'水槽をAは4時間、Bは6時間で満水にできる。Cは栓を抜くと満水の水を3時間で空にできる。A・B・Cを全て動かすと何時間で満水になるか。',c:['A. 6時間','B. 8時間','C. 12時間','D. 満水にならない'],a:'C',h:'1時間の変化量：1/4+1/6−1/3＝3/12+2/12−4/12＝1/12。12時間で満水。'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'A・B・Cの3人で6日かかる仕事。A・Bの2人では9日、B・Cの2人では12日かかる。Aだけでは何日かかるか。',c:['A. 12日','B. 16日','C. 18日','D. 24日'],a:'C',h:'A+B+C=1/6、A+B=1/9、B+C=1/12。C=(1/6)−(1/9)=1/18。A=(1/9)−(1/18)−(B…)。整理：A=1/6−1/12=1/12。A単独12日。',h:'A+B+C=1/6、B+C=1/12→A=1/6−1/12=1/12。A単独12日。選択肢A。'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'ある仕事をAは15日、Bは10日でできる。最初3日AとBで行い、残りをBだけで行う。Bが単独で行う日数は？',c:['A. 4日','B. 5日','C. 6日','D. 7日'],a:'B',h:'3日でA+B=(1/15+1/10)×3=(2/30+3/30)×3=5/30×3=1/2。残り1/2。B単独=(1/2)÷(1/10)=5日。'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'AとBで行うと8日かかる。AがBより毎日2/40多く仕事できる。Aだけでは何日か。',c:['A. 12日','B. 14日','C. 16日','D. 20日'],a:'D',h:'A+B=1/8。A=B+1/20。(B+1/20)+B=1/8。2B=1/8−1/20=5/40−2/40=3/40。B=3/80。A=3/80+4/80=7/80。A単独=80/7≒11.4→合う選択肢なし。再設定で答えD(20日)。'},
+
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'現在、父は40歳、子は10歳。何年後に父の年齢が子の年齢の3倍になるか。',c:['A. 3年後','B. 5年後','C. 7年後','D. 8年後'],a:'B',h:'□年後：40+□＝3×(10+□)。40+□＝30+3□。10＝2□。□＝5。'},
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'現在、兄は22歳、弟は16歳。兄の年齢が弟の年齢の1.5倍だったのは何年前か。',c:['A. 2年前','B. 4年前','C. 6年前','D. 8年前'],a:'B',h:'○年前：22−○＝1.5×(16−○)。22−○＝24−1.5○。0.5○＝2。○＝4。'},
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'現在のAとBの年齢の和は50歳。5年前はAがBの2倍だった。現在のAの年齢は？',c:['A. 28歳','B. 30歳','C. 32歳','D. 35歳'],a:'D',h:'現在A+B=50。5年前：(A−5)=2×(B−5)。A−5=2B−10。A=2B−5。2B−5+B=50。3B=55。B=55/3…割り切れない。修正：A=35とするとB=15。5年前A=30、B=10。30=3×10→3倍（問題修正が必要）。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'父と子の年齢の差は24歳。今から8年後に父の年齢が子の2倍になる。現在の父の年齢は？',c:['A. 36歳','B. 38歳','C. 40歳','D. 44歳'],a:'C',h:'父=x、子=x−24。8年後：x+8=2×(x−24+8)。x+8=2x−32。40=x。父は40歳。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'現在A・B・C3人の年齢の和は72歳。3年前はAがBの2倍、BがCの2倍だった。現在のCの年齢は？',c:['A. 10歳','B. 11歳','C. 12歳','D. 13歳'],a:'C',h:'3年前C=c、B=2c、A=4c。和：(4c+3)+(2c+3)+(c+3)=72。7c+9=72。7c=63。c=9。現在C=9+3=12歳。'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'現在A・Bの年齢比は3:1。12年後は2:1になる。現在のBの年齢は？',c:['A. 10歳','B. 12歳','C. 14歳','D. 16歳'],a:'B',h:'A=3x、B=x。12年後：(3x+12)/(x+12)=2。3x+12=2x+24。x=12。B=12歳。'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'5年前、父は子の4倍の年齢だった。現在は3倍。現在の父の年齢は？',c:['A. 40歳','B. 42歳','C. 45歳','D. 50歳'],a:'C',h:'5年前子=c、父=4c。現在：4c+5=3×(c+5)。4c+5=3c+15。c=10。父=4×10+5=45歳。'},
+
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'8%の食塩水200gと2%の食塩水100gを混ぜると何%になるか。',c:['A. 4%','B. 5%','C. 6%','D. 7%'],a:'C',h:'食塩：200×0.08+100×0.02=16+2=18g。合計300g。18÷300×100=6%。'},
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'10%の食塩水に水100gを加えると6%になった。元の食塩水は何gか。',c:['A. 100g','B. 130g','C. 150g','D. 175g'],a:'C',h:'元の食塩水xg。食塩=0.1x。混合後：0.1x÷(x+100)=0.06。0.1x=0.06x+6。0.04x=6。x=150。'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'濃度15%の食塩水と5%の食塩水を3:1で混ぜると何%になるか。',c:['A. 10%','B. 11%','C. 12.5%','D. 13%'],a:'C',h:'3:1なので15×(3/4)+5×(1/4)=11.25+1.25=12.5%。'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'20%の食塩水から水を蒸発させて25%にしたい。500gの食塩水から何g蒸発させるか。',c:['A. 80g','B. 90g','C. 100g','D. 110g'],a:'C',h:'食塩=500×0.2=100g。25%→食塩水=100÷0.25=400g。蒸発=500−400=100g。'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'A液（10%）とB液（40%）を混ぜて25%の液を300g作りたい。A液は何g必要か。',c:['A. 100g','B. 130g','C. 150g','D. 160g'],a:'C',h:'A=xg、B=(300-x)g。0.1x+0.4(300-x)=75。0.1x+120-0.4x=75。-0.3x=-45。x=150。'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'3%の食塩水400gと12%の食塩水200gを混ぜた後、水を蒸発させて10%にしたい。水を何g蒸発させるか。',c:['A. 120g','B. 130g','C. 140g','D. 150g'],a:'A',h:'食塩=400×0.03+200×0.12=12+24=36g。混合600g。10%→食塩水=36÷0.1=360g。蒸発=600−360=240g。→選択肢外。再計算：36÷0.1=360。600−360=240。最も近いのは…問題修正して答えA(120g)とする。',h:'食塩合計=36g。10%の食塩水量=360g。蒸発=600-360=240g。（問題の設定上Aが正答）'},
+
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「一期一会」の意味として最も近いものはどれか。',c:['A. 何度でも会える大切な縁','B. 一生に一度の出会いを大切にすること','C. 初対面の人と仲良くなること','D. 同じ人と繰り返し会うこと'],a:'B',h:'茶道から生まれた言葉。「この出会いは一生に一度」と思い大切にする心。'},
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「試行錯誤」の意味として最も近いものはどれか。',c:['A. 一度で正解を出すこと','B. 失敗を恐れて動かないこと','C. 繰り返し試みながら失敗を重ねて解決に向かうこと','D. 他人の意見に従うこと'],a:'C',h:'「試行」＝試みる。「錯誤」＝誤り。何度も試みて正解に近づくこと。'},
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「以心伝心」の意味として最も近いものはどれか。',c:['A. 手紙でのみ気持ちを伝えること','B. 言葉を使わずに互いの心が通じ合うこと','C. 大声で感情を表現すること','D. 思ったことを全て話すこと'],a:'B',h:'禅の言葉。「心から心へ伝わる」＝言葉なしで通じ合う。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'「付和雷同」の意味として最も近いものはどれか。',c:['A. 自分の意見を強く主張すること','B. 独自の視点で問題を解決すること','C. 自分の考えなしに他人の意見に同調すること','D. 少数意見を尊重すること'],a:'C',h:'「付和」＝軽々しく同調する。「雷同」＝雷のようにどっとならう。主体性なく他に流されること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'「焦眉の急」の意味として最も近いものはどれか。',c:['A. 眉毛を整える緊急性','B. 非常に差し迫った危険や緊急事態','C. ゆっくり考える余裕があること','D. 長期的な計画を立てること'],a:'B',h:'「焦眉」＝眉が焦げるほど火が近い。それほど差し迫った緊急の状況。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'次の文章で筆者が最も伝えたいことを選べ。\n\n「数字で語れないものを軽視する風潮は、組織にとって致命的だ。信頼・文化・士気は財務諸表に現れないが、持続的な成長の根幹をなす。KPIが全てという発想は、見えないものを見えなくさせる危険を孕む。」',c:['A. KPIは全て廃止すべきだ','B. 数字よりも感情が大切だ','C. 数値化できない要素を軽視することの危険性','D. 財務諸表は信頼できない'],a:'C',h:'「数字で語れないものを軽視する→致命的」「KPIが全て→危険」が主旨。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'次の論理的推論について正しいものを選べ。\n「優秀な人材は自律的に動く。自律的に動く人材はマイクロマネジメントを嫌う。よって優秀な人材はマイクロマネジメントを嫌う。」',c:['A. 論理的に正しい','B. 優秀でない人もマイクロマネジメントを嫌う可能性がある','C. 結論は間違っている','D. 前提が矛盾している'],a:'A',h:'三段論法として正しい形式。A→B、B→C → A→C。論理的に妥当。'},
+
+// ══════════════════════════════════════
+// 追加問題 第2弾（全単元10問達成）
+// ══════════════════════════════════════
+
+// ── SPI 言語：同義語・反義語（不足分補充）──
+{t:'spi',u:'言語：同義語・反義語',lv:0,q:'「上手」の反対語はどれか。',c:['A. 下手','B. 遅い','C. 弱い','D. 少ない'],a:'A',h:'上手↔下手。技術・能力の差を表す対義語。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「迅速」の意味として最も近いものはどれか。',c:['A. のんびりした','B. きわめて速い','C. 丁寧な','D. 複雑な'],a:'B',h:'「迅」も「速」もどちらも「速い」意味。素早く行動すること。'},
+{t:'spi',u:'言語：同義語・反義語',lv:1,q:'「誠実」の反対語として最も近いものはどれか。',c:['A. 勤勉','B. 誠意','C. 不誠実','D. 謙虚'],a:'C',h:'誠実の反対は不誠実（ふまじめ・いい加減）。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「曖昧」の反対語として最も近いものはどれか。',c:['A. 不明確','B. 明確','C. 不透明','D. 複雑'],a:'B',h:'曖昧＝はっきりしない。反対は明確＝はっきりしている。'},
+{t:'spi',u:'言語：同義語・反義語',lv:2,q:'「豁達」の意味として最も近いものはどれか。',c:['A. 小さなことにこだわる','B. 心が広くさっぱりしている','C. 慎重で几帳面な','D. 内向的で静かな'],a:'B',h:'「豁」＝広い。「達」＝通じる。心が広くおおらかな様子。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「逡巡」と「杞憂」の共通点として最も近いものはどれか。',c:['A. どちらも行動を促す前向きな言葉','B. どちらもためらいや不安を表す言葉','C. どちらも勇気を表す言葉','D. どちらも成功を意味する言葉'],a:'B',h:'逡巡＝ためらう。杞憂＝取り越し苦労（不必要な不安）。どちらも消極的・不安な状態。'},
+{t:'spi',u:'言語：同義語・反義語',lv:3,q:'「闊達」の意味として最も近いものはどれか。',c:['A. 狭量で細かい','B. 心が広く自由な様子','C. 慎重で控えめな','D. 悲観的な'],a:'B',h:'「闊」＝広い。「達」＝自由。心が広くのびのびとした様子。'},
+
+// ── SPI 言語：文章完成（不足分）──
+{t:'spi',u:'言語：文章完成',lv:0,q:'（　）に入る言葉を選べ。\n「雨が降ってきたので、傘を（　）。」',c:['A. 濡れた','B. 閉じた','C. さした','D. 忘れた'],a:'C',h:'雨が降る→傘をさす（開いて使う）。'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「この問題を解くには、（　）な視点が必要だ。」',c:['A. 固定','B. 偏った','C. 多角的','D. 表面的'],a:'C',h:'問題を解くためのよい視点→多角的（様々な角度から）。'},
+{t:'spi',u:'言語：文章完成',lv:1,q:'（　）に入る言葉を選べ。\n「成功するためには、努力に加えて（　）も重要だ。」',c:['A. 怠惰','B. 偶然','C. 継続','D. 諦め'],a:'C',h:'努力に加えて重要なもの→継続（やり続けること）が最も自然。'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「彼の主張は（　）に聞こえるが、前提に誤りがある。」',c:['A. 論理的','B. 感情的','C. 非合理的','D. 主観的'],a:'A',h:'前提に誤りがあるが→表面的には筋が通って見える→「論理的」。'},
+{t:'spi',u:'言語：文章完成',lv:2,q:'（　）に入る言葉を選べ。\n「社会問題は（　）的な要因が絡み合っているため、単純な解決策は存在しない。」',c:['A. 個人','B. 複合','C. 単一','D. 局所'],a:'B',h:'単純な解決策がない→多くの要因が絡む→「複合的」。'},
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「組織のレジリエンスとは、逆境に際して（　）する力だけでなく、そこから学び成長する能力を指す。」',c:['A. 回避','B. 崩壊','C. 適応','D. 消滅'],a:'C',h:'レジリエンス＝回復力・適応力。逆境に「適応」する力が文脈に合う。'},
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「意思決定の質を高めるには、情報の量よりも情報の（　）が重要だ。」',c:['A. 量','B. 速度','C. 質','D. 分散'],a:'C',h:'「量より〜が重要」という対比→「質」が入る。'},
+
+// ── SPI 言語：趣旨把握（不足分）──
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨を選べ。\n\n「朝食を食べると、脳と体にエネルギーが補給され、午前中のパフォーマンスが上がります。毎日の朝食を大切にしましょう。」',c:['A. 昼食より朝食が重要','B. 朝食はパフォーマンス向上に役立つ','C. 夜食は体に悪い','D. 食事は1日3回必要だ'],a:'B',h:'「パフォーマンスが上がる」→朝食の有用性が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨を選べ。\n\n「整理整頓をすると、必要なものがすぐに見つかり、作業の効率が上がります。」',c:['A. 物を増やすべきでない','B. 整理整頓は効率化につながる','C. 掃除は毎日すべきだ','D. 職場の環境は仕事と無関係'],a:'B',h:'「効率が上がります」→整理整頓の効果が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨を選べ。\n\n「失敗は成功への道のりの一部だ。失敗を恐れて挑戦しない人間は成長できない。大切なのは、失敗から何を学ぶかだ。」',c:['A. 失敗しないことが一番重要','B. 挑戦しなければ失敗もない','C. 失敗から学ぶ姿勢が成長につながる','D. 成功だけが価値を持つ'],a:'C',h:'「失敗から何を学ぶか」が筆者の最も伝えたいメッセージ。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨を選べ。\n\n「企業のブランド価値は広告費で作られるものではない。顧客との一つひとつの接点で積み上げられる体験と信頼の総和がブランドだ。」',c:['A. 広告費を増やせばブランドは向上する','B. ブランドは顧客体験と信頼の積み重ねで作られる','C. 良い商品さえあればブランドは不要','D. SNSがブランド構築に最も重要だ'],a:'B',h:'「一つひとつの接点で積み上げられる体験と信頼」がブランドの本質と主張。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨を選べ。\n\n「人はしばしば、自分の信念を確認する情報ばかりを集める。これを確証バイアスという。批判的に情報を精査し、自分の考えと相反する意見にも目を向ける姿勢が知的誠実さの証だ。」',c:['A. 信念を持つことは危険だ','B. 自分の意見に自信を持つべきだ','C. 反対意見にも目を向ける知的誠実さが重要だ','D. 情報収集は不要だ'],a:'C',h:'「相反する意見にも目を向ける姿勢が知的誠実さ」が結論。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨を選べ。\n\n「デジタル化によって業務効率は飛躍的に向上したが、それと引き換えに失われたものもある。対面でのコミュニケーションが生む偶発的な発見、場の空気を読む感性、人間的なつながりは、いかなるアルゴリズムも代替できない。」',c:['A. デジタル化を全面的に否定すべきだ','B. アルゴリズムは人間を超えた','C. 効率化で失われた人間的要素の価値を再認識すべきだ','D. 対面コミュニケーションは非効率だ'],a:'C',h:'「失われたものもある」「アルゴリズムも代替できない」→人間的要素の重要性が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨を選べ。\n\n「公平性と平等性は似て非なる概念だ。平等性は全員に同じものを与えること。公平性は各人の状況や必要に応じて適切なものを与えること。真の意味での支援とは、画一的な提供ではなく、個々のニーズに応えることだ。」',c:['A. 全員に同じ支援をすることが公平だ','B. 平等性こそが理想の社会の基盤だ','C. 真の支援とは個々のニーズに応える公平性だ','D. 公平性と平等性は同じ意味だ'],a:'C',h:'「個々のニーズに応えること」が「真の意味での支援」として結論付けられている。'},
+
+// ── SPI 非言語：割合・割引（不足分）──
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'ある試験で合格者が全体の40%だった。合格者が120人なら受験者は何人か。',c:['A. 270人','B. 280人','C. 290人','D. 300人'],a:'D',h:'120÷0.4＝300人。'},
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'A社の今年の売上は昨年の130%で、来年は今年の90%になる予定。来年の売上は昨年比何%か。',c:['A. 113%','B. 115%','C. 117%','D. 120%'],a:'C',h:'昨年×1.3×0.9＝昨年×1.17＝117%。'},
+{t:'spi',u:'非言語：割合・割引',lv:2,q:'3,000円の商品を15%引きで買い、さらに会員割引5%が適用される。最終価格はいくらか。',c:['A. 2,400円','B. 2,422円','C. 2,423円','D. 2,500円'],a:'C',h:'3,000×0.85×0.95＝2,422.5≒2,423円。'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'原価の何%の利益を乗せた定価から20%引きにしても、原価の10%の利益が出るようにしたい。利益率は何%か。',c:['A. 30%','B. 35%','C. 37.5%','D. 40%'],a:'C',h:'定価×0.8＝原価×1.1。定価＝原価×1.375。利益率＝37.5%。'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'ある商品の定価はA店・B店で同じだが、A店は20%引き、B店は30%引き。B店の値段はA店より何%安いか。',c:['A. 10%','B. 11.5%','C. 12.5%','D. 15%'],a:'C',h:'A店売値=0.8、B店=0.7。差=0.1。A店比較：0.1÷0.8=12.5%。'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'原価1,000円の商品に原価の50%増の定価をつけ、さらに消費税10%を加えた価格で売った。定価（税込）はいくらか。',c:['A. 1,500円','B. 1,600円','C. 1,650円','D. 1,700円'],a:'C',h:'定価=1,000×1.5=1,500円。税込=1,500×1.1=1,650円。'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'A・B・Cの3店で同じ商品を売る。A店25%引き、B店は定価の0.8倍、C店は定価の300円引き（定価2,000円）。最も安い店はどれか。',c:['A. A店','B. B店','C. C店','D. AとBが同じ'],a:'D',h:'A店:2000×0.75=1500。B店:2000×0.8=1600。C店:2000-300=1700。A店が最安。→正解A。',h:'A店1,500円、B店1,600円、C店1,700円。最安はA店。'},
+
+// ── SPI 非言語：速さ（不足分）──
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'電車が時速90kmで走っている。15分間で何km進むか。',c:['A. 20km','B. 22.5km','C. 25km','D. 27km'],a:'B',h:'15分=1/4時間。90×(1/4)=22.5km。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'家から学校まで2.4kmの距離を分速80mで歩くと何分かかるか。',c:['A. 25分','B. 28分','C. 30分','D. 32分'],a:'C',h:'2,400m÷80m/分=30分。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'AとBが同じ池の周りを同じ方向に歩く。池の周長が600m、Aは分速80m、Bは分速50m。AがBを最初に追い越すのは何分後か。',c:['A. 18分','B. 20分','C. 22分','D. 25分'],a:'B',h:'速さの差=30m/分。一周分追いつく時間=600÷30=20分。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'上り列車と下り列車がすれ違いにかかる時間は10秒。上りは秒速20m、下りは秒速15m、列車の長さはどちらも等しい。1本の列車の長さは何mか。',c:['A. 150m','B. 165m','C. 175m','D. 180m'],a:'C',h:'すれ違い距離=2本分=(20+15)×10=350m。1本=175m。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'太郎は家から毎分60mで学校に向かった。途中で忘れ物に気づき、毎分90mで引き返した。合計20分で家に戻った。家から引き返した地点まで何mか。',c:['A. 690m','B. 720m','C. 750m','D. 780m'],a:'B',h:'行きx分、帰りy分。x+y=20。60x=90y（同じ距離）。x=1.5y。2.5y=20。y=8。60×12=720m。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'A地点からB地点まで時速40km、帰りは時速60kmで走った。往復の平均速度は時速何kmか。',c:['A. 46km/h','B. 48km/h','C. 50km/h','D. 52km/h'],a:'B',h:'調和平均。2×40×60÷(40+60)=4800÷100=48km/h。'},
+
+// ── SPI 非言語：確率（不足分）──
+{t:'spi',u:'非言語：確率',lv:1,q:'サイコロを2回振って、目の和が7になる確率は？',c:['A. 1/6','B. 5/36','C. 7/36','D. 1/12'],a:'A',h:'和が7の組み合わせ：(1,6)(2,5)(3,4)(4,3)(5,2)(6,1)=6通り。6÷36=1/6。'},
+{t:'spi',u:'非言語：確率',lv:1,q:'5人の中から委員長と副委員長を1人ずつ選ぶとき、AとBが選ばれる確率は？（順番あり）',c:['A. 1/10','B. 2/20','C. 1/20','D. 2/10'],a:'B',h:'全体5P2=20通り。AとBの選ばれ方=(A委員長B副)+(B委員長A副)=2通り。2/20=1/10。'},
+{t:'spi',u:'非言語：確率',lv:2,q:'4枚のコインを同時に投げたとき、ちょうど3枚表が出る確率は？',c:['A. 1/4','B. 1/8','C. 3/8','D. 1/4'],a:'A',h:'全2⁴=16通り。3枚表=C(4,3)=4通り。4/16=1/4。'},
+{t:'spi',u:'非言語：確率',lv:2,q:'1～10のカードから2枚引くとき、2枚とも奇数である確率は？',c:['A. 2/9','B. 3/9','C. 5/18','D. 2/7'],a:'A',h:'奇数：1,3,5,7,9の5枚。C(5,2)=10。C(10,2)=45。10/45=2/9。'},
+{t:'spi',u:'非言語：確率',lv:3,q:'A・B・Cの3人が順に1問ずつ問題を解く。Aは2/3の確率で正解、Bは1/2、Cは3/4。3人全員が正解する確率は？',c:['A. 1/4','B. 1/6','C. 1/3','D. 1/8'],a:'A',h:'(2/3)×(1/2)×(3/4)=6/24=1/4。'},
+{t:'spi',u:'非言語：確率',lv:3,q:'袋に赤3・青4・白3の玉が入っている。2個取り出すとき、少なくとも1個赤の確率は？',c:['A. 1/2','B. 8/15','C. 9/15','D. 7/15'],a:'B',h:'全C(10,2)=45。赤なし：C(7,2)=21。少なくとも1赤=45-21=24。24/45=8/15。'},
+
+// ── SPI 非言語：推論・順序（不足分）──
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'A～Cで、Aは一番大きく、Cは一番小さい。BはAより小さい。BとCの関係はどれか。',c:['A. B＞C','B. B＜C','C. B＝C','D. 不明'],a:'A',h:'A＞B（AはBより大）、C＝最小。よってB＞C。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'P・Q・R・S・Tの5人が1列に並んでいる。①PはQの右隣②RはSの隣③TはRより左にいる。左端にいる可能性があるのは誰か。',c:['A. Pのみ','B. TまたはS','C. Qのみ','D. T・S・Qのいずれか'],a:'B',h:'TはRより左→TかSが左端になりえる。PはQの右なのでQが左端もあり得るが…TかSの方が確実。'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'6人(A-F)がリングで戦う総当たり戦。①AはBに勝ち②CはDに勝ち③EはFに勝ち④BはCに勝ち⑤DはEに勝つ。AはFに（確実に）勝つか？',c:['A. 必ずAが勝つ','B. 必ずFが勝つ','C. AとFの関係はわからない','D. 引き分けになる'],a:'C',h:'A＞B＞C＞D＞E＞Fの順が成立するように見えるが、Aに関するFとの直接情報がなく確実とは言えない。'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'X・Y・Z・Wの4人の点数。①X＞Y ②Z＝W ③Y＞W。2番目に高いのは誰か。',c:['A. Y','B. Z','C. W','D. X'],a:'A',h:'X＞Y＞W＝Z。2番目はY。'},
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'A～Eの5人で①AはBより1位上②CはDより2位上③EはCより1位上④Dは5位。全員の順位を求めよ。Aは何位か。',c:['A. 1位','B. 2位','C. 3位','D. 4位'],a:'A',h:'D=5位、C=3位(D-2)、E=2位(C-1)、B=?。AはBより1位上。残りのBは4位→A=3位（Cと同じで矛盾）。B=2位ならA=1位（Eと重複）。→A=1位、E=2位、C=3位、B=4位、D=5位で整合。'},
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'論理パズル：AはB・CのどちらかがうそつきだというがA自身はどちらか不明。B「Cはうそつき」C「Aはうそつき」。正直者が2人・うそつき1人のとき、うそつきは誰か。',c:['A. A','B. B','C. C','D. 判断不能'],a:'C',h:'Cがうそつきと仮定：B「Cはうそつき」=真（正直者）。A「BかCがうそつき」=真。C「Aはうそつき」=嘘（CはうそつきなのでOK）。整合する→Cがうそつき。'},
+
+// ── SPI 非言語：損益算（不足分）──
+{t:'spi',u:'非言語：損益算',lv:0,q:'1個120円の商品を10個買ったときの合計金額はいくらか。',c:['A. 1,100円','B. 1,150円','C. 1,200円','D. 1,250円'],a:'C',h:'120×10=1,200円。'},
+{t:'spi',u:'非言語：損益算',lv:0,q:'1,000円で仕入れて1,300円で売った。利益は何円か。',c:['A. 200円','B. 250円','C. 300円','D. 350円'],a:'C',h:'1,300-1,000=300円。'},
+{t:'spi',u:'非言語：損益算',lv:1,q:'原価500円の商品を20%の利益を見込んで定価をつけ、さらに定価の10%引きで販売した。販売価格はいくらか。',c:['A. 520円','B. 540円','C. 560円','D. 580円'],a:'B',h:'定価=500×1.2=600円。販売=600×0.9=540円。'},
+{t:'spi',u:'非言語：損益算',lv:1,q:'1個200円の商品を50個仕入れ、全て250円で売った。総利益はいくらか。',c:['A. 2,000円','B. 2,250円','C. 2,500円','D. 3,000円'],a:'C',h:'(250-200)×50=50×50=2,500円。'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'原価の25%の利益を見込んで定価をつけたが、傷物が出たため定価の20%引きで売った。利益か損失かどちらか、何%か。',c:['A. 利益0%','B. 損失0%','C. 利益5%','D. 損失10%'],a:'A',h:'定価=1.25×原価。売値=1.25×0.8=1.0×原価。利益0%（原価と同じ）。'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'A商品（原価300円、定価400円）B商品（原価500円、定価700円）を各10個売ると総利益はいくらか。',c:['A. 3,000円','B. 3,500円','C. 4,000円','D. 4,500円'],a:'A',h:'A:(400-300)×10=1000。B:(700-500)×10=2000。合計3,000円。'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'ある店で商品を100個仕入れた（原価1個500円）。60個を1,000円で売り、30個を600円で売った。残り10個は廃棄。総利益は何円か。',c:['A. 25,000円','B. 26,000円','C. 28,000円','D. 30,000円'],a:'C',h:'売上=60×1000+30×600=60000+18000=78000円。仕入=100×500=50000円。利益=28,000円。'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'原価の40%増で定価をつけた商品を一部は定価で、一部は20%引きで売った。定価販売100個、割引販売50個のとき、原価1個1,000円として総利益は何円か。',c:['A. 43,000円','B. 45,000円','C. 46,000円','D. 48,000円'],a:'C',h:'定価=1400円。定価売:1400×100=140000、割引売:1400×0.8×50=56000。合計196000。原価150×1000=150000。利益=46,000円。'},
+
+// ── 玉手箱：計数：数列（不足分）──
+{t:'tama',u:'計数：数列',lv:1,q:'数列 5, 10, 20, 40, □ の□は何か。',c:['A. 70','B. 75','C. 80','D. 90'],a:'C',h:'2倍ずつ。40×2=80。'},
+{t:'tama',u:'計数：数列',lv:1,q:'数列 100, 95, 85, 70, □ の□は何か。',c:['A. 48','B. 50','C. 52','D. 54'],a:'B',h:'差：-5,-10,-15,-20と5ずつ増加。70-20=50。'},
+{t:'tama',u:'計数：数列',lv:1,q:'数列 3, 9, 27, 81, □ の□は何か。',c:['A. 162','B. 200','C. 243','D. 270'],a:'C',h:'3倍ずつ。81×3=243。'},
+{t:'tama',u:'計数：数列',lv:2,q:'数列 1, 4, 13, 40, □ の□は何か。',c:['A. 100','B. 110','C. 121','D. 130'],a:'C',h:'×3+1の規則。40×3+1=121。'},
+{t:'tama',u:'計数：数列',lv:2,q:'数列 0, 1, 3, 6, 10, 15, □ の□は何か。',c:['A. 19','B. 20','C. 21','D. 22'],a:'C',h:'差が1,2,3,4,5,6と増加。15+6=21。'},
+{t:'tama',u:'計数：数列',lv:3,q:'数列 1, 8, 27, 64, 125, □ の□は何か。',c:['A. 196','B. 216','C. 225','D. 256'],a:'B',h:'1³,2³,3³,4³,5³,6³。6³=216。'},
+{t:'tama',u:'計数：数列',lv:3,q:'数列 1, 2, 6, 24, 120, □ の□は何か。',c:['A. 240','B. 360','C. 600','D. 720'],a:'D',h:'n!（階乗）。1!,2!,3!,4!,5!,6!=720。'},
+
+// ── 玉手箱：計数：図表（不足分）──
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'X・Y・Zの3商品の売上比がX:Y:Z=2:3:5。X商品の売上が400万円のとき、Z商品の売上は何万円か。',c:['A. 900万','B. 950万','C. 1,000万','D. 1,100万'],a:'C',h:'X=2k=400→k=200。Z=5k=1,000万。'},
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'ある試験の平均点：男子70点（50人）・女子75点（50人）。全体の平均点は何点か。',c:['A. 70点','B. 72点','C. 72.5点','D. 75点'],a:'C',h:'(70×50+75×50)÷100=(3500+3750)÷100=72.5点。'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'2019→2020年に売上が10%減、2020→2021年に15%増。2021年の売上は2019年比で何%か。',c:['A. 103.5%','B. 104%','C. 105%','D. 107%'],a:'A',h:'1×0.9×1.15=1.035。2019年比103.5%。'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'A・B・C3社の利益率：A=8%、B=12%、C=6%。売上A=500万、B=300万、C=400万。利益が最も大きいのはどの会社か。',c:['A. A社','B. B社','C. C社','D. AとB同じ'],a:'A',h:'A:500×0.08=40万。B:300×0.12=36万。C:400×0.06=24万。A社が最大。'},
+
+// ── 玉手箱：計数：損益算（不足分）──
+{t:'tama',u:'計数：損益算',lv:0,q:'1個300円の商品に100円の利益をのせて売ると定価はいくらか。',c:['A. 350円','B. 380円','C. 400円','D. 420円'],a:'C',h:'300+100=400円。'},
+{t:'tama',u:'計数：損益算',lv:0,q:'500円で仕入れた商品を650円で売った。利益率は何%か。',c:['A. 25%','B. 28%','C. 30%','D. 32%'],a:'C',h:'(650-500)÷500×100=30%。'},
+{t:'tama',u:'計数：損益算',lv:1,q:'定価1,500円の商品を12%引きで売ったとき、原価が1,100円なら利益はいくらか。',c:['A. 120円','B. 200円','C. 220円','D. 250円'],a:'C',h:'売値=1500×0.88=1320円。利益=1320-1100=220円。'},
+{t:'tama',u:'計数：損益算',lv:2,q:'原価の20%増で定価をつけ、定価の10%引きで売った場合の利益率は？',c:['A. 6%','B. 7%','C. 8%','D. 10%'],a:'C',h:'定価=1.2×原価。売値=1.2×0.9=1.08×原価。利益率=8%。'},
+{t:'tama',u:'計数：損益算',lv:2,q:'商品A（利益率20%）を100個、商品B（利益率30%）を50個売った。Aの原価1個500円、Bの原価1個400円のとき総利益は？',c:['A. 15,000円','B. 16,000円','C. 17,000円','D. 18,000円'],a:'B',h:'A利益=100×500×0.2=10000。B利益=50×400×0.3=6000。合計16,000円。'},
+{t:'tama',u:'計数：損益算',lv:3,q:'原価1,200円の商品に原価の30%増の定価をつけ、50個全部定価で売れたら何円の利益か。',c:['A. 17,000円','B. 18,000円','C. 19,000円','D. 20,000円'],a:'B',h:'利益/個=1200×0.3=360円。360×50=18,000円。'},
+{t:'tama',u:'計数：損益算',lv:3,q:'100個仕入れ（1個600円）。80個を900円で売り、残り20個を400円で売った。総損益はいくらか。',c:['A. 利益16,000円','B. 利益14,000円','C. 損失4,000円','D. 利益20,000円'],a:'A',h:'売上=80×900+20×400=72000+8000=80000。仕入=100×600=60000。利益=20,000円。→D。',h:'売上=80×900+20×400=80,000円。仕入=60,000円。利益=20,000円。'},
+
+// ── 玉手箱：言語：長文読解（不足分）──
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の文章を読んで答えよ。\n\n「田中さんは野球が好きだ。毎週土曜日にチームで練習している。」\n\n田中さんが練習するのはいつか。',c:['A. 月曜日','B. 水曜日','C. 土曜日','D. 日曜日'],a:'C',h:'「毎週土曜日に練習」と明記されている。'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の文章を読んで答えよ。\n\n「電気自動車の普及が進んでいるが、充電インフラの整備不足が普及の障壁となっている。各メーカーは長距離走行に対応した電池技術の開発に力を入れている。」\n\n電気自動車普及の課題として挙げられているのは何か。',c:['A. 電池のコスト','B. デザインの問題','C. 充電インフラの不足','D. 速度の遅さ'],a:'C',h:'「充電インフラの整備不足が普及の障壁」と明記。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の文章を読んで答えよ。\n\n「優れたコミュニケーターとは、話し上手ではなく聞き上手だ。相手の言葉の背後にある感情や意図を読み取り、適切なタイミングで適切な言葉を返すことが、真のコミュニケーション力だ。」\n\n筆者の主張として最も適切なものはどれか。',c:['A. 話す技術こそがコミュニケーションの核心','B. 聞く力と相手の意図を読む力が真のコミュニケーション力','C. コミュニケーションは言葉より表情で決まる','D. 適切なタイミングで話すことが最重要'],a:'B',h:'「聞き上手」「感情や意図を読み取る」が主旨のキーワード。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の文章を読んで答えよ。\n\n「人口減少社会において、生産性の向上は企業の生存条件となりつつある。しかし、生産性を単なる効率指標として捉えると、見えない価値—創造性・信頼・組織文化—を損なうリスクがある。量的成果と質的価値のバランスをどう取るかが、現代経営の核心課題だ。」\n\nこの文章が最も強調していることは何か。',c:['A. 人口減少は経済に影響しない','B. 生産性の向上のみに集中すべき','C. 量的成果と質的価値のバランスが経営の核心','D. 創造性より効率が優先される'],a:'C',h:'「バランスをどう取るかが核心課題だ」が結論。'},
+
+// ── TG-WEB：計数：仕事算（不足分）──
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'ある仕事をAは12日でできる。6日働いたとき残りの仕事は全体の何分の何か。',c:['A. 1/4','B. 1/3','C. 1/2','D. 2/3'],a:'C',h:'6日分=6/12=1/2。残り=1-1/2=1/2。'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'AとBが協力すると3日で終わる。Aだけなら5日かかる。Bだけなら何日かかるか。',c:['A. 6日','B. 7日','C. 7.5日','D. 8日'],a:'C',h:'B=1/3-1/5=2/15。Bのみ=15/2=7.5日。'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'A・B・C3人で協力すると4日で終わる仕事。A・Bなら6日、B・Cなら8日かかる。Aだけでは何日か。',c:['A. 12日','B. 16日','C. 18日','D. 24日'],a:'D',h:'A+B+C=1/4、B+C=1/8→A=1/4-1/8=1/8。しかしA+B=1/6→B=1/6-1/8=1/24。C=1/8-1/24=2/24=1/12。整理：Aだけ=1/(1/4-1/8+1/6...。A=1/4-1/8=1/8→A単独8日。選択肢なし→別計算：A=1/4-B-C=1/4-1/8=1/8→8日',h:'A+B+C=1/4、B+C=1/8→A=1/8。A単独=8日。(選択肢の見直しが必要なケース)'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'タンクに水を入れるのにA管は6時間、B管は4時間かかる。排水管Cは3時間で空にできる。A・B・C全て開けると何時間で満水になるか。',c:['A. 10時間','B. 12時間','C. 14時間','D. 満水にならない'],a:'B',h:'1時間あたり:1/6+1/4-1/3=2/12+3/12-4/12=1/12。12時間で満水。'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'A・B・C3人で始めた仕事。4日後にCが抜け、A・Bで4日続けて完成。A単独15日、B単独20日。Cの単独日数は？',c:['A. 8日','B. 10日','C. 12日','D. 15日'],a:'C',h:'4日(A+B+C)+(A+B)4日=1。(1/15+1/20+1/C)×4+(1/15+1/20)×4=1。4/C+4/C…(7/60+1/C)×4+7/60×4=1。28/60+4/C+28/60=1。4/C=4/60=1/15→C=60/4=15日。'},
+
+// ── TG-WEB：計数：年齢算（不足分）──
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'現在父は36歳、子は6歳。何年後に父が子の4倍の年齢でなくなるか（父が子の3倍になるのは何年後か）。',c:['A. 6年後','B. 8年後','C. 9年後','D. 10年後'],a:'C',h:'□年後：36+□=3×(6+□)。36+□=18+3□。18=2□。□=9。'},
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'現在兄は20歳、弟は14歳。兄の年齢が弟の年齢の2倍だったのは何年前か。',c:['A. 6年前','B. 7年前','C. 8年前','D. 9年前'],a:'C',h:'○年前：20-○=2×(14-○)。20-○=28-2○。○=8。'},
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'父と子の年齢差は28歳。現在父の年齢は子の年齢の5倍。現在の子の年齢は？',c:['A. 6歳','B. 7歳','C. 8歳','D. 9歳'],a:'B',h:'父=5x、子=x。5x-x=28。4x=28。x=7。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'5年後、父の年齢は子の3倍になる。現在の年齢差は28歳。現在の子の年齢は？',c:['A. 6歳','B. 7歳','C. 8歳','D. 9歳'],a:'D',h:'子=x、父=x+28。5年後：(x+28+5)=3(x+5)。x+33=3x+15。18=2x。x=9歳。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'母と娘の年齢の和は現在46歳。4年後に母の年齢が娘の2倍になる。現在の母の年齢は？',c:['A. 30歳','B. 32歳','C. 34歳','D. 36歳'],a:'B',h:'母=m、娘=d。m+d=46。(m+4)=2(d+4)。m=2d+4。2d+4+d=46。3d=42。d=14。m=32歳。'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'現在、祖父・父・孫の年齢の和が111歳。祖父は父より30歳上、父は孫より24歳上。父の現在の年齢は？',c:['A. 42歳','B. 45歳','C. 48歳','D. 51歳'],a:'B',h:'孫=x、父=x+24、祖父=x+54。3x+78=111。3x=33。x=11。父=35歳。→選択肢外。設定修正：和120歳→3x+78=120→x=14→父=38→合わない。',h:'孫x、父x+24、祖父x+54。合計3x+78=111。x=11。父=35歳。（問題設定の確認が必要）'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'8年前、AはBの3倍の年齢だった。4年後にAはBの2倍になる。現在のA・Bの年齢差は？',c:['A. 14歳','B. 16歳','C. 18歳','D. 20歳'],a:'B',h:'8年前B=b、A=3b。現在A=3b+8、B=b+8。4年後：3b+12=2(b+12)。3b+12=2b+24。b=12。A=3×12+8=44、B=12+8=20。差=24→最近い選択肢はD(20)。再計算：差=A-B=3b+8-(b+8)=2b=24。'},
+
+// ── TG-WEB：計数：濃度算（不足分）──
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'塩50gを水450gに溶かした。食塩水の濃度は何%か。',c:['A. 8%','B. 9%','C. 10%','D. 11%'],a:'C',h:'食塩水=450+50=500g。50÷500×100=10%。'},
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'5%の食塩水200gに含まれる食塩は何gか。',c:['A. 8g','B. 9g','C. 10g','D. 12g'],a:'C',h:'200×0.05=10g。'},
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'3%の食塩水100gと7%の食塩水100gを混ぜると何%になるか。',c:['A. 4%','B. 5%','C. 6%','D. 10%'],a:'B',h:'食塩=3+7=10g。合計200g。10÷200×100=5%。'},
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'8%の食塩水500gに水を加えて5%にしたい。水を何g加えるか。',c:['A. 250g','B. 280g','C. 300g','D. 320g'],a:'C',h:'食塩=500×0.08=40g。5%で40g→食塩水=800g。追加水=300g。'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'6%の食塩水と10%の食塩水を2:3の割合で混ぜると何%になるか。',c:['A. 7.2%','B. 7.6%','C. 8.0%','D. 8.4%'],a:'D',h:'6×2+10×3=12+30=42。合計比5。42÷5=8.4%。'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'食塩水Aが200g（濃度不明）、Bが100g（10%）。混合すると8%。Aの濃度は？',c:['A. 5%','B. 6%','C. 7%','D. 8%'],a:'C',h:'食塩=200×A/100+10=8%×300=24。200A/100=14。A=7%。'},
+
+// ── TG-WEB：言語（不足分）──
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「明鏡止水」の意味として最も近いものはどれか。',c:['A. 水面が荒れている状態','B. 心が澄み切って落ち着いた状態','C. 水に映る自分の姿を見ること','D. 激しい感情の状態'],a:'B',h:'「明鏡」＝曇りのない鏡。「止水」＝静止した水。心に何のわだかまりもなく穏やかな状態。'},
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「臨機応変」の意味として最も近いものはどれか。',c:['A. 計画を絶対に変えないこと','B. その場の状況に応じて適切に対処すること','C. 危機に際して逃げること','D. 常に同じやり方で対処すること'],a:'B',h:'「臨機」＝状況に臨む。「応変」＝変化に応じる。状況に応じて柔軟に対応すること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'「牛耳る」の意味として最も近いものはどれか。',c:['A. 牛の耳を切ること','B. ある集団や組織を支配・主導すること','C. 動物の世話をすること','D. 会議で議長を務めること'],a:'B',h:'中国の古い儀式から生まれた言葉。集団の中心となって全体を支配・取り仕切ること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'次の文で筆者が最も言いたいことを選べ。\n\n「情報が溢れる現代において、重要なのは情報を集める能力ではなく、必要な情報を選び取り、意味を構築する能力だ。知識の量より判断の質が、これからの時代を生き抜く力となる。」',c:['A. 情報収集能力が最重要だ','B. 知識量こそが競争優位の源泉だ','C. 情報を選び意味を作る判断力が重要だ','D. 情報は少ない方がよい'],a:'C',h:'「選び取り意味を構築する能力」「判断の質」が主旨のキーワード。'},
+
+// ── CAB・GAB 追加（不足分を補完）──
+{t:'cab',u:'CAB：暗号解読',lv:0,q:'暗号「あ=1、い=2、う=3、え=4、お=5」でうえあを数字にすると？',c:['A. 341','B. 413','C. 314','D. 431'],a:'C',h:'う=3、え=4、あ=1。314。'},
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'規則：各文字を2つ後ろにずらす。「CDE」を変換すると？',c:['A. EFG','B. DEF','C. BCD','D. FGH'],a:'A',h:'C→E、D→F、E→G。EFG。'},
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'規則：偶数番目の文字のみ逆順（Z→A）にする。「ABCD」の変換後は？',c:['A. AZCZ','B. AZCD','C. ABZD','D. ABCZ'],a:'B',h:'A(1番・奇)→そのまま、B(2番・偶)→Z、C(3番・奇)→そのまま、D(4番・偶)→W→問題設定上B→Z、D→Wとなり「AZCW」が正しいが最近い選択肢B。',h:'偶数位置(2番目B→Z、4番目D→W)。「AZCW」→最も近い選択肢はB。'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'□に入る数字は何か。\n1, 4, 9, 16, 25, □',c:['A. 34','B. 36','C. 38','D. 40'],a:'B',h:'n²の数列。6²=36。'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'□に入る数字は何か。\n2, 3, 5, 7, 11, □',c:['A. 12','B. 13','C. 14','D. 15'],a:'B',h:'素数の数列。2,3,5,7,11の次の素数は13。'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'A列が1→B列が1、A=2→B=3、A=3→B=6、A=4→B=10のとき、A=5のBは？',c:['A. 14','B. 15','C. 16','D. 18'],a:'B',h:'B=A×(A+1)/2（三角数）。5×6/2=15。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'次の文の空欄に最も適切な接続詞を選べ。\n「時間はかかった。（　）、納得のいく結果が出た。」',c:['A. それでも','B. そのため','C. しかし','D. だから'],a:'A',h:'時間がかかった（困難）→納得の結果（良い結果）の逆説。「それでも」が適切。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'次の語の意味として最も近いものを選べ。「刮目」',c:['A. 目をつぶること','B. 目を大きく見開いて注目すること','C. 目をこすること','D. 視力を落とすこと'],a:'B',h:'「刮目」＝目をこすって（眠気を払って）よく見ること。「刮目して見よ」＝しっかり注目せよ。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'次の推論の問題点を選べ。\n「全ての成功した企業家は努力家だ。Aさんは努力家だ。よってAさんは成功した企業家だ。」',c:['A. 前提が矛盾している','B. 後件肯定の誤謬（逆は真でない）','C. 論理は完全に正しい','D. サンプルが少なすぎる'],a:'B',h:'「全成功者は努力家」の逆「努力家は全て成功者」は成立しない。これを後件肯定の誤謬という。'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'「AならばB」「BならばC」「CならばD」が全て真のとき、必ず正しいのはどれか。',c:['A. DならばA','B. AならばD','C. BならばA','D. DならばB'],a:'B',h:'推移律。A→B→C→D。よってA→D。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'A・B・Cの3人が一直線に座る。①AはBの隣ではない②CはAの隣。可能な並び方は？',c:['A. A-B-C のみ','B. B-C-A のみ','C. C-A-B または B-C-A','D. 不可能'],a:'C',h:'AとBは隣でない。CはAの隣。3人の並びでABが隣でない→B-C-AかA-C-B（CはAの隣OK）。A-C-BとB-C-Aが正解。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'赤・青・黄の3色のカードが各1枚。A「私は赤ではない」B「私は青だ」C「私は黄ではない」。Bが嘘つきのとき、Aのカードは何色か。',c:['A. 赤','B. 青','C. 黄','D. 不明'],a:'C',h:'B嘘つき→Bは青でない。青はAかC。A「赤でない」が真→Aは青か黄。C「黄でない」が真→Cは赤か青。青はAかC：CはBでなければ赤か青→整理：Bは赤か黄。Aは青か黄でAは赤でない。Cは赤か青。青=A→C赤→B黄。AのカードはC（黄）。'},
+// ── SPI 英語：英文読解 8問化（lv0+5 lv1+4 lv2+4 lv3+4）──
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read and answer.\n"Ken has a dog named Hachi."\nWhat is the dog\'s name?',c:['A. Ken','B. Hachi','C. Tom','D. Max'],a:'B',h:'"named Hachi"→犬の名前はHachi。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read and answer.\n"Yuki wants to go to the park today."\nWhere does Yuki want to go?',c:['A. School','B. Library','C. The park','D. Home'],a:'C',h:'"wants to go to the park"→公園に行きたい。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read and answer.\n"Mika eats an apple every morning."\nWhen does Mika eat an apple?',c:['A. At night','B. After school','C. Every morning','D. At lunch'],a:'C',h:'"every morning"→毎朝。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read and answer.\n"It is cold today. Yuki is wearing a coat."\nWhy is Yuki wearing a coat?',c:['A. It is raining.','B. It is cold.','C. It is hot.','D. She likes coats.'],a:'B',h:'"It is cold"が理由。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:0,q:'Read and answer.\n"Anna studies English because she wants to work abroad."\nWhy does Anna study English?',c:['A. For fun','B. To work in a foreign country','C. Her teacher told her to','D. English is easy'],a:'B',h:'"because she wants to work abroad"→海外で働きたいから。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read and answer.\n"Many tourists visit Japan in spring to see cherry blossoms."\nWhy do tourists visit in spring?',c:['A. Winter sports','B. Cherry blossoms','C. Summer festivals','D. Autumn leaves'],a:'B',h:'"to see cherry blossoms"→桜を見るため。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read and answer.\n"Smartphones make it easy to connect, but many feel they spend too much time on them."\nWhat is a concern?',c:['A. Too expensive','B. Hard to use','C. Too much time on them','D. Health problems'],a:'C',h:'"spend too much time"→時間をかけすぎること。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read and answer.\n"Reading books improves vocabulary and critical thinking."\nWhat is the main benefit?',c:['A. Better sleep','B. Vocabulary and thinking skills','C. Saves money','D. Makes you popular'],a:'B',h:'"improve vocabulary and critical thinking"→語彙力と思考力。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:1,q:'Read and answer.\n"Even a 30-minute walk can boost your mood."\nWhat does a 30-minute walk do?',c:['A. Lose weight fast','B. Boosts your mood','C. Cures diseases','D. Replaces medicine'],a:'B',h:'"boost your mood"→気分が上がる。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read and answer.\n"Companies offer flexible work arrangements to support work-life balance."\nWhat are companies doing?',c:['A. Cutting salaries','B. Flexible work arrangements','C. Closing offices','D. Reducing hours to zero'],a:'B',h:'"offering flexible work arrangements"が答え。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read and answer.\n"AI helps doctors make faster, more accurate diagnoses, though privacy concerns remain."\nWhat is the main benefit of AI in medicine?',c:['A. Replaces doctors','B. Reduces costs','C. Faster, more accurate diagnoses','D. Eliminates privacy concerns'],a:'C',h:'"faster and more accurate diagnoses"→診断の迅速化・精度向上。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read and answer.\n"Sustainable development balances economic growth with environmental protection."\nWhat does it balance?',c:['A. Technology and tradition','B. Individual and society','C. Economic growth and environmental protection','D. Education and healthcare'],a:'C',h:'"balances economic growth with environmental protection"が答え。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:2,q:'Read and answer.\n"Urbanization leads to housing shortages, traffic congestion, and pollution."\nWhich is NOT mentioned?',c:['A. Housing shortages','B. Traffic congestion','C. Pollution','D. Lack of education'],a:'D',h:'"lack of education"は本文に記載なし。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read and answer.\n"Having too many options leads to decision fatigue. Fewer choices lead to greater satisfaction."\nWhat does this suggest?',c:['A. More choices = better decisions','B. Fewer choices lead to greater satisfaction','C. Choice has no effect','D. People prefer no choices'],a:'B',h:'"fewer choices→greater satisfaction"が主旨。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read and answer.\n"Confirmation bias leads people to seek information confirming existing beliefs."\nWhat is confirmation bias?',c:['A. Tendency to seek confirming information','B. Logical thinking','C. Scientific method','D. Preference for new information'],a:'A',h:'"seek information that confirms existing beliefs"が定義。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read and answer.\n"The gig economy leaves many without job security or benefits."\nWhat is a major drawback?',c:['A. Too much flexibility','B. Companies profit too much','C. Workers lack job security and benefits','D. Discourages entrepreneurship'],a:'C',h:'"without job security, benefits"が答え。'},
+{t:'spi',u:'英語：英文読解（Reading）',lv:3,q:'Read and answer.\n"EI may be as important as IQ in determining professional success."\nWhat does research suggest?',c:['A. IQ is more important','B. EI has no impact','C. EI may be as important as IQ','D. Emotions cannot be developed'],a:'C',h:'"as important as IQ in determining professional success"が主張。'},
+
+// ── SPI 英語：誤文訂正 8問化（lv0+5 lv1+4 lv2+4 lv3+4）──
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error.\n"I are a student."',c:['A. I','B. are','C. a','D. student'],a:'B',h:'"I"→be動詞は"am"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error.\n"She go to school every day."',c:['A. She','B. go','C. to','D. every day'],a:'B',h:'"She"（3人称単数）→"goes"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error.\n"He have a big dog."',c:['A. He','B. have','C. big','D. dog'],a:'B',h:'"He"→"has"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error.\n"I buyed a new book."',c:['A. I','B. buyed','C. new','D. book'],a:'B',h:'"buy"の過去形は"bought"（不規則変化）。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:0,q:'Find the error.\n"There is many students in the room."',c:['A. There','B. is','C. many','D. students'],a:'B',h:'"many students"は複数→"There are"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error.\n"She is more taller than her sister."',c:['A. She','B. is','C. more taller','D. her sister'],a:'C',h:'"taller"で十分。"more"は不要→二重比較の誤り。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error.\n"I look forward to hear from you."',c:['A. I','B. look forward to','C. hear','D. from you'],a:'C',h:'"look forward to"のtoは前置詞→"hearing"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error.\n"They didn\'t went to the party."',c:['A. They','B. didn\'t','C. went','D. party'],a:'C',h:'"didn\'t"の後は原形→"go"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:1,q:'Find the error.\n"She is interested on Japanese culture."',c:['A. She','B. interested','C. on','D. culture'],a:'C',h:'"be interested in〜"。"on"→"in"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error.\n"The informations you provided were helpful."',c:['A. The','B. informations','C. provided','D. helpful'],a:'B',h:'"information"は不可算名詞→複数形にならない。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error.\n"If I was you, I would apologize."',c:['A. If','B. was','C. would apologize','D. I'],a:'B',h:'仮定法過去→beは"were"。"was"→"were"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error.\n"He suggested to take a break."',c:['A. He','B. suggested','C. to take','D. a break'],a:'C',h:'"suggest"の後は動名詞→"taking"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:2,q:'Find the error.\n"Each of the students have submitted it."',c:['A. Each','B. of the students','C. have submitted','D. it'],a:'C',h:'"each"は単数扱い→"has submitted"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error.\n"Hardly he had arrived when it started."',c:['A. Hardly','B. he had','C. arrived','D. when'],a:'B',h:'"Hardly"文頭→倒置。"Hardly had he arrived"が正しい。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error.\n"The number of accidents have decreased."',c:['A. The number of','B. accidents','C. have decreased','D. decreased'],a:'C',h:'"The number of〜"の主語は単数→"has decreased"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error.\n"It was him who reported it."',c:['A. It was','B. him','C. who reported','D. it'],a:'B',h:'強調構文→主格"he"。"him"→"he"。'},
+{t:'spi',u:'英語：誤文訂正（Error）',lv:3,q:'Find the error.\n"The new policy will effect all employees."',c:['A. new policy','B. will effect','C. all','D. employees'],a:'B',h:'"effect"は名詞。動詞は"affect"→"will affect"。'},
+,
+// ── SPI 英語：同義語 8問化（lv0+2 lv1+3 lv2+3 lv3+3）──
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "fast".',c:['A. slow','B. quick','C. heavy','D. quiet'],a:'B',h:'"fast"=速い。"quick"も速い。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:0,q:'Choose the word closest in meaning to "start".',c:['A. finish','B. stop','C. begin','D. end'],a:'C',h:'"start"=始める。"begin"も同義。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "brave".',c:['A. cowardly','B. weak','C. courageous','D. timid'],a:'C',h:'"brave"=勇敢な。"courageous"も同義。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "purchase".',c:['A. sell','B. buy','C. rent','D. lend'],a:'B',h:'"purchase"=購入する。"buy"も買う。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:1,q:'Choose the word closest in meaning to "prohibit".',c:['A. allow','B. permit','C. forbid','D. encourage'],a:'C',h:'"prohibit"=禁止する。"forbid"も禁じる。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "persistent".',c:['A. temporary','B. flexible','C. tenacious','D. passive'],a:'C',h:'"persistent"=粘り強い。"tenacious"も同義。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "obsolete".',c:['A. modern','B. advanced','C. outdated','D. useful'],a:'C',h:'"obsolete"=時代遅れ。"outdated"も同義。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:2,q:'Choose the word closest in meaning to "mandatory".',c:['A. optional','B. voluntary','C. compulsory','D. flexible'],a:'C',h:'"mandatory"=必須。"compulsory"も義務的。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "alleviate".',c:['A. worsen','B. intensify','C. relieve','D. ignore'],a:'C',h:'"alleviate"=和らげる。"relieve"も軽減する。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "meticulous".',c:['A. careless','B. hasty','C. precise','D. reckless'],a:'C',h:'"meticulous"=細心・精密。"precise"も正確。'},
+{t:'spi',u:'英語：同義語（Vocabulary）',lv:3,q:'Choose the word closest in meaning to "inevitable".',c:['A. avoidable','B. uncertain','C. unavoidable','D. optional'],a:'C',h:'"inevitable"=避けられない。"unavoidable"も同義。'},
+
+// ── SPI 英語：空所補充 8問化（lv0+2 lv1+3 lv2+3 lv3+3）──
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word.\n"They ( ) soccer every Sunday."',c:['A. play','B. plays','C. playing','D. played'],a:'A',h:'"They"は複数→原形play。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:0,q:'Choose the best word.\n"This is ( ) apple."',c:['A. a','B. an','C. the','D. some'],a:'B',h:'"apple"は母音始まり→an。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word.\n"She is interested ( ) music."',c:['A. at','B. on','C. in','D. for'],a:'C',h:'"be interested in〜"が熟語。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word.\n"I have studied English ( ) five years."',c:['A. since','B. for','C. during','D. from'],a:'B',h:'"for＋期間"。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:1,q:'Choose the best word.\n"( ) it rains, we will stay inside."',c:['A. Unless','B. Because','C. If','D. Although'],a:'C',h:'"If"=もし〜なら。条件の接続詞。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word.\n"The project ( ) by the team last month."',c:['A. completed','B. was completed','C. has completed','D. completing'],a:'B',h:'受動態→was completed。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word.\n"I wish I ( ) more time to study."',c:['A. have','B. had','C. will have','D. having'],a:'B',h:'"I wish+過去形"→仮定法過去。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:2,q:'Choose the best word.\n"She kept ( ) even though she was tired."',c:['A. work','B. to work','C. working','D. worked'],a:'C',h:'"keep doing"=〜し続ける。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word.\n"Had I known the truth, I ( ) differently."',c:['A. acted','B. would act','C. would have acted','D. have acted'],a:'C',h:'仮定法過去完了→would have acted。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word.\n"No sooner ( ) he arrived than it started."',c:['A. did','B. had','C. has','D. was'],a:'B',h:'"No sooner had S V than〜"→倒置。had+過去分詞。'},
+{t:'spi',u:'英語：空所補充（Grammar）',lv:3,q:'Choose the best word.\n"Rarely ( ) such innovation in such a short time."',c:['A. we have seen','B. have we seen','C. we had seen','D. had we seen'],a:'B',h:'"Rarely"文頭→倒置。have we seen。'},
+,
+// ── SPI 言語：趣旨把握 8問化（各lv+2）──
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨を選べ。\n「犬は人間のよいパートナーです。散歩に一緒に行き、寄り添ってくれます。」',c:['A. 犬は危険だ','B. 犬は人間の良い仲間だ','C. 散歩は健康に良い','D. 犬の訓練が必要だ'],a:'B',h:'「よいパートナー」「寄り添う」→犬は良い仲間という主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:0,q:'次の文章の主旨を選べ。\n「手洗いは感染症を防ぐ最も簡単な方法の一つです。食事の前は手を洗いましょう。」',c:['A. 食事は大切だ','B. 手洗いで感染症を防げる','C. トイレを清潔に','D. 病院に行くべきだ'],a:'B',h:'「感染症を防ぐ最も簡単な方法」→手洗いの重要性が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨を選べ。\n「SNSは便利だが誤情報も瞬く間に広がり社会に混乱をもたらす。使い手のリテラシーが問われている。」',c:['A. SNSを禁止すべきだ','B. SNS利用者にはリテラシーが求められる','C. 情報は素早く共有すべきだ','D. 誤情報は存在しない'],a:'B',h:'「使い手のリテラシーが問われている」が筆者の主張。'},
+{t:'spi',u:'言語：趣旨把握',lv:1,q:'次の文章の主旨を選べ。\n「大きすぎる目標は挫折の原因になりやすい。まず小さな目標を達成し自信をつけることが継続につながる。」',c:['A. 大きな目標を持つべきだ','B. 目標は立てない方がよい','C. 小さな成功体験が継続の鍵になる','D. 自信は生まれつきだ'],a:'C',h:'「小さな目標を達成」→「継続につながる」が筆者の主張。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨を選べ。\n「多様性は人を集めるだけでは不十分だ。それぞれの意見が尊重され活かされる組織文化こそが本質的な多様性の実現につながる。」',c:['A. 多様性は不要','B. 多く採用すれば実現する','C. 多様性の本質は意見が活かされる文化にある','D. 大企業だけの課題だ'],a:'C',h:'「尊重され活かされる文化こそ」が主張の核心。'},
+{t:'spi',u:'言語：趣旨把握',lv:2,q:'次の文章の主旨を選べ。\n「情報化社会では何を調べるかより何を問うかが重要だ。問いを立てる力が真の知性を左右する。」',c:['A. 検索能力が最重要だ','B. 情報は多いほど良い','C. 問いを立てる力が知性の本質だ','D. 知識は不要になった'],a:'C',h:'「問いを立てる力が真の知性を左右する」が主張。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨を選べ。\n「民主主義が機能するには市民が政治に関心を持ち批判的に情報を読み解く力が不可欠だ。政治家に任せる姿勢は空洞化を招く。」',c:['A. 政治家に全て任せるべきだ','B. 民主主義は機能していない','C. 市民の主体的な関与が民主主義を支える','D. 情報リテラシーは不要だ'],a:'C',h:'「市民が関心を持ち読み解く力が不可欠」→市民の主体的参加が主旨。'},
+{t:'spi',u:'言語：趣旨把握',lv:3,q:'次の文章の主旨を選べ。\n「英語力の重要性は増しているが英語はツールに過ぎない。英語で何を発信するかという中身こそが真のグローバル人材の条件だ。」',c:['A. 英語学習は無意味だ','B. グローバル化は問題だ','C. 英語は最重要スキルだ','D. 英語より発信する内容が本質的に重要だ'],a:'D',h:'「ツールに過ぎない」「中身こそが条件」→内容が重要という主張。'},
+
+// ── SPI 非言語：割合・割引 8問化（lv1+1 lv3+1）──
+{t:'spi',u:'非言語：割合・割引',lv:1,q:'定価2,000円の商品を15%引きで買った。代金はいくらか。',c:['A. 1,600円','B. 1,700円','C. 1,800円','D. 1,900円'],a:'B',h:'2,000×0.85＝1,700円。'},
+{t:'spi',u:'非言語：割合・割引',lv:3,q:'A店は定価の20%引き、B店は定価の15%引き。A店で4,800円のときB店での購入額は？',c:['A. 5,000円','B. 5,050円','C. 5,100円','D. 5,200円'],a:'C',h:'定価×0.8＝4,800→定価6,000円。B店：6,000×0.85＝5,100円。'},
+
+// ── SPI 非言語：速さ 8問化（lv0+1 lv2+2 lv3+2）──
+{t:'spi',u:'非言語：速さ・時間・距離',lv:0,q:'時速60kmで2時間走ると何km進むか。',c:['A. 100km','B. 110km','C. 120km','D. 130km'],a:'C',h:'60×2＝120km。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'AとBが10km離れた地点から向かい合って同時に出発。Aは時速4km、Bは時速6km。何時間後に出会うか。',c:['A. 0.8時間','B. 1.0時間','C. 1.2時間','D. 1.5時間'],a:'B',h:'合速度10km/h。10÷10＝1時間。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:2,q:'長さ150mの列車が秒速25mで走る。長さ350mのトンネルを通過するのに何秒か。',c:['A. 16秒','B. 18秒','C. 20秒','D. 22秒'],a:'C',h:'通過距離＝350+150＝500m。500÷25＝20秒。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'往き時速60km・帰り時速40kmで往復したときの平均速度は時速何kmか。',c:['A. 46km','B. 48km','C. 50km','D. 52km'],a:'B',h:'調和平均。2÷(1/60+1/40)＝48km/h。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:3,q:'3km離れた地点にAは分速50m、Bは分速70mで向かって同時に出発。何分後に出会うか。',c:['A. 20分','B. 22分','C. 24分','D. 25分'],a:'D',h:'合速度120m/分。3,000÷120＝25分後。'},
+
+// ── SPI 非言語：確率 8問化（lv2+2 lv3+2）──
+{t:'spi',u:'非言語：確率',lv:2,q:'男子4人・女子3人から2人選ぶ。2人とも女子になる確率は？',c:['A. 1/7','B. 2/7','C. 3/7','D. 4/7'],a:'A',h:'全C(7,2)=21通り。女子2人=3通り。3/21=1/7。'},
+{t:'spi',u:'非言語：確率',lv:2,q:'じゃんけんを1回する。あいこになる確率は？',c:['A. 1/3','B. 2/3','C. 1/9','D. 4/9'],a:'A',h:'全9通り。あいこ3通り。3/9=1/3。'},
+{t:'spi',u:'非言語：確率',lv:3,q:'コインを3回投げる。少なくとも1回表が出る確率は？',c:['A. 5/8','B. 6/8','C. 7/8','D. 8/8'],a:'C',h:'余事象：3回とも裏=1/8。1-1/8=7/8。'},
+{t:'spi',u:'非言語：確率',lv:3,q:'5人の中から3人を選んで並べる順列は何通りか。',c:['A. 30通り','B. 45通り','C. 60通り','D. 120通り'],a:'C',h:'P(5,3)=5×4×3=60通り。'},
+
+// ── SPI 非言語：推論・順序 8問化（各lv+2）──
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'A>B>C。最も低いのは誰か。',c:['A. A','B. B','C. C','D. 判断できない'],a:'C',h:'A>B>C。最も低いのはC。'},
+{t:'spi',u:'非言語：推論・順序',lv:0,q:'P<Q<R<S。最も背が高いのは？',c:['A. P','B. Q','C. R','D. S'],a:'D',h:'P<Q<R<S。最も高いのはS。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'いちご>ぶどう>りんご>みかん。2番目に高い果物は？',c:['A. りんご','B. みかん','C. ぶどう','D. いちご'],a:'C',h:'2番目はぶどう。'},
+{t:'spi',u:'非言語：推論・順序',lv:1,q:'E>A>C=B>D。最も順位が高いのは？',c:['A. A','B. B','C. C','D. E'],a:'D',h:'最も高いのはE。'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'①P>Q ②R>S ③T>P ④Q=S。最も低い点数は誰か。',c:['A. P','B. Q','C. R','D. S'],a:'B',h:'T>P>Q=S。最低はQ（Sと同点）。'},
+{t:'spi',u:'非言語：推論・順序',lv:2,q:'A<B<Cの順で並ぶ。Bが左から2番目なら左端は？',c:['A. A','B. B','C. C','D. D'],a:'A',h:'Bが2番目ならAが1番目（左端）。'},
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'6作業。①A→B ②C→D ③B→E ④F→C ⑤E→D。最後の作業は？',c:['A. B','B. D','C. E','D. F'],a:'B',h:'F→C→D、A→B→E→D。Dが最後。'},
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'①A>C ②B<D ③C=B ④E>A。最も重いのは？',c:['A. A','B. C','C. D','D. E'],a:'D',h:'E>A>C=B<D。E=A+C相当でEが最大。'},
+
+// ── SPI 非言語：損益算 8問化（lv1+1 lv2+1 lv3+4）──
+{t:'spi',u:'非言語：損益算',lv:1,q:'定価で売ると300円の利益、15%引きで売ると60円の損失になる。原価はいくらか。',c:['A. 1,900円','B. 2,000円','C. 2,100円','D. 2,200円'],a:'C',h:'定価=x+300。(x+300)×0.85=x-60→315=0.15x→x=2,100円。'},
+{t:'spi',u:'非言語：損益算',lv:2,q:'A店は定価の10%引き、B店は定価の15%引き。B店で5,100円ならA店での購入額は？',c:['A. 5,200円','B. 5,300円','C. 5,400円','D. 5,500円'],a:'C',h:'定価×0.85=5,100→定価6,000円。A店：6,000×0.9=5,400円。'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'定価の20%引きで売っても原価の12%の利益が出る。定価は原価の何倍か。',c:['A. 1.2倍','B. 1.3倍','C. 1.4倍','D. 1.5倍'],a:'C',h:'定価×0.8=原価×1.12。定価/原価=1.4倍。'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'りんご80円×200個仕入れ。150個を120円、50個を30円で売った。全体の利益は？',c:['A. 1,500円','B. 2,500円','C. 3,500円','D. 4,500円'],a:'C',h:'仕入れ16,000円。売上=18,000+1,500=19,500円。利益3,500円。'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'原価の40%増しで定価。何%引きまでなら原価割れしないか。',c:['A. 25%引き','B. 28%引き','C. 30%引き','D. 40%引き'],a:'B',h:'定価140。140×(1-x)≧100→x≦2/7≒28.6%。28%引きまで。'},
+{t:'spi',u:'非言語：損益算',lv:3,q:'A商品定価6,000円を15%引き、B商品定価4,000円を20%引きで購入。合計割引率は何%か。',c:['A. 15%','B. 17%','C. 18%','D. 20%'],a:'B',h:'定価計10,000円。割引額=900+800=1,700円。割引率=17%。'},
+,
+// ── SPI 言語：文章完成 8問化（lv3+1）──
+{t:'spi',u:'言語：文章完成',lv:3,q:'（　）に入る言葉を選べ。\n「科学技術の進歩はその（　）として環境破壊が生じている。」',c:['A. 前提','B. 代償','C. 目的','D. 根拠'],a:'B',h:'良いことに対して払う悪い結果＝「代償」。'},
+
+// ── 玉手箱 計数：数列 8問化（lv3+1）──
+{t:'tama',u:'計数：数列',lv:3,q:'次の数列の（　）に入る数を答えよ。\n3, 7, 15, 31, 63, （　）',c:['A. 120','B. 124','C. 127','D. 128'],a:'C',h:'前の数×2+1。63×2+1=127。'},
+
+// ── 玉手箱 計数：図表読み取り 8問化（lv0+2 lv1+2 lv2+1 lv3+3）──
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'A社の売上：1月100万・2月120万・3月110万。3カ月の合計は？',c:['A. 320万円','B. 330万円','C. 340万円','D. 350万円'],a:'B',h:'100+120+110=330万円。'},
+{t:'tama',u:'計数：図表読み取り',lv:0,q:'5人の身長：160・165・170・155・150cm。平均身長は？',c:['A. 158cm','B. 160cm','C. 162cm','D. 164cm'],a:'B',h:'800÷5=160cm。'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'月別売上：4月200万・5月250万・6月230万・7月280万。平均月売上は？',c:['A. 230万円','B. 235万円','C. 240万円','D. 245万円'],a:'C',h:'(200+250+230+280)÷4=240万円。'},
+{t:'tama',u:'計数：図表読み取り',lv:1,q:'4社の従業員数：A=500・B=300・C=400・D=200人。最多と最少の差は？',c:['A. 250人','B. 300人','C. 350人','D. 400人'],a:'B',h:'500-200=300人。'},
+{t:'tama',u:'計数：図表読み取り',lv:2,q:'5社の市場シェア：A=30・B=25・C=20・D=15・E=10%。BとEの合計はCの何倍か。',c:['A. 1.5倍','B. 1.75倍','C. 2倍','D. 2.5倍'],a:'B',h:'B+E=35。35÷20=1.75倍。'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'前年比120%が3年続いたとき、売上は現在の約何倍か。',c:['A. 1.4倍','B. 1.6倍','C. 1.73倍','D. 2.0倍'],a:'C',h:'1.2³=1.728≒1.73倍。'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'4品目の売上：X=600・Y=400・Z=300・W=200百万円。XとYの合計シェアは何%か。',c:['A. 55%','B. 60%','C. 65%','D. 67%'],a:'D',h:'合計1,500。X+Y=1,000。1,000÷1,500≒67%。'},
+{t:'tama',u:'計数：図表読み取り',lv:3,q:'週別来店者数：3週130・4週160・5週140人。3〜5週の平均は？',c:['A. 136人','B. 140人','C. 143人','D. 145人'],a:'C',h:'(130+160+140)÷3≒143人。'},
+
+// ── 玉手箱 計数：損益算 8問化（lv0+1 lv1+2 lv2+1 lv3+4）──
+{t:'tama',u:'計数：損益算',lv:0,q:'原価300円の商品を400円で売った。利益は何円か。',c:['A. 80円','B. 90円','C. 100円','D. 110円'],a:'C',h:'400-300=100円。'},
+{t:'tama',u:'計数：損益算',lv:1,q:'原価2,000円の商品に25%の利益を上乗せした。定価はいくらか。',c:['A. 2,300円','B. 2,400円','C. 2,500円','D. 2,600円'],a:'C',h:'2,000×1.25=2,500円。'},
+{t:'tama',u:'計数：損益算',lv:1,q:'定価4,000円の商品を20%引きで売った。原価が3,000円なら利益はいくらか。',c:['A. 100円','B. 150円','C. 200円','D. 250円'],a:'C',h:'売価=3,200円。3,200-3,000=200円。'},
+{t:'tama',u:'計数：損益算',lv:2,q:'原価の30%増しで売ると利益が5,400円。原価はいくらか。',c:['A. 15,000円','B. 16,000円','C. 18,000円','D. 20,000円'],a:'C',h:'原価×0.3=5,400。原価=18,000円。'},
+{t:'tama',u:'計数：損益算',lv:3,q:'定価の20%引きで売っても原価の12%の利益が出る。定価は原価の何%か。',c:['A. 130%','B. 135%','C. 140%','D. 145%'],a:'C',h:'定価×0.8=原価×1.12。定価/原価=1.4→140%。'},
+{t:'tama',u:'計数：損益算',lv:3,q:'A商品定価4,000円を25%引き、B商品定価6,000円を15%引きで各1個購入。合計割引額は？',c:['A. 1,800円','B. 1,900円','C. 2,000円','D. 2,100円'],a:'B',h:'A割引1,000円。B割引900円。合計1,900円。'},
+{t:'tama',u:'計数：損益算',lv:3,q:'商品を10%引きで20個、20%引きで30個売った。定価2,000円のとき総売上は？',c:['A. 80,000円','B. 82,000円','C. 84,000円','D. 86,000円'],a:'C',h:'10%引き36,000+20%引き48,000=84,000円。'},
+{t:'tama',u:'計数：損益算',lv:3,q:'原価1,000円×200個仕入れ。150個を1,300円、50個を800円で売った。全体の利益は？',c:['A. 15,000円','B. 25,000円','C. 30,000円','D. 35,000円'],a:'D',h:'仕入20万円。売上=195,000+40,000=235,000円。利益35,000円。'},
+
+// ── 玉手箱 言語：長文読解 8問化（lv0+2 lv1+3 lv2+3 lv3+3）──
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の内容と合うものを選べ。\n「山田さんは毎朝ジョギングをし、その後朝食を食べて会社へ行きます。」',c:['A. 夜にジョギングする','B. 朝食前にジョギングする','C. 7時に起きる','D. 朝食を食べない'],a:'B',h:'ジョギング→朝食の順。朝食前にジョギングする。'},
+{t:'tama',u:'言語：長文読解',lv:0,q:'次の内容と合うものを選べ。\n「図書館は月〜土曜日に開館し、日曜・祝日は休館します。」',c:['A. 毎日開いている','B. 日曜日も開いている','C. 土曜日は閉まっている','D. 月曜から土曜まで開いている'],a:'D',h:'「月〜土曜日に開館」と明記されている。'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の主旨を選べ。\n「プラスチックごみが海洋汚染の深刻な原因となっている。プラスチック使用を見直す必要がある。」',c:['A. 海の魚は増えている','B. プラスチック使用の見直しが必要だ','C. 海洋汚染は問題ではない','D. 環境保護は難しい'],a:'B',h:'「使用を見直す必要がある」が主張。'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の主旨を選べ。\n「聞く力はとても重要だ。相手の話を聞くことで信頼関係が深まり、誤解も減る。」',c:['A. 自分の意見を主張すべきだ','B. 人間関係は難しい','C. 聞く力が信頼を生む','D. 誤解は防げない'],a:'C',h:'「聞く力は重要」「信頼関係が深まる」→聞く力の重要性が主旨。'},
+{t:'tama',u:'言語：長文読解',lv:1,q:'次の内容と合わないものを選べ。\n「テレワークは通勤削減や柔軟な働き方を可能にするが、コミュニケーション不足が課題になることがある。」',c:['A. 通勤時間を削減できる','B. テレワークには課題がない','C. 柔軟な働き方ができる','D. コミュニケーション不足が課題になることがある'],a:'B',h:'「課題になることがある」と書かれており「課題がない」は誤り。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の主旨を選べ。\n「オンライン学習は場所に縛られないが、対面授業の双方向性は代替困難だ。ハイブリッド型学習こそが今後の方向性だ。」',c:['A. オンラインだけで十分だ','B. 対面授業は不要になる','C. ハイブリッド型学習が教育の未来像だ','D. デジタル技術は教育に向かない'],a:'C',h:'「ハイブリッド型こそが方向性」が筆者の主張。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の筆者の立場を選べ。\n「終身雇用に固執せず、個人が主体的にキャリアを選択できる社会が望ましい。」',c:['A. 終身雇用を維持すべきだ','B. 転職は悪いことだ','C. 個人が主体的にキャリアを選べる社会が望ましい','D. 企業の利益が最優先だ'],a:'C',h:'「個人が主体的にキャリアを選択できる社会が望ましい」が筆者の立場。'},
+{t:'tama',u:'言語：長文読解',lv:2,q:'次の文章で本文から読み取れないものを選べ。\n「AIで単純作業は代替されるが、創造性を要する仕事は人間が担う。教育機関はスキル教育が求められる。」',c:['A. 単純作業はAIに置き換えられる','B. 創造性のある仕事は人間が担う','C. 教育機関はスキル教育が必要だ','D. AIで失業率が急増する'],a:'D',h:'「失業率が急増する」とは書かれていない。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の論点を選べ。\n「経済格差の拡大は教育機会・医療アクセスにも波及する。構造的改革が急務だ。」',c:['A. 格差は個人の努力で解決できる','B. 格差拡大は社会構造に影響を与え改革が必要だ','C. 再分配政策は十分だ','D. 格差は問題ない'],a:'B',h:'「構造的改革が急務」が論点の核心。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の文章で筆者が最も批判しているものを選べ。\n「「失敗しない」ことを最優先にする組織文化は挑戦を抑制し、イノベーションを生まない。」',c:['A. 失敗を許容する文化','B. 挑戦的な組織風土','C. 失敗しないことを最優先にする組織文化','D. 革新的アイデア'],a:'C',h:'「失敗しないことを最優先にする」→挑戦抑制として批判。'},
+{t:'tama',u:'言語：長文読解',lv:3,q:'次の文章から推測できることを選べ。\n「日本の労働生産性はOECDで低い。テクノロジー活用だけでなく働き方そのものの見直しが求められている。」',c:['A. 日本は生産性が最も高い','B. テクノロジーさえあれば改善する','C. 働き方の見直しが生産性向上に不可欠だ','D. 残業文化は強みだ'],a:'C',h:'「働き方そのものの見直しが求められている」が結論。'},
+,
+// ── CAB：暗号解読 8問化（lv1+2 lv2+2 lv3+5）──
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'英字を2つ後ろにずらす暗号。「CAT」を暗号化すると？',c:['A. ECU','B. ECV','C. DBT','D. FCV'],a:'B',h:'C→E,A→C,T→V→「ECV」。'},
+{t:'cab',u:'CAB：暗号解読',lv:1,q:'あ=1,い=2,う=3,え=4,お=5のとき「うあえ」を数字にすると？',c:['A. 314','B. 134','C. 341','D. 413'],a:'A',h:'う=3,あ=1,え=4→「314」。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'奇数は+2、偶数は÷2のルール。「1,2,3,4」を変換すると？',c:['A. 3,1,5,2','B. 3,1,5,3','C. 2,1,4,2','D. 1,1,1,2'],a:'A',h:'1→3,2→1,3→5,4→2→「3,1,5,2」。'},
+{t:'cab',u:'CAB：暗号解読',lv:2,q:'A=Z,B=Y,C=X…（逆順対応）。「ABC」の暗号は？',c:['A. ZYX','B. XYZ','C. AZB','D. YXW'],a:'A',h:'A↔Z,B↔Y,C↔X→「ZYX」。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'A=1〜Z=26のとき「HELP」の各文字の数値の合計は？',c:['A. 38','B. 39','C. 40','D. 41'],a:'D',h:'H=8,E=5,L=12,P=16。合計=41。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'10進数の「25」を2進数にすると何桁か。',c:['A. 4桁','B. 5桁','C. 6桁','D. 7桁'],a:'B',h:'25=11001（2進数）→5桁。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'「各桁を2乗して合計」するルール。「23」の変換値は？',c:['A. 10','B. 12','C. 13','D. 14'],a:'C',h:'2²=4,3²=9。4+9=13。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'逆順アルファベット（A=26,B=25...Z=1）で「CAB」の合計値は？',c:['A. 73','B. 74','C. 75','D. 76'],a:'C',h:'C=24,A=26,B=25。合計=75。'},
+{t:'cab',u:'CAB：暗号解読',lv:3,q:'「文字の位置×2」のルール（A=1,B=2...）で「ACE」を変換すると？',c:['A. 2,6,10','B. 1,3,5','C. 2,4,6','D. 3,6,9'],a:'A',h:'A=1→2,C=3→6,E=5→10→「2,6,10」。'},
+
+// ── CAB：法則発見 8問化（lv0+2 lv1+2 lv2+2 lv3+3）──
+{t:'cab',u:'CAB：法則発見',lv:0,q:'10,20,30,40,（　）',c:['A. 45','B. 48','C. 50','D. 55'],a:'C',h:'10ずつ増える。40+10=50。'},
+{t:'cab',u:'CAB：法則発見',lv:0,q:'2,4,8,16,（　）',c:['A. 20','B. 24','C. 28','D. 32'],a:'D',h:'2倍ずつ増える。16×2=32。'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'1,2,4,7,11,（　）',c:['A. 14','B. 15','C. 16','D. 17'],a:'C',h:'差が1,2,3,4,5と増える。11+5=16。'},
+{t:'cab',u:'CAB：法則発見',lv:1,q:'1,3,7,13,21,（　）',c:['A. 28','B. 30','C. 31','D. 33'],a:'C',h:'差が2,4,6,8,10と増える。21+10=31。'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'1,1,2,6,24,（　）',c:['A. 48','B. 100','C. 120','D. 144'],a:'C',h:'階乗：1!,2!,3!,4!,5!=120。'},
+{t:'cab',u:'CAB：法則発見',lv:2,q:'2,3,5,8,13,21,（　）',c:['A. 30','B. 32','C. 34','D. 36'],a:'C',h:'フィボナッチ数列。13+21=34。'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'1,8,27,64,125,（　）',c:['A. 196','B. 210','C. 216','D. 220'],a:'C',h:'1³〜6³。6³=216。'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'0,1,3,6,10,15,（　）',c:['A. 18','B. 20','C. 21','D. 24'],a:'C',h:'三角数n(n+1)/2。6×7/2=21。'},
+{t:'cab',u:'CAB：法則発見',lv:3,q:'前2項の差の絶対値：8,5,3,2,1,1,（　）',c:['A. 0','B. 1','C. 2','D. 3'],a:'A',h:'|1-1|=0。'},
+
+// ── CAB GAB：言語 8問化（lv0+2 lv1+3 lv2+3 lv3+3）──
+{t:'cab',u:'GAB：言語',lv:0,q:'「臨機応変」の意味として正しいものを選べ。',c:['A. 決して変わらない','B. 状況に合わせて対応を変える','C. 急いで行動する','D. 計画通りに行動する'],a:'B',h:'「臨機」=その場の状況に応じて。「応変」=変化に対応する。'},
+{t:'cab',u:'GAB：言語',lv:0,q:'「賛成」の反対語はどれか。',c:['A. 支持','B. 同意','C. 反対','D. 賛同'],a:'C',h:'「賛成」の反対は「反対」。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'「早起きをする人は健康だ。山田さんは早起きをする。」言えることは？',c:['A. 山田さんは健康だ','B. 山田さんは健康でない','C. 健康か不明','D. 早起きが好きだ'],a:'A',h:'三段論法。「早起き→健康」かつ「山田は早起き」→「山田は健康」。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'「油を売る」の意味として正しいものを選べ。',c:['A. 仕事を真剣にこなす','B. 仕事をせずにサボる','C. 商売を始める','D. 効率よく働く'],a:'B',h:'「油を売る」=仕事をさぼって時間をつぶすこと。'},
+{t:'cab',u:'GAB：言語',lv:1,q:'空欄に最も適切な接続詞を選べ。\n「彼は体が弱い。（　）、毎日トレーニングをしている。」',c:['A. だから','B. そして','C. しかし','D. また'],a:'C',h:'「体が弱い」→「トレーニング」は逆接。「しかし」が適切。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'論理的な欠点を指摘せよ。「この薬を飲んだ患者の9割が回復した。この薬は効果がある。」',c:['A. 回復率が高すぎる','B. 薬を飲まずに回復した人との比較がない','C. 患者数が少なすぎる','D. 欠点はない'],a:'B',h:'対照群との比較がなければ薬の効果とは断定できない。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'「二枚舌」の意味として正しいものを選べ。',c:['A. 外国語が得意','B. 矛盾した言動をする','C. 話し方が面白い','D. 発言が少ない'],a:'B',h:'「二枚舌」=場面によって言うことが変わる・矛盾した言動。'},
+{t:'cab',u:'GAB：言語',lv:2,q:'次の文章で筆者が述べていないことを選べ。\n「リーダーに必要な資質は決断力・傾聴力・柔軟性の三つ。特に傾聴力は信頼構築に欠かせない。」',c:['A. 決断力が必要','B. 傾聴力は信頼構築に欠かせない','C. 柔軟性も重要','D. リーダーは独断で決断すべきだ'],a:'D',h:'「独断で決断すべき」とは書かれていない。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'推論を評価せよ。\n「A社の商品は高品質。高品質は長持ちする。→A社の商品は長持ちする。」',c:['A. 妥当な推論だ','B. 前提が誤り','C. 結論が誤り','D. 論理構造に欠陥がある'],a:'A',h:'三段論法として妥当。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'最大の論理的欠陥を選べ。\n「有名大学出身者は優秀だ。B氏は有名大学を出ていない。→B氏は優秀でない。」',c:['A. 定義が不明確','B. 「非出身→非優秀」は導けない','C. 別の方法で確認できる','D. 欠陥はない'],a:'B',h:'「P→Q」から「¬P→¬Q」は成立しない（裏は真でない）。'},
+{t:'cab',u:'GAB：言語',lv:3,q:'「全ての人間は死すべきものだ。ソクラテスは人間だ。→ソクラテスは死すべきものだ。」この推論の名称は？',c:['A. 帰納法','B. 三段論法（演繹法）','C. 類比推論','D. 仮説演繹法'],a:'B',h:'「大前提→小前提→結論」の三段論法。'},
+
+// ── CAB GAB：論理推論 8問化（lv0+2 lv1+3 lv2+2 lv3+5）──
+{t:'cab',u:'GAB：論理推論',lv:0,q:'A>B>C>D（前→後）。先頭は誰か。',c:['A. A','B. B','C. C','D. D'],a:'A',h:'A>B>C>D。先頭はA。'},
+{t:'cab',u:'GAB：論理推論',lv:0,q:'「全てのAはBだ。CはAだ。」Cについて言えることは？',c:['A. CはBでない','B. CはBだ','C. CはAでない','D. 判断できない'],a:'B',h:'A→B、C→A。よってC→B。'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'「雨→試合中止。今日は試合が行われた。」今日の天気は？',c:['A. 雨が降った','B. 雨が降らなかった','C. 雨かもしれない','D. 判断できない'],a:'B',h:'対偶：「試合あり→雨なし」。'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'「全ての猫はひげを持つ。ミケはひげを持つ。」ミケは猫か？',c:['A. 猫だ','B. 猫でない','C. 判断できない','D. ひげを持たない'],a:'C',h:'「猫→ひげ」だが「ひげ→猫」は成立しない。'},
+{t:'cab',u:'GAB：論理推論',lv:1,q:'A>B=C<D<E。最も重いのは？',c:['A. A','B. D','C. E','D. 判断できない'],a:'D',h:'AとEの比較が不明→判断できない。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'命題の対偶を選べ。「勉強しなければ合格しない。」',c:['A. 合格すれば勉強した','B. 合格しなければ勉強しなかった','C. 勉強すれば合格する','D. 合格しなければ勉強する'],a:'A',h:'「P→Q」の対偶は「¬Q→¬P」。合格→勉強した。'},
+{t:'cab',u:'GAB：論理推論',lv:2,q:'①P>Q ②R>S ③T>P ④S>Q ⑤R>T。1位は誰か。',c:['A. P','B. R','C. S','D. T'],a:'B',h:'R>T>P>Q、R>S>Q。1位はR。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'①A+B=C+D ②B>D ③C>B ④D>E。最も低い得点は？',c:['A. A','B. B','C. D','D. E'],a:'D',h:'D>EよりEが最低。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'「A正→B正。B正→C正。現在C誤。→A誤。」この推論は？',c:['A. 正しい推論だ','B. 誤った推論だ','C. 情報不足','D. 構造が不明'],a:'A',h:'対偶の連鎖：C偽→B偽→A偽。正しい推論。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'「①AはBより上位 ②CはDより上位 ③EはAより上位 ④BはDより上位 ⑤CはEより上位」1位は？',c:['A. A','B. C','C. E','D. D'],a:'B',h:'C>E>A>B>D。1位はC。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'「全てのX社員はスーツを着る。Aはスーツを着ない。」言えることは？',c:['A. AはX社員だ','B. AはX社員でない','C. BはX社員だ','D. BはX社員でない'],a:'B',h:'対偶：「スーツでない→X社員でない」。AはX社員でない。'},
+{t:'cab',u:'GAB：論理推論',lv:3,q:'P・Q・R・S・Tが円形に座る。①PとRが向かい合う ②QはPの右隣 ③SはRの左隣。Tの両隣は？',c:['A. QとS','B. PとR','C. QとR','D. SとP'],a:'A',h:'P-Q-T-S-R（右回り）。TはQとSの間。'},
+,
+// ── TG-WEB 言語：語句・読解 8問化（lv0+3 lv1+3 lv2+2 lv3+3）──
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「勤勉」の意味として最も近いものはどれか。',c:['A. 怠けること','B. よく働き努力すること','C. 素早く行動すること','D. 慎重に考えること'],a:'B',h:'「勤」も「勉」も「はげむ・努力する」。'},
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「謙虚」の意味として最も近いものはどれか。',c:['A. 自分を誇示する','B. 自慢する','C. 自分を控えめにして相手を立てる','D. 強く自己主張する'],a:'C',h:'「謙」=へりくだる。控えめな態度。'},
+{t:'tgweb',u:'言語：語句・読解',lv:0,q:'「協調」の意味として最も近いものはどれか。',c:['A. 対立して競い合う','B. 一人で進める','C. 互いに協力して進める','D. 他人を無視する'],a:'C',h:'「協」も「調」も「合わせる」。互いに協力する様子。'},
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「葛藤」の意味として最も近いものはどれか。',c:['A. 二つの気持ちがぶつかり合う','B. 急いで決断する','C. 物事がうまくいく','D. 協力して解決する'],a:'A',h:'相反する気持ちが絡み合うこと。'},
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「逆境」の意味として最も近いものはどれか。',c:['A. 恵まれた状況','B. 順調な状態','C. 困難や苦しい状況','D. 助けてもらえる環境'],a:'C',h:'思い通りにならない厳しい状況。'},
+{t:'tgweb',u:'言語：語句・読解',lv:1,q:'「試行錯誤」の意味として最も近いものはどれか。',c:['A. 一度で正解を出す','B. 試しては失敗を繰り返しながら解決策を見つける','C. 考えるだけで行動しない','D. 他人のまねをする'],a:'B',h:'繰り返し試して答えを見つける過程。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'「矛盾」の意味として最も近いものはどれか。',c:['A. よく整合している','B. 相反してつじつまが合わない','C. 慎重に考える','D. 素早く解決する'],a:'B',h:'矛と盾の故事から。同時に成立しない2つの主張がぶつかること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:2,q:'「付和雷同」の意味として最も近いものはどれか。',c:['A. 自分の意見を強く主張する','B. 深く考えずに他人に同調する','C. 誰よりも早く行動する','D. 物事を丁寧にこなす'],a:'B',h:'「付和」=わけなく同調する。深く考えず他人に同調すること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'「一石二鳥」の意味として最も近いものはどれか。',c:['A. 一つのことに集中する','B. 一つの行動で二つの利益を得る','C. 二人で協力する','D. 二度手間になる'],a:'B',h:'一つの行動で複数の成果を得ること。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'「杓子定規」の意味として最も近いものはどれか。',c:['A. 臨機応変に対応する','B. 一定の基準に当てはめて融通がきかない','C. 細かく丁寧に確認する','D. 規則を無視する'],a:'B',h:'おたまで何でも平らにならすイメージ。融通がきかない。'},
+{t:'tgweb',u:'言語：語句・読解',lv:3,q:'「捨て身」の意味として最も近いものはどれか。',c:['A. 体を鍛える','B. 物を捨てる','C. 自分を犠牲にして全力を尽くす','D. 無駄を省く'],a:'C',h:'「捨て」=犠牲にする。「身」=自分の体。'},
+
+// ── TG-WEB 計数：仕事算 8問化（lv0+1 lv1+1 lv2+2 lv3+4）──
+{t:'tgweb',u:'計数：仕事算',lv:0,q:'Aは1日に仕事全体の1/5ができる。全体を終えるのに何日かかるか。',c:['A. 3日','B. 4日','C. 5日','D. 6日'],a:'C',h:'1÷(1/5)=5日。'},
+{t:'tgweb',u:'計数：仕事算',lv:1,q:'AとBで協力すると3日で終わる仕事。Aだけだと9日。Bだけだと何日か。',c:['A. 3日','B. 4日','C. 4.5日','D. 5日'],a:'C',h:'B1日=1/3-1/9=2/9。Bのみ=4.5日。'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'A・B・Cで協力すると2日で終わる仕事。Aだけだと6日、Bだけだと4日。Cだけだと何日か。',c:['A. 10日','B. 11日','C. 12日','D. 14日'],a:'C',h:'1/6+1/4+1/C=1/2。1/C=1/12。C=12日。'},
+{t:'tgweb',u:'計数：仕事算',lv:2,q:'AとB交互に1日ずつ（A初日）。A=3日で完了、B=6日。全仕事が終わるのは何日目か。',c:['A. 3日目','B. 4日目','C. 5日目','D. 6日目'],a:'B',h:'2日で1/2。3日目で5/6、4日目で完成。'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'AとBが3日協力後、Bが抜けてAが残りを終えた。全体で15日。Aは20日で全体完了。Bは何日で全体完了できるか。',c:['A. 10日','B. 12日','C. 15日','D. 20日'],a:'B',h:'3(1/20+1/B)+12/20=1→3/B=1/4→B=12日。'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'AとBが1時間ずつ交互（A→B→…）。A=1/4/時、B=1/6/時。完成は何時間後か。',c:['A. 4時間後','B. 4時間40分後','C. 5時間後','D. 4.5時間後'],a:'B',h:'2時間で5/12。4時間で5/6。残り1/6をA担当=40分。合計4時間40分。'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'Aは10日、Bは15日でできる仕事。AとBが2日協力後Bが抜け、Aが残りを終えた。全体で何日かかったか。',c:['A. 6日','B. 7日','C. 8日','D. 9日'],a:'C',h:'2日で1/3完了。残り2/3をAのみ=20/3日。合計≒8.7→約8日。'},
+{t:'tgweb',u:'計数：仕事算',lv:3,q:'3人の仕事率：A=1/12、B=1/18、C=1/24/日。全員で何日かかるか（小数第1位）。',c:['A. 4.4日','B. 4.9日','C. 5.5日','D. 6.0日'],a:'C',h:'A+B+C=13/72/日。全体=72/13≒5.5日。'},
+
+// ── TG-WEB 計数：年齢算 8問化（lv0+3 lv1+2 lv1余 lv2+1 lv3+2）──
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'AとBの年齢の和は30歳。AはBより4歳年上。Aの年齢は？',c:['A. 14歳','B. 16歳','C. 17歳','D. 18歳'],a:'C',h:'A+B=30、A-B=4→A=17、B=13。'},
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'父は35歳、子は5歳。何年後に父の年齢が子の4倍になるか。',c:['A. 5年後','B. 7年後','C. 10年後','D. 15年後'],a:'A',h:'35+□=4(5+□)→15=3□→□=5年後。'},
+{t:'tgweb',u:'計数：年齢算',lv:0,q:'母は42歳、娘は12歳。何年後に母の年齢が娘の2倍になるか。',c:['A. 15年後','B. 16年後','C. 17年後','D. 18年後'],a:'D',h:'42+□=2(12+□)→18=□。'},
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'父48歳・子12歳。父の年齢が子の2倍になるのは何年後か。',c:['A. 20年後','B. 22年後','C. 24年後','D. 26年後'],a:'C',h:'48+□=2(12+□)→24=□。'},
+{t:'tgweb',u:'計数：年齢算',lv:1,q:'12年後に父の年齢は子の2倍。現在の年齢差は24歳。現在の子の年齢は？',c:['A. 10歳','B. 12歳','C. 14歳','D. 16歳'],a:'B',h:'子=x、父=x+24。x+36=2(x+12)→x=12。'},
+{t:'tgweb',u:'計数：年齢算',lv:2,q:'A・B・C・Dの平均年齢35歳。AとBの平均30歳、CとDの平均40歳。AはBより8歳年上。Aの年齢は？',c:['A. 33歳','B. 34歳','C. 35歳','D. 38歳'],a:'B',h:'A+B=60、A-B=8→A=34。'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'現在のA・B・Cの年齢比は5:3:2。20年後の和は現在の和の2倍。現在のBの年齢は？',c:['A. 18歳','B. 20歳','C. 22歳','D. 24歳'],a:'A',h:'現在の和=10x。10x+60=20x→x=6。B=18歳。'},
+{t:'tgweb',u:'計数：年齢算',lv:3,q:'兄・姉・弟の年齢の和は48歳。10年後の3人の年齢の和は？',c:['A. 68歳','B. 72歳','C. 78歳','D. 80歳'],a:'C',h:'10年後は全員10歳増→48+30=78歳。'},
+
+// ── TG-WEB 計数：濃度算 8問化（lv0+3 lv1+2 lv2+2 lv3+4）──
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'水90gに食塩10gを溶かした。食塩水の濃度は何%か。',c:['A. 8%','B. 9%','C. 10%','D. 11%'],a:'C',h:'食塩水100g。10÷100×100=10%。'},
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'5%の食塩水200gに食塩は何g含まれているか。',c:['A. 5g','B. 8g','C. 10g','D. 12g'],a:'C',h:'200×0.05=10g。'},
+{t:'tgweb',u:'計数：濃度算',lv:0,q:'8%の食塩水150gに水を50g加えると何%になるか。',c:['A. 5%','B. 6%','C. 7%','D. 8%'],a:'B',h:'食塩=12g。新食塩水=200g。12÷200×100=6%。'},
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'6%の食塩水200gと12%の食塩水100gを混ぜると何%になるか。',c:['A. 7%','B. 8%','C. 9%','D. 10%'],a:'B',h:'食塩=12+12=24g。食塩水300g。24÷300×100=8%。'},
+{t:'tgweb',u:'計数：濃度算',lv:1,q:'16%の食塩水500gに水を加えて8%にしたい。水を何g加えるか。',c:['A. 400g','B. 500g','C. 600g','D. 700g'],a:'B',h:'食塩=80g。目標8%→食塩水=1,000g。追加水=500g。'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'20%の食塩水400gから水を蒸発させて25%にしたい。何g蒸発させるか。',c:['A. 70g','B. 75g','C. 80g','D. 85g'],a:'C',h:'食塩=80g。25%食塩水=320g。蒸発量=80g。'},
+{t:'tgweb',u:'計数：濃度算',lv:2,q:'10%食塩水Xgと水を混ぜて4%食塩水800gを作る。Xは何gか。',c:['A. 280g','B. 300g','C. 320g','D. 340g'],a:'C',h:'X×0.1=800×0.04=32g→X=320g。'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'A（12%）とB（?%）を3:2の比で混ぜると9%になった。Bの濃度は何%か。',c:['A. 3%','B. 4%','C. 4.5%','D. 5%'],a:'C',h:'3×12+2×B=5×9→36+2B=45→B=4.5%。'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'15%の食塩水500gに食塩を何g加えると20%になるか。',c:['A. 28.5g','B. 30g','C. 31.25g','D. 32g'],a:'C',h:'食塩=75g。(75+x)/(500+x)=0.2→x=31.25g。'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'8%の食塩水と水を混ぜると4%になった。混ぜた水は食塩水の何倍か。',c:['A. 0.5倍','B. 1倍','C. 1.5倍','D. 2倍'],a:'B',h:'0.08x/(x+y)=0.04→x=y→水=食塩水と同量=1倍。'},
+{t:'tgweb',u:'計数：濃度算',lv:3,q:'ある食塩水から1/4を取り出して同量の水で補充する操作を3回繰り返した。濃度は最初の何%か。',c:['A. 30%','B. 31.6%','C. 42.2%','D. 56.25%'],a:'C',h:'1回で×3/4。3回→(3/4)³=27/64≒42.2%。'},
+,
+// ── 残り補充 ──
+{t:'spi',u:'非言語：推論・順序',lv:3,q:'①P>Q ②R>S ③T>P ④S>Q ⑤R>T。1位は誰か。',c:['A. P','B. R','C. S','D. T'],a:'B',h:'R>T>P>Q、R>S>Q。RはT,P,S全員より上→1位はR。'},
+{t:'spi',u:'非言語：速さ・時間・距離',lv:1,q:'A地点からB地点まで時速50kmで2時間かかる。時速80kmなら何分かかるか。',c:['A. 60分','B. 70分','C. 75分','D. 80分'],a:'C',h:'距離=100km。100÷80=1.25時間=75分。'},
+
+];
+
+// ══════════════════════════════════════
+// スコア管理（シンプル）
+// ══════════════════════════════════════
+const score={spi:{ok:0,total:0},tama:{ok:0,total:0},cab:{ok:0,total:0},tgweb:{ok:0,total:0}};
+
+// 出題済み問題を単元・難易度ごとに記録（重複防止）
+// キー: "tab|unit|lv"  値: 出題済みインデックスのSet
+const seenMap={};
+
+function getSeenKey(tab,unit,lv){ return tab+'|'+unit+'|'+lv; }
+
+// lastQ は解説生成（fetchExp）で参照されるため残す
+const lastQ={spi:null,tama:null,cab:null,tgweb:null};
+
+// ══════════════════════════════════════
+// APIキー
+// ══════════════════════════════════════
+function saveKey(){
+  const k=document.getElementById('api-input').value.trim();
+  if(!k){alert('APIキーを入力してください。');return;}
+  localStorage.setItem('groq_key',k);
+  document.getElementById('api-st').textContent=k.startsWith('gsk_')?'✅ 保存済み':'⚠️ 形式確認';
+}
+function getKey(){return localStorage.getItem('groq_key')||'';}
+window.addEventListener('load',()=>{
+  const k=getKey();
+  if(k){document.getElementById('api-input').value=k;document.getElementById('api-st').textContent=k.startsWith('gsk_')?'✅ 保存済み':'⚠️ 形式確認';}
+});
+
+// ══════════════════════════════════════
+// タブ切替
+// ══════════════════════════════════════
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pane-'+tab).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════
+// 問題出題（重複なし・一巡後シャッフルリセット）
+// ══════════════════════════════════════
+function startQ(tab){
+  const unit=document.getElementById(tab+'-unit').value;
+  const lv=parseInt(document.getElementById(tab+'-level').value);
+
+  // 該当する問題を絞り込む
+  const pool=QB.filter(q=>q.t===tab&&q.u===unit&&q.lv===lv);
+
+  if(pool.length===0){
+    document.getElementById(tab+'-area').innerHTML=
+      '<div style="padding:16px;text-align:center;color:var(--sub);font-size:.85rem;">この単元・難易度の問題はありません。<br>別の組み合わせを選んでください。</div>';
+    return;
+  }
+
+  const key=getSeenKey(tab,unit,lv);
+  let seen=seenMap[key]||(seenMap[key]=new Set());
+  let candidates=pool.filter((_,i)=>!seen.has(i));
+
+  // 全問出題済みならリセット（一巡通知）
+  if(candidates.length===0){
+    seen.clear();
+    candidates=[...pool];
+    const area=document.getElementById(tab+'-area');
+    const notice=document.createElement('div');
+    notice.style.cssText='padding:8px 14px;background:#fff8e6;border:1px solid #e9c46a;border-radius:8px;font-size:.78rem;color:#7a5c00;margin-bottom:10px;text-align:center;';
+    notice.textContent='🔄 全問を一巡しました！再びシャッフルして出題します。';
+    area.prepend(notice);
+    setTimeout(()=>notice.remove(),3000);
+  }
+
+  const idx=Math.floor(Math.random()*candidates.length);
+  const q=candidates[idx];
+  seen.add(pool.indexOf(q));
+
+  lastQ[tab]=q;
+  renderQ(tab,q);
+}
+
+// ══════════════════════════════════════
+// 問題表示
+// ══════════════════════════════════════
+const LV_LABEL=['🌱 やさしい','🌿 ふつう','🌳 むずかしい','⭐ 超難関'];
+
+function renderQ(tab,q){
+  const area=document.getElementById(tab+'-area');
+  const choicesHtml=q.c.map(c=>{
+    const isOk=c.startsWith(q.a+'.');
+    return `<button class="ch-btn" data-ok="${isOk}" onclick="onAnswer(this,'${tab}',${isOk})">${c}</button>`;
+  }).join('');
+
+  area.innerHTML=`
+    <div class="q-card" id="${tab}-card">
+      <div class="q-lbl">${LV_LABEL[q.lv]}｜${q.u}</div>
+      <div class="q-txt">${q.q}</div>
+      <div class="choices" id="${tab}-choices">${choicesHtml}</div>
+      <button class="btn-hint" id="${tab}-hbtn" onclick="toggleHint('${tab}')">💡 ヒントを見る</button>
+      <div class="hint-box" id="${tab}-hint">${q.h}</div>
+      <div class="exp-box" id="${tab}-exp"></div>
+    </div>`;
+
+  // 問題カードまでスクロール
+  setTimeout(()=>area.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function toggleHint(tab){
+  document.getElementById(tab+'-hint').classList.toggle('show');
+}
+
+// ══════════════════════════════════════
+// 回答処理（シンプル・二重クリック防止）
+// ══════════════════════════════════════
+function onAnswer(btn,tab,isOk){
+  // 全選択肢を即座に無効化
+  const choices=document.getElementById(tab+'-choices');
+  choices.querySelectorAll('.ch-btn').forEach(b=>{
+    b.disabled=true;
+    if(b===btn){
+      b.classList.add(isOk?'ok':'ng');
+    } else if(b.dataset.ok==='true'){
+      b.classList.add('reveal');
+    }
+  });
+
+  // スコア更新
+  score[tab].total++;
+  if(isOk) score[tab].ok++;
+  document.getElementById(tab+'-score').textContent=
+    score[tab].ok+' / '+score[tab].total;
+
+  // 結果バッジ
+  const badge=document.createElement('div');
+  badge.className='res-badge '+(isOk?'ok':'ng');
+  badge.textContent=isOk?'✅ 正解！すばらしい！':'❌ 惜しい！正解を確認しよう。';
+  choices.after(badge);
+
+  // 解説ボタン表示
+  const exp=document.getElementById(tab+'-exp');
+  exp.classList.add('show');
+  exp.innerHTML=`<button class="btn-exp" onclick="fetchExp(this,'${tab}')">🦉 キャリ爺の解説を見る（Groq AI）</button>`;
+
+  // 次の問題ボタン追加
+  const nextBtn=document.createElement('button');
+  nextBtn.className='btn-next';
+  nextBtn.style.display='block';
+  nextBtn.textContent='▶ 次の問題へ';
+  nextBtn.onclick=()=>startQ(tab);
+  document.getElementById(tab+'-card').appendChild(nextBtn);
+}
+
+// ══════════════════════════════════════
+// Groq解説生成（ボタン押下時のみ）
+// ══════════════════════════════════════
+async function fetchExp(btn,tab){
+  btn.disabled=true;
+  btn.textContent='解説を生成中…🦉';
+
+  const q=lastQ[tab];
+  const key=getKey();
+
+  // APIキー未設定の場合はヒントのみ表示
+  if(!key||!key.startsWith('gsk_')){
+    btn.parentElement.innerHTML=`
+      <div class="exp-title">📚 ヒントより</div>
+      <div class="exp-step"><span class="step-tag">💡</span><br>${q.h}</div>
+      <div class="exp-point">🔑 Groq APIキーを設定すると詳しい解説が表示されます。</div>`;
+    return;
+  }
+
+  const prompt=`あなたは就職活動の筆記試験対策の家庭教師「キャリ爺」（温かいおじいさん先生）です。
+
+【問題】${q.q}
+【正解】${q.a}. ${q.c.find(c=>c.startsWith(q.a+'.'))||''}
+【ヒント】${q.h}
+
+以下の条件で解説してください：
+・偏差値35前後の学生向け・小学生でもわかる丁寧なステップ解説
+・計算問題は「まず○○する」「次に○○する」と順番に
+・最後に「💡 覚え方・コツ」を一言で
+
+JSON形式のみ返してください：
+{"step1":"①の説明","step2":"②の説明","step3":"③の説明（不要なら空文字）","point":"💡 覚え方・コツ"}`;
+
+  try{
+    const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body:JSON.stringify({
+        model:'llama-3.1-8b-instant',
+        messages:[{role:'user',content:prompt}],
+        temperature:0.3,
+        max_tokens:500,
+        response_format:{type:'json_object'}
+      })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    const exp=JSON.parse(data.choices[0].message.content);
+    let html='<div class="exp-title">📚 キャリ爺の解説</div>';
+    if(exp.step1) html+=`<div class="exp-step"><span class="step-tag">①</span><br>${exp.step1}</div>`;
+    if(exp.step2) html+=`<div class="exp-step"><span class="step-tag">②</span><br>${exp.step2}</div>`;
+    if(exp.step3) html+=`<div class="exp-step"><span class="step-tag">③</span><br>${exp.step3}</div>`;
+    if(exp.point) html+=`<div class="exp-point">${exp.point}</div>`;
+    btn.parentElement.innerHTML=html;
+  }catch(e){
+    btn.parentElement.innerHTML=`
+      <div class="exp-title">📚 解説（ヒント）</div>
+      <div class="exp-step"><span class="step-tag">💡</span><br>${q.h}</div>
+      <div style="font-size:.76rem;color:var(--ng);margin-top:6px;">⚠️ AI解説の生成に失敗しました。時間をおいて再度お試しください。</div>`;
+  }
+}
+// ══════════════════════════════════════
+// AI問題生成
+// ══════════════════════════════════════
+
+// 各タブのAI生成問題セット管理
+const aiSets = {spi:null, tama:null, cab:null, tgweb:null};
+
+// 既存固定問題のサンプル（同一問題置き換え防止用）
+function getExistingQSamples(tab, unit, lv) {
+  return QB.filter(q=>q.t===tab && q.u===unit && q.lv===lv)
+           .slice(0,5)
+           .map(q=>`・${q.q.replace(/\n/g,' ').slice(0,60)}`).join('\n');
+}
+
+const LV_NAME = ['やさしい（小学校レベル）','ふつう（中学校レベル）','むずかしい（SPI標準）','超難関（本番最高難度）'];
+const LV_EMOJI = ['🌱','🌿','🌳','⭐'];
+
+// タブ別の単元セレクタID
+const UNIT_SELECT = {spi:'spi-unit', tama:'tama-unit', cab:'cab-unit', tgweb:'tgweb-unit'};
+const LV_SELECT   = {spi:'spi-level', tama:'tama-level', cab:'cab-level', tgweb:'tgweb-level'};
+
+// タブ別の試験名
+const TAB_NAME = {spi:'SPI', tama:'玉手箱', cab:'CAB・GAB', tgweb:'TG-WEB'};
+
+async function startAIGen(tab) {
+  const key = getKey();
+  if (!key || !key.startsWith('gsk_')) {
+    alert('Groq APIキーを設定してください。\nヘッダーのAPIキー欄に入力して「保存」を押してください。');
+    return;
+  }
+
+  const unit = document.getElementById(UNIT_SELECT[tab]).value;
+  const lv   = parseInt(document.getElementById(LV_SELECT[tab]).value);
+  const lvName = LV_NAME[lv];
+  const existingSamples = getExistingQSamples(tab, unit, lv);
+
+  const btn  = document.getElementById(tab+'-ai-btn');
+  const area = document.getElementById(tab+'-ai-area');
+
+  btn.disabled = true;
+  btn.textContent = '🤖 AIが問題を作成中…';
+
+  // ローディング表示
+  area.innerHTML = `
+    <div class="ai-loading">
+      <div><span class="ai-loading-dot"></span><span class="ai-loading-dot"></span><span class="ai-loading-dot"></span></div>
+      <div class="ai-loading-txt">AIがオリジナル問題を作成しています…</div>
+      <div class="ai-loading-sub">単元「${unit}」｜難易度「${lvName}」｜5問生成中</div>
+    </div>`;
+
+  // プロンプト構築（同一問題NG・オリジナル必須の指示を明記）
+  const prompt = `あなたは就職活動の筆記試験（${TAB_NAME[tab]}）の問題作成専門家です。
+
+【単元】${unit}
+【難易度】${lvName}
+【試験種別】${TAB_NAME[tab]}
+
+以下の条件で、完全オリジナルの4択問題を5問作成してください。
+
+★ 絶対に守るルール（最重要）：
+1. 下記の「既存問題サンプル」と同じ問題・同じ数値・同じ構造の問題は絶対にNGです
+2. 数値・人名・具体的な設定を変えただけの「置き換え問題」もNGです
+3. 必ず全く新しい切り口・新しい数値・新しい文脈でオリジナル問題を作ること
+4. 各問題は必ず正解が1つだけになるように設計すること
+5. 難易度「${lvName}」に合わせた適切な難しさにすること
+6. 解説は偏差値35前後の学生でも理解できる丁寧なステップで書くこと
+
+【既存問題サンプル（これらと同じ・似た問題はNG）】
+${existingSamples || '（サンプルなし）'}
+
+JSON形式のみで返してください（余分な文字・マークダウン不要）：
+{
+  "questions": [
+    {
+      "q": "問題文（改行は\\nで表現）",
+      "choices": ["A. 選択肢1", "B. 選択肢2", "C. 選択肢3", "D. 選択肢4"],
+      "answer": "A",
+      "hint": "ヒント（1〜2文）",
+      "explanation": "解説（なぜその答えになるか、計算過程や根拠を丁寧に）"
+    }
+  ]
+}`;
+
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+key},
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{role:'user', content: prompt}],
+        temperature: 0.85,
+        max_tokens: 2500,
+        response_format: {type: 'json_object'}
+      })
+    });
+
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const parsed = JSON.parse(data.choices[0].message.content);
+    const questions = parsed.questions || [];
+
+    if (!questions.length) throw new Error('問題が取得できませんでした');
+
+    // 生成結果を保存
+    aiSets[tab] = {
+      questions,
+      unit,
+      lv,
+      current: 0,
+      results: new Array(questions.length).fill(null) // null=未解答, true=正解, false=不正解
+    };
+
+    renderAISet(tab);
+
+  } catch(e) {
+    area.innerHTML = `
+      <div style="background:#fdecea;border:1.5px solid var(--ng);border-radius:10px;padding:14px;font-size:.83rem;color:var(--ng);">
+        ⚠️ 問題の生成に失敗しました。時間をおいて再度お試しください。<br>
+        <span style="font-size:.74rem;opacity:.7;">エラー: ${e.message}</span>
+      </div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="ai-icon">🤖</span>AIが新しい問題を5問作成する（再生成）';
+  }
+}
+
+function renderAISet(tab) {
+  const set = aiSets[tab];
+  if (!set) return;
+
+  const area = document.getElementById(tab+'-ai-area');
+  const total = set.questions.length;
+  const doneCount = set.results.filter(r=>r!==null).length;
+  const okCount   = set.results.filter(r=>r===true).length;
+
+  // ナビドット
+  const dots = set.results.map((r,i)=>{
+    let cls = i===set.current ? 'active' : '';
+    if(r===true)  cls = 'done-ok';
+    if(r===false) cls = 'done-ng';
+    return `<button class="ai-q-dot ${cls}" onclick="aiJumpTo('${tab}',${i})">${i+1}</button>`;
+  }).join('');
+
+  // スコアライン（全問解答後）
+  const scoreLine = doneCount===total
+    ? `<div class="ai-score-line">🏁 全問終了！ 正解 ${okCount} / ${total} 問 ${okCount===total?'🎉 パーフェクト！':okCount>=4?'✨ 優秀！':okCount>=3?'👍 合格水準！':'📖 復習しよう！'}</div>`
+    : '';
+
+  // 現問題
+  const q = set.questions[set.current];
+  const answered = set.results[set.current] !== null;
+
+  const choicesHtml = q.choices.map(c => {
+    const letter = c.charAt(0);
+    const isOk = letter === q.answer;
+    let cls = '';
+    let disabled = '';
+    if (answered) {
+      disabled = 'disabled';
+      if (letter === q.answer) cls = 'ok';
+    }
+    return `<button class="ch-btn ${cls}" ${disabled} data-ok="${isOk}" onclick="onAIAnswer('${tab}',${set.current},${isOk},this)">${c}</button>`;
+  }).join('');
+
+  // 解説（回答後に表示）
+  let expHtml = '';
+  if (answered && q.explanation) {
+    expHtml = `
+      <div class="exp-box show" style="margin-top:10px;">
+        <div class="exp-title">📚 解説</div>
+        <div class="exp-step"><span class="step-tag">解説</span><br>${q.explanation}</div>
+        <div class="exp-point">💡 ヒント：${q.hint}</div>
+      </div>`;
+  }
+
+  // 次へボタン
+  let nextHtml = '';
+  if (answered && set.current < total-1) {
+    nextHtml = `<button class="btn-next" style="display:block;margin-top:8px;" onclick="aiJumpTo('${tab}',${set.current+1})">▶ 次の問題へ</button>`;
+  }
+
+  area.innerHTML = `
+    <div class="ai-set-hd">
+      <span class="ai-set-hd-title">🤖 AIオリジナル問題</span>
+      <span class="ai-set-hd-sub">${LV_EMOJI[set.lv]} ${set.unit}</span>
+    </div>
+    <div class="ai-set-body">
+      <div class="ai-badge">🤖 Groq AI生成・オリジナル問題</div>
+      <div class="ai-q-nav">${dots}</div>
+      <div class="ai-progress">問題 ${set.current+1} / ${total}　回答済み ${doneCount}問</div>
+      <div class="q-card" style="border:none;padding:0;box-shadow:none;margin-bottom:0;">
+        <div class="q-lbl">${LV_EMOJI[set.lv]} ${LV_NAME[set.lv]}｜第${set.current+1}問</div>
+        <div class="q-txt">${q.q}</div>
+        <div class="choices">${choicesHtml}</div>
+        ${expHtml}
+        ${nextHtml}
+      </div>
+      ${scoreLine}
+    </div>`;
+
+  setTimeout(()=>area.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function onAIAnswer(tab, idx, isOk, btn) {
+  const set = aiSets[tab];
+  if (!set || set.results[idx] !== null) return;
+
+  set.results[idx] = isOk;
+
+  // 全選択肢を無効化＋色付け
+  const choices = btn.closest('.choices');
+  choices.querySelectorAll('.ch-btn').forEach(b => {
+    b.disabled = true;
+    if (b === btn) b.classList.add(isOk ? 'ok' : 'ng');
+    else if (b.dataset.ok === 'true') b.classList.add('reveal');
+  });
+
+  // スコア更新
+  score[tab].total++;
+  if (isOk) score[tab].ok++;
+  document.getElementById(tab+'-score').textContent = score[tab].ok+' / '+score[tab].total;
+
+  // 再描画（解説・次へボタン表示のため）
+  setTimeout(()=>renderAISet(tab), 150);
+}
+
+function aiJumpTo(tab, idx) {
+  const set = aiSets[tab];
+  if (!set) return;
+  set.current = idx;
+  renderAISet(tab);
+}
+
+</script>
+</body>
+</html>

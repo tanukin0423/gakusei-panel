@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>就活の木 学生サポートパネル 使い方マニュアル</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+  :root {
+    --bg:        #2d6b4a;
+    --bg2:       #3a7a55;
+    --dark:      #1a3d2b;
+    --gold:      #d4a843;
+    --gold-lt:   #f0c96a;
+    --mint:      #6de0b0;
+    --white:     #ffffff;
+    --offwhite:  #f0f5f2;
+    --graytext:  #d0ede0;
+    --card:      #3a7a55;
+    --cardbdr:   #5aaa7a;
+    --text-dark: #1a2e26;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+  }
+
+  /* ── ヘッダー ── */
+  header {
+    background: var(--dark);
+    border-bottom: 3px solid var(--gold);
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .owl { font-size: 2rem; }
+
+  .site-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+
+  .site-sub {
+    font-size: 0.75rem;
+    color: var(--graytext);
+  }
+
+  /* ── タブ切替 ── */
+  .tab-wrap {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .tab-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 999px;
+    border: 2px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .tab-btn.active,
+  .tab-btn:hover {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  /* ── 印刷ボタン ── */
+  .print-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 999px;
+    border: 2px solid var(--mint);
+    background: transparent;
+    color: var(--mint);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .print-btn:hover {
+    background: var(--mint);
+    color: var(--dark);
+  }
+
+  /* ── メインコンテンツ ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── ページ切替 ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── ヒーローバナー ── */
+  .hero {
+    background: var(--dark);
+    border-left: 6px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: "🦉";
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 4rem;
+    opacity: 0.15;
+  }
+
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.7rem;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .hero p {
+    font-size: 0.9rem;
+    color: var(--graytext);
+  }
+
+  /* ── セクション ── */
+  .section {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.25rem;
+    color: var(--gold);
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-title .num {
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 0.85rem;
+    font-weight: 700;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── STEPテーブル ── */
+  .step-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .step-table th {
+    background: var(--dark);
+    color: var(--gold);
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+    text-align: left;
+    font-weight: 700;
+  }
+
+  .step-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid var(--cardbdr);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    background: var(--card);
+  }
+
+  .step-table tr:last-child td { border-bottom: none; }
+  .step-table tr:hover td { background: var(--bg2); transition: 0.2s; }
+
+  .step-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .step-name {
+    font-weight: 700;
+    color: var(--mint);
+    margin-bottom: 0.2rem;
+  }
+
+  .step-desc { color: var(--offwhite); }
+
+  /* ── ヒントボックス ── */
+  .hint-box {
+    display: flex;
+    gap: 1rem;
+    background: var(--dark);
+    border: 1px solid var(--cardbdr);
+    border-left: 5px solid var(--gold);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    align-items: flex-start;
+  }
+
+  .hint-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+  .hint-body { flex: 1; }
+
+  .hint-label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .hint-text {
+    font-size: 0.88rem;
+    color: var(--offwhite);
+    line-height: 1.7;
+  }
+
+  .hint-box.warn { border-left-color: #e07b39; }
+  .hint-box.warn .hint-label { color: #e07b39; }
+  .hint-box.mint { border-left-color: var(--mint); }
+  .hint-box.mint .hint-label { color: var(--mint); }
+
+  /* ── Q&Aテーブル ── */
+  .qa-table { width: 100%; border-collapse: collapse; }
+
+  .qa-table tr:nth-child(odd) td:first-child  { background: var(--dark); }
+  .qa-table tr:nth-child(even) td:first-child { background: var(--bg2); }
+  .qa-table td:last-child { background: var(--card); }
+  .qa-table td {
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--cardbdr);
+    font-size: 0.88rem;
+    line-height: 1.65;
+    vertical-align: top;
+  }
+
+  .qa-q { color: var(--gold); font-weight: 700; }
+  .qa-a { color: var(--offwhite); }
+
+  /* ── リスト ── */
+  .guide-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .guide-list li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--offwhite);
+    background: var(--card);
+    border: 1px solid var(--cardbdr);
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+  }
+
+  .guide-list li::before {
+    content: "●";
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  /* ── サブセクション ── */
+  .sub-title {
+    font-weight: 700;
+    color: var(--mint);
+    font-size: 1rem;
+    margin: 1.2rem 0 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* ── フッター ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--graytext);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--cardbdr);
+    margin-top: 2rem;
+  }
+
+  /* ════════════════════════════
+     印刷スタイル
+  ════════════════════════════ */
+  @media print {
+    @page {
+      size: A4;
+      margin: 15mm 15mm 20mm 15mm;
+    }
+
+    body {
+      background: white;
+      color: #1a2e26;
+      font-size: 10pt;
+    }
+
+    header, footer, .tab-wrap, .print-btn { display: none !important; }
+
+    main { padding: 0; max-width: 100%; }
+
+    .page { display: block !important; }
+
+    /* 印刷時は選択されていないページを非表示 */
+    .page:not(.print-target) { display: none !important; }
+
+    .hero {
+      background: #2d6b4a;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      border-radius: 0;
+      margin-bottom: 12pt;
+    }
+
+    .hero h1 { font-size: 16pt; color: #d4a843; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .hero p  { font-size: 9pt; color: #d0ede0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    .section { margin-bottom: 14pt; animation: none; }
+
+    .section-title {
+      font-size: 11pt;
+      color: #2d6b4a;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .section-title .num {
+      background: #2d6b4a;
+      color: white;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .step-table th {
+      background: #1a3d2b;
+      color: #d4a843;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      font-size: 9pt;
+    }
+
+    .step-table td {
+      background: #f0f5f2;
+      font-size: 9pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .step-badge {
+      background: #2d6b4a;
+      color: white;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .step-name { color: #1a3d2b; }
+    .step-desc { color: #333; }
+
+    .hint-box {
+      background: #f0f5f2;
+      border-left-color: #d4a843;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .hint-label { color: #d4a843; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .hint-text  { color: #333; }
+
+    .guide-list li {
+      background: #f0f5f2;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      color: #333;
+    }
+
+    .guide-list li::before { color: #2d6b4a; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    .sub-title { color: #1a3d2b; }
+
+    .qa-table td { font-size: 9pt; }
+    .qa-table tr:nth-child(odd)  td:first-child { background: #e8f5f0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .qa-table tr:nth-child(even) td:first-child { background: #f0f5f2; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .qa-table td:last-child { background: white; }
+    .qa-q { color: #2d6b4a; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .qa-a { color: #333; }
+
+    .section { page-break-inside: avoid; }
+
+    .print-footer {
+      display: block !important;
+      text-align: center;
+      font-size: 8pt;
+      color: #888;
+      margin-top: 20pt;
+      border-top: 1pt solid #ccc;
+      padding-top: 6pt;
+    }
+  }
+
+  .print-footer { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header>
+  <div class="header-left">
+    <span class="owl">🦉</span>
+    <div>
+      <div class="site-title">就活の木 学生サポートパネル</div>
+      <div class="site-sub">使い方マニュアル　｜　多摩大学 キャリア支援課</div>
+    </div>
+  </div>
+  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+    <div class="tab-wrap">
+      <button class="tab-btn active" onclick="switchTab('staff')">担当者向け</button>
+      <button class="tab-btn" onclick="switchTab('student')">学生向け</button>
+    </div>
+    <button class="print-btn" onclick="printPage()">🖨️ 印刷</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ════════════ 担当者向けページ ════════════ -->
+  <div class="page active" id="page-staff">
+
+    <div class="hero">
+      <h1>担当者向け 操作マニュアル</h1>
+      <p>キャリア支援担当者が学生に適切にパネルを案内するための手引きです</p>
+    </div>
+
+    <!-- 1. このマニュアルについて -->
+    <div class="section">
+      <div class="section-title"><span class="num">1</span>このマニュアルについて</div>
+      <p style="font-size:0.9rem; line-height:1.8; color:var(--offwhite); margin-bottom:1rem;">
+        本マニュアルは、就活の木 学生サポートパネルをキャリア支援担当者が適切に運用・活用するための手引きです。学生への案内方法・各機能の説明・よくある質問への対応方法をまとめています。
+      </p>
+      <div class="hint-box mint">
+        <span class="hint-icon">💡</span>
+        <div class="hint-body">
+          <div class="hint-label">基本方針</div>
+          <div class="hint-text">「答えは学生の中にある」——パネルはあくまで引き出すためのツールです。担当者はその使い方をサポートする立場で関わりましょう。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. パネルの全体構成 -->
+    <div class="section">
+      <div class="section-title"><span class="num">2</span>パネルの全体構成（STEP①〜⑧）</div>
+      <p style="font-size:0.88rem; color:var(--offwhite); margin-bottom:0.8rem;">学生の状況に合わせて適切なSTEPを案内してください。</p>
+      <table class="step-table">
+        <thead>
+          <tr>
+            <th style="width:80px;">STEP</th>
+            <th>タイトル・内容</th>
+            <th>担当者の留意点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="step-badge">STEP①</span></td><td><div class="step-name">自己分析・適性診断</div><div class="step-desc">MBTI・VPI・キャリアアンカー・強み診断</div></td><td style="color:var(--offwhite); font-size:0.85rem;">まずここから。「自分を知る」ことが就活の出発点と伝える。</td></tr>
+          <tr><td><span class="step-badge">STEP②</span></td><td><div class="step-name">自分の羅針盤探し</div><div class="step-desc">jobtag職業診断・なぜ働くかワーク</div></td><td style="color:var(--offwhite); font-size:0.85rem;">「やりたいことがわからない」学生に特に勧める。</td></tr>
+          <tr><td><span class="step-badge">STEP③</span></td><td><div class="step-name">業界・職種研究 ＆ インターン</div><div class="step-desc">jobtag・就職四季報・各就活サイト</div></td><td style="color:var(--offwhite); font-size:0.85rem;">「業界」より「職種」で探すよう指導する。</td></tr>
+          <tr><td><span class="step-badge">STEP④</span></td><td><div class="step-name">就活ツールを使いこなす</div><div class="step-desc">マイキャリアボックス・OPEN-ES</div></td><td style="color:var(--offwhite); font-size:0.85rem;">ES提出前に必ず使い方を確認させる。</td></tr>
+          <tr><td><span class="step-badge">STEP⑤</span></td><td><div class="step-name">ES作成ツール（AI添削付き）</div><div class="step-desc">ガクチカ・自己PR・志望動機</div></td><td style="color:var(--offwhite); font-size:0.85rem;">「AIが書くのではなく、あなたの言葉を引き出すツール」と伝える。</td></tr>
+          <tr><td><span class="step-badge">STEP⑥</span></td><td><div class="step-name">筆記試験対策ドリル250問</div><div class="step-desc">SPI・玉手箱・CAB/GAB・TG-WEB対応</div></td><td style="color:var(--offwhite); font-size:0.85rem;">AI解説にはAPIキー登録が必要。「自動で使える」と言わない。</td></tr>
+          <tr><td><span class="step-badge">STEP⑦</span></td><td><div class="step-name">面接対策プログラム</div><div class="step-desc">動画5本・実践ワークブック・模擬面接</div></td><td style="color:var(--offwhite); font-size:0.85rem;">動画視聴後に模擬面接の予約を促す。</td></tr>
+          <tr><td><span class="step-badge">STEP⑧</span></td><td><div class="step-name">キャリアリンク掲示板</div><div class="step-desc">求人・説明会情報</div></td><td style="color:var(--offwhite); font-size:0.85rem;">対象学年の確認を学生に必ず促す。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3. 学生への案内 -->
+    <div class="section">
+      <div class="section-title"><span class="num">3</span>学生への案内の仕方</div>
+
+      <div class="sub-title">📋 初回面談時</div>
+      <ul class="guide-list">
+        <li>パネルのURLまたはQRコードを提示し、スマートフォンで開いてもらう</li>
+        <li>「まずSTEP①の自己分析から始めてみよう」と案内する</li>
+        <li>「すべて無料・登録不要」であることを伝える</li>
+        <li>「答えはあなたの中にある」というメッセージを添える</li>
+      </ul>
+
+      <div class="sub-title">📝 ES相談時</div>
+      <ul class="guide-list">
+        <li>STEP⑤のES作成ツールを一緒に開き、使い方を説明する</li>
+        <li>AIはあくまで「添削プロンプト生成」ツールであることを伝える</li>
+        <li>「AIが書いたものをコピペしない」よう注意を促す</li>
+      </ul>
+
+      <div class="sub-title">📊 筆記試験対策相談時</div>
+      <ul class="guide-list">
+        <li>STEP⑥のドリルを案内し、受験予定の試験種を確認する</li>
+        <li>AI解説を使う場合はGroq APIキーの登録が必要なことを説明する</li>
+        <li>「まずは🌱やさしいレベルから1問解いてみよう」と背中を押す</li>
+      </ul>
+
+      <div class="sub-title">🎤 面接対策相談時</div>
+      <ul class="guide-list">
+        <li>STEP⑦の動画5本を事前に視聴してくるよう宿題にする</li>
+        <li>実践ワークブック（無料配布）を印刷して渡す</li>
+        <li>動画視聴後に模擬面接の予約を入れるよう案内する</li>
+      </ul>
+    </div>
+
+    <!-- 4. APIキー -->
+    <div class="section">
+      <div class="section-title"><span class="num">4</span>Groq APIキーについて（筆記試験AI解説）</div>
+      <p style="font-size:0.88rem; color:var(--offwhite); margin-bottom:0.8rem;">
+        筆記試験対策ドリルのAI解説機能は、Groq APIキーを登録することで使えます。
+      </p>
+      <div class="hint-box warn">
+        <span class="hint-icon">⚠️</span>
+        <div class="hint-body">
+          <div class="hint-label">注意</div>
+          <div class="hint-text">APIキーは学生各自で取得・登録してもらう形です。「自動でAIが使える」という説明はしないでください。</div>
+        </div>
+      </div>
+      <ul class="guide-list" style="margin-top:0.8rem;">
+        <li>Groq APIは無料（1日1,000回まで）</li>
+        <li>取得方法：https://console.groq.com でアカウント作成</li>
+        <li>キーはdrillページ内の入力欄に貼り付けるだけで使用可能</li>
+      </ul>
+    </div>
+
+    <!-- 5. よくある質問 -->
+    <div class="section">
+      <div class="section-title"><span class="num">5</span>よくある質問（学生からの問い合わせ対応）</div>
+      <table class="qa-table">
+        <tr><td style="width:38%;" class="qa-q">Q. 登録は必要ですか？</td><td class="qa-a">A. 不要です。URLにアクセスするだけで使えます。</td></tr>
+        <tr><td class="qa-q">Q. スマホで使えますか？</td><td class="qa-a">A. はい、スマートフォン・PCどちらでも使えます。</td></tr>
+        <tr><td class="qa-q">Q. AIが全部書いてくれますか？</td><td class="qa-a">A. AIは添削プロンプトを生成するツールです。文章を書くのはあなた自身です。</td></tr>
+        <tr><td class="qa-q">Q. SPIの勉強はこれだけで大丈夫？</td><td class="qa-a">A. ドリルで傾向をつかんだ後、受ける会社に合わせた参考書での仕上げをお勧めします。</td></tr>
+        <tr><td class="qa-q">Q. 面接動画はどこで見られますか？</td><td class="qa-a">A. STEP⑦からアクセスできます。5本すべて無料で視聴できます。</td></tr>
+      </table>
+      <div class="hint-box mint" style="margin-top:1.2rem;">
+        <span class="hint-icon">🦉</span>
+        <div class="hint-body">
+          <div class="hint-label">キャリ爺（フクロウ博士）より</div>
+          <div class="hint-text">「答えは学生の中にある」——このパネルはそれを引き出すためのツールです。担当者の皆さんの温かいサポートを、よろしくお願いします。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="print-footer">多摩大学 キャリア支援課　｜　就活の木 学生サポートパネル　担当者向けマニュアル</div>
+  </div>
+
+  <!-- ════════════ 学生向けページ ════════════ -->
+  <div class="page" id="page-student">
+
+    <div class="hero">
+      <h1>学生向け 使い方ガイド</h1>
+      <p>「何から始めればいいかわからない」あなたへ。まず1つだけやってみよう🌱</p>
+    </div>
+
+    <!-- はじめに -->
+    <div class="section">
+      <div class="section-title"><span class="num" style="background:var(--mint); color:var(--dark);">✦</span>はじめに</div>
+      <p style="font-size:0.9rem; line-height:1.8; color:var(--offwhite); margin-bottom:1rem;">
+        「就活って何から始めればいいんだろう…」そんな気持ちで迷っているあなたへ。このパネルは、自己分析から内定まで、一本道でサポートする無料ツールです。難しく考えず、まず1つだけやってみてください。
+      </p>
+      <div class="hint-box mint">
+        <span class="hint-icon">✅</span>
+        <div class="hint-body">
+          <div class="hint-label">3つのポイント</div>
+          <div class="hint-text">① すべて無料・登録不要　② スマホでいつでも使える　③ STEP順に進むだけでOK</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEPガイド -->
+    <div class="section">
+      <div class="section-title"><span class="num" style="background:var(--mint); color:var(--dark);">→</span>パネルの使い方　STEP①〜⑧</div>
+      <table class="step-table">
+        <thead>
+          <tr>
+            <th style="width:80px;">STEP</th>
+            <th>タイトル</th>
+            <th>やること・ポイント</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="step-badge">STEP①</span></td><td><div class="step-name">自己分析・適性診断</div></td><td style="color:var(--offwhite); font-size:0.85rem;">まずここから！MBTI・VPI・キャリアアンカーで「自分」を知ろう。</td></tr>
+          <tr><td><span class="step-badge">STEP②</span></td><td><div class="step-name">自分の羅針盤探し</div></td><td style="color:var(--offwhite); font-size:0.85rem;">「やりたいことがわからない」人向け。jobtag職業診断でヒントを探そう。</td></tr>
+          <tr><td><span class="step-badge">STEP③</span></td><td><div class="step-name">業界・職種研究 ＆ インターン</div></td><td style="color:var(--offwhite); font-size:0.85rem;">気になる仕事を調べ、インターンで体験しよう。「職種」で検索するのがコツ！</td></tr>
+          <tr><td><span class="step-badge">STEP④</span></td><td><div class="step-name">就活ツールを使いこなす</div></td><td style="color:var(--offwhite); font-size:0.85rem;">ES提出に必要なマイキャリアボックス・OPEN-ESの使い方を事前に確認しよう。</td></tr>
+          <tr><td><span class="step-badge">STEP⑤</span></td><td><div class="step-name">ES作成ツール（AI添削付き）</div></td><td style="color:var(--offwhite); font-size:0.85rem;">ガクチカ・自己PR・志望動機をAIと一緒にブラッシュアップ。でも書くのは自分！</td></tr>
+          <tr><td><span class="step-badge">STEP⑥</span></td><td><div class="step-name">筆記試験対策ドリル250問</div></td><td style="color:var(--offwhite); font-size:0.85rem;">SPI・玉手箱など4種類対応。🌱やさしいレベルから始めてOK。</td></tr>
+          <tr><td><span class="step-badge">STEP⑦</span></td><td><div class="step-name">面接対策プログラム</div></td><td style="color:var(--offwhite); font-size:0.85rem;">動画5本＋無料ワークブックで面接の流れをつかもう。その後は模擬面接を予約！</td></tr>
+          <tr><td><span class="step-badge">STEP⑧</span></td><td><div class="step-name">キャリアリンク掲示板</div></td><td style="color:var(--offwhite); font-size:0.85rem;">求人・説明会情報をチェック。自分の学年が対象か必ず確認して！</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 各機能の使い方 -->
+    <div class="section">
+      <div class="section-title"><span class="num" style="background:var(--mint); color:var(--dark);">✦</span>各機能の詳しい使い方</div>
+
+      <div class="sub-title">📝 ES作成ツール（STEP⑤）の使い方</div>
+      <ul class="guide-list">
+        <li>「ガクチカ」「自己PR」「志望動機」の3種類に対応</li>
+        <li>テーマを選ぶ → 質問に答える → AIへの指示文が自動生成される</li>
+        <li>生成された指示文をChatGPTやClaudeに貼り付けて添削してもらおう</li>
+      </ul>
+      <div class="hint-box warn" style="margin-top:0.8rem;">
+        <span class="hint-icon">⚠️</span>
+        <div class="hint-body">
+          <div class="hint-label">注意</div>
+          <div class="hint-text">AIが書いた文章をそのまま使わないこと！あくまで「自分の言葉を引き出す」ためのツールです。</div>
+        </div>
+      </div>
+
+      <div class="sub-title">📊 筆記試験ドリル（STEP⑥）の使い方</div>
+      <ul class="guide-list">
+        <li>受ける会社の試験種（SPI・玉手箱など）を確認してから始める</li>
+        <li>まずは「🌱やさしい」レベルから挑戦しよう</li>
+        <li>AI解説を使いたい場合はGroq APIキーの登録が必要（取得方法は担当者に確認）</li>
+      </ul>
+
+      <div class="sub-title">🎤 面接対策（STEP⑦）の使い方</div>
+      <ul class="guide-list">
+        <li>動画5本を順番に視聴する（合計約60分）</li>
+        <li>実践ワークブック（無料）を印刷して、動画を見ながら書き込む</li>
+        <li>ワークブックが完成したら、キャリア支援課に模擬面接を申し込もう</li>
+      </ul>
+    </div>
+
+    <!-- よくある質問 -->
+    <div class="section">
+      <div class="section-title"><span class="num" style="background:var(--mint); color:var(--dark);">Q</span>よくある質問</div>
+      <table class="qa-table">
+        <tr><td style="width:38%;" class="qa-q">Q. 登録は必要？</td><td class="qa-a">A. 不要です。URLにアクセスするだけで使えます。</td></tr>
+        <tr><td class="qa-q">Q. どのSTEPから始めればいい？</td><td class="qa-a">A. 迷ったらSTEP①の自己分析から。自分を知ることがすべての出発点です。</td></tr>
+        <tr><td class="qa-q">Q. スマホでも使える？</td><td class="qa-a">A. はい、スマートフォン・PCどちらでもOKです。</td></tr>
+        <tr><td class="qa-q">Q. AIが全部書いてくれる？</td><td class="qa-a">A. AIは添削プロンプトを生成するツール。文章を書くのはあなたです！</td></tr>
+        <tr><td class="qa-q">Q. 面接動画はどこで見る？</td><td class="qa-a">A. STEP⑦からアクセスできます。5本すべて無料で視聴できます。</td></tr>
+      </table>
+      <div class="hint-box mint" style="margin-top:1.2rem;">
+        <span class="hint-icon">🦉</span>
+        <div class="hint-body">
+          <div class="hint-label">キャリ爺（フクロウ博士）より</div>
+          <div class="hint-text">「答えはあなたの中にあります。」このパネルはそれを引き出すためのツールです。一人で悩まず、キャリア支援課にいつでも相談してください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="print-footer">多摩大学 キャリア支援課　｜　就活の木 学生サポートパネル　学生向けガイド</div>
+  </div>
+
+</main>
+
+<footer>
+  🦉 就活の木 学生サポートパネル　｜　多摩大学 キャリア支援課　｜　キャリ爺（フクロウ博士）
+</footer>
+
+<script>
+  let currentTab = 'staff';
+
+  function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + tab).classList.add('active');
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      if (b.textContent.includes(tab === 'staff' ? '担当者' : '学生')) b.classList.add('active');
+    });
+  }
+
+  function printPage() {
+    // 印刷対象のページにprint-targetクラスを付与
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('print-target'));
+    document.getElementById('page-' + currentTab).classList.add('print-target');
+    window.print();
+  }
+</script>
+
+</body>
+</html>

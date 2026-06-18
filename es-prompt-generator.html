@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業研究＆ES対策プロンプトジェネレーター｜就活の木</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700&display=swap');
+
+:root {
+  --bg:#e8f5ee; --deep:#3d8a5f; --mid:#4da070; --gold:#c8922a;
+  --card-br:#a8d8be; --gray:#2d4a38; --shadow:rgba(45,107,74,0.12);
+  --blue-bg:#e8f0fb; --blue-deep:#2d5fa8; --blue-mid:#4178c8;
+  --blue-br:#a8c0e8; --blue-sh:rgba(45,95,168,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray);min-height:100vh;padding-bottom:60px;}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#2d6b4a,var(--deep));padding:20px 24px 16px;text-align:center;border-bottom:3px solid var(--gold);position:relative;overflow:hidden;}
+header::before{content:'🌳';position:absolute;font-size:110px;opacity:.07;top:-15px;left:-15px;}
+.header-tag{display:inline-block;background:var(--gold);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;padding:3px 12px;border-radius:20px;margin-bottom:7px;}
+header h1{font-family:'Noto Serif JP',serif;font-size:clamp(14px,3.8vw,21px);color:#fff;line-height:1.4;margin-bottom:4px;}
+header h1 span{color:#f0e080;}
+header p{font-size:11px;color:#b8ecd0;}
+
+/* MAIN TABS */
+.main-tab-bar{display:flex;background:#1a3d28;gap:3px;padding:6px 6px 0;}
+.main-tab-btn{flex:1;padding:12px 6px;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:900;border:none;cursor:pointer;transition:all .2s;line-height:1.5;border-radius:8px 8px 0 0;border-bottom:4px solid transparent;}
+.main-tab-btn.t1{color:#e0f5ea;background:#2d6b4a;}
+.main-tab-btn.t1:hover{color:#fff;background:#3d8a5f;}
+.main-tab-btn.t1.active{color:#1a3d28;background:#fff;border-bottom:4px solid var(--gold);}
+.main-tab-btn.t2{color:#d0e4f8;background:#1e3a70;}
+.main-tab-btn.t2:hover{color:#fff;background:#2d5098;}
+.main-tab-btn.t2.active{color:#0d2060;background:var(--blue-bg);border-bottom:4px solid #4a80d8;}
+
+.main-tab-content{display:none;}
+.main-tab-content.active{display:block;}
+
+/* STEP FLOW */
+.step-flow{display:flex;align-items:center;justify-content:center;gap:5px;padding:11px 14px;flex-wrap:wrap;border-bottom:1px solid var(--card-br);}
+.step-flow.green{background:#d4ede0;}
+.step-flow.blue{background:#d0dff5;border-bottom-color:var(--blue-br);}
+.step-item{display:flex;align-items:center;gap:4px;font-size:10px;}
+.step-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.green .step-num{background:#fff;border:2px solid var(--card-br);color:var(--deep);}
+.green .step-num.on{background:var(--gold);border-color:var(--gold);color:#fff;}
+.blue .step-num{background:#fff;border:2px solid var(--blue-br);color:var(--blue-deep);}
+.blue .step-num.on{background:var(--blue-deep);border-color:var(--blue-deep);color:#fff;}
+.step-arrow{font-size:10px;}
+.green .step-arrow{color:var(--deep);}
+.blue .step-arrow{color:var(--blue-deep);}
+
+/* MAIN */
+main{max-width:700px;margin:0 auto;padding:16px 13px;}
+
+/* CARD */
+.card{border-radius:13px;padding:18px;margin-bottom:14px;}
+.card.green{background:#fff;border:1px solid var(--card-br);box-shadow:0 4px 16px var(--shadow);}
+.card.blue{background:#fff;border:1px solid var(--blue-br);box-shadow:0 4px 16px var(--blue-sh);}
+.card-title{font-size:13px;font-weight:700;letter-spacing:.05em;margin-bottom:13px;display:flex;align-items:center;gap:7px;}
+.card-title::before{content:'';display:inline-block;width:4px;height:14px;border-radius:2px;flex-shrink:0;}
+.green .card-title{color:var(--deep);}
+.green .card-title::before{background:var(--gold);}
+.blue .card-title{color:var(--blue-deep);}
+.blue .card-title::before{background:var(--blue-mid);}
+
+/* FORM */
+.form-group{margin-bottom:12px;}
+.form-label{display:block;font-size:12px;font-weight:700;margin-bottom:4px;}
+.green .form-label{color:var(--deep);}
+.blue .form-label,.blue-label{color:var(--blue-deep);}
+.badge{font-size:9px;padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:middle;color:#fff;}
+.badge.req{background:#c0392b;}
+.badge.opt{background:#888;}
+
+input[type="text"],select,textarea{width:100%;background:#f6faf8;border:1.5px solid var(--card-br);border-radius:8px;padding:9px 11px;color:var(--gray);font-size:12px;font-family:'Noto Sans JP',sans-serif;transition:border-color .2s,box-shadow .2s;outline:none;}
+.blue-form input[type="text"],.blue-form select,.blue-form textarea{background:#f4f7fd;border-color:var(--blue-br);}
+input[type="text"]:focus,select:focus,textarea:focus{border-color:var(--deep);box-shadow:0 0 0 3px rgba(61,138,95,.12);}
+.blue-form input[type="text"]:focus,.blue-form select:focus,.blue-form textarea:focus{border-color:var(--blue-deep);box-shadow:0 0 0 3px rgba(45,95,168,.12);}
+input::placeholder,textarea::placeholder{color:#bbb;}
+select option{background:#fff;color:#2d4a38;}
+.hint{font-size:10px;color:#7aaa8a;margin-top:3px;line-height:1.5;}
+.hint.blue{color:#6a8ac0;}
+
+.combo-wrap{display:flex;flex-direction:column;gap:3px;}
+.combo-or{font-size:10px;color:#bbb;text-align:center;}
+
+/* GREEN CHECK */
+.check-group{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:3px;}
+.check-item{display:flex;align-items:center;gap:6px;border-radius:7px;padding:6px 8px;cursor:pointer;transition:background .2s;font-size:11px;color:var(--gray);}
+.check-item.green{background:#f4faf7;border:1px solid var(--card-br);}
+.check-item.green:hover{background:#d4ede0;}
+.check-item input[type="checkbox"]{width:13px;height:13px;accent-color:var(--deep);}
+
+/* SUB TABS (ES内) */
+.sub-tab-bar{display:flex;gap:2px;margin-bottom:14px;background:#dceaf8;border-radius:10px;padding:4px;}
+.sub-tab-btn{flex:1;padding:9px 4px;font-family:'Noto Sans JP',sans-serif;font-size:11px;font-weight:700;border:none;background:transparent;cursor:pointer;border-radius:8px;color:var(--blue-deep);transition:all .2s;line-height:1.4;}
+.sub-tab-btn:hover{background:#c8d8f0;}
+.sub-tab-btn.active{background:#fff;color:var(--blue-deep);box-shadow:0 2px 8px rgba(45,95,168,.15);font-weight:900;}
+.sub-tab-content{display:none;}
+.sub-tab-content.active{display:block;animation:fadeUp .3s ease;}
+
+/* SAVE BAR */
+.save-bar{display:flex;align-items:center;gap:8px;background:#fffdf5;border:1px solid #e8d8a0;border-radius:9px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:#a07828;}
+.save-bar .save-status{flex:1;color:#888;}
+.btn-save{padding:6px 12px;background:var(--gold);color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:opacity .2s;}
+.btn-save:hover{opacity:.85;}
+.btn-clear{padding:6px 10px;background:#fff;color:#aaa;border:1px solid #ddd;border-radius:7px;font-size:11px;cursor:pointer;transition:all .2s;}
+.btn-clear:hover{border-color:#f99;color:#c00;}
+
+/* ACCORDION (設問) */
+.acc-block{border:1.5px solid var(--blue-br);border-radius:11px;margin-bottom:9px;overflow:hidden;}
+.acc-header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#eef4fc;cursor:pointer;transition:background .2s;gap:8px;}
+.acc-header:hover{background:#ddeaf8;}
+.acc-header-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.acc-num{width:22px;height:22px;background:var(--blue-deep);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.acc-title{font-size:12px;font-weight:700;color:var(--blue-deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.acc-summary{font-size:10px;color:#7a9ac8;margin-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.acc-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.acc-icon{font-size:14px;color:var(--blue-deep);transition:transform .3s;}
+.acc-icon.open{transform:rotate(180deg);}
+.btn-del-acc{background:none;border:1px solid #ddd;border-radius:5px;padding:2px 7px;font-size:10px;color:#aaa;cursor:pointer;transition:all .2s;}
+.btn-del-acc:hover{border-color:#f99;color:#c00;background:#fee;}
+.acc-body{display:none;padding:14px;background:#fff;border-top:1px solid var(--blue-br);}
+.acc-body.open{display:block;}
+
+.btn-add-es{width:100%;padding:10px;background:#fff;border:2px dashed var(--blue-br);border-radius:9px;color:var(--blue-deep);font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;transition:background .2s;}
+
+/* ルート切り替え */
+.route-tabs{display:flex;gap:4px;margin-bottom:10px;background:#eef4fc;border-radius:9px;padding:4px;}
+.route-tab{flex:1;padding:7px 4px;font-size:11px;font-weight:700;font-family:'Noto Sans JP',sans-serif;border:none;background:transparent;border-radius:7px;cursor:pointer;color:var(--blue-deep);transition:all .2s;line-height:1.4;}
+.route-tab.active{background:#fff;box-shadow:0 2px 8px rgba(45,95,168,.15);color:var(--blue-deep);}
+.route-tab.r1.active{border-bottom:3px solid #c8922a;}
+.route-tab.r2.active{border-bottom:3px solid var(--deep);}
+.route-tab.r3.active{border-bottom:3px solid var(--blue-deep);}
+.route-content{display:none;}
+.route-content.active{display:block;animation:fadeUp .25s ease;}
+.route-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:4px;vertical-align:middle;}
+.route-badge.r1{background:#fff3e0;color:#c8922a;border:1px solid #f0c070;}
+.route-badge.r2{background:#e8f5ee;color:var(--deep);border:1px solid var(--card-br);}
+.route-badge.r3{background:#eef4fc;color:var(--blue-deep);border:1px solid var(--blue-br);}
+.route-hint{font-size:10px;color:#7a9ac8;margin-bottom:8px;padding:6px 9px;background:#f4f7fd;border-radius:7px;line-height:1.6;}
+.existing-es-area{width:100%;min-height:80px;font-size:12px;}
+.mode-indicator{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px;}
+.mode-tensaku{background:#fff3e0;color:#c8922a;border:1px solid #f0c070;}
+.mode-sakusei{background:#e8f5ee;color:var(--deep);border:1px solid var(--card-br);}
+.mode-kaizen{background:#eef4fc;color:var(--blue-deep);border:1px solid var(--blue-br);}
+.acc-done-badge{display:none;font-size:10px;font-weight:700;color:#fff;background:#3d8a5f;border-radius:5px;padding:2px 7px;margin-left:6px;white-space:nowrap;transition:opacity .2s;}
+.acc-done-badge.show{display:inline-block;}
+.acc-done-badge.show:hover{opacity:.8;}
+.acc-warn{display:none;font-size:10px;color:#c8922a;margin-top:4px;padding:5px 9px;background:#fffbf0;border:1px solid #e8d8a0;border-radius:6px;}
+.acc-warn.show{display:block;}
+
+/* 設問タイプ別カラー */
+.acc-block.color-purple .acc-header{background:#f3eeff;}
+.acc-block.color-purple .acc-header:hover{background:#e8dcff;}
+.acc-block.color-purple{border-color:#b09ae0;}
+.acc-block.color-purple .acc-num{background:#7c5cbf;}
+.acc-block.color-purple .acc-title{color:#5a3d9a;}
+.acc-block.color-purple .acc-body{border-top-color:#b09ae0;}
+
+.acc-block.color-green .acc-header{background:#edf8f0;}
+.acc-block.color-green .acc-header:hover{background:#d8f0e0;}
+.acc-block.color-green{border-color:#80c89a;}
+.acc-block.color-green .acc-num{background:#3d8a5f;}
+.acc-block.color-green .acc-title{color:#2a6040;}
+.acc-block.color-green .acc-body{border-top-color:#80c89a;}
+
+.acc-block.color-blue .acc-header{background:#eef4fc;}
+.acc-block.color-blue .acc-header:hover{background:#ddeaf8;}
+.acc-block.color-blue{border-color:#a8c0e8;}
+.acc-block.color-blue .acc-num{background:#2d5fa8;}
+.acc-block.color-blue .acc-title{color:#1e4080;}
+.acc-block.color-blue .acc-body{border-top-color:#a8c0e8;}
+
+.acc-block.color-orange .acc-header{background:#fff4ea;}
+.acc-block.color-orange .acc-header:hover{background:#ffe8d0;}
+.acc-block.color-orange{border-color:#f0b06a;}
+.acc-block.color-orange .acc-num{background:#d06820;}
+.acc-block.color-orange .acc-title{color:#a04010;}
+.acc-block.color-orange .acc-body{border-top-color:#f0b06a;}
+
+.acc-block.color-gold .acc-header{background:#fdf8ea;}
+.acc-block.color-gold .acc-header:hover{background:#f8eec8;}
+.acc-block.color-gold{border-color:#d4a843;}
+.acc-block.color-gold .acc-num{background:#a87820;}
+.acc-block.color-gold .acc-title{color:#806010;}
+.acc-block.color-gold .acc-body{border-top-color:#d4a843;}
+
+.acc-block.color-red .acc-header{background:#fff0f0;}
+.acc-block.color-red .acc-header:hover{background:#ffe0e0;}
+.acc-block.color-red{border-color:#e09090;}
+.acc-block.color-red .acc-num{background:#c03030;}
+.acc-block.color-red .acc-title{color:#902020;}
+.acc-block.color-red .acc-body{border-top-color:#e09090;}
+
+.acc-block.color-gray .acc-header{background:#f4f4f4;}
+.acc-block.color-gray .acc-header:hover{background:#e8e8e8;}
+.acc-block.color-gray{border-color:#c0c0c0;}
+.acc-block.color-gray .acc-num{background:#686868;}
+.acc-block.color-gray .acc-title{color:#484848;}
+.acc-block.color-gray .acc-body{border-top-color:#c0c0c0;}
+.btn-add-es:hover{background:#e8f0fb;}
+
+/* 6段論法 */
+.rokdan-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-top:1px dashed var(--blue-br);padding-top:10px;margin-top:10px;}
+.rokdan-toggle-left{font-size:12px;font-weight:700;color:var(--gold);}
+.rokdan-toggle-icon{font-size:14px;color:var(--gold);transition:transform .3s;}
+.rokdan-wrap{display:none;margin-top:10px;border:1.5px dashed var(--gold);border-radius:10px;padding:12px;background:#fffdf5;}
+.rokdan-wrap.open{display:block;animation:fadeUp .3s ease;}
+.tpl-bar-title{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.tpl-btns{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed #e8d8a0;}
+.tpl-btn{padding:4px 9px;background:#fff;border:1.5px solid var(--gold);border-radius:16px;font-size:10px;font-weight:700;color:var(--gold);cursor:pointer;transition:all .2s;font-family:'Noto Sans JP',sans-serif;}
+.tpl-btn:hover,.tpl-btn.selected{background:var(--gold);color:#fff;}
+.rd-step{display:flex;gap:7px;margin-bottom:8px;align-items:flex-start;}
+.rd-badge{flex-shrink:0;width:40px;height:40px;background:var(--gold);color:#fff;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:7px;font-weight:700;line-height:1.3;text-align:center;}
+.rd-step textarea{font-size:11px;padding:7px 9px;border-radius:7px;min-height:46px;resize:vertical;}
+
+/* BUTTONS */
+.btn-generate{width:100%;padding:13px;font-size:14px;font-weight:900;font-family:'Noto Sans JP',sans-serif;border:none;border-radius:11px;cursor:pointer;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:7px;transition:transform .15s,box-shadow .15s;}
+.btn-generate.green{background:linear-gradient(135deg,var(--deep),var(--mid));color:#fff;box-shadow:0 4px 14px rgba(61,138,95,.35);}
+.btn-generate.blue{background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));color:#fff;box-shadow:0 4px 14px rgba(45,95,168,.35);}
+.btn-generate:hover{transform:translateY(-2px);}
+.btn-generate:active{transform:translateY(0);}
+
+/* OUTPUT */
+.output-section{display:none;}
+.output-section.visible{display:block;animation:fadeUp .4s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.prompt-box{border-radius:9px;padding:13px;font-size:11px;line-height:1.8;white-space:pre-wrap;word-break:break-word;max-height:340px;overflow-y:auto;margin-bottom:11px;color:var(--gray);}
+.prompt-box.green{background:#f4faf7;border:1.5px solid var(--card-br);}
+.prompt-box.blue{background:#f0f4fc;border:1.5px solid var(--blue-br);}
+.prompt-box::-webkit-scrollbar{width:4px;}
+.prompt-box::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+.btn-copy{width:100%;padding:11px;font-size:13px;font-weight:700;font-family:'Noto Sans JP',sans-serif;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .2s,color .2s;}
+.btn-copy.green{background:#fff;color:var(--deep);border:2px solid var(--deep);}
+.btn-copy.green:hover,.btn-copy.green.copied{background:var(--deep);color:#fff;}
+.btn-copy.blue{background:#fff;color:var(--blue-deep);border:2px solid var(--blue-deep);}
+.btn-copy.blue:hover,.btn-copy.blue.copied{background:var(--blue-deep);color:#fff;}
+.howto{border-radius:10px;padding:12px;margin-top:11px;}
+.howto.green{background:#edf8f2;border:1px dashed var(--deep);}
+.howto.blue{background:#edf2fc;border:1px dashed var(--blue-deep);}
+.howto h3{font-size:11px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.howto.green h3{color:var(--deep);}
+.howto.blue h3{color:var(--blue-deep);}
+.howto ol{padding-left:15px;font-size:11px;line-height:2;}
+.howto a{font-weight:700;text-decoration:none;}
+.howto.green a{color:var(--gold);}
+.howto.blue a{color:var(--blue-deep);}
+.howto a:hover{text-decoration:underline;}
+
+footer{text-align:center;padding:20px 16px 0;font-size:11px;color:#7aaa8a;}
+
+/* 保存システム */
+.save-system{background:#fff;border:1.5px solid var(--blue-br);border-radius:12px;padding:14px;margin-bottom:10px;}
+.save-system-title{font-size:12px;font-weight:900;color:var(--blue-deep);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.save-row{display:flex;flex-direction:column;gap:8px;}
+.save-section{background:#f4f7fd;border:1px solid var(--blue-br);border-radius:9px;padding:10px 12px;}
+.save-section-title{font-size:11px;font-weight:700;color:var(--blue-deep);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.save-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.btn-s{padding:7px 12px;font-size:11px;font-weight:700;font-family:'Noto Sans JP',sans-serif;border-radius:7px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.btn-s.browser-save{background:var(--blue-deep);color:#fff;border:none;}
+.btn-s.browser-save:hover{opacity:.85;}
+.btn-s.file-save{background:#fff;color:var(--gold);border:2px solid var(--gold);}
+.btn-s.file-save:hover{background:var(--gold);color:#fff;}
+.btn-s.file-load{background:#fff;color:var(--deep);border:2px solid var(--deep);}
+.btn-s.file-load:hover{background:var(--deep);color:#fff;}
+.btn-s.danger{background:#fff;color:#c03030;border:1.5px solid #e09090;}
+.btn-s.danger:hover{background:#fee;border-color:#c03030;}
+.save-desc{font-size:10px;color:#888;margin-top:5px;line-height:1.6;}
+.save-desc strong{color:var(--blue-deep);}
+.save-status-bar{display:flex;align-items:center;gap:6px;padding:7px 10px;background:#edf8f2;border-radius:7px;margin-top:8px;font-size:11px;color:var(--deep);}
+.save-status-bar span{flex:1;}
+/* ファイル読み込みinput非表示 */
+#fileInput{display:none;}
+
+/* 使い方バナー */
+.usage-banner{background:linear-gradient(135deg,#f0faf4,#e0f5ea);border:1.5px solid var(--card-br);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.usage-banner-title{font-size:12px;font-weight:900;color:var(--deep);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.usage-row{display:flex;gap:8px;flex-wrap:wrap;}
+.usage-item{flex:1;min-width:140px;background:#fff;border:1px solid var(--card-br);border-radius:8px;padding:8px 10px;}
+.usage-item-grade{font-size:10px;font-weight:900;color:var(--gold);margin-bottom:3px;}
+.usage-item-desc{font-size:11px;color:var(--gray);line-height:1.6;}
+.usage-item-desc span{display:inline-block;background:#edf8f2;border-radius:4px;padding:1px 5px;margin:1px 2px 1px 0;font-size:10px;}
+/* 4年生向けラベル */
+.opt-label-4{font-size:9px;font-weight:700;color:#fff;background:#7c5cbf;border-radius:3px;padding:1px 5px;margin-left:4px;vertical-align:middle;}
+footer span{color:var(--gold);}
+
+/* nav arrows */
+.nav-row{display:flex;gap:8px;margin-top:4px;}
+.btn-nav{flex:1;padding:10px;font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;border:2px solid var(--blue-br);border-radius:9px;background:#fff;color:var(--blue-deep);cursor:pointer;transition:all .2s;}
+.btn-nav:hover{background:var(--blue-deep);color:#fff;border-color:var(--blue-deep);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">就活の木 ツールシリーズ</div>
+  <h1>企業研究 ＆ <span>ES対策</span>　プロンプトジェネレーター</h1>
+  <p>インターン・本選考・説明会・OB訪問　すべてに対応</p>
+</header>
+
+<!-- メインタブ -->
+<div class="main-tab-bar">
+  <button class="main-tab-btn t1 active" onclick="switchMainTab('mtab1',this)">🌱 企業研究・事前準備</button>
+  <button class="main-tab-btn t2" onclick="switchMainTab('mtab2',this)">📝 エントリーシート対策</button>
+</div>
+
+<!-- ======================================================== TAB1 企業研究 ======================================================== -->
+<div class="main-tab-content active" id="mtab1">
+  <div class="step-flow green">
+    <div class="step-item"><div class="step-num on">1</div><span>情報を入力</span></div>
+    <div class="step-arrow">▶</div>
+    <div class="step-item"><div class="step-num on">2</div><span>プロンプト生成</span></div>
+    <div class="step-arrow">▶</div>
+    <div class="step-item"><div class="step-num on">3</div><span>Claude.aiへ貼付け</span></div>
+    <div class="step-arrow">▶</div>
+    <div class="step-item"><div class="step-num on">4</div><span>企業研究シート完成！</span></div>
+  </div>
+  <main>
+    <!-- 使い方バナー -->
+    <div class="usage-banner">
+      <div class="usage-banner-title">📖 このツールの使い方</div>
+      <div class="usage-row">
+        <div class="usage-item">
+          <div class="usage-item-grade">🌱 3年生向け</div>
+          <div class="usage-item-desc">
+            <span>インターン事前準備</span>
+            <span>インターン選考ES</span>
+          </div>
+        </div>
+        <div class="usage-item">
+          <div class="usage-item-grade">🎓 4年生向け</div>
+          <div class="usage-item-desc">
+            <span>会社説明会の準備</span>
+            <span>OB・OG訪問の準備</span>
+            <span>本選考ES作成</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card green">
+      <div class="card-title">STEP 1　企業・コース情報を入力</div>
+      <div class="form-group">
+        <label class="form-label">企業名<span class="badge req">必須</span></label>
+        <input type="text" id="t1_company" placeholder="例：株式会社サイボウズ" oninput="autoSave()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">コース名・目的<span class="badge req">必須</span></label>
+        <div class="combo-wrap">
+          <select id="t1_course_sel" onchange="syncCombo('t1_course_sel','t1_course_txt');autoSave()">
+            <option value="">── 典型例から選ぶ ──</option>
+            <option>ビジネス課題解決コース</option><option>営業体験コース</option>
+            <option>企画・マーケティングコース</option><option>エンジニアリングコース</option>
+            <option>人事・採用コース</option><option>総合職1Day仕事体験</option>
+            <option>会社説明会（本選考）</option><option>OB・OG訪問</option>
+          </select>
+          <div class="combo-or">または直接入力</div>
+          <input type="text" id="t1_course_txt" placeholder="コース名・目的を直接入力" oninput="autoSave()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">業界・職種<span class="badge opt">任意</span></label>
+        <input type="text" id="t1_industry" placeholder="例：IT、金融、商社など" oninput="autoSave()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">期間・形式<span class="badge opt">任意</span></label>
+        <select id="t1_duration" onchange="autoSave()">
+          <option value="">選択してください</option>
+          <option>1日（1day）</option><option>2〜3日</option><option>1週間</option>
+          <option>2週間以上</option><option>1ヶ月以上</option>
+          <option>━━━ 主に4年生向け ━━━</option>
+          <option>オンライン説明会【4年生向け】</option>
+          <option>対面説明会【4年生向け】</option>
+          <option>OB・OG訪問（30〜60分）【4年生向け】</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">深掘りしたい項目（複数可）</label>
+        <div class="check-group">
+          <label class="check-item green"><input type="checkbox" value="企業理念・ビジョン" checked onchange="autoSave()"> 企業理念・ビジョン</label>
+          <label class="check-item green"><input type="checkbox" value="求める人物像" checked onchange="autoSave()"> 求める人物像</label>
+          <label class="check-item green"><input type="checkbox" value="仕事のリアル・やりがい" checked onchange="autoSave()"> 仕事のリアル</label>
+          <label class="check-item green"><input type="checkbox" value="業界・競合分析" checked onchange="autoSave()"> 業界・競合分析</label>
+          <label class="check-item green"><input type="checkbox" value="コースで体験できる内容" onchange="autoSave()"> コース体験内容</label>
+          <label class="check-item green"><input type="checkbox" value="社員への質問リスト" onchange="autoSave()"> 社員への質問リスト</label>
+          <label class="check-item green"><input type="checkbox" value="自己PR・志望動機の方向性" onchange="autoSave()"> 志望動機の方向性</label>
+          <label class="check-item green"><input type="checkbox" value="本選考につながるポイント" onchange="autoSave()"> 本選考へのつながり</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">自由メモ<span class="badge opt">任意</span></label>
+        <textarea id="t1_memo" rows="3" placeholder="気になること・聞きたいことなど" oninput="autoSave()"></textarea>
+      </div>
+      <button class="btn-generate green" onclick="generateTab1()">🌱 企業研究プロンプトを生成する</button>
+    </div>
+    <div class="output-section" id="t1_output">
+      <div class="card green">
+        <div class="card-title">STEP 2　生成されたプロンプト</div>
+        <div class="prompt-box green" id="t1_prompt"></div>
+        <button class="btn-copy green" id="t1_copyBtn" onclick="copyText('t1_prompt','t1_copyBtn','green')">📋 プロンプトをコピーする</button>
+        <div class="howto green">
+          <h3>🚀 STEP 3　次のステップ</h3>
+          <ol>
+            <li>上の「コピーする」ボタンを押す</li>
+            <li><a href="https://claude.ai" target="_blank">claude.ai</a> を開く（無料アカウントでOK）</li>
+            <li>チャット入力欄にペーストして送信</li>
+            <li>企業研究シートが生成されたら内容を確認</li>
+            <li>Claudeの回答をコピー → 📝 <strong>ES対策タブ</strong>へ！</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ======================================================== TAB2 ES対策 ======================================================== -->
+<div class="main-tab-content" id="mtab2">
+  <div class="step-flow blue">
+    <div class="step-item"><div class="step-num on">1</div><span>企業研究を貼付け</span></div>
+    <div class="step-arrow">▶</div>
+    <div class="step-item"><div class="step-num on">2</div><span>設問を作成</span></div>
+    <div class="step-arrow">▶</div>
+    <div class="step-item"><div class="step-num on">3</div><span>プロンプト生成・コピー</span></div>
+  </div>
+  <main>
+
+    <!-- 保存システム -->
+    <input type="file" id="fileInput" accept=".json" onchange="loadFromFile(event)">
+    <div class="save-system">
+      <div class="save-system-title">💾 データ保存・読み込みシステム</div>
+      <div class="save-row">
+
+        <!-- ブラウザ保存 -->
+        <div class="save-section">
+          <div class="save-section-title">🌐 ブラウザ保存（このブラウザの中に保存）</div>
+          <div class="save-btns">
+            <button class="btn-s browser-save" onclick="manualSave()">今すぐ保存</button>
+          </div>
+          <div style="margin-top:8px;">
+            <div style="font-size:10px;font-weight:700;color:#888;margin-bottom:5px;">🆕 新しく始める（クリア）</div>
+            <div class="save-btns" style="flex-wrap:wrap;">
+              <button class="btn-s danger" onclick="clearResearchAll()" title="企業研究フォーム＋貼付けエリアを消去（ES設問は残る）">🗑️ 企業研究をクリア</button>
+              <button class="btn-s danger" onclick="clearAll()" title="すべての入力内容を消去" style="border-color:#c03030;color:#c03030;">🗑️ すべてクリア</button>
+            </div>
+            <div style="font-size:10px;color:#7a9ac8;margin-top:7px;line-height:1.7;background:#edf2fc;border-radius:7px;padding:7px 10px;">
+              💡 <strong>別企業に切り替えるとき：</strong><br>
+              「企業研究をクリア」→ 新しい企業研究を入力・貼付け<br>
+              ES設問・ネタ・６段論法はそのまま再利用できます✅
+            </div>
+          </div>
+          <div class="save-desc">
+            入力するたびに<strong>自動保存</strong>されます。<br><br>
+            <strong>💡「読み込む」ボタンは不要です！</strong><br>
+            次回、同じブラウザでこのページを開くだけで<strong>自動的に前回の続きから始まります。</strong><br>
+            わざわざ「読み込む」操作をしなくてOKです🙆<br><br>
+            ⚠️ <strong>データが消えるケース：</strong><br>
+            ・ブラウザの「履歴・キャッシュの消去」をしたとき<br>
+            ・シークレット（プライベート）モードで開いたとき<br>
+            ・別のブラウザや別のスマホから開いたとき<br>
+            　→ この場合は下の「ファイル保存」をご利用ください
+          </div>
+        </div>
+
+        <!-- ファイル保存 -->
+        <div class="save-section">
+          <div class="save-section-title">💾 ファイル保存（手元のファイルとして保存）</div>
+          <div class="save-btns">
+            <button class="btn-s file-save" onclick="saveToFile()">📥 ファイルに保存</button>
+            <button class="btn-s file-load" onclick="document.getElementById('fileInput').click()">📂 ファイルを読み込む</button>
+          </div>
+          <div class="save-desc">
+            入力データを <strong>shukatsu_data.json</strong> としてダウンロードします。<br>
+            「ファイルを読み込む」で前回保存したファイルを選ぶと内容が復元されます。<br><br>
+            <strong>💡 USBメモリ（USBメモリー）に保存する場合：</strong><br>
+            ①「ファイルに保存」でダウンロード → ②ダウンロードされたファイルをUSBメモリにコピー<br>
+            ③次回使うとき：USBメモリのファイルを「ファイルを読み込む」で選択<br>
+            ⚠️ <strong>USBメモリご利用時の注意：</strong>USBメモリの紛失・破損に注意してください。大学のパソコンに差し込む際はウイルスチェックを忘れずに。
+          </div>
+        </div>
+
+      </div>
+      <div class="save-status-bar">
+        <span id="saveStatus">📋 入力内容は自動保存されます（スマホ対応）</span>
+      </div>
+    </div>
+
+    <!-- サブタブ -->
+    <div class="sub-tab-bar">
+      <button class="sub-tab-btn active" onclick="switchSubTab('stab1',this)" id="stab1_btn">📋 企業研究貼付け</button>
+      <button class="sub-tab-btn" onclick="switchSubTab('stab2',this)" id="stab2_btn">✏️ 設問作成</button>
+      <button class="sub-tab-btn" onclick="switchSubTab('stab3',this)" id="stab3_btn">🚀 プロンプト生成</button>
+    </div>
+
+    <!-- サブタブ①：企業研究 -->
+    <div class="sub-tab-content active" id="stab1">
+      <div class="card blue blue-form">
+        <div class="card-title">企業研究・事前準備の内容を貼り付け</div>
+        <div class="form-group">
+          <label class="form-label blue-label">企業名<span class="badge req">必須</span></label>
+          <input type="text" id="t2_company" placeholder="例：株式会社〇〇" oninput="autoSave()">
+        </div>
+        <div class="form-group">
+          <label class="form-label blue-label">企業研究・Claudeの回答内容<span class="badge opt">任意</span></label>
+          <textarea id="t2_research" rows="7" placeholder="← 企業研究タブで生成してClaudeが返してくれた内容をここに貼り付けてください。&#10;&#10;（企業名・求める人物像・業界情報・社風など）&#10;&#10;※貼り付けなくても使えますが、入れるとより企業に合ったESが生成されます" oninput="autoSave()"></textarea>
+          <div class="hint blue">※企業研究内容を入れると、企業の価値観に合ったESが生成されます</div>
+        </div>
+        <div class="nav-row">
+          <button class="btn-nav" onclick="switchSubTab('stab2',document.getElementById('stab2_btn'))">次へ：設問作成 ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- サブタブ②：設問作成 -->
+    <div class="sub-tab-content" id="stab2">
+      <div class="card blue">
+        <div class="card-title">設問ごとにネタ・６段論法を入力</div>
+        <div id="accContainer"></div>
+        <button class="btn-add-es" onclick="addAccBlock()">＋ 設問を追加する</button>
+        <div class="nav-row" style="margin-top:12px;">
+          <button class="btn-nav" onclick="switchSubTab('stab1',document.getElementById('stab1_btn'))">◀ 企業研究へ戻る</button>
+          <button class="btn-nav" onclick="switchSubTab('stab3',document.getElementById('stab3_btn'))">次へ：プロンプト生成 ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- サブタブ③：プロンプト生成 -->
+    <div class="sub-tab-content" id="stab3">
+      <div class="card blue">
+        <div class="card-title">ESプロンプトを生成する</div>
+        <p style="font-size:12px;color:var(--blue-deep);margin-bottom:14px;">入力した全設問をまとめてプロンプトに変換します。</p>
+        <button class="btn-generate blue" onclick="generateTab2()">📝 ESプロンプトを生成する</button>
+        <div class="nav-row" style="margin-top:12px;">
+          <button class="btn-nav" onclick="switchSubTab('stab2',document.getElementById('stab2_btn'))">◀ 設問作成へ戻る</button>
+        </div>
+      </div>
+
+      <!-- 出力エリア（常時表示・生成後に内容が入る） -->
+      <div class="card blue" id="t2_output" style="display:none; margin-top:4px;">
+        <div class="card-title">生成されたプロンプト</div>
+        <div class="prompt-box blue" id="t2_prompt"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-copy blue" id="t2_copyBtn" onclick="copyText('t2_prompt','t2_copyBtn','blue')" style="flex:3;">📋 プロンプトをコピーする</button>
+          <button class="btn-copy blue" onclick="clearPromptOutput()" style="flex:1;font-size:12px;">🗑️ クリア</button>
+        </div>
+        <div class="howto blue">
+          <h3>🚀 次のステップ</h3>
+          <ol>
+            <li>上の「コピーする」ボタンを押す</li>
+            <li><a href="https://claude.ai" target="_blank">claude.ai</a> を開く</li>
+            <li>チャット入力欄にペーストして送信</li>
+            <li>ESの下書きが生成されます！</li>
+            <li>内容を確認しながら自分の言葉に仕上げよう✏️</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <p>🌳 就活の木 ｜ <span>答えは、君の中にある。</span></p>
+  <p style="margin-top:3px;">Produced by キャリ爺 北山四郎</p>
+</footer>
+
+<script>
+// =========== タブ ===========
+function switchMainTab(id, btn) {
+  document.querySelectorAll('.main-tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.main-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function switchSubTab(id, btn) {
+  document.querySelectorAll('.sub-tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// =========== コンボ ===========
+function syncCombo(s,t){ const v=document.getElementById(s).value; if(v) document.getElementById(t).value=v; }
+
+// =========== 設問アコーディオン ===========
+let accCount=0;
+const Q_OPTIONS=['志望動機','自己PR','ガクチカ（学生時代に力を入れたこと）','入社後にやりたいこと','強み・弱み','インターン志望動機','チームでの経験','困難を乗り越えた経験','大切にしている価値観'];
+const C_OPTIONS=['200字以内','300字以内','400字以内','500字以内','600字以内','800字以内','1000字以内'];
+const Q_COLOR_MAP={
+  '志望動機':'color-purple',
+  '自己PR':'color-green',
+  'ガクチカ（学生時代に力を入れたこと）':'color-blue',
+  '入社後にやりたいこと':'color-orange',
+  '強み・弱み':'color-gold',
+  'インターン志望動機':'color-purple',
+  'チームでの経験':'color-blue',
+  '困難を乗り越えた経験':'color-red',
+  '大切にしている価値観':'color-purple',
+};
+function getColor(q){
+  for(const key in Q_COLOR_MAP){ if(q&&q.includes(key.substring(0,4))) return Q_COLOR_MAP[key]; }
+  return 'color-gray';
+}
+const NETA_OPTIONS=['部活動・サークル活動','ゼミ・研究活動','アルバイト経験','ボランティア・社会貢献活動','留学・海外経験','資格取得・自己学習','インターンシップ経験','起業・プロジェクト立ち上げ','学業（成績・授業への取り組み）'];
+
+const TEMPLATES=[
+  // 0: ガクチカ
+  {rd1:'私が学生時代に最も力を入れたことは「〇〇部での活動」です。',rd2:'高校から続けてきた〇〇が好きで、大学でも続けたいと思い入部しました。',rd3:'週〇回の練習に加え、自主練習も欠かさず行いました。また、チームのために〇〇という工夫をしました。',rd4:'レギュラーを争う競争が激しく、思うような結果が出ない時期が続きました。',rd5:'最終的に〇〇大会で〇位という結果を残すことができました。',rd6:'この経験から「継続と工夫の大切さ」を学びました。御社でも〇〇の場面でこの強みを活かしたいです。'},
+  // 1: 自己PR
+  {rd1:'私の強みは「粘り強さと問題解決力」です。',rd2:'アルバイト先で〇〇という課題に直面したことがきっかけで、この力を意識するようになりました。',rd3:'問題の原因を分析し、〇〇という改善策を提案・実行しました。',rd4:'最初は周囲の理解を得られず、孤立することもありました。',rd5:'取り組みの結果、〇〇が〇〇%改善し、チームからも評価をいただきました。',rd6:'「諦めずに行動し続けること」の重要性を学びました。御社の〇〇業務でもこの姿勢で貢献したいです。'},
+  // 2: 志望動機
+  {rd1:'私が御社を志望する理由は「〇〇という価値観が一致していると感じたから」です。',rd2:'〇〇のインターンシップ・説明会に参加し、御社の〇〇という姿勢に強く共感しました。',rd3:'私自身も〇〇という経験を通じて、〇〇の大切さを実感してきました。',rd4:'就職活動を通じて多くの企業を見てきましたが、〇〇という点で御社は特別だと感じています。',rd5:'御社であれば、自分の〇〇という強みを最大限に発揮できると確信しています。',rd6:'入社後は〇〇の分野で力をつけ、将来的には〇〇を実現したいと考えています。'},
+  // 3: 挫折経験
+  {rd1:'私は〇〇という挫折経験から「〇〇力」を身につけました。',rd2:'〇〇に挑戦したものの、〇〇という理由で失敗し、大きなショックを受けました。',rd3:'原因を分析し、〇〇という点を改善するため、〇〇に取り組みました。',rd4:'思うように改善が進まず、何度も諦めそうになりました。',rd5:'〇ヶ月後には〇〇という結果を出すことができました。',rd6:'失敗を恐れず、原因を冷静に分析して行動し続けることの大切さを学びました。この姿勢を御社でも活かします。'},
+  // 4: チーム
+  {rd1:'私はチームで〇〇を成し遂げた経験から「〇〇力」を身につけました。',rd2:'〇〇というプロジェクト・活動に〇人のチームで取り組みました。',rd3:'チームの意見をまとめるため、定期的なミーティングを設け、〇〇という役割を担いました。',rd4:'メンバー間で意見が対立し、プロジェクトが停滞する場面がありました。',rd5:'最終的に〇〇という成果を達成し、チーム全員で喜びを共有できました。',rd6:'「多様な意見を尊重しながら一つの目標に向かうことの大切さ」を学びました。御社でもチームに貢献したいです。'},
+  // 5: 入社後にやりたいこと
+  {rd1:'入社後は〇〇の分野で、〇〇を実現したいと考えています。',rd2:'〇〇のインターン・説明会で御社の〇〇という事業に強く惹かれ、この夢を持ちました。',rd3:'そのために現在、〇〇を学んでおり、〇〇の資格取得にも取り組んでいます。',rd4:'まだ〇〇の知識・経験が不足していると感じており、入社後は積極的に吸収したいと思っています。',rd5:'学生時代の〇〇経験で培った〇〇力が、この目標達成に必ず活かせると確信しています。',rd6:'まずは〇〇の基礎を確実に身につけ、3年以内に〇〇を担えるような人材に成長したいです。'},
+  // 6: 強み・弱み
+  {rd1:'私の強みは「〇〇力」、弱みは「〇〇になりやすいこと」です。',rd2:'〇〇という経験の中で、自分の〇〇という特性に気づきました。',rd3:'強みを活かすため〇〇を意識して行動し、弱みの改善のために〇〇という対策を取っています。',rd4:'弱みによって〇〇という失敗をしてしまったことがありました。',rd5:'対策の結果、〇〇という場面では以前より〇〇できるようになりました。',rd6:'自分の特性を正確に把握し、強みを伸ばしながら弱みを補う努力を続けています。御社でもこの姿勢で成長したいです。'},
+  // 7: インターン志望動機
+  {rd1:'御社のインターンシップを志望した理由は「〇〇を実際に体験したい」からです。',rd2:'〇〇という授業・経験を通じて、〇〇の仕事に強い興味を持つようになりました。',rd3:'そのため御社の〇〇コースで、実際の業務を体験することで自分の適性を確かめたいと考えました。',rd4:'まだ〇〇の実務経験がなく、自分がどこまで通用するか不安もあります。',rd5:'しかし〇〇という強みを持っており、積極的に取り組む自信があります。',rd6:'このインターンを通じて〇〇を学び、将来の就職活動に活かしていきたいと考えています。'},
+  // 8: 大切にしている価値観
+  {rd1:'私が最も大切にしている価値観は「〇〇」です。',rd2:'〇〇という経験がきっかけで、この価値観を強く意識するようになりました。',rd3:'この価値観を実践するため、日常的に〇〇を心がけています。',rd4:'〇〇という場面で、この価値観と現実との間で葛藤することもありました。',rd5:'それでも〇〇を貫いた結果、〇〇という信頼や結果を得ることができました。',rd6:'御社の〇〇という理念と私の価値観は深く共鳴しており、同じ想いで仕事に取り組めると確信しています。'}
+];
+const TPL_NAMES=['1.ガクチカ基本系','2.自己PR基本系','3.志望動機基本系','4.挫折経験系','5.チームで成し遂げた系','6.入社後やりたいこと系','7.強み・弱み系','8.インターン志望動機系','9.大切にしている価値観系'];
+
+function addAccBlock(data) {
+  accCount++;
+  const id=accCount;
+  const div=document.createElement('div');
+  div.className='acc-block'; div.id='acc_'+id;
+  div.innerHTML=`
+    <div class="acc-header" onclick="toggleAcc(${id})">
+      <div class="acc-header-left">
+        <div class="acc-num">${id}</div>
+        <div class="acc-title" id="acc_title_${id}">設問${id}（未入力）</div>
+        <div class="acc-summary" id="acc_summary_${id}"></div>
+        <span class="acc-done-badge" id="acc_done_${id}" onclick="event.stopPropagation();openAccToCheck(${id})" title="クリックして内容を確認" style="cursor:pointer;">✅ 作成アリ 👁</span>
+      </div>
+      <div class="acc-actions">
+        <button class="btn-del-acc" onclick="event.stopPropagation();delAcc(${id})">✕</button>
+        <div class="acc-icon open" id="acc_icon_${id}">▼</div>
+      </div>
+    </div>
+    <div class="acc-body open" id="acc_body_${id}">
+      <div class="acc-warn" id="acc_warn_${id}"></div>
+      <div class="blue-form">
+        <div class="form-group">
+          <label class="form-label" style="color:var(--blue-deep);font-size:11px;">設問項目<span class="badge req">必須</span></label>
+          <div class="combo-wrap">
+            <select id="acc_q_sel_${id}" onchange="syncCombo('acc_q_sel_${id}','acc_q_txt_${id}');updateAccHeader(${id});autoSave()">
+              <option value="">── 典型例から選ぶ ──</option>
+              ${Q_OPTIONS.map(o=>`<option>${o}</option>`).join('')}
+            </select>
+            <div class="combo-or">または直接入力</div>
+            <input type="text" id="acc_q_txt_${id}" placeholder="設問をそのまま貼り付けてもOK" oninput="updateAccHeader(${id});autoSave()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="color:var(--blue-deep);font-size:11px;">文字数<span class="badge req">必須</span></label>
+          <div class="combo-wrap">
+            <select id="acc_c_sel_${id}" onchange="syncCombo('acc_c_sel_${id}','acc_c_txt_${id}');updateAccHeader(${id});autoSave()">
+              <option value="">── 典型例から選ぶ ──</option>
+              ${C_OPTIONS.map(o=>`<option>${o}</option>`).join('')}
+            </select>
+            <div class="combo-or">または直接入力</div>
+            <input type="text" id="acc_c_txt_${id}" placeholder="例：250字程度" oninput="updateAccHeader(${id});autoSave()">
+          </div>
+        </div>
+        <!-- ルート切り替えタブ -->
+        <div style="border-top:1px solid var(--blue-br);padding-top:12px;margin-top:4px;">
+          <div style="font-size:11px;font-weight:700;color:var(--blue-deep);margin-bottom:8px;">
+            📋 ES作成ルートを選んでください
+            <span class="mode-indicator" id="acc_mode_${id}"></span>
+          </div>
+          <div class="route-tabs">
+            <button class="route-tab r1 active" id="rtab1_${id}" onclick="switchRoute(${id},1)">✏️ 既存ES貼付け<br><span style="font-size:9px;font-weight:400;">添削モード</span></button>
+            <button class="route-tab r2" id="rtab2_${id}" onclick="switchRoute(${id},2)">🌱 ６段論法で作成<br><span style="font-size:9px;font-weight:400;">作成モード</span></button>
+            <button class="route-tab r3" id="rtab3_${id}" onclick="switchRoute(${id},3)">🔀 両方入力<br><span style="font-size:9px;font-weight:400;">改善モード</span></button>
+          </div>
+
+          <!-- ルート①：既存ES貼付け（添削） -->
+          <div class="route-content active" id="route1_${id}">
+            <div class="route-hint">✏️ <strong>添削モード：</strong>作成済みのESをそのまま貼り付けてください。AIが評価・改善点・ブラッシュアップ版を提示します。</div>
+            <div class="form-group">
+              <label class="form-label" style="color:#c8922a;font-size:11px;">作成済みES<span class="badge req">貼付け</span></label>
+              <textarea class="existing-es-area" id="acc_es_${id}" placeholder="作成済みのエントリーシートをここに貼り付けてください。&#10;&#10;AIが以下を行います：&#10;・評価できる点のフィードバック&#10;・改善点の指摘&#10;・ブラッシュアップ版の提示" oninput="updateAccHeader(${id});autoSave()"></textarea>
+            </div>
+          </div>
+
+          <!-- ルート②：６段論法で作成 -->
+          <div class="route-content" id="route2_${id}">
+            <div class="route-hint">🌱 <strong>作成モード：</strong>ネタを選んで６段論法を入力してください。AIがESを作成します。文例テンプレートを参考に書いてみよう。</div>
+            <div class="form-group">
+              <label class="form-label" style="color:var(--deep);font-size:11px;">ESのネタ（エピソード）<span class="badge req">必須</span></label>
+              <div class="combo-wrap">
+                <select id="acc_n_sel_${id}" onchange="syncCombo('acc_n_sel_${id}','acc_n_txt_${id}');updateAccHeader(${id});autoSave()">
+                  <option value="">── 典型例から選ぶ ──</option>
+                  ${NETA_OPTIONS.map(o=>`<option>${o}</option>`).join('')}
+                </select>
+                <div class="combo-or">または直接入力</div>
+                <input type="text" id="acc_n_txt_${id}" placeholder="例：カフェでのアルバイトリーダー経験など" oninput="updateAccHeader(${id});autoSave()">
+              </div>
+            </div>
+            <div class="rokdan-toggle" onclick="toggleRokdan(${id})">
+              <div class="rokdan-toggle-left">✨ ６段論法で詳しく入力する（任意）</div>
+              <div class="rokdan-toggle-icon" id="rd_icon_${id}">▼</div>
+            </div>
+            <div style="font-size:10px;color:#6a8ac0;margin-top:3px;">書けるところだけでOK！文例を参考に自分の言葉で書こう</div>
+            <div class="rokdan-wrap" id="rd_wrap_${id}">
+              <div class="tpl-bar-title">📋 文例テンプレートを選ぶ</div>
+              <div class="tpl-btns">
+                ${TPL_NAMES.map((n,i)=>`<button class="tpl-btn" onclick="applyTemplate(${id},${i},this)">${n}</button>`).join('')}
+              </div>
+              ${[['第１段','結　論'],['第２段','動　機'],['第３段','行　動'],['第４段','困　難'],['第５段','結　果'],['第６段','学　び']].map(([s,l],i)=>`
+              <div class="rd-step">
+                <div class="rd-badge">${s}<br>${l}</div>
+                <textarea id="rd${i+1}_${id}" rows="2" placeholder="" oninput="autoSave()"></textarea>
+              </div>`).join('')}
+            </div>
+          </div>
+
+          <!-- ルート③：両方（改善） -->
+          <div class="route-content" id="route3_${id}">
+            <div class="route-hint">🔀 <strong>改善モード：</strong>作成済みESと６段論法の詳細情報を両方入力。AIが既存ESをベースにより良いESに仕上げます。</div>
+            <div class="form-group">
+              <label class="form-label" style="color:var(--blue-deep);font-size:11px;">作成済みES<span class="badge req">貼付け</span></label>
+              <textarea class="existing-es-area" id="acc_es3_${id}" placeholder="作成済みのESを貼り付けてください" oninput="autoSave()"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="color:var(--deep);font-size:11px;">ESのネタ（補足情報）</label>
+              <div class="combo-wrap">
+                <select id="acc_n3_sel_${id}" onchange="syncCombo('acc_n3_sel_${id}','acc_n3_txt_${id}');autoSave()">
+                  <option value="">── 典型例から選ぶ ──</option>
+                  ${NETA_OPTIONS.map(o=>`<option>${o}</option>`).join('')}
+                </select>
+                <div class="combo-or">または直接入力</div>
+                <input type="text" id="acc_n3_txt_${id}" placeholder="補足のエピソード・詳細など" oninput="autoSave()">
+              </div>
+            </div>
+            <div class="rokdan-toggle" onclick="toggleRokdan3(${id})">
+              <div class="rokdan-toggle-left">✨ ６段論法で補足入力する（任意）</div>
+              <div class="rokdan-toggle-icon" id="rd3_icon_${id}">▼</div>
+            </div>
+            <div class="rokdan-wrap" id="rd3_wrap_${id}">
+              <div class="tpl-bar-title">📋 文例テンプレートを選ぶ</div>
+              <div class="tpl-btns">
+                ${TPL_NAMES.map((n,i)=>`<button class="tpl-btn" onclick="applyTemplate3(${id},${i},this)">${n}</button>`).join('')}
+              </div>
+              ${[['第１段','結　論'],['第２段','動　機'],['第３段','行　動'],['第４段','困　難'],['第５段','結　果'],['第６段','学　び']].map(([s,l],i)=>`
+              <div class="rd-step">
+                <div class="rd-badge">${s}<br>${l}</div>
+                <textarea id="rd3_${i+1}_${id}" rows="2" placeholder="" oninput="autoSave()"></textarea>
+              </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('accContainer').appendChild(div);
+  // 初期カラー
+  div.classList.add('color-gray');
+
+  // データ復元
+  if(data) {
+    const setVal=(elId,val)=>{ const el=document.getElementById(elId); if(el&&val!==undefined) el.value=val; };
+    setVal('acc_q_txt_'+id, data.q);
+    setVal('acc_c_txt_'+id, data.c);
+    setVal('acc_n_txt_'+id, data.n);
+    for(let i=1;i<=6;i++) setVal('rd'+i+'_'+id, data['rd'+i]||'');
+    updateAccHeader(id);
+    if(!data.open) { toggleAcc(id); }
+  }
+}
+
+function delAcc(id) {
+  const el=document.getElementById('acc_'+id); if(el) el.remove(); autoSave();
+}
+function toggleAcc(id) {
+  const body=document.getElementById('acc_body_'+id);
+  const icon=document.getElementById('acc_icon_'+id);
+  body.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+function updateAccHeader(id) {
+  const q=document.getElementById('acc_q_txt_'+id)?.value||document.getElementById('acc_q_sel_'+id)?.value||'';
+  const c=document.getElementById('acc_c_txt_'+id)?.value||document.getElementById('acc_c_sel_'+id)?.value||'';
+  const n=document.getElementById('acc_n_txt_'+id)?.value||document.getElementById('acc_n_sel_'+id)?.value||'';
+  const es1=document.getElementById('acc_es_'+id)?.value||'';
+  const es3=document.getElementById('acc_es3_'+id)?.value||'';
+  const title=document.getElementById('acc_title_'+id);
+  const summary=document.getElementById('acc_summary_'+id);
+  const badge=document.getElementById('acc_done_'+id);
+  const warn=document.getElementById('acc_warn_'+id);
+
+  if(title) title.textContent=q?q.substring(0,20)+(q.length>20?'…':''):`設問${id}（未入力）`;
+  if(summary) summary.textContent=c?`📝${c}`:'';
+
+  // ルートに応じた作成アリ判定
+  const hasR1 = !!es1;
+  const hasR2 = !!n;
+  const hasR3 = !!(es3);
+  const isDone = q && c && (hasR1||hasR2||hasR3);
+  if(badge){
+    badge.classList.toggle('show', !!isDone);
+    if(hasR1 && !hasR2 && !hasR3) badge.textContent='✅ 添削待ち';
+    else if(!hasR1 && hasR2) badge.textContent='✅ 作成アリ';
+    else if(hasR3) badge.textContent='✅ 改善待ち';
+    else badge.textContent='✅ 作成アリ';
+  }
+  if(warn){
+    if(!q){ warn.classList.remove('show'); }
+    else if(!c){ warn.textContent='⚠️ 文字数が未入力です'; warn.classList.add('show'); }
+    else{ warn.classList.remove('show'); }
+  }
+
+  // カラー更新
+  const block=document.getElementById('acc_'+id);
+  if(block){ block.className='acc-block '+getColor(q); }
+}
+function toggleRokdan(id) {
+  const w=document.getElementById('rd_wrap_'+id);
+  const i=document.getElementById('rd_icon_'+id);
+  w.classList.toggle('open');
+  i.style.transform=w.classList.contains('open')?'rotate(180deg)':'';
+}
+function toggleRokdan3(id) {
+  const w=document.getElementById('rd3_wrap_'+id);
+  const i=document.getElementById('rd3_icon_'+id);
+  w.classList.toggle('open');
+  i.style.transform=w.classList.contains('open')?'rotate(180deg)':'';
+}
+function applyTemplate3(accId, tplIdx, btn) {
+  btn.closest('.tpl-btns').querySelectorAll('.tpl-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const t=TEMPLATES[tplIdx];
+  for(let i=1;i<=6;i++){ const el=document.getElementById('rd3_'+i+'_'+accId); if(el) el.value=t['rd'+i]; }
+  autoSave();
+}
+function switchRoute(id, num) {
+  [1,2,3].forEach(n=>{
+    document.getElementById('rtab'+n+'_'+id)?.classList.remove('active');
+    document.getElementById('route'+n+'_'+id)?.classList.remove('active');
+  });
+  document.getElementById('rtab'+num+'_'+id)?.classList.add('active');
+  document.getElementById('route'+num+'_'+id)?.classList.add('active');
+  // モードインジケーター更新
+  const modeEl = document.getElementById('acc_mode_'+id);
+  if(modeEl){
+    const modes = ['','添削モード','作成モード','改善モード'];
+    const classes = ['','mode-tensaku','mode-sakusei','mode-kaizen'];
+    modeEl.textContent = modes[num];
+    modeEl.className = 'mode-indicator ' + classes[num];
+  }
+  updateAccHeader(id);
+  autoSave();
+}
+function applyTemplate(accId, tplIdx, btn) {
+  btn.closest('.tpl-btns').querySelectorAll('.tpl-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const t=TEMPLATES[tplIdx];
+  for(let i=1;i<=6;i++) { const el=document.getElementById('rd'+i+'_'+accId); if(el) el.value=t['rd'+i]; }
+  autoSave();
+}
+
+// 初期1つ
+addAccBlock();
+
+// =========== 保存 ===========
+let saveTimer=null;
+function autoSave() {
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{ doSave(); }, 1200);
+}
+function manualSave() { doSave(); }
+function doSave() {
+  try {
+    const data={
+      t1:{ company:v('t1_company'), course_txt:v('t1_course_txt'), course_sel:v('t1_course_sel'), industry:v('t1_industry'), duration:v('t1_duration'), memo:v('t1_memo'),
+        checks:Array.from(document.querySelectorAll('#mtab1 .check-group input')).map(c=>c.checked) },
+      t2:{ company:v('t2_company'), research:v('t2_research') },
+      blocks: collectBlocks()
+    };
+    localStorage.setItem('shukatsu_no_ki_es', JSON.stringify(data));
+    showSaveStatus('✅ 保存しました（'+ new Date().toLocaleTimeString('ja-JP') +'）');
+  } catch(e) { showSaveStatus('⚠️ 保存できませんでした'); }
+}
+function v(id){ const el=document.getElementById(id); return el?el.value:''; }
+function collectBlocks() {
+  const result=[];
+  document.querySelectorAll('.acc-block').forEach(block=>{
+    const id=block.id.replace('acc_','');
+    const open=document.getElementById('acc_body_'+id)?.classList.contains('open')||false;
+    // アクティブルートを判定
+    const r1active=document.getElementById('rtab1_'+id)?.classList.contains('active');
+    const r2active=document.getElementById('rtab2_'+id)?.classList.contains('active');
+    const r3active=document.getElementById('rtab3_'+id)?.classList.contains('active');
+    let route=1;
+    if(r2active) route=2; else if(r3active) route=3;
+    result.push({ id, open, route,
+      q:v('acc_q_txt_'+id), c:v('acc_c_txt_'+id),
+      n:v('acc_n_txt_'+id),
+      existingEs:v('acc_es_'+id),
+      existingEs3:v('acc_es3_'+id),
+      n3:v('acc_n3_txt_'+id),
+      rd1:v('rd1_'+id),rd2:v('rd2_'+id),rd3:v('rd3_'+id),
+      rd4:v('rd4_'+id),rd5:v('rd5_'+id),rd6:v('rd6_'+id),
+      rd3_1:v('rd3_1_'+id),rd3_2:v('rd3_2_'+id),rd3_3:v('rd3_3_'+id),
+      rd3_4:v('rd3_4_'+id),rd3_5:v('rd3_5_'+id),rd3_6:v('rd3_6_'+id),
+    });
+  });
+  return result;
+}
+function showSaveStatus(msg) {
+  const el=document.getElementById('saveStatus'); if(el) el.textContent=msg;
+}
+// 企業研究をまとめてクリア（ES設問は残す）
+function clearResearchAll() {
+  if(!confirm('企業研究の入力内容をクリアしますか？\n\n消去されるもの：\n・タブ①の企業名・コース名・メモ等\n・タブ②の企業名・企業研究貼付けエリア\n・生成済みプロンプト表示\n\n残るもの：\n・ES設問・ネタ・６段論法')) return;
+  const el = (id) => document.getElementById(id);
+  // タブ①フォーム
+  ['t1_company','t1_course_txt','t1_industry','t1_memo'].forEach(id=>{ if(el(id)) el(id).value=''; });
+  if(el('t1_course_sel')) el('t1_course_sel').value='';
+  if(el('t1_duration')) el('t1_duration').value='';
+  document.querySelectorAll('#mtab1 .check-group input').forEach((cb,i)=>{ cb.checked = i < 4; });
+  // タブ②貼付けエリア
+  if(el('t2_company')) el('t2_company').value='';
+  if(el('t2_research')) el('t2_research').value='';
+  // 生成済みプロンプト非表示
+  const t1out = el('t1_output');
+  if(t1out) t1out.classList.remove('visible');
+  clearPromptOutput();
+  doSave();
+  showSaveStatus('🗑️ 企業研究をクリアしました（ES設問は保持）');
+}
+
+function clearTab1Only() {
+  if(!confirm('企業研究タブの入力内容をクリアしますか？\nES対策の入力内容はそのまま保持されます。')) return;
+  const el = (id) => document.getElementById(id);
+  if(el('t1_company')) el('t1_company').value='';
+  if(el('t1_course_txt')) el('t1_course_txt').value='';
+  if(el('t1_course_sel')) el('t1_course_sel').value='';
+  if(el('t1_industry')) el('t1_industry').value='';
+  if(el('t1_duration')) el('t1_duration').value='';
+  if(el('t1_memo')) el('t1_memo').value='';
+  document.querySelectorAll('#mtab1 .check-group input').forEach((cb,i)=>{
+    cb.checked = i < 4; // 最初の4つだけデフォルトON
+  });
+  doSave();
+  showSaveStatus('🌱 企業研究タブをクリアしました（ES入力は保持）');
+}
+
+function clearTab2Only() {
+  if(!confirm('ES対策タブの入力内容をクリアしますか？\n企業研究タブの入力内容はそのまま保持されます。')) return;
+  const el = (id) => document.getElementById(id);
+  if(el('t2_company')) el('t2_company').value='';
+  if(el('t2_research')) el('t2_research').value='';
+  document.getElementById('accContainer').innerHTML='';
+  accCount=0;
+  addAccBlock();
+  doSave();
+  showSaveStatus('📝 ES入力タブをクリアしました（企業研究は保持）');
+}
+
+function clearAll() {
+  if(!confirm('すべての入力内容をクリアしますか？\n（企業研究・ES入力・設問データがすべて消去されます）')) return;
+  localStorage.removeItem('shukatsu_no_ki_es');
+  const el = (id) => document.getElementById(id);
+  ['t1_company','t1_course_txt','t1_industry','t1_memo','t2_company','t2_research'].forEach(id=>{
+    if(el(id)) el(id).value='';
+  });
+  if(el('t1_course_sel')) el('t1_course_sel').value='';
+  if(el('t1_duration')) el('t1_duration').value='';
+  document.querySelectorAll('#mtab1 .check-group input').forEach((cb,i)=>{ cb.checked = i < 4; });
+  document.getElementById('accContainer').innerHTML='';
+  accCount=0;
+  addAccBlock();
+  clearPromptOutput();
+  showSaveStatus('🗑️ すべてクリアしました');
+}
+
+function clearSave() { clearAll(); }
+
+// プロンプト出力エリアをクリア
+// 作成アリバッジクリック → 設問作成タブ＋アコーディオン＋入力内容まで完全展開
+function openAccToCheck(id) {
+  // ① 設問作成サブタブに切り替え（先に実行・内部のscrollTo(top:0)を先に消化させる）
+  document.querySelectorAll('.sub-tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
+  const stab2 = document.getElementById('stab2');
+  const stab2btn = document.getElementById('stab2_btn');
+  if(stab2) stab2.classList.add('active');
+  if(stab2btn) stab2btn.classList.add('active');
+
+  // ② アコーディオンを開く
+  const body = document.getElementById('acc_body_'+id);
+  const icon = document.getElementById('acc_icon_'+id);
+  if(body && !body.classList.contains('open')) {
+    body.classList.add('open');
+    if(icon) icon.classList.add('open');
+  }
+
+  // ③ アクティブなルートを判定（既存の入力からも推測）
+  let activeRoute = 1;
+  if(document.getElementById('rtab2_'+id)?.classList.contains('active')) activeRoute = 2;
+  else if(document.getElementById('rtab3_'+id)?.classList.contains('active')) activeRoute = 3;
+  else {
+    // タブのactiveが取れない場合、入力内容から推測
+    const es1 = document.getElementById('acc_es_'+id)?.value || '';
+    const n2  = document.getElementById('acc_n_txt_'+id)?.value || document.getElementById('acc_n_sel_'+id)?.value || '';
+    const es3 = document.getElementById('acc_es3_'+id)?.value || '';
+    if(es3) activeRoute = 3;
+    else if(n2) activeRoute = 2;
+    else if(es1) activeRoute = 1;
+  }
+
+  // ④ そのルートのタブ＆コンテンツを確実にアクティブ化
+  [1,2,3].forEach(n=>{
+    document.getElementById('rtab'+n+'_'+id)?.classList.remove('active');
+    document.getElementById('route'+n+'_'+id)?.classList.remove('active');
+  });
+  document.getElementById('rtab'+activeRoute+'_'+id)?.classList.add('active');
+  document.getElementById('route'+activeRoute+'_'+id)?.classList.add('active');
+
+  // モードインジケーター更新
+  const modeEl = document.getElementById('acc_mode_'+id);
+  if(modeEl){
+    const modes=['','添削モード','作成モード','改善モード'];
+    const classes=['','mode-tensaku','mode-sakusei','mode-kaizen'];
+    modeEl.textContent=modes[activeRoute];
+    modeEl.className='mode-indicator '+classes[activeRoute];
+  }
+
+  // ⑤ ６段論法が入力済みなら展開
+  if(activeRoute === 2 || activeRoute === 3) {
+    const rdKey = activeRoute === 2 ? 'rd1_' : 'rd3_1_';
+    const hasRd = document.getElementById(rdKey+id)?.value;
+    if(hasRd) {
+      const wrapId = activeRoute === 2 ? 'rd_wrap_'+id : 'rd3_wrap_'+id;
+      const iconId = activeRoute === 2 ? 'rd_icon_'+id : 'rd3_icon_'+id;
+      const wrap = document.getElementById(wrapId);
+      const rdIcon = document.getElementById(iconId);
+      if(wrap && !wrap.classList.contains('open')) {
+        wrap.classList.add('open');
+        if(rdIcon) rdIcon.style.transform = 'rotate(180deg)';
+      }
+    }
+  }
+
+  // ⑥ ブロックまでスクロール＋ゴールドハイライト（サブタブ切替後に十分な遅延）
+  const block = document.getElementById('acc_'+id);
+  if(block) {
+    setTimeout(()=>{
+      block.scrollIntoView({behavior:'smooth', block:'start'});
+      block.style.transition = 'box-shadow .3s';
+      block.style.boxShadow = '0 0 0 3px var(--gold)';
+      setTimeout(()=>{ block.style.boxShadow = ''; }, 1500);
+    }, 350);
+  }
+}
+
+function clearPromptOutput() {
+  const t2out = document.getElementById('t2_output');
+  const t2prompt = document.getElementById('t2_prompt');
+  if(t2out) t2out.style.display='none';
+  if(t2prompt) t2prompt.textContent='';
+  const t1out = document.getElementById('t1_output');
+  if(t1out) t1out.classList.remove('visible');
+}
+function loadSave() {
+  try {
+    const raw=localStorage.getItem('shukatsu_no_ki_es'); if(!raw) return;
+    const data=JSON.parse(raw);
+    restoreData(data);
+    showSaveStatus('📂 前回のデータを自動復元しました');
+  } catch(e){ showSaveStatus('📋 入力内容は自動保存されます（スマホ対応）'); }
+}
+
+// =========== コピー ===========
+function copyText(boxId,btnId,color) {
+  const text=document.getElementById(boxId).textContent;
+  const btn=document.getElementById(btnId);
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✅ コピーしました！'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.innerHTML='📋 プロンプトをコピーする'; btn.classList.remove('copied'); },2500);
+  }).catch(()=>{
+    const ta=document.createElement('textarea'); ta.value=text;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    alert('コピーしました！');
+  });
+}
+
+// =========== TAB1 生成 ===========
+function generateTab1() {
+  const company=v('t1_company');
+  const course=v('t1_course_txt')||v('t1_course_sel');
+  const industry=v('t1_industry'); const duration=v('t1_duration'); const memo=v('t1_memo');
+  const topics=Array.from(document.querySelectorAll('#mtab1 .check-group input:checked')).map(c=>c.value);
+  if(!company||!course){ alert('企業名とコース名・目的は必ず入力してください🌿'); return; }
+  let p=`# 企業研究・事前準備シート作成のお願い\n\n以下の情報をもとに、就職活動中の大学生が事前準備・当日活用できる企業研究シートを作成してください。\n\n## 【基本情報】\n- 企業名：${company}\n- 目的・コース：${course}`;
+  if(industry) p+=`\n- 業界・職種：${industry}`;
+  if(duration) p+=`\n- 形式・期間：${duration}`;
+  p+=`\n\n## 【調査・整理してほしい内容】`;
+  topics.forEach((t,i)=>{
+    p+=`\n\n### ${i+1}. ${t}`;
+    if(t==='企業理念・ビジョン') p+=`\n- 企業の理念・ミッション・ビジョンを簡潔にまとめる\n- 創業の背景や大切にしている価値観`;
+    if(t==='求める人物像') p+=`\n- この企業が特に重視する資質・行動特性\n- 採用ページや代表メッセージから読み取れるキーワード`;
+    if(t==='仕事のリアル・やりがい') p+=`\n- 実際の業務の大変な点・やりがい\n- 体験できるリアルな場面`;
+    if(t==='業界・競合分析') p+=`\n- 業界内でのこの企業のポジション\n- 主な競合と差別化ポイント`;
+    if(t==='コースで体験できる内容') p+=`\n- プログラムの概要\n- 参加者に期待されるアウトプット`;
+    if(t==='社員への質問リスト') p+=`\n- 当日必ず聞くべき質問を5つ以上\n- 各質問に「なぜこれを聞くのか」の解説付きで\n- 受け身にならず主体的に情報収集できる質問を中心に`;
+    if(t==='自己PR・志望動機の方向性') p+=`\n- この企業に合う自己PRの方向性\n- 志望動機で押さえるべきポイント`;
+    if(t==='本選考につながるポイント') p+=`\n- 参加が本選考に与える影響\n- アピールすべき姿勢・行動`;
+  });
+  if(memo) p+=`\n\n## 【特に気になること・聞きたいこと】\n${memo}`;
+  p+=`\n\n## 【出力形式のお願い】\n- 見やすく整理されたシート形式で\n- 当日メモを書き込める「記入欄」も設けてください\n- 「なぜこれが重要か」の解説コメントも各項目に\n- 「ここだけは押さえる！」を★マークで強調してください\n\n答えは、君の中にある。🌳`;
+  document.getElementById('t1_prompt').textContent=p;
+  document.getElementById('t1_output').classList.add('visible');
+  document.getElementById('t1_output').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// =========== TAB2 生成 ===========
+function generateTab2() {
+  const company=v('t2_company'); const research=v('t2_research');
+  if(!company){ alert('企業研究タブで企業名を入力してください🌿'); switchSubTab('stab1',document.getElementById('stab1_btn')); return; }
+  const blocks=collectBlocks();
+  if(blocks.length===0||!blocks[0].q){ alert('設問作成タブで設問を入力してください🌿'); switchSubTab('stab2',document.getElementById('stab2_btn')); return; }
+
+  let p=`# エントリーシート作成のお願い\n\n以下の情報をもとに、${company}のエントリーシートを作成してください。\n\n## 【企業名】\n${company}`;
+  if(research) p+=`\n\n## 【企業研究・事前準備の情報】\n以下を参考に、企業の価値観や求める人物像に合ったESを作成してください。\n\n${research}`;
+  p+=`\n\n## 【ES設問一覧】`;
+  blocks.forEach((b,i)=>{
+    const rdLabels=['①結論','②動機・きっかけ','③具体的な行動','④困難・課題','⑤結果・成果','⑥学び・活かし方'];
+
+    if(b.route===1 && b.existingEs){
+      // 添削モード
+      p+=`\n\n### 設問${i+1}【添削モード】`;
+      if(b.q) p+=`\n- 設問：${b.q}`;
+      if(b.c) p+=`\n- 文字数：${b.c}`;
+      p+=`\n\n**【作成済みES（添削してください）】**\n${b.existingEs}`;
+      p+=`\n\n**【添削の依頼】**\n以下の観点で添削・フィードバックをお願いします：\n1. 評価できる点（良い点）\n2. 改善すべき点（具体的に）\n3. ブラッシュアップ版（文字数厳守で書き直し）`;
+
+    } else if(b.route===3 && b.existingEs3){
+      // 改善モード
+      p+=`\n\n### 設問${i+1}【改善モード】`;
+      if(b.q) p+=`\n- 設問：${b.q}`;
+      if(b.c) p+=`\n- 文字数：${b.c}`;
+      p+=`\n\n**【作成済みES（ベースとして使用）】**\n${b.existingEs3}`;
+      if(b.n3) p+=`\n\n**【補足エピソード・ネタ】**\n${b.n3}`;
+      const rd3=[b.rd3_1,b.rd3_2,b.rd3_3,b.rd3_4,b.rd3_5,b.rd3_6];
+      if(rd3.some(r=>r)){
+        p+=`\n\n**【６段論法による補足情報】**`;
+        rd3.forEach((r,j)=>{ if(r) p+=`\n${rdLabels[j]}：${r}`; });
+      }
+      p+=`\n\n**【改善の依頼】**\n作成済みESをベースに、補足情報を活かしてより説得力のあるESに改善してください。企業の求める人物像に合わせ、文字数を厳守してください。`;
+
+    } else {
+      // 作成モード（デフォルト）
+      p+=`\n\n### 設問${i+1}【作成モード】`;
+      if(b.q) p+=`\n- 設問：${b.q}`;
+      if(b.c) p+=`\n- 文字数：${b.c}`;
+      if(b.n) p+=`\n- エピソード・ネタ：${b.n}`;
+      const rd=[b.rd1,b.rd2,b.rd3,b.rd4,b.rd5,b.rd6];
+      if(rd.some(r=>r)){
+        p+=`\n\n**【６段論法による詳細情報】**`;
+        rd.forEach((r,j)=>{ if(r) p+=`\n${rdLabels[j]}：${r}`; });
+      }
+      p+=`\n\n**【作成の依頼】**\n上記の情報をもとに、結論ファーストで具体的なESを作成してください。`;
+    }
+  });
+  p+=`\n\n## 【作成のお願い】\n- 各設問の文字数を厳守してください\n- 就活生らしい自然な日本語で書いてください\n- 企業の求める人物像に合ったキーワードを自然に盛り込んでください\n- 結論ファーストの構成で、具体的なエピソードを中心に\n- 作成後、「評価されるポイント」と「改善点」もコメントしてください\n\n答えは、君の中にある。🌳`;
+  document.getElementById('t2_prompt').textContent=p;
+  const outEl=document.getElementById('t2_output');
+  outEl.style.display='block';
+  outEl.style.animation='fadeUp .4s ease';
+  outEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// =========== ファイル保存 ===========
+function saveToFile() {
+  try {
+    const data = {
+      t1:{ company:v('t1_company'), course_txt:v('t1_course_txt'), course_sel:v('t1_course_sel'),
+        industry:v('t1_industry'), duration:v('t1_duration'), memo:v('t1_memo'),
+        checks:Array.from(document.querySelectorAll('#mtab1 .check-group input')).map(c=>c.checked) },
+      t2:{ company:v('t2_company'), research:v('t2_research') },
+      blocks: collectBlocks(),
+      savedAt: new Date().toLocaleString('ja-JP')
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'shukatsu_data_' + new Date().toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+    showSaveStatus('📥 ファイルに保存しました（ダウンロードフォルダを確認してください）');
+  } catch(e) { showSaveStatus('⚠️ ファイル保存に失敗しました'); }
+}
+
+function loadFromFile(event) {
+  const file = event.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      restoreData(data);
+      showSaveStatus('📂 ファイルから読み込みました（保存日時：' + (data.savedAt||'不明') + '）');
+    } catch(err) { showSaveStatus('⚠️ ファイルの読み込みに失敗しました。正しいファイルか確認してください。'); }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function restoreData(data) {
+  const set=(id,val)=>{ const el=document.getElementById(id); if(el&&val!==undefined) el.value=val; };
+  if(data.t1){
+    set('t1_company',data.t1.company); set('t1_course_txt',data.t1.course_txt);
+    set('t1_course_sel',data.t1.course_sel); set('t1_industry',data.t1.industry);
+    set('t1_duration',data.t1.duration); set('t1_memo',data.t1.memo);
+    if(data.t1.checks){
+      const cbs=document.querySelectorAll('#mtab1 .check-group input');
+      data.t1.checks.forEach((c,i)=>{ if(cbs[i]) cbs[i].checked=c; });
+    }
+  }
+  if(data.t2){ set('t2_company',data.t2.company); set('t2_research',data.t2.research); }
+  if(data.blocks&&data.blocks.length>0){
+    document.getElementById('accContainer').innerHTML=''; accCount=0;
+    data.blocks.forEach(b=>addAccBlock(b));
+  }
+}
+
+// 起動時に復元
+window.addEventListener('load', loadSave);
+</script>
+</body>
+</html>

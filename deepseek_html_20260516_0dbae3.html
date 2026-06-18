@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>CAB/GAB完全対策 タブ式参考書｜解説ポップアップ付き</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef2f5;
+            font-family: 'Segoe UI', 'Roboto', '游ゴシック', YuGothic, sans-serif;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        .app-header {
+            background: #0b3b5f;
+            color: white;
+            padding: 20px 28px;
+            text-align: center;
+        }
+        .app-header h1 {
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+        }
+        .app-header p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* タブ */
+        .tab-nav {
+            display: flex;
+            background: #f1f5f9;
+            border-bottom: 2px solid #dce4ec;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 14px 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #2c3e50;
+        }
+        .tab-btn.active {
+            background: white;
+            color: #0b3b5f;
+            border-bottom: 3px solid #2c7da0;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 24px 28px;
+            animation: fade 0.2s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* 2カラム */
+        .two-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+        }
+        .left-col {
+            flex: 1.5;
+            min-width: 240px;
+        }
+        .right-col {
+            flex: 1;
+            min-width: 200px;
+            background: #f9fbfe;
+            padding: 18px;
+            border-radius: 28px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-left: 5px solid #2c7da0;
+            padding-left: 14px;
+            margin-bottom: 20px;
+            color: #0b3b5f;
+        }
+
+        /* 問題カード */
+        .quiz-card {
+            background: white;
+            border-radius: 24px;
+            padding: 18px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2edf7;
+        }
+        .quiz-question {
+            font-weight: 700;
+            background: #f0f6fe;
+            padding: 10px 14px;
+            border-radius: 40px;
+            margin-bottom: 14px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .quiz-options label {
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        input[type="radio"] {
+            margin-right: 6px;
+        }
+        button.check-btn {
+            background: #2c7da0;
+            border: none;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-top: 8px;
+        }
+        .feedback {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .correct-fb {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid #10b981;
+        }
+        .wrong-fb {
+            background: #ffe4e2;
+            color: #9b2c1d;
+            border-left: 4px solid #ef4444;
+        }
+        .matrix-link {
+            display: inline-block;
+            background: #e9ecef;
+            font-family: monospace;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 6px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .matrix-link:hover {
+            background: #d0d7de;
+        }
+
+        /* マトリクスグリッド → クリック可能に */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .matrix-item {
+            background: white;
+            padding: 10px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid #dce5ef;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .matrix-item:hover {
+            background: #e0f0fe;
+            transform: scale(1.02);
+        }
+
+        /* モーダル（ポップアップ） */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: white;
+            max-width: 400px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 24px;
+            position: relative;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            animation: pop 0.2s ease;
+        }
+        @keyframes pop {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #0b3b5f;
+        }
+        .modal-body {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e4663;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        @media print {
+            .print-btn, .tab-nav, .modal, .matrix-item, .matrix-link {
+                display: none;
+            }
+            .tab-content {
+                display: block !important;
+                page-break-after: always;
+            }
+            @page {
+                size: A5;
+                margin: 1.2cm;
+            }
+        }
+        @media (max-width: 700px) {
+            .two-columns { flex-direction: column; }
+            .tab-btn { font-size: 0.7rem; padding: 10px 4px; }
+        }
+        hr { margin: 16px 0; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="app-header">
+        <h1>📘 完全対策ドリル【タブ式＋解説ポップアップ】</h1>
+        <p>CAB／GAB／SPI｜右のマトリクスをクリック！小学生にもわかる解説</p>
+    </div>
+
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="tab1">🔢 計数・推論</button>
+        <button class="tab-btn" data-tab="tab2">🔷 図形・行列</button>
+        <button class="tab-btn" data-tab="tab3">📖 言語・英語</button>
+        <button class="tab-btn" data-tab="tab4">⚡ CAB/GAB特化</button>
+    </div>
+
+    <!-- タブ1 -->
+    <div id="tab1" class="tab-content active">
+        <div class="two-columns">
+            <div class="left-col"><div class="section-title">🔢 計数・推論 (5問)</div><div id="math-quiz"></div></div>
+            <div class="right-col"><div class="section-title">🧠 マトリクス(クリックで解説)</div><div id="math-matrix" class="matrix-grid"></div><hr><p style="font-size:0.7rem;">💡 わからないときはマトリクスを押してヒントを見よう</p></div>
+        </div>
+    </div>
+    <div id="tab2" class="tab-content">
+        <div class="two-columns">
+            <div class="left-col"><div class="section-title">🔷 図形・行列 (5問)</div><div id="geo-quiz"></div></div>
+            <div class="right-col"><div class="section-title">🧩 図形マトリクス</div><div id="geo-matrix" class="matrix-grid"></div></div>
+        </div>
+    </div>
+    <div id="tab3" class="tab-content">
+        <div class="two-columns">
+            <div class="left-col"><div class="section-title">📖 言語・英語 (5問)</div><div id="lang-quiz"></div></div>
+            <div class="right-col"><div class="section-title">📌 言語マトリクス</div><div id="lang-matrix" class="matrix-grid"></div></div>
+        </div>
+    </div>
+    <div id="tab4" class="tab-content">
+        <div class="two-columns">
+            <div class="left-col"><div class="section-title">⚡ CAB/GAB特化 (5問)</div><div id="cab-quiz"></div></div>
+            <div class="right-col"><div class="section-title">🎯 CAB特有パターン</div><div id="cab-matrix" class="matrix-grid"></div></div>
+        </div>
+    </div>
+</div>
+<button class="print-btn" onclick="window.print();">🖨️ 印刷</button>
+
+<!-- モーダル -->
+<div id="explainModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <div class="modal-title" id="modalTitle">マトリクス解説</div>
+        <div class="modal-body" id="modalBody">ここに解説が出ます</div>
+    </div>
+</div>
+
+<script>
+    // ---------- 小学生向け解説データ ----------
+    const matrixExplanations = {
+        "M01": "🔍 差分法：となり合う数字の差を計算するよ。差が同じなら「等差数列」だね。例：2,4,6,8... → 差は2ずつ。",
+        "M02": "✨ 二乗／二乗和：数字を2回かける（平方する）か、2乗したものを足すよ。例：3²=9、1²+2²=5。",
+        "M03": "➕➖ 四則混合：たし算・ひき算・かけ算・わり算を組み合わせるよ。",
+        "M04": "❗ 階乗：1からその数まですべてかける。例：4! = 1×2×3×4 = 24。",
+        "M05": "🔢 特殊数列：素数（2,3,5,7…）やフィボナッチ（1,1,2,3,5…）など特別な並び。",
+        "M06": "🔄 交替ルール：奇数番目と偶数番目で別の計算をするパターン。",
+        "M07": "🔢 桁和：数字のそれぞれの位を足す。例：48→4+8=12。",
+        "M08": "📈 2階差：差をさらに取ると一定になる。二次関数のしるし。例：3,5,9,15 → 差2,4,6 → 差の差2。",
+        "M09": "🔺 図形数：三角数(1,3,6,10…)や四角数(1,4,9,16…)など図形の点の数。",
+        "M10": "🔁 周期・剰余：7で割った余りなど、くり返しを利用。",
+        "M11": "🔄 回転・対称：図形を回したり、左右対称にする問題。",
+        "M12": "🎨 パターン反復：●○●○ のように規則的にくり返す。",
+        "M13": "📏 線の増減：図形の中の線が1本ずつ増えるなど。",
+        "M14": "🧮 面積/個数：マスの数を数えたり、面積を比べる。",
+        "M20": "📖 類推/対義語：反対の意味、似た意味を見つける。例：大きい⇔小さい。",
+        "M21": "🔤 並べ替え：英単語を正しい順番に並べる（語順）。",
+        "M22": "📝 英文空所：穴埋め問題。適切な単語を選ぶ。",
+        "M23": "🔡 アルファベット変換：A=1,B=2…に変換して計算。",
+        "C01": "🧮 積和差：かけ算してからたす・ひく。例：a×b + a など。",
+        "C02": "🎲 交互演算：2乗したり足したりを交互に。",
+        "C03": "🔢 三項演算：3つの数字を使って特殊なルール。",
+        "C04": "💡 特殊数列発見：自分で法則を見つける問題。"
+    };
+
+    // モーダル表示関数
+    function showExplanation(matrixId) {
+        const modal = document.getElementById("explainModal");
+        const title = document.getElementById("modalTitle");
+        const body = document.getElementById("modalBody");
+        let explain = matrixExplanations[matrixId];
+        if (!explain) explain = "📘 このマトリクスの解説は準備中です。近いうちに追加します。";
+        title.innerText = `📌 ${matrixId} の解説 (小学生でもわかる)`;
+        body.innerText = explain;
+        modal.style.display = "flex";
+    }
+
+    // モーダル閉じる
+    function closeModal() {
+        document.getElementById("explainModal").style.display = "none";
+    }
+
+    // クリック可能なマトリクスを生成 (id指定)
+    function makeClickableMatrix(containerId, items) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = "";
+        items.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "matrix-item";
+            div.innerText = item;
+            div.onclick = () => showExplanation(item);
+            container.appendChild(div);
+        });
+    }
+
+    // 問題描画 (フィードバック内にもマトリクスリンク)
+    function renderQuiz(containerId, problems, prefix) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = "";
+        problems.forEach((prob, idx) => {
+            const card = document.createElement("div");
+            card.className = "quiz-card";
+            const qDiv = document.createElement("div");
+            qDiv.className = "quiz-question";
+            qDiv.innerText = `Q${idx+1}. ${prob.text}`;
+            card.appendChild(qDiv);
+
+            const optsDiv = document.createElement("div");
+            optsDiv.className = "quiz-options";
+            prob.options.forEach((opt, optIdx) => {
+                const label = document.createElement("label");
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = `${prefix}-q${idx}`;
+                radio.value = optIdx;
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(` ${opt}`));
+                optsDiv.appendChild(label);
+            });
+            card.appendChild(optsDiv);
+
+            const checkBtn = document.createElement("button");
+            checkBtn.innerText = "✓ 採点する";
+            checkBtn.className = "check-btn";
+            const fbDiv = document.createElement("div");
+            fbDiv.className = "feedback";
+            fbDiv.innerHTML = "⚡ 解答を選んで採点";
+
+            checkBtn.onclick = () => {
+                const selected = document.querySelector(`input[name="${prefix}-q${idx}"]:checked`);
+                if (!selected) {
+                    fbDiv.innerHTML = "❓ 選択肢を選んでください";
+                    fbDiv.className = "feedback wrong-fb";
+                    return;
+                }
+                const ans = parseInt(selected.value);
+                if (ans === prob.correct) {
+                    fbDiv.innerHTML = `✅ 正解！  ${prob.matrix}<br>📘 答え: ${prob.options[prob.correct]}<br>🔍 <span class="matrix-link" data-mx="${prob.matrix.split(' ')[0]}">[${prob.matrix.split(' ')[0]} の解説を見る]</span>`;
+                    fbDiv.className = "feedback correct-fb";
+                } else {
+                    fbDiv.innerHTML = `❌ 不正解。正解: ${prob.options[prob.correct]}<br>🔍 マトリクス: ${prob.matrix}<br>📘 <span class="matrix-link" data-mx="${prob.matrix.split(' ')[0]}">[${prob.matrix.split(' ')[0]} の解説をポップアップ]</span>`;
+                    fbDiv.className = "feedback wrong-fb";
+                }
+                // リンクにイベント付与
+                const linkSpan = fbDiv.querySelector(".matrix-link");
+                if(linkSpan) {
+                    const mxId = linkSpan.getAttribute("data-mx");
+                    linkSpan.style.cursor = "pointer";
+                    linkSpan.onclick = (e) => {
+                        e.stopPropagation();
+                        showExplanation(mxId);
+                    };
+                }
+            };
+            card.appendChild(checkBtn);
+            card.appendChild(fbDiv);
+            container.appendChild(card);
+        });
+    }
+
+    // タブ切り替え
+    function initTabs() {
+        const btns = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                contents.forEach(c => c.classList.remove('active'));
+                btns.forEach(b => b.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                btn.classList.add('active');
+            });
+        });
+    }
+
+    // ----- 問題データ -----
+    const mathProblems = [
+        { text: "(2,3)→10, (3,4)→17, (4,5)→26, (5,6)→？", options: ["36","37","38","40"], correct:1, matrix:"M01+M08" },
+        { text: "1→1, 2→2, 3→6, 4→24, 5→？", options: ["60","100","120","125"], correct:2, matrix:"M04" },
+        { text: "(1,1)→2, (1,2)→5, (2,3)→13, (3,5)→？", options: ["28","32","34","40"], correct:2, matrix:"M02" },
+        { text: "12→3, 24→6, 36→9, 48→？", options: ["10","12","14","16"], correct:1, matrix:"M07" },
+        { text: "3, 5, 9, 15, 23, ?", options: ["30","31","33","35"], correct:2, matrix:"M01+M08" }
+    ];
+    const geoProblems = [
+        { text: "□→4, △→3, 〇→1, ☆(五角星)→？", options: ["5","6","10","12"], correct:0, matrix:"M11" },
+        { text: "← → → ← ← → → ← 次は？", options: ["←","→","↑","↓"], correct:0, matrix:"M12" },
+        { text: "縦3横3の格子点の数は？", options: ["6","9","12","15"], correct:1, matrix:"M14" },
+        { text: "正三角形を90°回転 → 形は同じ？", options: ["同じ","異なる","合同で向き違い","不明"], correct:2, matrix:"M11" },
+        { text: "●○●○○●●●○○○○ 次に来る色は？", options: ["●","○","どちらでもない","交互"], correct:1, matrix:"M12" }
+    ];
+    const langProblems = [
+        { text: "「大きい」の反意語は？", options: ["広い","小さい","高い","長い"], correct:1, matrix:"M20" },
+        { text: "「abundant」に近い意味は？", options: ["少ない","豊富な","貧しい","普通"], correct:1, matrix:"M20" },
+        { text: "「___ you like some coffee?」適語", options: ["Do","Does","Would","Is"], correct:2, matrix:"M22" },
+        { text: "A=1,B=2...CABの合計", options: ["6","7","8","9"], correct:0, matrix:"M23" },
+        { text: "並べ替え: (plays / he / soccer / often)", options: ["He often plays soccer","Often he plays soccer","Soccer he plays often","Plays he soccer often"], correct:0, matrix:"M21" }
+    ];
+    const cabProblems = [
+        { text: "(2,3)→8, (3,4)→15, (4,5)→24, (5,6)→？", options: ["30","35","39","42"], correct:1, matrix:"C01" },
+        { text: "(1,4)→17, (2,5)→29, (3,6)→45, (4,7)→？", options: ["56","61","65","70"], correct:2, matrix:"C01" },
+        { text: "(3,2)→7, (5,4)→21, (7,6)→43, (9,8)→？", options: ["63","71","73","79"], correct:2, matrix:"C01" },
+        { text: "ab→2, cd→12, ef→30, gh→？", options: ["42","56","72","90"], correct:1, matrix:"C02" },
+        { text: "(2,3,5)→4, (3,4,7)→6, (4,5,9)→8, (5,6,11)→？", options: ["10","12","14","16"], correct:0, matrix:"C03" }
+    ];
+
+    renderQuiz("math-quiz", mathProblems, "math");
+    renderQuiz("geo-quiz", geoProblems, "geo");
+    renderQuiz("lang-quiz", langProblems, "lang");
+    renderQuiz("cab-quiz", cabProblems, "cab");
+
+    // マトリクスをクリック可能に配置
+    makeClickableMatrix("math-matrix", ["M01","M02","M03","M04","M05","M06","M07","M08","M09","M10"]);
+    makeClickableMatrix("geo-matrix", ["M11","M12","M13","M14"]);
+    makeClickableMatrix("lang-matrix", ["M20","M21","M22","M23"]);
+    makeClickableMatrix("cab-matrix", ["C01","C02","C03","C04"]);
+
+    initTabs();
+    // モーダル閉じる処理
+    document.querySelector(".modal-close").onclick = closeModal;
+    window.onclick = function(e) { if(e.target === document.getElementById("explainModal")) closeModal(); };
+</script>
+</body>
+</html>

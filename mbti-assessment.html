@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBTI 性格タイプ診断｜就活の木</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#2d6a4f;--gm:#52b788;--gl:#74c69d;--gp:#b7e4c7;
+  --gbg:#f1faf4;--glight:#d8f3dc;--gold:#c9a84c;--goldl:#f0d080;
+  --br:#5c3d1e;--wh:#fefffe;--sh:rgba(45,106,79,0.15);
+  --text:#1a2e1f;--muted:#6b8f71;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--gbg);min-height:100vh;color:var(--text);}
+header{background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--wh);padding:14px 20px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 16px var(--sh);}
+.logo{font-size:24px;}
+.htitle{font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;color:var(--goldl);letter-spacing:0.06em;}
+.hsub{font-size:10px;color:var(--gp);margin-top:2px;}
+.wrap{max-width:560px;margin:0 auto;padding:24px 16px 60px;}
+
+/* ウェルカム */
+.welcome-hero{text-align:center;padding:28px 16px 20px;}
+.hero-icon{font-size:56px;display:block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.welcome-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:20px;font-weight:900;color:var(--gd);line-height:1.5;margin-bottom:10px;}
+.welcome-lead{font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:20px;}
+.karioji-card{background:var(--wh);border:2px solid var(--gp);border-radius:16px;padding:16px;display:flex;gap:12px;margin-bottom:20px;box-shadow:0 3px 12px var(--sh);}
+.karioji-icon{font-size:30px;flex-shrink:0;background:var(--glight);border-radius:50%;width:46px;height:46px;display:flex;align-items:center;justify-content:center;}
+.karioji-name{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.1em;margin-bottom:4px;}
+.karioji-text{font-size:11px;color:var(--text);line-height:1.8;}
+.karioji-text strong{color:var(--gd);}
+
+/* 4軸紹介 */
+.dims-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.dim-chip{background:var(--wh);border:1.5px solid var(--gp);border-radius:12px;padding:12px;box-shadow:0 2px 6px var(--sh);}
+.dim-chip .d-axis{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:900;color:var(--gd);margin-bottom:4px;}
+.dim-chip .d-pair{font-size:11px;color:var(--muted);line-height:1.6;}
+.dim-chip .d-pair span{font-weight:700;color:var(--gm);}
+
+.info-card{background:var(--wh);border:1.5px solid var(--gp);border-radius:12px;padding:14px;margin-bottom:20px;box-shadow:0 2px 8px var(--sh);}
+.info-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);padding:4px 0;}
+.info-row span:first-child{font-size:16px;}
+.info-row strong{color:var(--gd);}
+
+.btn-start{width:100%;background:linear-gradient(135deg,var(--gd),var(--gm));color:var(--wh);border:none;border-radius:16px;padding:18px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 20px rgba(45,106,79,0.35);transition:transform 0.15s;letter-spacing:0.06em;}
+.btn-start:hover{transform:translateY(-2px);}
+
+/* 質問画面 */
+#screen-question{display:none;}
+.q-header{background:var(--wh);border-radius:16px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px var(--sh);}
+.q-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;}
+.q-axis-tag{font-size:10px;font-weight:700;padding:2px 10px;border-radius:10px;background:var(--glight);color:var(--gd);display:inline-block;margin-bottom:6px;}
+.q-progress-bar{height:6px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--gm),var(--gl));border-radius:10px;transition:width 0.4s ease;}
+
+.q-card{background:var(--wh);border-radius:20px;padding:22px 18px;box-shadow:0 4px 20px var(--sh);border:1.5px solid var(--gp);margin-bottom:16px;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.q-num{font-size:10px;font-weight:700;color:var(--gm);letter-spacing:0.12em;margin-bottom:8px;}
+.q-text{font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:700;color:var(--gd);line-height:1.65;margin-bottom:18px;}
+
+/* スライダー方式（5段階） */
+.slider-wrap{display:flex;flex-direction:column;gap:0;}
+.slider-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:8px;padding:0 4px;}
+.slider-labels span{font-weight:700;}
+.slider-opts{display:flex;gap:6px;}
+.s-btn{
+  flex:1;background:var(--gbg);border:2px solid var(--gp);border-radius:10px;
+  padding:14px 4px;cursor:pointer;transition:all 0.18s;text-align:center;
+}
+.s-btn:hover{border-color:var(--gm);background:var(--glight);}
+.s-btn.selected{background:linear-gradient(135deg,#e8f5ee,#d0ede0);border-color:var(--gd);box-shadow:0 2px 10px rgba(45,106,79,0.2);}
+.s-btn .s-num{font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;color:var(--gd);}
+.s-btn .s-lbl{font-size:9px;color:var(--muted);margin-top:3px;line-height:1.3;}
+.s-btn.selected .s-num,.s-btn.selected .s-lbl{color:var(--gd);font-weight:700;}
+
+.slider-axis{display:flex;justify-content:space-between;margin-top:8px;padding:0 4px;}
+.axis-a,.axis-b{font-size:10px;font-weight:700;padding:4px 10px;border-radius:8px;}
+.axis-a{background:var(--glight);color:var(--gd);}
+.axis-b{background:#e8f0ff;color:#3a5eb5;}
+
+.nav-btns{display:flex;gap:10px;}
+.btn-prev{flex:0 0 80px;background:none;border:2px solid var(--gp);border-radius:12px;padding:13px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.btn-prev:hover{border-color:var(--gm);color:var(--gm);}
+.btn-prev:disabled{opacity:0.3;pointer-events:none;}
+.btn-next{flex:1;background:var(--gd);color:var(--wh);border:none;border-radius:12px;padding:14px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;opacity:0.4;pointer-events:none;}
+.btn-next.active{opacity:1;pointer-events:auto;}
+.btn-next.active:hover{background:var(--gm);}
+
+/* 結果画面 */
+#screen-result{display:none;}
+.result-hero{text-align:center;background:linear-gradient(145deg,#1e4d2f,#2d6a4f);border-radius:20px;padding:26px 20px;margin-bottom:16px;border:2px solid var(--gold);box-shadow:0 6px 24px rgba(45,106,79,0.35);}
+.result-label{font-size:11px;color:var(--gp);letter-spacing:0.1em;margin-bottom:8px;}
+.type-code{font-family:'Zen Kaku Gothic New',sans-serif;font-size:48px;font-weight:900;color:var(--goldl);letter-spacing:0.2em;margin-bottom:4px;}
+.type-nickname{font-size:16px;font-weight:700;color:var(--goldl);margin-bottom:4px;}
+.type-fullname{font-size:12px;color:var(--gp);}
+
+/* 4軸スコアバー */
+.axis-card{background:var(--wh);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px var(--sh);border:1.5px solid var(--gp);}
+.axis-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;color:var(--gd);margin-bottom:14px;}
+.axis-row{margin-bottom:14px;}
+.axis-row:last-child{margin-bottom:0;}
+.axis-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.axis-dim{font-size:11px;font-weight:700;color:var(--gd);}
+.axis-result{font-size:11px;font-weight:700;padding:2px 10px;border-radius:8px;background:var(--glight);color:var(--gd);}
+.axis-bar-bg{height:10px;background:var(--gp);border-radius:10px;overflow:hidden;position:relative;}
+.axis-bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gm),var(--gl));transition:width 0.8s ease;}
+.axis-poles{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:3px;}
+
+/* タイプ詳細 */
+.type-detail{background:var(--wh);border:2px solid var(--gold);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 3px 12px rgba(201,168,76,0.15);}
+.type-detail-name{font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;color:var(--gd);margin-bottom:8px;}
+.type-traits{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px;}
+.detail-section{margin-bottom:10px;}
+.detail-section h4{font-size:11px;font-weight:700;color:var(--gm);margin-bottom:4px;letter-spacing:0.06em;}
+.detail-section p{font-size:12px;color:var(--text);line-height:1.7;}
+.career-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.career-tag{background:var(--glight);color:var(--gd);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;border:1px solid var(--gl);}
+
+.karioji-result{background:linear-gradient(135deg,#1e4d2f,#2a5e3d);border-radius:16px;padding:18px;margin-bottom:16px;display:flex;gap:12px;}
+.karioji-result .karioji-name{color:var(--goldl);}
+.karioji-result .karioji-text{color:var(--gp);}
+.karioji-result .karioji-text strong{color:var(--goldl);}
+
+.btn-back{width:100%;background:none;border:2px solid var(--gp);border-radius:14px;padding:14px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.btn-back:hover{border-color:var(--gm);color:var(--gm);}
+footer{background:var(--gd);color:var(--gp);text-align:center;font-size:10px;padding:10px;}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">🌳</span>
+  <div>
+    <div class="htitle">MBTI 性格タイプ診断｜就活の木</div>
+    <div class="hsub">4つの軸で、あなたの性格タイプを発見</div>
+  </div>
+</header>
+
+<!-- ①ウェルカム -->
+<div id="screen-welcome">
+  <div class="wrap">
+    <div class="welcome-hero">
+      <span class="hero-icon">🔮</span>
+      <div class="welcome-title">あなたは、どんな人ですか？</div>
+      <div class="welcome-lead">
+        MBTIは4つの軸から性格を分析し、16タイプに分類します。<br>
+        自分の<strong>強み・働き方・向いている環境</strong>が見えてきます。<br>
+        「どちらかといえば」という感覚で気軽に答えてみてください。
+      </div>
+    </div>
+
+    <div class="karioji-card">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text">性格に「良い・悪い」はありません。<strong>自分の取扱説明書</strong>を手に入れるつもりで、正直に答えてみてください。</div>
+      </div>
+    </div>
+
+    <div class="dims-grid">
+      <div class="dim-chip">
+        <div class="d-axis">EI軸 — エネルギーの向き</div>
+        <div class="d-pair"><span>E 外向型</span> vs <span>I 内向型</span></div>
+      </div>
+      <div class="dim-chip">
+        <div class="d-axis">SN軸 — 情報の受け取り方</div>
+        <div class="d-pair"><span>S 感覚型</span> vs <span>N 直観型</span></div>
+      </div>
+      <div class="dim-chip">
+        <div class="d-axis">TF軸 — 判断の基準</div>
+        <div class="d-pair"><span>T 思考型</span> vs <span>F 感情型</span></div>
+      </div>
+      <div class="dim-chip">
+        <div class="d-axis">JP軸 — 生活スタイル</div>
+        <div class="d-pair"><span>J 判断型</span> vs <span>P 知覚型</span></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-row"><span>⏱️</span><span>所要時間：<strong>約7分</strong>（40問）</span></div>
+      <div class="info-row"><span>📊</span><span>結果：<strong>16タイプ</strong>の性格タイプ＋軸ごとの傾向</span></div>
+      <div class="info-row"><span>💡</span><span>回答方法：<strong>5段階スライド</strong>（どちらに近いか）</span></div>
+      <div class="info-row"><span>🔓</span><span>無料・登録不要・何度でも試せます</span></div>
+    </div>
+
+    <button class="btn-start" onclick="startAssessment()">🔮 診断をスタートする</button>
+  </div>
+</div>
+
+<!-- ②質問画面 -->
+<div id="screen-question">
+  <div class="wrap">
+    <div class="q-header">
+      <div class="q-progress-label">
+        <span id="q-label">質問 1 / 40</span>
+        <span id="q-axis-tag" class="q-axis-tag">EI軸</span>
+        <span id="q-pct">0%</span>
+      </div>
+      <div class="q-progress-bar"><div class="q-progress-fill" id="q-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num" id="q-num">QUESTION 01</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="slider-wrap">
+        <div class="slider-labels">
+          <span id="label-a">← A寄り</span>
+          <span>どちらでもない</span>
+          <span id="label-b">B寄り →</span>
+        </div>
+        <div class="slider-opts" id="q-slider"></div>
+        <div class="slider-axis">
+          <div class="axis-a" id="axis-a-tag"></div>
+          <div class="axis-b" id="axis-b-tag"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>← 戻る</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">次へ →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ③結果画面 -->
+<div id="screen-result">
+  <div class="wrap">
+    <div class="result-hero">
+      <div class="result-label">あなたのMBTIタイプ</div>
+      <div class="type-code" id="r-type"></div>
+      <div class="type-nickname" id="r-nickname"></div>
+      <div class="type-fullname" id="r-fullname"></div>
+    </div>
+
+    <div class="axis-card">
+      <div class="axis-title">📊 4軸の傾向</div>
+      <div id="axis-bars"></div>
+    </div>
+
+    <div class="type-detail" id="type-detail"></div>
+
+    <div class="karioji-result">
+      <div class="karioji-icon">🦉</div>
+      <div>
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text" id="karioji-comment"></div>
+      </div>
+    </div>
+
+    <button class="btn-back" onclick="restart()">🔄 もう一度診断する</button>
+    <button class="btn-back" onclick="goBack()" style="margin-top:8px;border-color:var(--gm);color:var(--gm);">← 自分発見ナビに戻る</button>
+  </div>
+</div>
+
+<footer>🌳 就活の木 ｜ Tama University Career Support</footer>
+
+<script>
+// ── 16タイプ情報 ──
+const TYPE_INFO = {
+  ESTJ:{nickname:'組織者',name:'実行型リーダー',traits:'グループ学習を好み、実践的・論理的。計画的に行動し、チームをまとめるリーダーシップが得意。責任感が強く、目標に向かって着実に進みます。',strengths:'目標設定・チームマネジメント・実行力・責任感',careers:['企業管理者','プロジェクトマネージャー','公務員','営業管理職','製造業管理']},
+  ENTJ:{nickname:'指揮官',name:'戦略型思想家',traits:'大局的なビジョンから戦略を立て、難題に正面から挑みます。独立心と野心があり、変革を推進するエネルギーがあります。',strengths:'戦略立案・意思決定・カリスマ性・大局的視点',careers:['CEO・起業家','戦略コンサルタント','政治家','外交官','ベンチャー経営']},
+  ESFJ:{nickname:'世話役',name:'社交型サポーター',traits:'温かく人情深い性格。人間関係の構築と調和を大切にし、他者をサポートすることに充実感を感じます。',strengths:'対人スキル・協調性・組織運営・献身的サポート',careers:['教員','看護師','保育士','人事職','カウンセラー','営業']},
+  ENFJ:{nickname:'教育者',name:'理想型メンター',traits:'人々の成長と可能性を信じて導きます。カリスマ性と共感力を持ち、理想を追求する情熱があります。',strengths:'人材育成・ビジョン提示・共感力・感動させる力',careers:['カウンセラー','研修講師','教員','コーチ','NPO職員']},
+  ISTJ:{nickname:'管理者',name:'実務型信頼者',traits:'実践的・計画的に行動する責任感の強いタイプ。細部への注意が優れており、約束を必ず守る信頼性の高さが特徴です。',strengths:'正確な作業・詳細分析・組織化・信頼性',careers:['会計士・経理','監査役','エンジニア','公務員','データアナリスト']},
+  INTJ:{nickname:'独創的戦略家',name:'思想型建築家',traits:'複雑なシステム理解に優れ、長期的ビジョンに基づいて行動します。独立した判断を大切にし、高い基準を自分に課します。',strengths:'複雑な問題解決・システム理解・独立した思考・戦略立案',careers:['研究者','エンジニア','戦略コンサルタント','建築家・設計','学者']},
+  ISFJ:{nickname:'保護者',name:'奉仕型守護者',traits:'人情深く、他者をサポートすることを重視します。細心の配慮と実用的なスキルで、安定した信頼関係を築きます。',strengths:'サポート業務・細やかな配慮・実用的スキル・傾聴力',careers:['看護師','事務職','保育士','社会福祉士','秘書・図書館員']},
+  INFJ:{nickname:'予言者',name:'理想型提唱者',traits:'深い洞察力と共感力を持ち、人類への貢献と理想の実現を求めます。創造的に行動し、少数の人と深い関係を築きます。',strengths:'深い洞察力・ビジョン構築・共感力・創造性',careers:['カウンセラー','心理学者','作家','教育者','社会活動家']},
+  ESTP:{nickname:'冒険家',name:'探究型起業家',traits:'行動的で柔軟。その場の刺激を求め、リスクを厭わず新しい経験に飛び込みます。問題解決と交渉が得意です。',strengths:'問題解決力・交渉スキル・適応力・危機対応',careers:['営業職','起業家','トレーダー','イベント企画','スポーツ関係']},
+  ENTP:{nickname:'革新者',name:'議論型発明家',traits:'知的刺激を求め、新しいアイデアを生み出し、議論を通じて考えを深めることを好みます。既成概念を覆すことを楽しみます。',strengths:'アイデア創出・戦略的思考・説得力・柔軟性',careers:['起業家','発明家・開発','マーケター','弁護士','コンサルタント']},
+  ESFP:{nickname:'芸能人',name:'表現型エンターテイナー',traits:'社交的で表現力が高く、人を喜ばせることに充実感を感じます。現在の瞬間を大切にし、明るいエネルギーで場を盛り上げます。',strengths:'人を楽しませる力・即興能力・社交性・実行力',careers:['接客・サービス業','イベント企画','エンターテイナー','デザイナー']},
+  ENFP:{nickname:'広報活動家',name:'自由型活動家',traits:'情熱的で多くの人を巻き込み、新しい可能性を探索します。創造的で好奇心旺盛。アイデアと人をつなぐことが得意です。',strengths:'ビジョン提示・人を動かす力・多角的思考・創造性',careers:['ジャーナリスト','カウンセラー','NPO職員','クリエイティブ職','広報PR']},
+  ISTP:{nickname:'職人',name:'分析型職人',traits:'ものの仕組みを理解することに興味があり、自分のペースで問題解決に取り組みます。実践的なスキルと冷静な判断力が強みです。',strengths:'実践技術・問題解決・独立性・機械センス',careers:['エンジニア','プログラマー','職人・技術者','パイロット','機械オペレータ']},
+  INTP:{nickname:'思想家',name:'論理型研究者',traits:'複雑なシステムの理解に優れ、知的追究に没頭します。創造的な理論構築が得意で、深く考えることに喜びを感じます。',strengths:'論理的分析・システム理解・創造的思考・集中力',careers:['研究者','プログラマー','アナリスト','学者','ソフトウェア設計']},
+  ISFP:{nickname:'芸術家',name:'創造型芸術家',traits:'美的感覚や価値観を大切にします。静かに自分のペースで創造的に表現し、柔軟性と優しさを持って人に接します。',strengths:'創造的表現・美的センス・他者への配慮・実用スキル',careers:['アーティスト','デザイナー','音楽家','手工芸職人','メイクアップ']},
+  INFP:{nickname:'詩人',name:'理想型仲介者',traits:'強い価値観に基づいて行動し、他者の可能性を信じます。創造的に表現することを好み、深い思考と同情心を持ちます。',strengths:'深い思考・創造的表現・同情心・理想の追求',careers:['作家','カウンセラー','アーティスト','教育者','社会活動家']},
+};
+
+// ── 40問（各軸10問）5段階スライド方式 ──
+// score: +2〜-2（+がA側、-がB側）
+// dim: EI/SN/TF/JP
+// aLabel: A側の軸文字, bLabel: B側
+// optA/optB: 両端の選択肢テキスト
+const QUESTIONS = [
+  // EI軸（E=+, I=-）×10問
+  {q:'困ったときやストレスを感じたとき、まず何をしますか？',dim:'EI',optA:'誰かに話してすっきりさせたい',optB:'まず一人で気持ちを整理したい'},
+  {q:'友人・知人の数と関係の深さ、あなたはどちらを重視しますか？',dim:'EI',optA:'広く多くの人と関わりたい',optB:'少数の人と深く関わりたい'},
+  {q:'大人数の集まり（パーティー・飲み会）の後、あなたは？',dim:'EI',optA:'楽しかった、また行きたい',optB:'疲れた、少し休みたい'},
+  {q:'グループ課題のとき、あなたのエネルギーは？',dim:'EI',optA:'みんなと話すほど活発になる',optB:'一人で考える時間が必要'},
+  {q:'新しい環境でのあなたは？',dim:'EI',optA:'すぐ積極的に話しかける',optB:'まず観察してから関わる'},
+  {q:'理想の仕事環境は？',dim:'EI',optA:'チームで協力して目標を達成',optB:'独立して集中できる環境'},
+  {q:'プレゼンや発表の場面で、どう感じますか？',dim:'EI',optA:'刺激があって楽しい',optB:'緊張するので準備が必要'},
+  {q:'アイデアを考えるとき、どちらが捗りますか？',dim:'EI',optA:'人と話しながら考える',optB:'一人で静かに考える'},
+  {q:'週末のリフレッシュ方法として近いのは？',dim:'EI',optA:'友人と出かける・人と過ごす',optB:'家でゆっくり一人で過ごす'},
+  {q:'キャリア形成で大切だと思うのは？',dim:'EI',optA:'人脈・ネットワーク・コミュニケーション力',optB:'専門知識・技術・独立した実行力'},
+  // SN軸（S=+, N=-）×10問
+  {q:'新しいことを学ぶとき、どちらから理解しますか？',dim:'SN',optA:'具体的な事例・実例から',optB:'全体の理論・概念から'},
+  {q:'将来のことを考えるとき、あなたは？',dim:'SN',optA:'現実的で実現可能な計画を立てる',optB:'まず理想のビジョンを描く'},
+  {q:'日常のルーティンワークについて、あなたは？',dim:'SN',optA:'着実にこなせて安心',optB:'退屈で新しいことがしたい'},
+  {q:'仕事で評価されたいのはどちらですか？',dim:'SN',optA:'確実で正確な実務遂行',optB:'革新的なアイデアや独創性'},
+  {q:'問題に直面したとき、まず何をしますか？',dim:'SN',optA:'具体的な事実・状況を確認する',optB:'根本的な原因や仮説を考える'},
+  {q:'読みやすいと感じる文章は？',dim:'SN',optA:'具体例が多くわかりやすい文章',optB:'理論的で深い内容の文章'},
+  {q:'細かい変化や詳細に気づきやすいですか？',dim:'SN',optA:'よく気づく・細部を大切にする',optB:'全体の流れを重視して細部は見ない'},
+  {q:'何かを決めるとき、重視するのは？',dim:'SN',optA:'今まで実績のある方法・確実性',optB:'新しい可能性・独自のアプローチ'},
+  {q:'仕事や学習で楽しいと感じるのは？',dim:'SN',optA:'実用的で応用できることを学ぶとき',optB:'新しい概念や理論を発見するとき'},
+  {q:'自分の記憶に残りやすいのはどちらですか？',dim:'SN',optA:'具体的な出来事・事実・数字',optB:'その出来事の意味・感じたこと'},
+  // TF軸（T=+, F=-）×10問
+  {q:'重要な決断をするとき、何を最優先にしますか？',dim:'TF',optA:'客観的な事実と論理的な結論',optB:'関係者の気持ちや価値観'},
+  {q:'友人が間違ったことをしたとき、あなたは？',dim:'TF',optA:'客観的に指摘する（相手のためになる）',optB:'相手の気持ちを考えて優しく伝える'},
+  {q:'批判や意見の相違を受けたとき、どう感じますか？',dim:'TF',optA:'あまり気にならない（改善の機会）',optB:'少し気になる・落ち込む'},
+  {q:'対立した状況での解決スタイルは？',dim:'TF',optA:'論理と事実で解決策を導く',optB:'感情に寄り添い関係を修復する'},
+  {q:'他人の悩みを聞くとき、あなたは？',dim:'TF',optA:'論理的なアドバイスをする',optB:'まず共感して気持ちに寄り添う'},
+  {q:'リーダーとして理想なのは？',dim:'TF',optA:'明確な方針・論理的な指導',optB:'メンバーの気持ちを大切にする指導'},
+  {q:'「良い決断」の基準はどちらに近いですか？',dim:'TF',optA:'論理的に正しいかどうか',optB:'関わる人が納得・幸せかどうか'},
+  {q:'チームの成果と雰囲気、どちらを優先しますか？',dim:'TF',optA:'成果を最優先する',optB:'雰囲気を大切にしながら進める'},
+  {q:'職場での判断基準として重視するのは？',dim:'TF',optA:'客観的・効率的・公平な評価',optB:'人間関係・個々の事情への配慮'},
+  {q:'説得するとき、どちらが得意ですか？',dim:'TF',optA:'データ・根拠・論理で説得する',optB:'感情に訴え・共感を得て動かす'},
+  // JP軸（J=+, P=-）×10問
+  {q:'予定や計画について、あなたは？',dim:'JP',optA:'詳細な計画を立てて実行したい',optB:'流れに任せて柔軟に動きたい'},
+  {q:'提出期限への対応スタイルは？',dim:'JP',optA:'早めに完成させて提出する',optB:'ギリギリまで粘って仕上げる'},
+  {q:'机や部屋の状態として近いのは？',dim:'JP',optA:'整理整頓が得意・すぐ片付く',optB:'物が多い・必要なときに片付ける'},
+  {q:'急な予定変更があったとき、どう感じますか？',dim:'JP',optA:'計画が崩れてストレスを感じる',optB:'柔軟に対応できる・むしろ楽しい'},
+  {q:'新しい情報が入ったとき、あなたは？',dim:'JP',optA:'できるだけ早く結論を出したい',optB:'最後まで情報を集めてから決めたい'},
+  {q:'週末の過ごし方は？',dim:'JP',optA:'ある程度予定を決めて動く',optB:'気分次第でその場で決める'},
+  {q:'完璧さについて、あなたは？',dim:'JP',optA:'できる限り完璧を目指す',optB:'完了することの方が大事'},
+  {q:'To Doリストや手帳を使いますか？',dim:'JP',optA:'毎日確認・活用している',optB:'頭で覚えているか、ほぼ使わない'},
+  {q:'仕事の進め方として近いのは？',dim:'JP',optA:'計画を立ててから着実に実行',optB:'やりながら考えて柔軟に対応'},
+  {q:'理想的な仕事の進め方は？',dim:'JP',optA:'締め切り前に余裕を持って完成',optB:'最後に集中して仕上げる（追い込み型）'},
+];
+
+// 5段階スライドのスコア（A寄り:+2〜B寄り:-2）
+const SLIDE_SCORES = [2, 1, 0, -1, -2];
+const SLIDE_LABELS = ['A寄り', 'やや A', 'どちらでも', 'やや B', 'B寄り'];
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(undefined);
+
+function startAssessment(){
+  document.getElementById('screen-welcome').style.display='none';
+  document.getElementById('screen-question').style.display='block';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+  document.getElementById('q-label').textContent = `質問 ${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('q-axis-tag').textContent = q.dim + '軸';
+  document.getElementById('q-pct').textContent = pct + '%';
+  document.getElementById('q-fill').style.width = pct + '%';
+  document.getElementById('q-num').textContent = `QUESTION ${String(current+1).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('label-a').textContent = '← ' + q.optA.substring(0,8) + '…';
+  document.getElementById('label-b').textContent = q.optB.substring(0,8) + '… →';
+  document.getElementById('axis-a-tag').textContent = q.optA;
+  document.getElementById('axis-b-tag').textContent = q.optB;
+
+  const wrap = document.getElementById('q-slider');
+  wrap.innerHTML = '';
+  SLIDE_SCORES.forEach((sc, i) => {
+    const btn = document.createElement('button');
+    btn.className = 's-btn' + (answers[current] === sc ? ' selected' : '');
+    btn.innerHTML = `<div class="s-num">${i+1}</div><div class="s-lbl">${SLIDE_LABELS[i]}</div>`;
+    btn.onclick = () => selectSlide(sc);
+    wrap.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  const isLast = current === QUESTIONS.length - 1;
+  nextBtn.textContent = isLast ? '結果を見る 🌳' : '次へ →';
+  nextBtn.className = 'btn-next' + (answers[current] !== undefined ? ' active' : '');
+  document.getElementById('btn-prev').disabled = current === 0;
+
+  const card = document.querySelector('.q-card');
+  if(card){card.style.animation='none';requestAnimationFrame(()=>{card.style.animation='';});}
+}
+
+function selectSlide(sc){
+  answers[current] = sc;
+  renderQuestion();
+  setTimeout(()=>{
+    if(answers[current] !== undefined){
+      if(current < QUESTIONS.length-1){current++;renderQuestion();}
+      else{showResult();}
+    }
+  }, 350);
+}
+
+function nextQuestion(){
+  if(answers[current]===undefined)return;
+  if(current<QUESTIONS.length-1){current++;renderQuestion();}
+  else{showResult();}
+}
+function prevQuestion(){
+  if(current>0){current--;renderQuestion();}
+}
+
+function showResult(){
+  document.getElementById('screen-question').style.display='none';
+  document.getElementById('screen-result').style.display='block';
+  window.scrollTo(0,0);
+
+  // 軸ごとにスコア合計
+  const dimScores = {EI:0,SN:0,TF:0,JP:0};
+  QUESTIONS.forEach((q,i)=>{
+    if(answers[i]!==undefined) dimScores[q.dim] += answers[i];
+  });
+
+  // 各軸の判定（正=前者、負=後者）
+  const dimResults = [
+    {dim:'EI', score:dimScores.EI, typeA:'E', typeB:'I', labelA:'外向型（E）', labelB:'内向型（I）'},
+    {dim:'SN', score:dimScores.SN, typeA:'S', typeB:'N', labelA:'感覚型（S）', labelB:'直観型（N）'},
+    {dim:'TF', score:dimScores.TF, typeA:'T', typeB:'F', labelA:'思考型（T）', labelB:'感情型（F）'},
+    {dim:'JP', score:dimScores.JP, typeA:'J', typeB:'P', labelA:'判断型（J）', labelB:'知覚型（P）'},
+  ];
+
+  const typeCode = dimResults.map(d => d.score >= 0 ? d.typeA : d.typeB).join('');
+  const info = TYPE_INFO[typeCode] || {nickname:'',name:'',traits:'',strengths:'',careers:[]};
+
+  document.getElementById('r-type').textContent = typeCode;
+  document.getElementById('r-nickname').textContent = info.nickname;
+  document.getElementById('r-fullname').textContent = info.name;
+
+  // 軸バー
+  const barsEl = document.getElementById('axis-bars');
+  barsEl.innerHTML = '';
+  dimResults.forEach(d => {
+    const maxScore = 20; // 10問×最大2点
+    const pct = Math.min(100, Math.round((Math.abs(d.score) / maxScore) * 100));
+    const isA = d.score >= 0;
+    const resultLabel = isA ? d.labelA : d.labelB;
+    const row = document.createElement('div');
+    row.className = 'axis-row';
+    row.innerHTML = `
+      <div class="axis-row-head">
+        <div class="axis-dim">${d.dim}軸</div>
+        <div class="axis-result">${resultLabel}</div>
+      </div>
+      <div class="axis-bar-bg">
+        <div class="axis-bar-fill" style="width:0%" data-w="${pct}"></div>
+      </div>
+      <div class="axis-poles">
+        <span>${d.typeA}寄り（${d.typeA === (isA?d.typeA:d.typeB)?'★':''} ${d.typeA}）</span>
+        <span>傾向の強さ ${pct}%</span>
+        <span>（${d.typeB} ）${d.typeB}寄り</span>
+      </div>
+    `;
+    barsEl.appendChild(row);
+  });
+  setTimeout(()=>{
+    barsEl.querySelectorAll('.axis-bar-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});
+  },100);
+
+  // タイプ詳細
+  document.getElementById('type-detail').innerHTML = `
+    <div class="type-detail-name">🔮 ${info.nickname}（${typeCode}）— ${info.name}</div>
+    <div class="type-traits">${info.traits}</div>
+    <div class="detail-section">
+      <h4>✨ あなたの強み</h4>
+      <p>${info.strengths}</p>
+    </div>
+    <div class="detail-section">
+      <h4>🎯 向いている職業・職種</h4>
+      <div class="career-tags">${info.careers.map(c=>`<span class="career-tag">${c}</span>`).join('')}</div>
+    </div>
+  `;
+
+  // キャリ爺コメント
+  const comments = {
+    E:'<strong>外向型（E）</strong>のあなたは、人と関わることでエネルギーが湧くタイプ。営業・教育・企画など、人と協力する場で力を発揮します。',
+    I:'<strong>内向型（I）</strong>のあなたは、深く考え独自の視点を持つタイプ。研究・技術・専門職など、じっくり取り組む環境が合っています。',
+  };
+  const eiKey = dimScores.EI >= 0 ? 'E' : 'I';
+  document.getElementById('karioji-comment').innerHTML =
+    (comments[eiKey]||'') + `<br>タイプ <strong>${typeCode}（${info.nickname}）</strong>として、自分らしいキャリアを探っていきましょう。`;
+}
+
+function restart(){
+  current=0;
+  answers=new Array(QUESTIONS.length).fill(undefined);
+  document.getElementById('screen-result').style.display='none';
+  document.getElementById('screen-welcome').style.display='block';
+  window.scrollTo(0,0);
+}
+function goBack(){
+  alert('自分発見ナビに戻ります。\n（パネル統合後はここで切り替わります）');
+}
+</script>
+</body>
+</html>

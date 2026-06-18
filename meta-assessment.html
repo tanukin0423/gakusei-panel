@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自分発見ナビ｜就活の木</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#2d6a4f;
+  --gm:#52b788;
+  --gl:#74c69d;
+  --gp:#b7e4c7;
+  --gbg:#f1faf4;
+  --glight:#d8f3dc;
+  --gold:#c9a84c;
+  --goldl:#f0d080;
+  --br:#5c3d1e;
+  --wh:#fefffe;
+  --sh:rgba(45,106,79,0.15);
+  --text:#1a2e1f;
+  --muted:#6b8f71;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--gbg);
+  min-height:100vh;
+  color:var(--text);
+}
+
+/* ── ヘッダー ── */
+header{
+  background:linear-gradient(135deg,var(--gd),var(--gm));
+  color:var(--wh);
+  padding:14px 20px;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 2px 16px var(--sh);
+}
+.logo{font-size:24px;}
+.htitle{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:15px;font-weight:900;
+  color:var(--goldl);letter-spacing:0.06em;
+}
+.hsub{font-size:10px;color:var(--gp);margin-top:2px;}
+
+/* ── メインラッパー ── */
+.wrap{max-width:560px;margin:0 auto;padding:24px 16px 60px;}
+
+/* ── ウェルカム画面 ── */
+#screen-welcome{}
+.welcome-hero{
+  text-align:center;
+  padding:32px 20px 24px;
+}
+.tree-icon{font-size:64px;display:block;margin-bottom:16px;
+  animation:sway 3s ease-in-out infinite;}
+@keyframes sway{
+  0%,100%{transform:rotate(-3deg);}
+  50%{transform:rotate(3deg);}
+}
+.welcome-title{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:22px;font-weight:900;
+  color:var(--gd);line-height:1.4;margin-bottom:12px;
+}
+.welcome-title span{color:var(--gold);}
+.welcome-lead{
+  font-size:13px;color:var(--muted);line-height:1.9;
+  margin-bottom:24px;
+}
+
+/* キャリ爺メッセージカード */
+.karioji-card{
+  background:var(--wh);
+  border:2px solid var(--gp);
+  border-radius:16px;
+  padding:20px;
+  display:flex;gap:14px;
+  align-items:flex-start;
+  margin-bottom:24px;
+  box-shadow:0 4px 16px var(--sh);
+}
+.karioji-icon{
+  font-size:36px;flex-shrink:0;
+  background:var(--glight);
+  border-radius:50%;
+  width:52px;height:52px;
+  display:flex;align-items:center;justify-content:center;
+}
+.karioji-bubble{flex:1;}
+.karioji-name{
+  font-size:10px;font-weight:700;
+  color:var(--gm);letter-spacing:0.1em;margin-bottom:6px;
+}
+.karioji-text{
+  font-size:12px;color:var(--text);line-height:1.8;
+}
+.karioji-text strong{color:var(--gd);}
+
+/* 特徴リスト */
+.features{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-bottom:28px;
+}
+.feat{
+  background:var(--wh);border:1.5px solid var(--card-border,#95d5b2);
+  border-radius:12px;padding:14px 12px;text-align:center;
+  box-shadow:0 2px 8px var(--sh);
+}
+.feat .f-ic{font-size:22px;margin-bottom:6px;}
+.feat .f-txt{font-size:11px;color:var(--gd);font-weight:700;line-height:1.4;}
+.feat .f-sub{font-size:10px;color:var(--muted);margin-top:3px;}
+
+/* スタートボタン */
+.btn-start{
+  width:100%;
+  background:linear-gradient(135deg,var(--gd),var(--gm));
+  color:var(--wh);
+  border:none;border-radius:16px;
+  padding:18px;
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:16px;font-weight:900;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(45,106,79,0.35);
+  transition:transform 0.15s,box-shadow 0.15s;
+  letter-spacing:0.06em;
+}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(45,106,79,0.4);}
+.btn-start:active{transform:scale(0.98);}
+
+/* ── 質問画面 ── */
+#screen-question{display:none;}
+
+.q-header{
+  background:var(--wh);
+  border-radius:16px;
+  padding:16px 20px;
+  margin-bottom:20px;
+  box-shadow:0 2px 10px var(--sh);
+}
+.q-progress-label{
+  display:flex;justify-content:space-between;
+  font-size:11px;color:var(--muted);margin-bottom:8px;
+}
+.q-progress-bar{
+  height:6px;background:var(--gp);border-radius:10px;overflow:hidden;
+}
+.q-progress-fill{
+  height:100%;background:linear-gradient(90deg,var(--gm),var(--gl));
+  border-radius:10px;transition:width 0.4s ease;
+}
+
+.q-card{
+  background:var(--wh);
+  border-radius:20px;
+  padding:24px 20px;
+  box-shadow:0 4px 20px var(--sh);
+  border:1.5px solid var(--gp);
+  margin-bottom:20px;
+  animation:fadeUp 0.35s ease;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.q-num{
+  font-size:10px;font-weight:700;
+  color:var(--gm);letter-spacing:0.12em;margin-bottom:10px;
+}
+.q-text{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:17px;font-weight:700;
+  color:var(--gd);line-height:1.6;margin-bottom:20px;
+}
+.q-hint{
+  font-size:11px;color:var(--muted);
+  background:var(--glight);
+  border-radius:8px;padding:8px 12px;
+  margin-bottom:16px;line-height:1.6;
+}
+
+/* 選択肢 */
+.options{display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--gbg);
+  border:2px solid var(--gp);
+  border-radius:14px;padding:14px 16px;
+  cursor:pointer;transition:all 0.2s;
+  text-align:left;width:100%;
+}
+.opt:hover{border-color:var(--gm);background:var(--glight);}
+.opt.selected{
+  border-color:var(--gd);
+  background:linear-gradient(135deg,#e8f5ee,#d0ede0);
+  box-shadow:0 3px 12px rgba(45,106,79,0.2);
+}
+.opt-mark{
+  width:22px;height:22px;flex-shrink:0;
+  border:2px solid var(--gp);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:1px;transition:all 0.2s;font-size:12px;
+}
+.opt.selected .opt-mark{
+  background:var(--gd);border-color:var(--gd);color:var(--wh);
+}
+.opt-text{font-size:13px;color:var(--text);line-height:1.6;}
+
+/* 次へボタン */
+.btn-next{
+  width:100%;
+  background:var(--gd);color:var(--wh);
+  border:none;border-radius:14px;
+  padding:16px;
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:15px;font-weight:700;
+  cursor:pointer;
+  transition:all 0.2s;
+  opacity:0.4;pointer-events:none;
+}
+.btn-next.active{opacity:1;pointer-events:auto;}
+.btn-next.active:hover{background:var(--gm);}
+
+/* ── 結果画面 ── */
+#screen-result{display:none;}
+
+.result-hero{
+  text-align:center;
+  background:linear-gradient(145deg,#1e4d2f,#2d6a4f);
+  border-radius:20px;
+  padding:28px 20px;
+  margin-bottom:20px;
+  border:2px solid var(--gold);
+  box-shadow:0 6px 24px rgba(45,106,79,0.35);
+}
+.result-label{font-size:11px;color:var(--gp);letter-spacing:0.1em;margin-bottom:8px;}
+.result-type-badge{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--gold),var(--goldl));
+  color:var(--br);
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:13px;font-weight:900;
+  padding:6px 20px;border-radius:20px;
+  margin-bottom:12px;letter-spacing:0.06em;
+}
+.result-name{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:22px;font-weight:900;
+  color:var(--goldl);margin-bottom:8px;line-height:1.4;
+}
+.result-desc{font-size:12px;color:var(--gp);line-height:1.8;}
+
+/* レーダーチャート */
+.radar-card{
+  background:var(--wh);border-radius:20px;
+  padding:20px;margin-bottom:20px;
+  box-shadow:0 4px 16px var(--sh);
+  border:1.5px solid var(--gp);
+  text-align:center;
+}
+.radar-title{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:14px;font-weight:700;color:var(--gd);
+  margin-bottom:16px;text-align:left;
+}
+
+/* スコアバー */
+.score-bars{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:20px;
+}
+.score-row{display:flex;align-items:center;gap:10px;}
+.score-label{
+  font-size:11px;font-weight:700;color:var(--gd);
+  width:140px;flex-shrink:0;line-height:1.3;
+}
+.score-bar-wrap{flex:1;height:10px;background:var(--gp);border-radius:10px;overflow:hidden;}
+.score-bar-fill{
+  height:100%;border-radius:10px;
+  background:linear-gradient(90deg,var(--gm),var(--gl));
+  transition:width 0.8s ease;
+}
+.score-bar-fill.top{background:linear-gradient(90deg,var(--gd),var(--gm));}
+.score-num{font-size:11px;font-weight:700;color:var(--muted);width:32px;text-align:right;}
+
+/* 推奨カード */
+.rec-section-title{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:14px;font-weight:900;color:var(--gd);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:6px;
+}
+.rec-section-title::after{content:'';flex:1;height:1px;background:var(--gp);}
+
+.rec-card{
+  background:var(--wh);border-radius:16px;
+  border:2px solid var(--gl);
+  padding:18px;margin-bottom:12px;
+  box-shadow:0 3px 12px var(--sh);
+  cursor:pointer;transition:all 0.2s;
+}
+.rec-card.primary{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,#fffdf0,#fffff8);
+  box-shadow:0 4px 16px rgba(201,168,76,0.25);
+}
+.rec-card:hover{transform:translateY(-2px);}
+.rec-badge{
+  display:inline-block;
+  font-size:10px;font-weight:700;
+  padding:3px 10px;border-radius:10px;
+  margin-bottom:8px;
+}
+.rec-card.primary .rec-badge{background:var(--gold);color:var(--br);}
+.rec-card:not(.primary) .rec-badge{background:var(--glight);color:var(--gd);}
+.rec-name{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:15px;font-weight:900;color:var(--gd);
+  margin-bottom:6px;
+}
+.rec-reason{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px;}
+.rec-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--gd);color:var(--wh);
+  font-size:12px;font-weight:700;
+  padding:8px 16px;border-radius:10px;
+  border:none;cursor:pointer;transition:background 0.2s;
+}
+.rec-btn:hover{background:var(--gm);}
+
+/* 全診断リスト */
+.all-assessments{
+  background:var(--wh);border-radius:16px;
+  padding:18px;margin-bottom:20px;
+  box-shadow:0 3px 12px var(--sh);
+  border:1.5px solid var(--gp);
+}
+.all-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid var(--glight);
+  cursor:pointer;transition:all 0.2s;
+}
+.all-item:last-child{border-bottom:none;}
+.all-item:hover .all-name{color:var(--gm);}
+.all-ic{font-size:22px;width:32px;text-align:center;flex-shrink:0;}
+.all-info{flex:1;}
+.all-name{font-size:13px;font-weight:700;color:var(--gd);margin-bottom:2px;transition:color 0.2s;}
+.all-sub{font-size:10px;color:var(--muted);}
+.all-arrow{font-size:16px;color:var(--gl);}
+
+/* もう一度ボタン */
+.btn-restart{
+  width:100%;
+  background:none;border:2px solid var(--gp);
+  border-radius:14px;padding:14px;
+  font-size:13px;font-weight:700;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;margin-top:8px;
+}
+.btn-restart:hover{border-color:var(--gm);color:var(--gm);}
+
+/* キャリ爺コメント（結果） */
+.karioji-result{
+  background:linear-gradient(135deg,#1e4d2f,#2a5e3d);
+  border-radius:16px;padding:20px;
+  margin-bottom:20px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.karioji-result .karioji-icon{background:rgba(255,255,255,0.15);}
+.karioji-result .karioji-name{color:var(--goldl);}
+.karioji-result .karioji-text{color:var(--gp);}
+.karioji-result .karioji-text strong{color:var(--goldl);}
+
+/* フッター */
+footer{
+  background:var(--gd);color:var(--gp);
+  text-align:center;font-size:10px;padding:10px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🌳</span>
+  <div>
+    <div class="htitle">自分発見ナビ｜就活の木</div>
+    <div class="hsub">自分を知ることが、就活の第一歩</div>
+  </div>
+</header>
+
+<!-- ①ウェルカム画面 -->
+<div id="screen-welcome">
+  <div class="wrap">
+
+    <div class="welcome-hero">
+      <span class="tree-icon">🌱</span>
+      <div class="welcome-title">
+        「やりたいこと、<span>ない</span>んです」<br>——それで、大丈夫。
+      </div>
+      <div class="welcome-lead">
+        やりたいことは「探す」より「気づく」もの。<br>
+        まず自分のことを知るところから始めてみよう。<br>
+        12の質問（各問2つまで選択OK）で、あなたに合った<strong>自己理解ツール</strong>を見つけます。
+      </div>
+    </div>
+
+    <div class="karioji-card">
+      <div class="karioji-icon">🦉</div>
+      <div class="karioji-bubble">
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text">
+          「向いている仕事が分からない」「何をしたいか分からない」——それはあなたが<strong>まだ自分を知らないだけ</strong>。答えはちゃんと、あなたの中にあります。一緒に探しにいきましょう。
+        </div>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feat">
+        <div class="f-ic">⏱️</div>
+        <div class="f-txt">約3〜5分</div>
+        <div class="f-sub">12問・各問2つまで選択OK</div>
+      </div>
+      <div class="feat">
+        <div class="f-ic">🎯</div>
+        <div class="f-txt">4つの診断</div>
+        <div class="f-sub">あなたに最適を提案</div>
+      </div>
+      <div class="feat">
+        <div class="f-ic">📊</div>
+        <div class="f-txt">レーダーチャート</div>
+        <div class="f-sub">視覚的に自分を把握</div>
+      </div>
+      <div class="feat">
+        <div class="f-ic">🔓</div>
+        <div class="f-txt">無料・登録不要</div>
+        <div class="f-sub">すぐ始められる</div>
+      </div>
+    </div>
+
+    <button class="btn-start" onclick="startAssessment()">
+      🌱 自分発見を始める
+    </button>
+
+  </div>
+</div>
+
+<!-- ②質問画面 -->
+<div id="screen-question">
+  <div class="wrap">
+
+    <div class="q-header">
+      <div class="q-progress-label">
+        <span id="q-label">質問 1 / 12</span>
+        <span id="q-pct">0%</span>
+      </div>
+      <div class="q-progress-bar">
+        <div class="q-progress-fill" id="q-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="q-card" id="q-card">
+      <div class="q-num" id="q-num">QUESTION 01</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-hint" id="q-hint" style="display:none"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+      次の質問へ →
+    </button>
+
+  </div>
+</div>
+
+<!-- ③結果画面 -->
+<div id="screen-result">
+  <div class="wrap">
+
+    <div class="result-hero" id="result-hero">
+      <div class="result-label">あなたの自己理解タイプ</div>
+      <div class="result-type-badge" id="r-badge"></div>
+      <div class="result-name" id="r-name"></div>
+      <div class="result-desc" id="r-desc"></div>
+    </div>
+
+    <div class="karioji-result" id="karioji-result">
+      <div class="karioji-icon">🦉</div>
+      <div class="karioji-bubble">
+        <div class="karioji-name">🌳 キャリ爺より</div>
+        <div class="karioji-text" id="karioji-comment"></div>
+      </div>
+    </div>
+
+    <div class="radar-card">
+      <div class="radar-title">📊 4つの視点からみたあなた</div>
+      <div class="score-bars" id="score-bars"></div>
+    </div>
+
+    <div class="rec-section-title">🎯 おすすめの診断ツール</div>
+    <div id="rec-cards"></div>
+
+    <div class="all-assessments">
+      <div class="rec-section-title" style="margin-bottom:12px;">📋 全ての診断ツール</div>
+      <div id="all-items"></div>
+    </div>
+
+    <button class="btn-restart" onclick="restart()">
+      🔄 もう一度やってみる
+    </button>
+
+  </div>
+</div>
+
+<footer>🌳 就活の木 ｜ Tama University Career Support</footer>
+
+<script>
+// ── 診断データ ──
+const ASSESSMENTS = {
+  A: {
+    id: 'A',
+    icon: '💼',
+    name: 'VPI 職業興味検査',
+    short: '興味・関心から職業を探す',
+    badge: 'A. 興味タイプ診断',
+    desc: 'ホランド理論に基づき、あなたの職業興味を6つのタイプで分析します。どんな分野・仕事に惹かれるのかが見えてきます。',
+    reason_tmpl: '今のあなたには、まず「どんな仕事に興味があるのか」を広く探ることが大切。VPI診断で職業の世界を広げましょう。',
+    comment: '「何が好きか」が分かると、就活の方向性が一気に見えてきます。まずは興味の地図を描いてみよう。',
+    screen: 'vpi'
+  },
+  B: {
+    id: 'B',
+    icon: '🧠',
+    name: 'MBTI 性格タイプ診断',
+    short: '性格・特性から自分を知る',
+    badge: 'B. 性格タイプ診断',
+    desc: '4つの次元（EI/SN/TF/JP）から性格タイプを分析。どんな環境・チームで力を発揮できるかが分かります。',
+    reason_tmpl: 'あなたは自分の性格や特性を客観的に知ることで、キャリア選択の手がかりが見つかる段階です。',
+    comment: '自分の「取扱説明書」を手に入れよう。性格を知ると、どんな仕事環境が合うかが見えてきます。',
+    screen: 'mbti'
+  },
+  C: {
+    id: 'C',
+    icon: '⚓',
+    name: 'キャリアアンカー診断',
+    short: '価値観・譲れないものを知る',
+    badge: 'C. 価値観診断',
+    desc: 'シャインの理論に基づき、仕事で最も大切にしている価値観を8つの軸で分析。迷ったときの判断基準になります。',
+    reason_tmpl: '選択肢がある中で迷っているあなたに。「自分の譲れないもの」を知ると、決断がしやすくなります。',
+    comment: '「これだけは外せない」という軸が分かると、複数の会社を比べるときにブレなくなりますよ。',
+    screen: 'anchor'
+  },
+  D: {
+    id: 'D',
+    icon: '💪',
+    name: '強み診断',
+    short: '得意なことを発見する',
+    badge: 'D. 強み発見診断',
+    desc: '8つの領域からあなたの強みを分析。「自分に何ができるか」が明確になり、自己PRにも直接活かせます。',
+    reason_tmpl: '自己PRや面接で「強み」を聞かれて困っているあなたへ。まず自分の得意を言語化しましょう。',
+    comment: '強みは「すごいこと」じゃなくていい。「自然にできること」が強みです。一緒に探しましょう。',
+    screen: 'strengths'
+  }
+};
+
+// ── 12問（E軸なし・4軸版） ──
+const QUESTIONS = [
+  // ブロック1：今の状況（2問）
+  {
+    q: '今、就活について正直なところ、どんな状況ですか？',
+    hint: '正直に答えるほど、ぴったりの診断が見つかります😊',
+    options: [
+      { text: 'まだ何も考えていない・これから始める', scores: {A:5,B:3,C:1,D:3} },
+      { text: '考え始めたけど、何からすればいいか分からない', scores: {A:4,B:4,C:2,D:3} },
+      { text: '動き始めているが、方向性が定まらない', scores: {A:2,B:3,C:4,D:3} },
+      { text: '選択肢はあるが、最終決断で迷っている', scores: {A:1,B:2,C:5,D:2} }
+    ]
+  },
+  {
+    q: '今、一番困っていることは何ですか？',
+    hint: '正直に選んでください。どれが正解というものはありません。',
+    options: [
+      { text: 'そもそも何に興味があるのか分からない', scores: {A:5,B:3,C:2,D:3} },
+      { text: '自分がどんな人間なのか、よく分からない', scores: {A:2,B:5,C:2,D:3} },
+      { text: '複数の選択肢があって、どれを選べばいいか分からない', scores: {A:1,B:2,C:5,D:2} },
+      { text: '自分の強みや良いところが分からない・自信がない', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  // ブロック2：自己理解度（3問）
+  {
+    q: '自分の性格や特徴を、他人にうまく説明できますか？',
+    hint: '面接の自己PRをイメージしてみてください。',
+    options: [
+      { text: 'うまく説明できない', scores: {A:3,B:5,C:2,D:4} },
+      { text: '少しは言えるが、まとまらない', scores: {A:3,B:4,C:2,D:4} },
+      { text: 'ある程度説明できる', scores: {A:2,B:2,C:3,D:3} },
+      { text: '具体的にしっかり説明できる', scores: {A:1,B:1,C:4,D:2} }
+    ]
+  },
+  {
+    q: '仕事を選ぶとき、何を一番大切にしたいですか？',
+    hint: '今の気持ちで、直感で選んでみてください。',
+    options: [
+      { text: '興味のある分野・好きなことに関わりたい', scores: {A:5,B:2,C:2,D:2} },
+      { text: '自分の性格・特性が活きる環境で働きたい', scores: {A:2,B:5,C:2,D:3} },
+      { text: '自分の価値観・信念に合った仕事がしたい', scores: {A:1,B:2,C:5,D:2} },
+      { text: '自分の得意なことを活かして貢献したい', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  {
+    q: '自分の「得意なこと」を言葉にできますか？',
+    hint: '学校や部活、アルバイトでの経験を振り返ってみてください。',
+    options: [
+      { text: '全く思い浮かばない', scores: {A:3,B:3,C:2,D:5} },
+      { text: 'なんとなくはあるが、言葉にならない', scores: {A:3,B:3,C:2,D:4} },
+      { text: 'いくつか言えるが、確信が持てない', scores: {A:2,B:2,C:3,D:3} },
+      { text: '具体的に言葉にできる', scores: {A:1,B:1,C:4,D:2} }
+    ]
+  },
+  // ブロック3：思考スタイル（3問）
+  {
+    q: '物事を決めるとき、どちらのスタイルが近いですか？',
+    hint: '日常の買い物や進路選択のときをイメージしてください。',
+    options: [
+      { text: '情報や事実を集めて、論理的に判断する', scores: {A:4,B:5,C:2,D:3} },
+      { text: '自分の気持ちや直感を大切にして判断する', scores: {A:3,B:2,C:4,D:3} },
+      { text: '価値観や信念に照らし合わせて判断する', scores: {A:1,B:2,C:5,D:2} },
+      { text: '自分の強みや得意を活かせるかで判断する', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  {
+    q: '「自分を知るために役立つ方法」として、しっくりくるのはどれですか？',
+    options: [
+      { text: '興味・関心があることを洗い出して分析する', scores: {A:5,B:3,C:2,D:2} },
+      { text: '性格診断テストで客観的に分析する', scores: {A:2,B:5,C:2,D:3} },
+      { text: '自分が大切にしていることを書き出して整理する', scores: {A:1,B:2,C:5,D:2} },
+      { text: 'これまでの経験から得意なことを振り返る', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  {
+    q: 'キャリア相談で、どんな結果を期待しますか？',
+    options: [
+      { text: '自分に合った職業・分野を提案してほしい', scores: {A:5,B:3,C:2,D:2} },
+      { text: '自分の性格タイプを客観的に教えてほしい', scores: {A:2,B:5,C:2,D:3} },
+      { text: '迷いを整理して判断の軸を作りたい', scores: {A:1,B:2,C:5,D:2} },
+      { text: '自分の強みを発見して自信をつけたい', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  // ブロック4：行動・体験（2問）
+  {
+    q: 'アルバイトやサークル・授業で、どんなとき充実感を感じましたか？',
+    hint: '一番楽しかった・やりがいを感じた瞬間を思い出してみてください。',
+    options: [
+      { text: '新しいことを発見・体験したとき', scores: {A:5,B:3,C:2,D:2} },
+      { text: '自分の特性（性格・センス）が活きたとき', scores: {A:2,B:5,C:2,D:3} },
+      { text: '自分の信念通りに行動できたとき', scores: {A:1,B:2,C:5,D:2} },
+      { text: '自分の得意を活かして成果を出したとき', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  {
+    q: '就活で「これだけは嫌だ・避けたい」という気持ちはありますか？',
+    hint: '「あれはいや、これはいや」という感覚も大切なヒントです。',
+    options: [
+      { text: '特に思い浮かばない（まだイメージできない）', scores: {A:5,B:3,C:1,D:3} },
+      { text: '自分の性格に合わない環境は嫌だ', scores: {A:2,B:5,C:2,D:2} },
+      { text: '自分の価値観と合わない会社は嫌だ', scores: {A:1,B:2,C:5,D:2} },
+      { text: '自分の強みが活かせない仕事は嫌だ', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  // ブロック5：仕上げ（2問）
+  {
+    q: '今のあなたに最も近い言葉を選んでください。',
+    options: [
+      { text: '🗺 「世界を広げたい。まず色々な仕事を知りたい」', scores: {A:5,B:2,C:1,D:2} },
+      { text: '🪞 「自分のことを、もっとよく知りたい」', scores: {A:2,B:5,C:2,D:3} },
+      { text: '⚖️ 「自分に合う会社を、ちゃんと選びたい」', scores: {A:1,B:2,C:5,D:2} },
+      { text: '✨ 「自信を持って、自分をアピールしたい」', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  },
+  {
+    q: '最後に——今のあなたの気持ちに一番近いのは？',
+    hint: '直感で選んでください😊',
+    options: [
+      { text: '🌱 とにかく、いろんな可能性を探りたい', scores: {A:5,B:3,C:1,D:2} },
+      { text: '🔍 まず、自分という人間を理解したい', scores: {A:2,B:5,C:2,D:3} },
+      { text: '🧭 迷いを整理して、決断できるようになりたい', scores: {A:1,B:2,C:5,D:2} },
+      { text: '💪 自分の良さを見つけて、前向きになりたい', scores: {A:2,B:2,C:2,D:5} }
+    ]
+  }
+];
+
+// ── ロジック（全問2択方式）──
+let current = 0;
+// 各問ごとに選択インデックスの配列（最大2つ）
+let answers = Array.from({length: QUESTIONS.length}, () => []);
+let scores = {A:0, B:0, C:0, D:0};
+
+function startAssessment(){
+  document.getElementById('screen-welcome').style.display = 'none';
+  document.getElementById('screen-question').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+  document.getElementById('q-label').textContent = `質問 ${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('q-pct').textContent = pct + '%';
+  document.getElementById('q-fill').style.width = pct + '%';
+  document.getElementById('q-num').textContent = `QUESTION ${String(current+1).padStart(2,'0')}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  const hint = document.getElementById('q-hint');
+  const selected = answers[current];
+  const hintBase = q.hint || '';
+  const countMsg = selected.length === 0
+    ? '当てはまるものを2つまで選んでください'
+    : selected.length === 1
+      ? '✅ 1つ選択中 — もう1つ選べます（1つでもOK）'
+      : '✅ 2つ選択済み — 次へ進めます';
+  hint.style.display = 'block';
+  hint.innerHTML = (hintBase ? hintBase + '<br>' : '') +
+    `<span style="color:var(--gm);font-weight:700;">${countMsg}</span>`;
+
+  const container = document.getElementById('q-options');
+  container.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const isSelected = selected.includes(i);
+    const isDisabled = !isSelected && selected.length >= 2;
+    const btn = document.createElement('button');
+    btn.className = 'opt' + (isSelected ? ' selected' : '');
+    btn.style.opacity = isDisabled ? '0.4' : '1';
+    btn.innerHTML = `
+      <span class="opt-mark">${isSelected ? '✓' : ''}</span>
+      <span class="opt-text">${opt.text}</span>
+    `;
+    btn.onclick = () => { if(!isDisabled || isSelected) selectOption(i); };
+    container.appendChild(btn);
+  });
+
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = current === QUESTIONS.length - 1 ? '結果を見る 🌳' : '次の質問へ →';
+  nextBtn.className = 'btn-next' + (selected.length >= 1 ? ' active' : '');
+  document.querySelector('.q-card').style.animation = 'none';
+  requestAnimationFrame(() => { document.querySelector('.q-card').style.animation = ''; });
+}
+
+function selectOption(i){
+  const selected = answers[current];
+  const idx = selected.indexOf(i);
+  if(idx >= 0){
+    selected.splice(idx, 1); // 選択解除
+  } else {
+    if(selected.length < 2) selected.push(i); // 最大2つまで追加
+  }
+  renderQuestion();
+}
+
+function nextQuestion(){
+  const selected = answers[current];
+  if(selected.length === 0) return;
+  const q = QUESTIONS[current];
+  // 選んだ選択肢のスコアを全て加算
+  selected.forEach(i => {
+    const opt = q.options[i];
+    Object.keys(opt.scores).forEach(k => { scores[k] += opt.scores[k]; });
+  });
+
+  if(current < QUESTIONS.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  document.getElementById('screen-question').style.display = 'none';
+  document.getElementById('screen-result').style.display = 'block';
+  window.scrollTo(0,0);
+
+  // スコア正規化（100点満点）
+  const maxScore = Math.max(...Object.values(scores));
+  const minScore = Math.min(...Object.values(scores));
+  const range = maxScore - minScore || 1;
+  const normalized = {};
+  Object.keys(scores).forEach(k => {
+    normalized[k] = Math.round(((scores[k] - minScore) / range) * 70 + 30);
+  });
+
+  // 1位・2位を決定
+  const sorted = Object.entries(normalized).sort((a,b) => b[1]-a[1]);
+  const primary = sorted[0][0];
+  const secondary = sorted[1][0];
+  const diff = sorted[0][1] - sorted[1][1];
+
+  // ── 結果ヒーロー ──
+  const info = ASSESSMENTS[primary];
+  document.getElementById('r-badge').textContent = info.badge;
+  document.getElementById('r-name').textContent = info.icon + ' ' + info.name;
+  document.getElementById('r-desc').textContent = info.desc;
+
+  // ── キャリ爺コメント ──
+  document.getElementById('karioji-comment').innerHTML =
+    `<strong>${info.icon} ${info.name}</strong>から始めるのがおすすめです。<br>${info.comment}`;
+
+  // ── スコアバー ──
+  const barContainer = document.getElementById('score-bars');
+  barContainer.innerHTML = '';
+  const labels = {
+    A: '💼 VPI（興味・関心）',
+    B: '🧠 MBTI（性格タイプ）',
+    C: '⚓ キャリアアンカー（価値観）',
+    D: '💪 強み診断（得意なこと）'
+  };
+  sorted.forEach(([k, v], idx) => {
+    const row = document.createElement('div');
+    row.className = 'score-row';
+    row.innerHTML = `
+      <div class="score-label">${labels[k]}</div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-fill ${idx===0?'top':''}" style="width:0%" data-val="${v}"></div>
+      </div>
+      <div class="score-num">${v}</div>
+    `;
+    barContainer.appendChild(row);
+  });
+  // アニメーション
+  setTimeout(()=>{
+    barContainer.querySelectorAll('.score-bar-fill').forEach(el=>{
+      el.style.width = el.dataset.val + '%';
+    });
+  }, 100);
+
+  // ── 推奨カード ──
+  const recContainer = document.getElementById('rec-cards');
+  recContainer.innerHTML = '';
+  const recKeys = diff < 15 ? [primary, secondary] : [primary];
+  recKeys.forEach((k, idx) => {
+    const a = ASSESSMENTS[k];
+    const card = document.createElement('div');
+    card.className = 'rec-card' + (idx===0 ? ' primary' : '');
+    card.innerHTML = `
+      <div class="rec-badge">${idx===0 ? '★ 最もおすすめ' : '◎ こちらもおすすめ'}</div>
+      <div class="rec-name">${a.icon} ${a.name}</div>
+      <div class="rec-reason">${a.reason_tmpl}</div>
+      <button class="rec-btn" onclick="goToAssessment('${k}')">診断を始める →</button>
+    `;
+    recContainer.appendChild(card);
+  });
+
+  // ── 全診断リスト ──
+  const allContainer = document.getElementById('all-items');
+  allContainer.innerHTML = '';
+  ['A','B','C','D'].forEach(k => {
+    const a = ASSESSMENTS[k];
+    const item = document.createElement('div');
+    item.className = 'all-item';
+    item.innerHTML = `
+      <div class="all-ic">${a.icon}</div>
+      <div class="all-info">
+        <div class="all-name">${a.name}</div>
+        <div class="all-sub">${a.short}</div>
+      </div>
+      <div class="all-arrow">›</div>
+    `;
+    item.onclick = () => goToAssessment(k);
+    allContainer.appendChild(item);
+  });
+}
+
+function goToAssessment(key){
+  // パネルへの統合後はここで画面切り替えを行う
+  // 現時点では仮メッセージ
+  alert(`「${ASSESSMENTS[key].name}」に進みます。\n（パネル統合後はここで切り替わります）`);
+}
+
+function restart(){
+  current = 0;
+  answers = Array.from({length: QUESTIONS.length}, () => []);
+  scores = {A:0, B:0, C:0, D:0};
+  document.getElementById('screen-result').style.display = 'none';
+  document.getElementById('screen-welcome').style.display = 'block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
