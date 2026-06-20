@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>就活用語ノート | 就活の木</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e1b4b">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Shippori+Mincho:wght@500;700&display=swap');
+
+  :root{
+    --ink-deep:#1e1b4b;
+    --indigo:#6366f1;
+    --indigo-soft:#818cf8;
+    --violet:#a78bfa;
+    --marker:#fbbf24;
+    --marker-soft:#fde68a;
+    --paper:#f8f7ff;
+    --paper-card:#ffffff;
+    --text-main:#211d3a;
+    --text-sub:#5d5a7a;
+    --line:#e3e0fb;
+    --shadow-color: 222deg 40% 60%;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    background:
+      radial-gradient(ellipse 900px 500px at 10% -10%, #e9e6ff 0%, transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, #fef3d9 0%, transparent 55%),
+      var(--paper);
+    color:var(--text-main);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== Header ===== */
+  header{
+    position:sticky;
+    top:0;
+    z-index:30;
+    background:rgba(248,247,255,0.88);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    max-width:760px;
+    margin:0 auto;
+    padding:14px 20px 12px;
+  }
+  .brand-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .brand-left{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg, var(--indigo) 0%, var(--violet) 100%);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px hsl(var(--shadow-color) / 0.35);
+    flex-shrink:0;
+  }
+  .brand-mark svg{width:19px;height:19px;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.15;}
+  .brand-eyebrow{
+    font-size:10.5px; letter-spacing:.14em; color:var(--indigo);
+    font-weight:700;
+  }
+  .brand-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:19px; font-weight:700; color:var(--ink-deep);
+  }
+  .tree-link{
+    font-size:11.5px; color:var(--text-sub); text-decoration:none;
+    border:1px solid var(--line); padding:5px 10px; border-radius:99px;
+    white-space:nowrap;
+    transition:.18s;
+  }
+  .tree-link:hover{border-color:var(--indigo); color:var(--indigo);}
+
+  .search-wrap{margin-top:14px; position:relative;}
+  .search-icon{
+    position:absolute; left:15px; top:50%; transform:translateY(-50%);
+    width:17px;height:17px; color:var(--text-sub); pointer-events:none;
+  }
+  #searchInput{
+    width:100%;
+    padding:13px 42px 13px 42px;
+    border-radius:14px;
+    border:1.5px solid var(--line);
+    background:var(--paper-card);
+    font-size:15px;
+    font-family:inherit;
+    color:var(--text-main);
+    outline:none;
+    transition:.18s;
+    box-shadow:0 2px 10px hsl(var(--shadow-color) / 0.06);
+  }
+  #searchInput:focus{
+    border-color:var(--indigo);
+    box-shadow:0 0 0 4px hsl(239 84% 67% / 0.12);
+  }
+  #searchInput::placeholder{color:#a6a3c4;}
+  .clear-btn{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    width:24px;height:24px;border-radius:50%;
+    border:none; background:#ece9ff; color:var(--indigo);
+    cursor:pointer; display:none; align-items:center; justify-content:center;
+    font-size:14px; line-height:1;
+  }
+  .clear-btn.show{display:flex;}
+
+  .toolbar{
+    margin-top:10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .result-meta{
+    font-size:12px; color:var(--text-sub);
+  }
+  .result-meta b{color:var(--ink-deep); font-weight:700;}
+  .toggle-all-btn{
+    font-size:11.5px;
+    color:var(--indigo);
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    padding:4px 6px;
+    white-space:nowrap;
+  }
+  .toggle-all-btn:hover{text-decoration:underline;}
+
+  /* ===== Main / Accordion ===== */
+  main{max-width:760px; margin:0 auto; padding:18px 20px 80px;}
+
+  .category-block{
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--paper-card);
+    margin-bottom:12px;
+    overflow:hidden;
+    transition:box-shadow .18s, border-color .18s;
+  }
+  .category-block.cat-open{
+    box-shadow:0 8px 22px hsl(var(--shadow-color) / 0.10);
+    border-color:var(--indigo-soft);
+  }
+
+  .category-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:15px 18px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+  }
+  .category-icon{
+    width:34px;height:34px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .category-icon svg{width:17px;height:17px;}
+
+  .category-title-wrap{flex:1; min-width:0;}
+  .category-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink-deep);
+  }
+  .category-sub{
+    font-size:11.5px;
+    color:var(--text-sub);
+    margin-top:1px;
+  }
+  .category-chevron{
+    width:20px;height:20px;
+    color:var(--text-sub);
+    flex-shrink:0;
+    transition:transform .22s ease, color .18s;
+  }
+  .category-block.cat-open .category-chevron{
+    transform:rotate(180deg);
+    color:var(--indigo);
+  }
+
+  .category-body{
+    display:none;
+  }
+  .category-block.cat-open .category-body{
+    display:block;
+  }
+  .category-body-inner{
+    padding:0 14px 14px;
+    border-top:1px solid var(--line);
+    padding-top:6px;
+  }
+
+  /* ===== Term row (nested accordion) ===== */
+  .term-row{
+    border-radius:12px;
+    margin-top:6px;
+    transition:background .15s;
+  }
+  .term-row:hover{background:#f6f4ff;}
+  .term-row.term-open{background:#f3f1ff;}
+
+  .term-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 12px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .term-name{
+    flex:1;
+    font-size:14.5px;
+    font-weight:500;
+    color:var(--text-main);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .term-name .label{
+    position:relative;
+    display:inline;
+    background-image:linear-gradient(var(--marker-soft), var(--marker-soft));
+    background-repeat:no-repeat;
+    background-size:0% 36%;
+    background-position:0 88%;
+    transition:background-size .22s ease;
+  }
+  .term-row.term-open .term-name .label{background-size:100% 36%;}
+
+  .newgrad-tag{
+    font-size:9.5px; font-weight:700; color:#92660a;
+    background:linear-gradient(135deg, var(--marker-soft), var(--marker));
+    padding:2px 7px; border-radius:99px;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+
+  .term-chevron{
+    width:15px;height:15px;
+    color:#b3b0d6;
+    flex-shrink:0;
+    transition:transform .2s ease, color .15s;
+  }
+  .term-row.term-open .term-chevron{transform:rotate(180deg); color:var(--indigo);}
+
+  .term-body{
+    display:none;
+  }
+  .term-row.term-open .term-body{
+    display:block;
+  }
+  .term-body-inner{
+    padding:0 12px 13px 12px;
+    font-size:13px;
+    line-height:1.75;
+    color:var(--text-sub);
+  }
+
+  mark{
+    background:var(--marker-soft);
+    border-radius:3px;
+    padding:0 1px;
+    color:inherit;
+  }
+
+  .empty-state{
+    text-align:center;
+    padding:70px 20px;
+    color:var(--text-sub);
+  }
+  .empty-state svg{width:46px;height:46px; color:var(--violet); margin-bottom:14px;}
+  .empty-state p{font-size:14.5px; margin:4px 0;}
+  .empty-state .sub{font-size:12.5px; color:#a6a3c4;}
+
+  /* category color tokens */
+  .cat-応募方法 .category-icon{color:#6366f1; background:#eef0ff;}
+  .cat-仕事内容 .category-icon{color:#0891b2; background:#e3f8fb;}
+  .cat-対象となる方 .category-icon{color:#a855f7; background:#f5ecfe;}
+  .cat-勤務時間 .category-icon{color:#ea580c; background:#fef0e6;}
+  .cat-雇用形態 .category-icon{color:#0d9488; background:#e2f7f3;}
+  .cat-給与 .category-icon{color:#ca8a04; background:#fdf6df;}
+  .cat-賞与 .category-icon{color:#db2777; background:#fdebf3;}
+  .cat-待遇福利厚生 .category-icon{color:#4f46e5; background:#ebebfe;}
+  .cat-休日休暇 .category-icon{color:#16a34a; background:#e6f7ec;}
+
+  footer{
+    text-align:center;
+    padding:30px 20px 50px;
+    font-size:11.5px;
+    color:#a6a3c4;
+    line-height:1.9;
+  }
+
+  @media (max-width:480px){
+    .brand-title{font-size:17px;}
+    main{padding:16px 14px 70px;}
+    .category-header{padding:13px 14px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-row">
+      <div class="brand-left">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 19h16M6 19V9.5L12 5l6 4.5V19M10 19v-5h4v5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-eyebrow">就活の木</span>
+          <span class="brand-title">就活用語ノート</span>
+        </div>
+      </div>
+      <a href="index.html" class="tree-link">← パネルに戻る</a>
+    </div>
+
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInput" placeholder="気になる言葉を入力（例：内々定、初任給、配属）" autocomplete="off">
+      <button class="clear-btn" id="clearBtn" aria-label="検索をクリア">✕</button>
+    </div>
+
+    <div class="toolbar">
+      <p class="result-meta" id="resultMeta"></p>
+      <button class="toggle-all-btn" id="toggleAllBtn">すべて開く</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="accordionRoot"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M8 11h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    <p>その言葉は見つかりませんでした</p>
+    <p class="sub">表記ゆれかも？ 別の言い方で探してみてください</p>
+  </div>
+</main>
+
+<footer>
+  就活の木 - 就活用語ノート<br>
+  わからない言葉は、わからないままにしない。それも準備のひとつです。
+</footer>
+
+<script src="glossary-data.js"></script>
+<script>
+(function(){
+  const CATEGORY_ICONS = {
+    "応募方法": '<svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.8"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    "仕事内容": '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" stroke-width="1.8"/></svg>',
+    "対象となる方": '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    "勤務時間": '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    "雇用形態": '<svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    "給与": '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v9M9.3 9.3c0-1.1 1.2-1.9 2.7-1.9 1.7 0 2.7.9 2.7 1.9 0 2.6-5.4 1.3-5.4 3.9 0 1.1 1.2 1.9 2.7 1.9s2.7-.8 2.7-1.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    "賞与": '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.3 4.8L19.5 9l-3.8 3.5L16.6 18 12 15.2 7.4 18l.9-5.5L4.5 9l5.2-1.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+    "待遇・福利厚生": '<svg viewBox="0 0 24 24" fill="none"><path d="M12 20.5S4 15.8 4 10.2C4 7.3 6.2 5 9 5c1.5 0 2.6.7 3 1.6.4-.9 1.5-1.6 3-1.6 2.8 0 5 2.3 5 5.2 0 5.6-8 10.3-8 10.3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+    "休日・休暇": '<svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'
+  };
+
+  const CATEGORY_ORDER = ["応募方法","仕事内容","対象となる方","雇用形態","給与","賞与","待遇・福利厚生","勤務時間","休日・休暇"];
+
+  // state: 開いているカテゴリ・用語のキーをSetで管理
+  let openCategories = new Set();
+  let openTerms = new Set();
+  let allExpanded = false;
+
+  const root = document.getElementById('accordionRoot');
+  const searchInput = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearBtn');
+  const resultMeta = document.getElementById('resultMeta');
+  const emptyState = document.getElementById('emptyState');
+  const toggleAllBtn = document.getElementById('toggleAllBtn');
+
+  function groupByCategory(items){
+    const map = {};
+    CATEGORY_ORDER.forEach(c => map[c] = []);
+    items.forEach(item => {
+      if(!map[item.category]) map[item.category] = [];
+      map[item.category].push(item);
+    });
+    return map;
+  }
+
+  function highlightMatch(text, query){
+    if(!query) return text;
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if(idx === -1) return text;
+    return text.slice(0,idx) + '<mark>' + text.slice(idx, idx+query.length) + '</mark>' + text.slice(idx+query.length);
+  }
+
+  function getFiltered(){
+    const q = searchInput.value.trim();
+    if(!q) return GLOSSARY_DATA;
+    return GLOSSARY_DATA.filter(item => item.term.includes(q) || item.desc.includes(q));
+  }
+
+  function render(){
+    const q = searchInput.value.trim();
+    const items = getFiltered();
+    clearBtn.classList.toggle('show', q.length > 0);
+
+    if(items.length === 0){
+      root.style.display = 'none';
+      emptyState.style.display = 'block';
+      resultMeta.textContent = '';
+      return;
+    }
+    root.style.display = 'block';
+    emptyState.style.display = 'none';
+
+    resultMeta.innerHTML = q
+      ? `「${q}」の検索結果：<b>${items.length}</b>件`
+      : `全<b>${GLOSSARY_DATA.length}</b>語`;
+
+    // 検索時：該当カテゴリだけ自動的に開く
+    if(q){
+      const matchedCats = new Set(items.map(i => i.category));
+      openCategories = matchedCats;
+      // 用語側も、検索ヒットしたものは自動展開して説明文を見せる
+      openTerms = new Set(items.map(i => i.category + '|' + i.term));
+    }
+
+    const grouped = groupByCategory(items);
+
+    root.innerHTML = CATEGORY_ORDER.map(cat => {
+      const list = grouped[cat] || [];
+      if(list.length === 0) return '';
+      const isCatOpen = openCategories.has(cat);
+      const icon = CATEGORY_ICONS[cat] || '';
+      const cssClass = 'cat-' + cat.replace(/[・]/g,'');
+
+      const termsHtml = list.map(item => {
+        const key = item.category + '|' + item.term;
+        const isTermOpen = openTerms.has(key);
+        return `
+          <div class="term-row ${isTermOpen ? 'term-open':''}" data-key="${key}">
+            <div class="term-header" data-role="term-header">
+              <span class="term-name">
+                <span class="label">${highlightMatch(item.term, q)}</span>
+                ${item.isNewGrad ? '<span class="newgrad-tag">🔰新卒</span>' : ''}
+              </span>
+              <svg class="term-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="term-body" data-role="term-body">
+              <div class="term-body-inner">${highlightMatch(item.desc, q)}</div>
+            </div>
+          </div>`;
+      }).join("");
+
+      return `
+        <div class="category-block ${cssClass} ${isCatOpen ? 'cat-open':''}" data-cat="${cat}">
+          <div class="category-header" data-role="category-header">
+            <div class="category-icon">${icon}</div>
+            <div class="category-title-wrap">
+              <div class="category-title">${cat}</div>
+              <div class="category-sub">${list.length}語</div>
+            </div>
+            <svg class="category-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="category-body" data-role="category-body">
+            <div class="category-body-inner" data-role="category-body-inner">
+              ${termsHtml}
+            </div>
+          </div>
+        </div>`;
+    }).join("");
+
+    // イベントバインド（display:none/block方式のため高さ計算は不要）
+    root.querySelectorAll('.category-block').forEach(block => {
+      const cat = block.dataset.cat;
+      const header = block.querySelector('[data-role="category-header"]');
+
+      header.addEventListener('click', () => {
+        const nowOpen = openCategories.has(cat);
+        if(nowOpen){
+          openCategories.delete(cat);
+        } else {
+          openCategories.add(cat);
+        }
+        block.classList.toggle('cat-open', !nowOpen);
+      });
+
+      block.querySelectorAll('.term-row').forEach(row => {
+        const key = row.dataset.key;
+        const tHeader = row.querySelector('[data-role="term-header"]');
+
+        tHeader.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const nowOpen = openTerms.has(key);
+          if(nowOpen){
+            openTerms.delete(key);
+          } else {
+            openTerms.add(key);
+          }
+          row.classList.toggle('term-open', !nowOpen);
+        });
+      });
+    });
+  }
+
+  searchInput.addEventListener('input', render);
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    render();
+    searchInput.focus();
+  });
+
+  toggleAllBtn.addEventListener('click', () => {
+    allExpanded = !allExpanded;
+    if(allExpanded){
+      openCategories = new Set(CATEGORY_ORDER);
+      toggleAllBtn.textContent = 'すべて閉じる';
+    } else {
+      openCategories = new Set();
+      openTerms = new Set();
+      toggleAllBtn.textContent = 'すべて開く';
+    }
+    render();
+  });
+
+  // 用語のディープリンク対応 (?q=内々定)
+  const params = new URLSearchParams(location.search);
+  if(params.get('q')) searchInput.value = params.get('q');
+
+  render();
+})();
+</script>
+
+</body>
+</html>
