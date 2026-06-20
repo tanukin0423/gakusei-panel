@@ -1,0 +1,5135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>就活の木 学生サポートパネル</title>
+
+<!-- ── PWA（ホーム画面アイコン登録）対応 ── -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2d6a4f">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="就活の木">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gd:#2d6a4f;
+  --gm:#52b788;
+  --gl:#74c69d;
+  --gp:#b7e4c7;
+  --gbg:#f1faf4;
+  --glight:#d8f3dc;
+  --gold:#c9a84c;
+  --goldl:#f0d080;
+  --br:#5c3d1e;
+  --wh:#fefffe;
+  --sh:rgba(45,106,79,0.15);
+  --card-border:#95d5b2;
+  /* 中央ボタン専用：金色系で目立つが緑に馴染む */
+  --cta:#b8860b;
+  --ctal:#ffd700;
+  --ctabg:linear-gradient(145deg,#3a5a3a,#52b788);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--gbg);min-height:100vh;overflow-x:hidden;}
+
+/* ── ヘッダー ── */
+header{
+  position:fixed;top:0;left:0;right:0;
+  background:linear-gradient(135deg,var(--gd),var(--gm));
+  color:var(--wh);padding:10px 16px;
+  display:flex;align-items:center;gap:10px;
+  z-index:200;box-shadow:0 2px 16px var(--sh);
+}
+.logo{font-size:22px;flex-shrink:0;}
+.htxt{flex:1;min-width:0;}
+.htitle{font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;font-weight:900;letter-spacing:0.08em;color:var(--goldl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hsub{font-size:9px;color:var(--gp);margin-top:1px;}
+.clock{color:var(--gp);font-size:11px;font-variant-numeric:tabular-nums;flex-shrink:0;}
+.badge{background:var(--glight);color:var(--gd);font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;flex-shrink:0;border:1px solid var(--gl);}
+
+.wrap{padding-top:52px;padding-bottom:64px;}
+
+/* ── スマホ縦並び ── */
+.sp{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 14px;}
+
+/* 中央メインカード */
+.main-card{
+  width:100%;max-width:420px;
+  background:linear-gradient(145deg,#1e4d2f,#2d6a4f);
+  border:3px solid var(--gold);
+  border-radius:20px;
+  box-shadow:0 6px 24px rgba(45,106,79,0.35),0 0 0 5px rgba(201,168,76,0.2);
+  display:flex;align-items:center;gap:14px;
+  padding:18px 20px 22px;text-decoration:none;position:relative;
+  transition:transform 0.15s;
+  animation:pulse-gold 2.5s ease-in-out infinite;
+}
+.main-card:active{transform:scale(0.97);}
+.main-card .ic{font-size:38px;flex-shrink:0;}
+.main-card .ttl{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:15px;font-weight:900;
+  color:var(--goldl);letter-spacing:0.06em;
+}
+.main-card .dsc{font-size:10px;color:var(--gp);margin-top:4px;line-height:1.6;}
+.mbadge{
+  position:absolute;top:8px;right:10px;
+  background:var(--gold);color:var(--br);
+  font-size:8px;font-weight:700;padding:2px 7px;border-radius:8px;
+}
+/* 予約アイコンバー */
+.main-card .reserve-bar{
+  display:flex;align-items:center;gap:6px;
+  margin-top:8px;
+  background:rgba(201,168,76,0.18);
+  border:1px solid rgba(201,168,76,0.4);
+  border-radius:8px;padding:6px 10px;
+  flex-wrap:nowrap;
+}
+.main-card .reserve-bar span{font-size:10px;color:var(--goldl);font-weight:700;white-space:nowrap;}
+.main-card .reserve-bar .arrow{font-size:12px;color:var(--goldl);flex-shrink:0;}
+
+/* 「まずこれから！」診断カード：mainより上に置く最優先カード */
+.hajimeyou-card{
+  width:100%;max-width:420px;
+  background:linear-gradient(145deg,#1b5e3f,#2f9e72);
+  border:3px solid #d4a843;
+  border-radius:20px;
+  box-shadow:0 6px 24px rgba(47,158,114,0.35),0 0 0 5px rgba(212,168,67,0.22);
+  display:flex;align-items:center;gap:14px;
+  padding:18px 20px;text-decoration:none;position:relative;
+  cursor:pointer;
+  transition:transform 0.15s;
+  animation:pulse-mint 2.5s ease-in-out infinite;
+}
+.hajimeyou-card:active{transform:scale(0.97);}
+.hajimeyou-card .ic{font-size:38px;flex-shrink:0;}
+.hajimeyou-card .ttl{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:15px;font-weight:900;
+  color:#fff;letter-spacing:0.04em;
+}
+.hajimeyou-card .dsc{font-size:10px;color:#d8f3dc;margin-top:4px;line-height:1.6;}
+.hbadge{
+  position:absolute;top:8px;right:10px;
+  background:#d4a843;color:#3a2c0a;
+  font-size:8px;font-weight:700;padding:2px 7px;border-radius:8px;
+}
+.hajimeyou-card .reserve-bar{
+  display:flex;align-items:center;gap:6px;
+  margin-top:8px;
+  background:rgba(212,168,67,0.2);
+  border:1px solid rgba(212,168,67,0.45);
+  border-radius:8px;padding:5px 10px;
+}
+.hajimeyou-card .reserve-bar span{font-size:10px;color:#fff;font-weight:700;}
+.hajimeyou-card .reserve-bar .arrow{font-size:12px;color:#fff;}
+
+/* クリックボタン：押せることが一目で分かる本格ボタン（スマホ版） */
+.hj-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:10px;
+  background:#d4a843;
+  border:1.5px solid #f0d080;
+  border-radius:9px;padding:9px 18px;
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:12px;font-weight:900;color:#1b3a28;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(212,168,67,0.45);
+  transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+.hj-btn:active{transform:scale(0.96);box-shadow:0 2px 6px rgba(212,168,67,0.4);}
+.hj-btn .arrow{font-size:13px;color:#1b3a28;}
+
+@keyframes pulse-mint{
+  0%,100%{box-shadow:0 8px 40px rgba(47,158,114,0.35),0 0 0 6px rgba(212,168,67,0.2);}
+  50%{box-shadow:0 8px 40px rgba(47,158,114,0.35),0 0 0 12px rgba(212,168,67,0.4);}
+}
+
+/* セクションラベル */
+.slabel{
+  width:100%;max-width:420px;font-size:10px;font-weight:700;
+  color:var(--gm);letter-spacing:0.1em;
+  display:flex;align-items:center;gap:8px;margin-top:6px;
+}
+.slabel::after{content:'';flex:1;height:1px;background:var(--gp);}
+
+/* サブカード */
+.sub-card{
+  width:100%;max-width:420px;
+  background:var(--wh);border:1.5px solid var(--card-border);
+  border-radius:14px;display:flex;align-items:center;gap:14px;
+  padding:13px 16px;text-decoration:none;
+  box-shadow:0 2px 10px var(--sh);transition:transform 0.15s;
+  position:relative;cursor:pointer;
+}
+.sub-card:active{transform:scale(0.97);background:var(--glight);}
+.sub-card .ic{font-size:26px;flex-shrink:0;}
+.sub-card .ttl{font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;color:var(--gd);line-height:1.3;}
+.sub-card .dsc{font-size:9px;color:var(--gm);opacity:0.85;margin-top:2px;line-height:1.5;}
+.step-num{
+  position:absolute;top:8px;right:10px;
+  background:var(--glight);color:var(--gd);
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;
+  border:1px solid var(--gl);
+}
+
+/* ES作成ツール：2モード ミニボタン（スマホ版） */
+.es-dual-card{cursor:default;}
+.es-dual-card:active{transform:none;background:var(--wh);}
+.es-dual-btns{
+  display:flex;gap:6px;margin-top:8px;
+}
+.es-mini-btn{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;
+  border:none;cursor:pointer;
+  border-radius:8px;padding:7px 6px;
+  font-size:10px;font-weight:700;
+  transition:transform 0.15s ease;
+}
+.es-mini-btn:active{transform:scale(0.95);}
+.es-mini-entry{background:var(--glight);color:var(--gd);border:1.5px solid var(--gl);}
+.es-mini-pro{background:linear-gradient(135deg,#1e4d2f,#2d6a4f);color:#fff;border:1.5px solid var(--gold);}
+
+/* ── PCグリッド ── */
+.pc{display:none;}
+@media(min-width:769px){
+  .sp{display:none;}
+  .pc{
+    display:grid;
+    grid-template-columns:190px 190px 300px 190px;
+    grid-template-rows:200px 160px 190px 160px;
+    gap:16px;
+    align-items:center;justify-items:center;justify-content:center;
+    padding:32px 16px 40px;
+    position:relative;z-index:2;
+  }
+  .pc-card{
+    width:100%;height:100%;border-radius:20px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    text-decoration:none;position:relative;overflow:hidden;
+    border:2px solid transparent;
+    transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    cursor:pointer;
+  }
+  .pc-sub{
+    background:var(--wh);
+    box-shadow:0 4px 20px var(--sh);
+    border-color:var(--card-border);
+  }
+  .pc-sub:hover{
+    transform:translateY(-6px) scale(1.04);
+    box-shadow:0 16px 40px var(--sh);
+    border-color:var(--gl);
+    background:var(--glight);
+  }
+  /* 最上段：まずこれから！診断カード（mainより目立つ最優先カード） */
+  .pc-hajimeyou{
+    grid-column:1 / span 4;grid-row:1;
+    width:100%;max-width:980px;
+    background:linear-gradient(135deg,#143d29,#1b5e3f 45%,#2f9e72);
+    border:4px solid #d4a843;
+    box-shadow:0 10px 38px rgba(47,158,114,0.4),0 0 0 7px rgba(212,168,67,0.22);
+    flex-direction:row;gap:24px;justify-content:flex-start;
+    padding:0 36px;
+    animation:pulse-mint 2.5s ease-in-out infinite;
+  }
+  .pc-hajimeyou:hover{transform:translateY(-5px) scale(1.015);}
+  .pc-hajimeyou .pc-ic{
+    font-size:56px;flex-shrink:0;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+  }
+  .pc-hajimeyou .pc-ttl{font-size:21px;line-height:1.4;color:#fff;text-align:left;font-weight:900;}
+  .pc-hajimeyou .pc-dsc{font-size:13px;color:#d8f3dc;text-align:left;opacity:1;margin-top:6px;}
+  .pc-hreserve{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#d4a843;
+    border:none;
+    border-radius:10px;padding:10px 22px;margin-top:14px;
+    box-shadow:0 4px 14px rgba(212,168,67,0.4);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .pc-hajimeyou:hover .pc-hreserve{
+    transform:translateX(4px);
+    box-shadow:0 6px 18px rgba(212,168,67,0.55);
+  }
+  .pc-hreserve span{font-size:13.5px;color:#1b3a28;font-weight:900;}
+  .pc-hajimeyou .pc-badge{
+    font-size:11px;padding:4px 12px;top:14px;right:18px;
+  }
+
+  /* クリックボタン：押せることが一目で分かる本格ボタン */
+  .pc-hbtn{
+    display:inline-flex;align-items:center;gap:10px;
+    background:#d4a843;
+    border:2px solid #f0d080;
+    border-radius:12px;padding:13px 28px;margin-top:16px;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:14.5px;font-weight:900;color:#1b3a28;
+    cursor:pointer;
+    box-shadow:0 5px 16px rgba(212,168,67,0.5);
+    transition:transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+  .pc-hbtn:hover{
+    background:#f0d080;
+    transform:translateY(-2px) scale(1.03);
+    box-shadow:0 8px 22px rgba(212,168,67,0.65);
+  }
+  .pc-hbtn:active{transform:translateY(0) scale(0.98);}
+  .pc-hbtn-arrow{
+    display:inline-block;
+    transition:transform 0.18s ease;
+  }
+  .pc-hbtn:hover .pc-hbtn-arrow{transform:translateX(4px);}
+
+  /* 中央：金枠＋深緑グラデ＋金パルス */
+  .pc-main{
+    grid-column:3;grid-row:3;
+    background:linear-gradient(145deg,#1e4d2f,#2d6a4f,#3a7a5f);
+    border:3px solid var(--gold);
+    box-shadow:0 8px 40px rgba(45,106,79,0.35),0 0 0 6px rgba(201,168,76,0.2);
+    animation:pulse-gold 2.5s ease-in-out infinite;
+  }
+  .pc-main:hover{transform:translateY(-4px) scale(1.03);}
+  .pc-ic{font-size:34px;transition:transform 0.3s;}
+  .pc-main .pc-ic{font-size:44px;}
+  .pc-card:hover .pc-ic{transform:scale(1.12);}
+  .pc-ttl{
+    font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;
+    font-size:13px;text-align:center;color:var(--gd);line-height:1.5;
+  }
+  .pc-main .pc-ttl{font-size:15px;color:var(--goldl);}
+  .pc-dsc{font-size:9px;color:var(--gm);text-align:center;opacity:0.8;line-height:1.5;padding:0 8px;}
+  .pc-main .pc-dsc{color:var(--gp);opacity:0.95;}
+  .pc-badge{
+    position:absolute;top:10px;right:12px;
+    background:var(--gold);color:var(--br);
+    font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;
+  }
+  .pc-step{
+    position:absolute;top:10px;left:12px;
+    background:var(--glight);color:var(--gd);
+    font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;
+    border:1px solid var(--gl);
+  }
+  /* 予約バー（PC中央） */
+  .pc-reserve{
+    display:flex;align-items:center;gap:6px;
+    background:rgba(201,168,76,0.2);
+    border:1px solid rgba(201,168,76,0.45);
+    border-radius:8px;padding:5px 14px;margin-top:4px;
+  }
+  .pc-reserve span{font-size:10px;color:var(--goldl);font-weight:700;}
+
+  /* ES作成ツール：2モード ミニボタン（PC版） */
+  .es-dual-card-pc{cursor:default;gap:6px;padding:14px 12px;}
+  .es-dual-card-pc:hover{transform:none;box-shadow:0 4px 20px var(--sh);border-color:var(--card-border);background:var(--wh);}
+  .es-dual-card-pc .pc-ic{font-size:26px;}
+  .es-dual-card-pc .pc-ttl{font-size:12px;margin-bottom:2px;}
+  .es-dual-btns-pc{
+    display:flex;flex-direction:column;gap:5px;width:100%;
+  }
+  .es-mini-btn-pc{
+    width:100%;
+    border:none;cursor:pointer;
+    border-radius:8px;padding:6px 8px;
+    font-size:10px;font-weight:700;
+    transition:transform 0.15s ease;
+  }
+  .es-mini-btn-pc:hover{transform:scale(1.04);}
+  .es-mini-btn-pc:active{transform:scale(0.96);}
+  .es-mini-btn-pc.es-mini-entry{background:var(--glight);color:var(--gd);border:1.5px solid var(--gl);}
+  .es-mini-btn-pc.es-mini-pro{background:linear-gradient(135deg,#1e4d2f,#2d6a4f);color:#fff;border:1.5px solid var(--gold);}
+
+  .p-hc{grid-column:3;grid-row:1;}
+
+  .p-tl{grid-column:1;grid-row:2;}
+  .p-tc{grid-column:2;grid-row:2;}
+  .p-tr{grid-column:3;grid-row:2;}
+  .p-t4{grid-column:4;grid-row:2;}
+  .p-ml{grid-column:1;grid-row:3;}
+  .p-mc{grid-column:2;grid-row:3;}
+  .p-mr{grid-column:4;grid-row:3;}
+  .p-bl{grid-column:1;grid-row:4;}
+  .p-bc{grid-column:2;grid-row:4;}
+  .p-br{grid-column:3;grid-row:4;}
+  .p-b4{grid-column:4;grid-row:4;}
+
+  svg.lines{
+    position:fixed;top:52px;left:0;width:100%;
+    height:calc(100% - 60px);pointer-events:none;z-index:1;
+  }
+}
+
+/* ── モーダル ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.55);z-index:300;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.active{display:flex;}
+.modal{
+  background:var(--wh);border-radius:20px;
+  max-width:480px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  overflow:hidden;max-height:88vh;overflow-y:auto;
+}
+.modal-head{
+  background:linear-gradient(135deg,var(--gd),var(--gm));
+  padding:20px 24px;color:var(--wh);
+}
+.modal-head .mic{font-size:30px;margin-bottom:6px;}
+.modal-head .mttl{font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;color:var(--goldl);}
+.modal-head .msub{font-size:11px;color:var(--gp);margin-top:4px;line-height:1.6;}
+.modal-body{padding:18px 24px;}
+.modal-body p{font-size:12px;color:#333;line-height:1.8;margin-bottom:10px;}
+.tip{
+  background:var(--glight);border-left:4px solid var(--gl);
+  border-radius:8px;padding:11px 14px;margin-bottom:10px;
+}
+.tip p{margin:0;font-size:11px;color:var(--gd);line-height:1.7;}
+.tip strong{font-size:12px;}
+.modal-links{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+.modal-btn{border:none;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  background:var(--gd);color:var(--wh);
+  padding:11px 16px;border-radius:12px;
+  text-decoration:none;font-size:12px;font-weight:700;
+  transition:background 0.2s;
+}
+.modal-btn:hover{background:var(--gm);}
+.modal-btn .btn-ic{font-size:20px;flex-shrink:0;}
+.modal-btn .btn-sub{font-size:9px;opacity:0.8;margin-top:2px;}
+.modal-section-title{
+  font-size:11px;font-weight:700;color:var(--gm);
+  letter-spacing:0.08em;margin:14px 0 6px;
+  display:flex;align-items:center;gap:6px;
+}
+.modal-section-title::after{content:'';flex:1;height:1px;background:var(--gp);}
+
+/* ── ESツール：エントリー版／本格版 振り分け ── */
+.es-level-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:16px;
+}
+.es-level-card{
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  border:none;cursor:pointer;
+  border-radius:16px;
+  padding:24px 16px;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+.es-level-card:hover{transform:translateY(-4px);}
+.es-level-card:active{transform:translateY(-1px) scale(0.98);}
+.es-level-entry{
+  background:linear-gradient(160deg,#eafaf1,#d8f3dc);
+  border:2px solid var(--gl);
+  box-shadow:0 4px 16px rgba(82,183,136,0.25);
+}
+.es-level-pro{
+  background:linear-gradient(160deg,#1e4d2f,#2d6a4f);
+  border:2px solid var(--gold);
+  box-shadow:0 4px 16px rgba(45,106,79,0.3);
+}
+.es-level-badge{
+  font-size:9px;font-weight:700;
+  background:var(--gm);color:#fff;
+  padding:3px 10px;border-radius:10px;
+  margin-bottom:10px;
+}
+.es-level-badge-pro{background:var(--gold);color:var(--br);}
+.es-level-ic{font-size:36px;margin-bottom:8px;}
+.es-level-ttl{
+  font-family:'Zen Kaku Gothic New',sans-serif;
+  font-size:15px;font-weight:900;color:var(--gd);
+  margin-bottom:6px;
+}
+.es-level-pro .es-level-ttl{color:#fff;}
+.es-level-dsc{font-size:10.5px;color:var(--gm);line-height:1.6;}
+.es-level-pro .es-level-dsc{color:var(--gp);}
+
+.es-back-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:11px;color:var(--gm);font-weight:700;
+  margin-bottom:10px;padding:4px 0;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.es-back-btn:hover{color:var(--gd);text-decoration:underline;}
+
+@media(max-width:480px){
+  .es-level-grid{grid-template-columns:1fr;}
+}
+
+.modal-close{
+  width:100%;margin-top:14px;padding:10px;
+  background:none;border:2px solid var(--card-border);
+  border-radius:10px;color:var(--gm);font-size:12px;
+  font-weight:700;cursor:pointer;transition:background 0.2s;
+}
+.modal-close:hover{background:var(--glight);}
+
+/* ── 学年選択モーダル ── */
+#grade-modal{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);z-index:500;
+  align-items:center;justify-content:center;padding:20px;
+}
+#grade-modal.active{display:flex;}
+.grade-box{
+  background:var(--wh);border-radius:24px;
+  max-width:360px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+  overflow:hidden;
+}
+.grade-head{
+  background:linear-gradient(135deg,var(--gd),var(--gm));
+  padding:24px;text-align:center;
+}
+.grade-head .g-ic{font-size:40px;margin-bottom:8px;}
+.grade-head .g-ttl{font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;color:var(--goldl);}
+.grade-head .g-sub{font-size:11px;color:var(--gp);margin-top:6px;line-height:1.6;}
+.grade-body{padding:24px;}
+.grade-btns{display:flex;gap:12px;}
+.grade-btn{
+  flex:1;padding:18px 8px;border-radius:16px;border:none;cursor:pointer;
+  font-family:'Zen Kaku Gothic New',sans-serif;font-size:16px;font-weight:900;
+  transition:all 0.2s;
+}
+.grade-btn.g3{background:var(--glight);color:var(--gd);border:2px solid var(--gl);}
+.grade-btn.g3:hover{background:var(--gl);color:var(--wh);}
+.grade-btn.g4{background:var(--gd);color:var(--goldl);border:2px solid var(--gold);}
+.grade-btn.g4:hover{background:#1a4a2e;}
+.grade-btn .g-year{font-size:10px;font-weight:400;display:block;margin-top:4px;opacity:0.8;}
+.grade-note{font-size:10px;color:var(--gm);text-align:center;margin-top:14px;line-height:1.6;}
+
+/* ヘッダー学年バッジ（変更ボタン） */
+.grade-badge{
+  background:var(--glight);color:var(--gd);
+  font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;
+  flex-shrink:0;border:1px solid var(--gl);cursor:pointer;
+  transition:background 0.2s;
+}
+.grade-badge:hover{background:var(--gl);color:var(--wh);}
+
+/* ── ES作成モーダル専用 ── */
+.es-theme-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;
+}
+.es-theme-btn{
+  background:var(--wh);border:1.5px solid var(--card-border);
+  border-radius:10px;padding:10px 6px 6px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:all 0.2s;text-align:center;position:relative;
+}
+.es-theme-btn:hover{background:var(--glight);border-color:var(--gm);transform:translateY(-2px);}
+.es-theme-btn:active{transform:scale(0.97);}
+.es-th-ic{font-size:22px;line-height:1;}
+.es-th-name{font-size:10px;font-weight:700;color:var(--gd);line-height:1.4;}
+.es-th-sub{font-size:9px;font-weight:400;color:var(--gm);display:block;margin-top:2px;}
+.es-detail-link{
+  font-size:8px;color:var(--gm);text-decoration:underline;
+  padding:2px 0;cursor:pointer;margin-top:2px;
+  opacity:0.7;
+}
+.es-detail-link:hover{opacity:1;color:var(--gd);}
+.es-pr-btn .es-th-name{font-size:10px;}
+.es-pr-groups{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;}
+.es-pr-group{background:var(--gbg);border-radius:10px;padding:10px 10px 8px;}
+.es-pr-group-label{font-size:10px;font-weight:700;color:var(--gd);margin-bottom:8px;
+  display:flex;align-items:center;gap:5px;}
+.es-pr-group-label::after{content:'';flex:1;height:1px;background:var(--gp);}
+/* フォーム画面 */
+.es-form-wrap{display:flex;flex-direction:column;gap:0;}
+.es-form-group{margin-bottom:16px;}
+.es-label{display:block;font-weight:700;font-size:.87rem;color:#2c3e50;margin-bottom:6px;}
+.es-keiji-q{background:var(--glight);border-left:3px solid var(--gm);border-radius:0 6px 6px 0;
+  padding:8px 12px;font-size:.78rem;color:var(--gd);line-height:1.7;margin-bottom:7px;}
+.es-keiji-ql{font-weight:700;color:var(--gm);font-size:.76rem;display:block;margin-bottom:4px;}
+.es-textarea{width:100%;padding:9px 11px;border:1px solid #ccc;border-radius:6px;
+  font-size:.86rem;font-family:'Noto Sans JP',sans-serif;
+  min-height:80px;resize:vertical;line-height:1.65;box-sizing:border-box;}
+.es-textarea:focus{outline:none;border-color:var(--gm);box-shadow:0 0 0 3px rgba(82,183,136,.1);}
+.es-counter{display:block;text-align:right;font-size:.78rem;color:#999;margin-top:3px;}
+.es-example-box{background:#f4f8ff;border:1px dashed #b0c4de;border-radius:6px;
+  padding:8px 10px;margin-top:6px;display:flex;align-items:flex-start;gap:8px;}
+.es-example-text{flex:1;margin:0;font-size:.82rem;color:#444;line-height:1.55;}
+.es-btn-copy-ex{flex-shrink:0;background:white;border:1px solid #007bff;color:#007bff;
+  border-radius:5px;padding:4px 8px;font-size:.75rem;font-weight:700;cursor:pointer;white-space:nowrap;}
+.es-btn-copy-ex:hover{background:#f0f8ff;}
+.es-select{width:100%;padding:9px 11px;border:1px solid #ccc;border-radius:6px;
+  font-size:.86rem;font-family:'Noto Sans JP',sans-serif;background:white;cursor:pointer;}
+.es-btn-generate{display:block;width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--gm),var(--gd));
+  color:white;border:none;border-radius:8px;font-size:.95rem;font-weight:700;
+  cursor:pointer;font-family:'Noto Sans JP',sans-serif;letter-spacing:.04em;
+  box-shadow:0 4px 15px rgba(45,106,79,.3);transition:all .2s;margin-top:4px;}
+.es-btn-generate:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,106,79,.4);}
+.es-prompt-area{width:100%;min-height:130px;background:#f8f8f8;border:1px solid #ddd;
+  border-radius:7px;padding:9px;font-family:'Courier New',monospace;
+  font-size:.74rem;line-height:1.6;resize:vertical;color:#333;box-sizing:border-box;}
+.es-btn-copy{background:#28a745;color:white;border:none;border-radius:6px;
+  padding:6px 14px;font-size:.8rem;font-weight:700;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;}
+.es-btn-copy:hover{background:#218838;}
+
+/* アニメーション */
+@keyframes pulse-gold{
+  0%,100%{box-shadow:0 8px 40px rgba(45,106,79,0.35),0 0 0 6px rgba(201,168,76,0.2);}
+  50%{box-shadow:0 8px 40px rgba(45,106,79,0.35),0 0 0 12px rgba(201,168,76,0.35);}
+}
+
+footer{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--gd);color:var(--gp);
+  text-align:center;font-size:10px;padding:8px;z-index:100;
+}
+
+/* ============================================================
+   🌱 まずこれから！アセスメント専用スタイル（.hj-scope 内に閉じ込め）
+============================================================ */
+
+.hj-scope{
+  /* ベース：白〜ライトグレー基調 */
+  --page-bg:#f4f6f5;
+  --card-bg:#ffffff;
+  --card-border:#e2e8e4;
+  --text-main:#1f2d26;
+  --text-sub:#5c6b63;
+  --text-faint:#8b988f;
+
+  /* アクセント：就活の木グリーン（ボタン・タグ・進捗バーなどに限定使用） */
+  --accent-deep:#2d6b4a;
+  --accent-mid:#3d8a5f;
+  --accent-soft:#e9f3ed;
+  --accent-soft-border:#bfdfcd;
+  --gold:#c79a3a;
+  --gold-soft:#fbf2dd;
+  --mint:#2f9e72;
+  --mint-soft:#e6f7ef;
+
+  --white:#ffffff;
+  --shadow:rgba(31,45,38,0.08);
+
+  /* 旧変数名のエイリアス（互換維持） */
+  --text-gray:var(--text-sub);
+}
+.hj-scope *{margin:0;padding:0;box-sizing:border-box;}
+.hj-scope{
+  font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  background:transparent;
+  color:var(--text-main);
+  display:block;
+  padding:0;
+}
+.hj-scope .app{
+  width:100%;
+  max-width:640px;
+}
+
+/* ---------- 共通カード ---------- */
+.hj-scope .card{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:20px;
+  padding:32px 28px;
+  box-shadow:0 8px 24px var(--shadow);
+}
+
+/* ---------- ヘッダー ---------- */
+.hj-scope header.intro{
+  text-align:center;
+  margin-bottom:28px;
+}
+.hj-scope .tree-mark{
+  font-size:38px;
+  display:inline-block;
+  margin-bottom:10px;
+  filter:drop-shadow(0 4px 8px rgba(31,45,38,0.15));
+}
+.hj-scope h1{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:0.02em;
+  margin-bottom:8px;
+  line-height:1.5;
+  color:var(--text-main);
+}
+.hj-scope .lede{
+  font-size:14px;
+  color:var(--text-sub);
+  line-height:1.8;
+}
+.hj-scope .gold-line{
+  width:48px;
+  height:3px;
+  background:var(--gold);
+  border-radius:2px;
+  margin:18px auto;
+}
+
+/* ---------- スタート画面 ---------- */
+.hj-scope .start-card .meta{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin:22px 0 28px;
+  font-size:12.5px;
+  color:var(--text-sub);
+}
+.hj-scope .meta span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.hj-scope .dot{width:5px;height:5px;border-radius:50%;background:var(--mint);}
+
+.hj-scope .btn-primary{
+  width:100%;
+  background:var(--accent-deep);
+  color:#ffffff;
+  border:none;
+  border-radius:14px;
+  padding:16px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  box-shadow:0 6px 16px rgba(45,107,74,0.22);
+}
+.hj-scope .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(45,107,74,0.3);background:var(--accent-mid);}
+.hj-scope .btn-primary:active{transform:translateY(0);}
+
+.hj-scope .btn-secondary{
+  width:100%;
+  background:transparent;
+  color:var(--text-sub);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:12px;
+  transition:background .15s ease, color .15s ease;
+}
+.hj-scope .btn-secondary:hover{background:var(--accent-soft);color:var(--accent-deep);border-color:var(--accent-soft-border);}
+
+/* ---------- 進捗バー ---------- */
+.hj-scope .progress-wrap{
+  margin-bottom:22px;
+}
+.hj-scope .progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:8px;
+}
+.hj-scope .progress-label{font-size:12px;color:var(--text-faint);letter-spacing:0.04em;}
+.hj-scope .progress-count{font-size:13px;font-weight:700;color:var(--accent-deep);}
+.hj-scope .progress-track{
+  height:6px;
+  background:#eef1ef;
+  border-radius:4px;
+  overflow:hidden;
+}
+.hj-scope .progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--mint),var(--accent-deep));
+  border-radius:4px;
+  transition:width .35s ease;
+}
+
+/* ---------- 質問画面 ---------- */
+.hj-scope .q-axis-tag{
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.05em;
+  padding:4px 10px;
+  border-radius:999px;
+  margin-bottom:14px;
+}
+.hj-scope .q-axis-tag.state{background:var(--mint-soft);color:var(--mint);border:1px solid #b9e6d2;}
+.hj-scope .q-axis-tag.theme{background:var(--gold-soft);color:var(--gold);border:1px solid #ecdcae;}
+
+.hj-scope .q-text{
+  font-size:17px;
+  font-weight:700;
+  line-height:1.7;
+  margin-bottom:22px;
+  color:var(--text-main);
+}
+.hj-scope .q-sub{
+  font-size:12.5px;
+  color:var(--text-sub);
+  margin-top:-14px;
+  margin-bottom:20px;
+  line-height:1.6;
+}
+
+.hj-scope .options{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:24px;
+}
+.hj-scope .option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:#fafbfa;
+  border:1.5px solid var(--card-border);
+  border-radius:12px;
+  cursor:pointer;
+  transition:border-color .15s ease, background .15s ease;
+  font-size:14.5px;
+  line-height:1.6;
+  color:var(--text-main);
+}
+.hj-scope .option:hover{border-color:var(--mint);background:var(--mint-soft);}
+.hj-scope .option.selected{
+  border-color:var(--gold);
+  background:var(--gold-soft);
+}
+.hj-scope .option .marker{
+  flex:0 0 auto;
+  width:20px;height:20px;
+  border-radius:50%;
+  border:2px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;
+  transition:all .15s ease;
+  background:#fff;
+}
+.hj-scope .option.selected .marker{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#ffffff;
+  font-weight:900;
+}
+.hj-scope .option.multi .marker{border-radius:6px;}
+
+.hj-scope .multi-hint{
+  font-size:12px;
+  color:var(--mint);
+  margin:-12px 0 16px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* ---------- 業界興味ヒアリング専用カード ---------- */
+.hj-scope .industry-grid{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:24px;
+}
+.hj-scope .industry-card{
+  background:#fafbfa;
+  border:1.5px solid var(--card-border);
+  border-radius:12px;
+  padding:14px 16px;
+  transition:border-color .15s ease, background .15s ease;
+}
+.hj-scope .industry-card.is-in{border-color:var(--gold);background:var(--gold-soft);}
+.hj-scope .industry-card.is-out{border-color:var(--card-border);background:#f3f4f3;opacity:0.65;}
+.hj-scope .industry-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.hj-scope .industry-icon{font-size:20px;}
+.hj-scope .industry-name{font-size:14.5px;font-weight:700;color:var(--text-main);}
+.hj-scope .industry-toggle-row{
+  display:flex;
+  gap:8px;
+}
+.hj-scope .toggle-btn{
+  flex:1;
+  font-size:12.5px;
+  font-weight:700;
+  padding:9px 10px;
+  border-radius:9px;
+  border:1.5px solid var(--card-border);
+  background:#fff;
+  color:var(--text-sub);
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.hj-scope .toggle-btn.toggle-in:hover{border-color:var(--gold);color:var(--gold);}
+.hj-scope .toggle-btn.toggle-out:hover{border-color:var(--text-sub);}
+.hj-scope .industry-card.is-in .toggle-in{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#ffffff;
+}
+.hj-scope .industry-card.is-out .toggle-out{
+  background:#e7e9e7;
+  border-color:#d4d8d5;
+  color:var(--text-main);
+}
+
+.hj-scope .nav-row{
+  display:flex;
+  gap:10px;
+}
+.hj-scope .btn-back{
+  flex:0 0 auto;
+  background:transparent;
+  border:1px solid var(--card-border);
+  color:var(--text-sub);
+  border-radius:14px;
+  padding:14px 18px;
+  font-size:14px;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+.hj-scope .btn-back:hover{background:var(--accent-soft);color:var(--accent-deep);}
+.hj-scope .btn-back:disabled{opacity:0.35;cursor:not-allowed;}
+.hj-scope .btn-next{flex:1;}
+.hj-scope .btn-next:disabled{
+  opacity:0.4;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+.hj-scope .btn-next:disabled:hover{transform:none;}
+
+/* ---------- 結果画面 ---------- */
+.hj-scope .result-header{
+  text-align:center;
+  margin-bottom:24px;
+}
+.hj-scope .result-eyebrow{
+  font-size:12px;
+  letter-spacing:0.1em;
+  color:var(--mint);
+  margin-bottom:10px;
+  font-weight:700;
+}
+.hj-scope .result-type{
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:10px;
+  line-height:1.5;
+  color:var(--text-main);
+}
+.hj-scope .result-desc{
+  font-size:14px;
+  color:var(--text-sub);
+  line-height:1.85;
+  text-align:left;
+  margin-bottom:6px;
+}
+
+/* 状態×テーマ可視化 */
+.hj-scope .matrix-box{
+  background:#f7f9f7;
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:20px;
+  margin:22px 0;
+}
+.hj-scope .matrix-title{
+  font-size:12px;
+  color:var(--accent-deep);
+  font-weight:700;
+  letter-spacing:0.04em;
+  margin-bottom:14px;
+}
+.hj-scope .stage-track{
+  display:flex;
+  justify-content:space-between;
+  position:relative;
+  margin-bottom:6px;
+}
+.hj-scope .stage-track::before{
+  content:"";
+  position:absolute;
+  top:11px;left:14px;right:14px;
+  height:2px;
+  background:var(--card-border);
+  z-index:0;
+}
+.hj-scope .stage-node{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  flex:1;
+}
+.hj-scope .stage-dot{
+  width:22px;height:22px;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;
+}
+.hj-scope .stage-dot.done{background:var(--mint);border-color:var(--mint);color:#fff;}
+.hj-scope .stage-dot.current{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:0 0 0 4px var(--gold-soft);}
+.hj-scope .stage-name{font-size:10px;color:var(--text-sub);text-align:center;line-height:1.4;}
+
+.hj-scope .theme-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
+}
+.hj-scope .theme-tag{
+  font-size:11.5px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:var(--gold-soft);
+  color:var(--gold);
+  border:1px solid #ecdcae;
+  font-weight:600;
+}
+
+/* 次の一歩カード */
+.hj-scope .next-section{
+  margin-top:26px;
+}
+.hj-scope .next-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--text-main);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.hj-scope .next-card{
+  background:#fafbfa;
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:12px;
+}
+.hj-scope .next-card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+.hj-scope .next-badge{
+  font-size:10.5px;
+  font-weight:800;
+  padding:3px 9px;
+  border-radius:999px;
+  background:var(--mint);
+  color:#ffffff;
+  letter-spacing:0.03em;
+}
+.hj-scope .next-badge.sub{background:#e7e9e7;color:var(--text-sub);}
+.hj-scope .next-badge.start{background:var(--gold);color:#ffffff;}
+.hj-scope .next-card-title{font-size:15px;font-weight:700;color:var(--text-main);}
+.hj-scope .next-card-desc{font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:12px;}
+.hj-scope .next-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  font-weight:700;
+  color:#ffffff;
+  background:var(--accent-deep);
+  padding:10px 16px;
+  border-radius:10px;
+  text-decoration:none;
+  transition:background .15s ease;
+}
+.hj-scope .next-link:hover{background:var(--accent-mid);}
+.hj-scope .next-link.disabled{
+  background:#e7e9e7;
+  color:var(--text-faint);
+  cursor:default;
+  pointer-events:none;
+}
+
+/* ---------- 案内図（ロードマップ） ---------- */
+.hj-scope .roadmap-track{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.hj-scope .roadmap-step{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:10px 4px;
+  position:relative;
+}
+.hj-scope .roadmap-icon{
+  flex:0 0 auto;
+  width:34px;height:34px;
+  border-radius:50%;
+  background:#eceeec;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.hj-scope .roadmap-step.is-done .roadmap-icon{background:var(--mint);}
+.hj-scope .roadmap-step.is-current .roadmap-icon{
+  background:var(--gold);
+  box-shadow:0 0 0 4px var(--gold-soft);
+}
+.hj-scope .roadmap-body{flex:1;padding-top:4px;}
+.hj-scope .roadmap-label{font-size:13.5px;font-weight:700;margin-bottom:3px;color:var(--text-main);}
+.hj-scope .roadmap-step.is-current .roadmap-label{color:var(--gold);}
+.hj-scope .roadmap-desc{font-size:12px;color:var(--text-sub);line-height:1.6;}
+.hj-scope .roadmap-arrow{
+  position:absolute;
+  left:14px;
+  top:44px;
+  font-size:13px;
+  color:var(--card-border);
+  transform:rotate(90deg);
+}
+
+/* ---------- 興味業界の企業例チップ ---------- */
+.hj-scope .company-chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:4px;
+}
+.hj-scope .company-chip{
+  font-size:12px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#eef1ef;
+  color:var(--text-main);
+  border:1px solid var(--card-border);
+}
+.hj-scope .company-disclaimer{
+  font-size:11px;
+  color:var(--text-faint);
+  line-height:1.7;
+  margin-top:10px;
+  padding:0 2px;
+}
+
+.hj-scope .counselor-note{
+  margin-top:24px;
+  background:var(--mint-soft);
+  border:1px solid #b9e6d2;
+  border-radius:14px;
+  padding:18px 20px;
+  font-size:13px;
+  line-height:1.85;
+  color:var(--text-sub);
+}
+.hj-scope .counselor-note strong{color:var(--mint);}
+
+.hj-scope .retry-row{
+  margin-top:26px;
+  display:flex;
+  gap:10px;
+}
+
+.hj-scope footer{
+  text-align:center;
+  margin-top:24px;
+  font-size:11.5px;
+  color:var(--text-faint);
+  letter-spacing:0.04em;
+}
+
+
+/* ---------- 印刷ボタン ---------- */
+.hj-scope .print-row{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+.hj-scope .btn-print{
+  flex:1;
+  background:#fff;
+  border:1px solid var(--accent-deep);
+  color:var(--accent-deep);
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:background .15s ease;
+}
+.hj-scope .btn-print:hover{background:var(--accent-soft);}
+
+/* 印刷用の面談資料ヘッダー（画面では非表示） */
+.hj-scope .print-only{display:none;}
+
+/* ---------- 印刷スタイル：結果画面をA4面談資料として整形 ---------- */
+@media (max-width:420px){
+  .hj-scope .card{padding:26px 20px;}
+  .hj-scope h1{font-size:19px;}
+  .hj-scope .result-type{font-size:20px;}
+}
+
+
+/* ============================================================
+   ✍️ ES入門ガイド（エントリー版）専用スタイル（.esb-scope 内に閉じ込め）
+============================================================ */
+
+.esb-scope{
+  --page-bg:#f4f6f5;
+  --card-bg:#ffffff;
+  --card-border:#e2e8e4;
+  --text-main:#1f2d26;
+  --text-sub:#5c6b63;
+  --text-faint:#8b988f;
+  --accent-deep:#2d6b4a;
+  --accent-mid:#3d8a5f;
+  --accent-soft:#e9f3ed;
+  --accent-soft-border:#bfdfcd;
+  --gold:#c79a3a;
+  --gold-soft:#fbf2dd;
+  --mint:#2f9e72;
+  --mint-soft:#e6f7ef;
+  --shadow:rgba(31,45,38,0.08);
+}
+.esb-scope *{margin:0;padding:0;box-sizing:border-box;}
+.esb-scope{
+  font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  background:transparent;
+  color:var(--text-main);
+  padding:0;
+}
+.esb-scope .app{max-width:680px;margin:0 auto;}
+
+/* ---------- ヘッダー ---------- */
+.esb-scope header{
+  text-align:center;
+  margin-bottom:24px;
+}
+.esb-scope .tree-mark{font-size:36px;margin-bottom:8px;}
+.esb-scope h1{font-size:21px;font-weight:800;margin-bottom:8px;line-height:1.5;}
+.esb-scope .lede{font-size:13.5px;color:var(--text-sub);line-height:1.85;max-width:520px;margin:0 auto;}
+.esb-scope .gold-line{width:44px;height:3px;background:var(--gold);border-radius:2px;margin:16px auto;}
+
+/* ---------- イントロカード（簡単な説明） ---------- */
+.esb-scope .intro-card{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:24px 22px;
+  margin-bottom:20px;
+  box-shadow:0 6px 18px var(--shadow);
+}
+.esb-scope .intro-card h2{
+  font-size:14.5px;
+  font-weight:700;
+  color:var(--accent-deep);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:8px;
+}
+.esb-scope .intro-card p{
+  font-size:13px;
+  color:var(--text-sub);
+  line-height:1.9;
+  margin-bottom:10px;
+}
+.esb-scope .intro-sample{
+  background:var(--accent-soft);
+  border:1px solid var(--accent-soft-border);
+  border-radius:12px;
+  padding:14px 16px;
+  font-size:12.5px;
+  color:var(--text-main);
+  line-height:1.85;
+  margin-top:12px;
+}
+.esb-scope .intro-sample .label{
+  font-size:10.5px;
+  font-weight:700;
+  color:var(--accent-deep);
+  margin-bottom:6px;
+  letter-spacing:0.04em;
+}
+
+/* ---------- テーマ選択タブ ---------- */
+.esb-scope .theme-tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
+}
+.esb-scope .theme-tab{
+  flex:1;
+  text-align:center;
+  padding:12px 8px;
+  background:var(--card-bg);
+  border:1.5px solid var(--card-border);
+  border-radius:12px;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--text-sub);
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.esb-scope .theme-tab:hover{border-color:var(--mint);}
+.esb-scope .theme-tab.active{
+  background:var(--accent-deep);
+  border-color:var(--accent-deep);
+  color:#fff;
+}
+
+/* ---------- アコーディオン（5タイプ） ---------- */
+.esb-scope .accordion{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:24px;
+}
+.esb-scope .acc-item{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  overflow:hidden;
+}
+.esb-scope .acc-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 18px;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+.esb-scope .acc-head:hover{background:var(--accent-soft);}
+.esb-scope .acc-icon{font-size:20px;flex:0 0 auto;}
+.esb-scope .acc-title{flex:1;font-size:14px;font-weight:700;color:var(--text-main);}
+.esb-scope .acc-chevron{
+  font-size:12px;
+  color:var(--text-faint);
+  transition:transform .2s ease;
+  flex:0 0 auto;
+}
+.esb-scope .acc-item.open .acc-chevron{transform:rotate(180deg);}
+.esb-scope .acc-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .3s ease;
+}
+.esb-scope .acc-item.open .acc-body{max-height:2000px;}
+.esb-scope .acc-body-inner{padding:0 18px 20px;}
+
+/* ---------- 設問（プルダウン） ---------- */
+.esb-scope .q-block{margin-bottom:16px;}
+.esb-scope .q-label{
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--accent-deep);
+  margin-bottom:8px;
+}
+.esb-scope select.q-select{
+  width:100%;
+  padding:11px 14px;
+  font-size:13.5px;
+  border:1.5px solid var(--card-border);
+  border-radius:10px;
+  background:#fafbfa;
+  color:var(--text-main);
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath fill='%235c6b63' d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  background-size:20px;
+}
+.esb-scope select.q-select:focus{outline:none;border-color:var(--mint);}
+
+/* ---------- 文章プレビュー ---------- */
+.esb-scope .preview-box{
+  margin-top:18px;
+  background:var(--gold-soft);
+  border:1px solid #ecdcae;
+  border-radius:14px;
+  padding:16px 18px;
+}
+.esb-scope .preview-label{
+  font-size:11px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:0.04em;
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.esb-scope .preview-text{
+  font-size:13.5px;
+  line-height:1.9;
+  color:var(--text-main);
+  min-height:48px;
+}
+.esb-scope .preview-text .blank{color:var(--text-faint);}
+
+.esb-scope .save-row{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;
+}
+.esb-scope .btn-save{
+  background:var(--accent-deep);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:9px 18px;
+  font-size:12.5px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+.esb-scope .btn-save:hover{background:var(--accent-mid);}
+.esb-scope .btn-save:disabled{background:#c7cdc9;cursor:not-allowed;}
+.esb-scope .btn-save.saved{background:var(--mint);}
+
+/* ---------- 素材メモ一覧 ---------- */
+.esb-scope .memo-section{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:22px;
+}
+.esb-scope .memo-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--text-main);
+  display:flex;align-items:center;gap:8px;
+}
+.esb-scope .memo-title-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:14px;
+}
+.esb-scope .btn-download-all{
+  background:var(--accent-deep);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:9px 16px;
+  font-size:12.5px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .15s ease;
+  white-space:nowrap;
+}
+.esb-scope .btn-download-all:hover{background:var(--accent-mid);}
+.esb-scope .btn-download-all:disabled{
+  background:#d8ddd9;
+  color:var(--text-faint);
+  cursor:not-allowed;
+}
+.esb-scope .memo-empty{
+  font-size:12.5px;
+  color:var(--text-faint);
+  text-align:center;
+  padding:20px 0;
+}
+.esb-scope .memo-card{
+  background:#fafbfa;
+  border:1px solid var(--card-border);
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:10px;
+}
+.esb-scope .memo-card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+}
+.esb-scope .memo-tag{
+  font-size:10.5px;
+  font-weight:700;
+  background:var(--accent-soft);
+  color:var(--accent-deep);
+  padding:3px 10px;
+  border-radius:999px;
+}
+.esb-scope .memo-delete{
+  font-size:11px;
+  color:var(--text-faint);
+  cursor:pointer;
+  background:none;
+  border:none;
+}
+.esb-scope .memo-delete:hover{color:#c0392b;}
+.esb-scope .memo-text{font-size:13px;color:var(--text-main);line-height:1.8;}
+
+/* ---------- 本格ツールへの誘導 ---------- */
+.esb-scope .next-section{
+  background:linear-gradient(135deg,var(--accent-deep),var(--accent-mid));
+  border-radius:18px;
+  padding:26px 24px;
+  text-align:center;
+  color:#fff;
+}
+.esb-scope .next-section h3{font-size:15px;font-weight:800;margin-bottom:10px;}
+.esb-scope .next-section p{font-size:12.5px;line-height:1.85;color:rgba(255,255,255,0.9);margin-bottom:18px;}
+.esb-scope .btn-next{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:var(--gold);
+  color:#3a2c0a;
+  font-weight:800;
+  font-size:14px;
+  padding:13px 26px;
+  border-radius:12px;
+  text-decoration:none;
+  transition:opacity .15s ease;
+}
+.esb-scope .btn-next:hover{opacity:0.9;}
+
+.esb-scope footer{text-align:center;margin-top:24px;font-size:11px;color:var(--text-faint);}
+
+@media (max-width:480px){
+  .esb-scope .theme-tabs{flex-direction:column;}
+  .esb-scope .acc-title{font-size:13px;}
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🌳</span>
+  <div class="htxt">
+    <div class="htitle">就活の木 学生サポートパネル</div>
+    <div class="hsub">Tama University Career Support Office</div>
+  </div>
+  <div class="clock" id="clock"></div>
+  <div class="grade-badge" id="gradeBadge" onclick="showGradeModal()">学年を選択</div>
+</header>
+
+<!-- 学年選択モーダル -->
+<div id="grade-modal">
+  <div class="grade-box">
+    <div class="grade-head">
+      <div class="g-ic">🎓</div>
+      <div class="g-ttl">あなたは何年生ですか？</div>
+      <div class="g-sub">選ぶとサイトのリンクが<br>あなたの学年に合った年度に自動で切り替わります</div>
+    </div>
+    <div class="grade-body">
+      <div class="grade-btns">
+        <button class="grade-btn g3" onclick="setGrade(3)">
+          3年生
+          <span class="g-year" id="label3"></span>
+        </button>
+        <button class="grade-btn g4" onclick="setGrade(4)">
+          4年生
+          <span class="g-year" id="label4"></span>
+        </button>
+      </div>
+      <div class="grade-note">※ 選択後もヘッダーのバッジからいつでも変更できます</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ── スマホ縦並び ── -->
+  <div class="sp">
+
+    <!-- 最優先：まずこれから！アセスメント -->
+    <div class="hajimeyou-card" onclick="openModal('hajimeyou')">
+      <span class="hbadge">🧭 道に迷ったら、ここ</span>
+      <span class="ic">🧭</span>
+      <div style="flex:1;">
+        <div class="ttl">何から始めればいいか<br>分からないあなたへ。</div>
+        <div class="dsc">まずは3分、自分の「今」を知ることから。</div>
+        <button type="button" class="hj-btn" onclick="event.stopPropagation();openModal('hajimeyou');">
+          🧭 自分の現在地を診断する
+          <span class="arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 中央：キャリ爺に相談予約 -->
+    <a href="https://tanukin0423.github.io/shukatsu-no-ki-system/index.html" target="_blank" class="main-card">
+      <span class="mbadge">📅 予約はここ</span>
+      <span class="ic">🌳</span>
+      <div style="flex:1;">
+        <div class="ttl">キャリ爺に相談予約する</div>
+        <div class="dsc">困ったときはキャリ爺へ！<br>どんな相談をしたいか、簡単に教えてね。</div>
+        <div class="reserve-bar">
+          <span>📅 相談予約フォームへ進む</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+    </a>
+
+    <div class="slabel">💌 スカウト・逆求人</div>
+
+    <div class="sub-card" onclick="openModal('scout')">
+      <span class="ic">💌</span>
+      <div>
+        <div class="ttl">スカウト・逆求人サービス</div>
+        <div class="dsc">OfferBox・Wantedly・paiza／企業からスカウトが届く！</div>
+      </div>
+      <span class="step-num">NEW</span>
+    </div>
+
+    <div class="slabel">🌱 STEP①〜④ 自己理解・準備編</div>
+
+    <div class="sub-card" onclick="openModal('meta')">
+      <span class="ic">🔍</span>
+      <div>
+        <div class="ttl">自己分析・適性診断</div>
+        <div class="dsc">MBTI・職業興味検査・キャリアアンカー・強み診断</div>
+      </div>
+      <span class="step-num">STEP①</span>
+    </div>
+
+    <div class="sub-card" onclick="openModal('rashinban')">
+      <span class="ic">🧭</span>
+      <div>
+        <div class="ttl">自分の羅針盤探し</div>
+        <div class="dsc">jobtag職業診断＋やりたいことが見つかっていない人へ</div>
+      </div>
+      <span class="step-num">STEP②</span>
+    </div>
+
+    <a href="jobmatrix_556.html" target="_blank" class="sub-card">
+      <span class="ic">📊</span>
+      <div>
+        <div class="ttl">職種マトリクス556</div>
+        <div class="dsc">556職種×2軸分析で自分に合う仕事を探す</div>
+      </div>
+      <span class="step-num">NEW</span>
+    </a>
+
+    <div class="sub-card" onclick="openModal('intern')">
+      <span class="ic">🏢</span>
+      <div>
+        <div class="ttl">インターンシップを探そう</div>
+        <div class="dsc">マイナビ・リクナビ　職種での正しい探し方</div>
+      </div>
+      <span class="step-num">STEP③</span>
+    </div>
+
+    <div class="sub-card" onclick="openModal('tools')">
+      <span class="ic">📋</span>
+      <div>
+        <div class="ttl">就活ツールを使いこなす</div>
+        <div class="dsc">マイキャリアボックス・OPEN-ESの使い方</div>
+      </div>
+      <span class="step-num">STEP④</span>
+    </div>
+
+    <div class="slabel">🌿 STEP⑤〜⑧ ES・試験・面接編</div>
+
+    <a href="es-prompt-generator.html" target="_blank" class="sub-card">
+      <span class="ic">🌱</span>
+      <div>
+        <div class="ttl">企業研究＆ESジェネレーター</div>
+        <div class="dsc">企業研究からES設問・プロンプト生成まで一気通貫</div>
+      </div>
+      <span class="step-num">NEW</span>
+    </a>
+
+    <div class="sub-card es-dual-card">
+      <span class="ic">✍️</span>
+      <div style="flex:1;">
+        <div class="ttl">ES作成ツール</div>
+        <div class="dsc">ガクチカ・自己PR・志望動機をAIでブラッシュアップ</div>
+        <div class="es-dual-btns">
+          <button type="button" class="es-mini-btn es-mini-entry" onclick="event.stopPropagation();openModal('es');setTimeout(()=>esbShowLevel('entry'),50);">
+            🌱 エントリー版
+          </button>
+          <button type="button" class="es-mini-btn es-mini-pro" onclick="event.stopPropagation();openModal('es');setTimeout(()=>esbShowLevel('pro'),50);">
+            ✍️ 本格版
+          </button>
+        </div>
+      </div>
+      <span class="step-num">STEP⑤</span>
+    </div>
+
+    <div class="sub-card" onclick="openModal('test')">
+      <span class="ic">📝</span>
+      <div>
+        <div class="ttl">筆記・SPI対策</div>
+        <div class="dsc">筆記試験ドリル＋SPI3完全対策（全19単元）</div>
+      </div>
+      <span class="step-num">STEP⑥</span>
+    </div>
+
+    <a href="https://tanukin0423.github.io/mensetsu-15day/" target="_blank" class="sub-card">
+      <span class="ic">🎤</span>
+      <div>
+        <div class="ttl">面接対策プログラム</div>
+        <div class="dsc">キャリ爺の音声ガイド付き15日間</div>
+      </div>
+      <span class="step-num">STEP⑦</span>
+    </a>
+
+    <div class="sub-card" onclick="openModal('careerlink')">
+      <span class="ic">📌</span>
+      <div>
+        <div class="ttl">キャリアリンク掲示板</div>
+        <div class="dsc">求人・説明会情報／⚠️対象学年を必ず確認！</div>
+      </div>
+      <span class="step-num">STEP⑧</span>
+    </div>
+
+  </div>
+
+  <!-- ── PCグリッド ── -->
+  <svg class="lines" id="connectorSvg"></svg>
+  <div class="pc" id="launcher">
+
+    <!-- 最優先・最上段：まずこれから！アセスメント -->
+    <div onclick="openModal('hajimeyou')" class="pc-card pc-hajimeyou" id="cHajimeyou">
+      <span class="pc-badge">🧭 道に迷ったら、ここ</span>
+      <span class="pc-ic">🧭</span>
+      <div style="text-align:left;">
+        <div class="pc-ttl">何から始めればいいか<br>分からないあなたへ。</div>
+        <div class="pc-dsc">まずは3分、自分の「今」を知ることから。</div>
+        <button type="button" class="pc-hbtn" onclick="event.stopPropagation();openModal('hajimeyou');">🧭 自分の現在地を診断する <span class="pc-hbtn-arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- 左上①：自己分析・適性診断 -->
+    <div onclick="openModal('meta')" class="pc-card pc-sub p-tl" id="c1">
+      <span class="pc-step">STEP①</span>
+      <span class="pc-ic">🔍</span>
+      <div class="pc-ttl">自己分析・<br>適性診断</div>
+      <div class="pc-dsc">MBTI・職業興味検査<br>キャリアアンカー・強み</div>
+    </div>
+
+    <!-- 上中②：羅針盤探し＋jobtag -->
+    <div onclick="openModal('rashinban')" class="pc-card pc-sub p-tc" id="c2">
+      <span class="pc-step">STEP②</span>
+      <span class="pc-ic">🧭</span>
+      <div class="pc-ttl">自分の<br>羅針盤探し</div>
+      <div class="pc-dsc">jobtag職業診断＋<br>やりたいこと発見</div>
+    </div>
+
+    <!-- 上右③：インターン -->
+    <div onclick="openModal('intern')" class="pc-card pc-sub p-tr" id="c3">
+      <span class="pc-step">STEP③</span>
+      <span class="pc-ic">🏢</span>
+      <div class="pc-ttl">インターン<br>シップ探し</div>
+      <div class="pc-dsc">職種での正しい探し方</div>
+    </div>
+
+    <!-- 右上④：スカウト・逆求人 NEW -->
+    <div onclick="openModal('scout')" class="pc-card pc-sub p-t4" id="c9">
+      <span class="pc-step">NEW</span>
+      <span class="pc-ic">💌</span>
+      <div class="pc-ttl">スカウト・<br>逆求人サービス</div>
+      <div class="pc-dsc">OfferBox・Wantedly・paiza<br>企業からスカウトが届く！</div>
+    </div>
+
+    <!-- 左中⑧：キャリアリンク -->
+    <div onclick="openModal('careerlink')" class="pc-card pc-sub p-ml" id="c8">
+      <span class="pc-step">STEP⑧</span>
+      <span class="pc-ic">📌</span>
+      <div class="pc-ttl">キャリアリンク<br>掲示板</div>
+      <div class="pc-dsc">⚠️対象学年を確認<br>求人・説明会情報</div>
+    </div>
+
+    <!-- 中央2列目：職種マトリクス556 -->
+    <a href="jobmatrix_556.html" target="_blank" class="pc-card pc-sub p-mc" id="c10">
+      <span class="pc-step">NEW</span>
+      <span class="pc-ic">📊</span>
+      <div class="pc-ttl">職種マトリクス<br>556</div>
+      <div class="pc-dsc">556職種×2軸分析で<br>自分に合う仕事を探す</div>
+    </a>
+
+    <!-- 中央：キャリ爺に相談予約 -->
+    <a href="https://tanukin0423.github.io/shukatsu-no-ki-system/index.html" target="_blank" class="pc-card pc-main" id="cMain">
+      <span class="pc-badge">📅 予約はここ</span>
+      <span class="pc-ic">🌳</span>
+      <div class="pc-ttl">キャリ爺に<br>相談予約する</div>
+      <div class="pc-dsc">困った時、相談がある時はキャリ爺へ</div>
+      <div class="pc-reserve"><span>📅 相談予約フォームへ →</span></div>
+    </a>
+
+    <!-- 右中④：就活ツール -->
+    <div onclick="openModal('tools')" class="pc-card pc-sub p-mr" id="c4">
+      <span class="pc-step">STEP④</span>
+      <span class="pc-ic">📋</span>
+      <div class="pc-ttl">就活ツールを<br>使いこなす</div>
+      <div class="pc-dsc">マイキャリアボックス<br>OPEN-ESの使い方</div>
+    </div>
+
+    <!-- 左下⑦：面接対策 -->
+    <a href="https://tanukin0423.github.io/mensetsu-15day/" target="_blank" class="pc-card pc-sub p-bl" id="c7">
+      <span class="pc-step">STEP⑦</span>
+      <span class="pc-ic">🎤</span>
+      <div class="pc-ttl">面接対策<br>プログラム</div>
+      <div class="pc-dsc">キャリ爺音声ガイド付き<br>15日間</div>
+    </a>
+
+    <!-- 下中⑥：筆記・SPI -->
+    <div onclick="openModal('test')" class="pc-card pc-sub p-bc" id="c6">
+      <span class="pc-step">STEP⑥</span>
+      <span class="pc-ic">📝</span>
+      <div class="pc-ttl">筆記・SPI<br>対策</div>
+      <div class="pc-dsc">筆記ドリル＋SPI3<br>完全対策（全19単元）</div>
+    </div>
+
+    <!-- 右下⑤：ES作成 -->
+    <div class="pc-card pc-sub p-br es-dual-card-pc" id="c5">
+      <span class="pc-step">STEP⑤</span>
+      <span class="pc-ic">✍️</span>
+      <div class="pc-ttl">ES作成<br>ツール</div>
+      <div class="es-dual-btns-pc">
+        <button type="button" class="es-mini-btn-pc es-mini-entry" onclick="event.stopPropagation();openModal('es');setTimeout(()=>esbShowLevel('entry'),50);">
+          🌱 エントリー
+        </button>
+        <button type="button" class="es-mini-btn-pc es-mini-pro" onclick="event.stopPropagation();openModal('es');setTimeout(()=>esbShowLevel('pro'),50);">
+          ✍️ 本格
+        </button>
+      </div>
+    </div>
+
+    <!-- 右下④列：企業研究＆ESジェネレーター -->
+    <a href="es-prompt-generator.html" target="_blank" class="pc-card pc-sub p-b4" id="c11">
+      <span class="pc-step">NEW</span>
+      <span class="pc-ic">🌱</span>
+      <div class="pc-ttl">企業研究＆ES<br>ジェネレーター</div>
+      <div class="pc-dsc">企業研究→ES設問→<br>プロンプト生成まで</div>
+    </a>
+
+  </div>
+</div>
+
+<footer>🌳 就活の木 学生サポートパネル | Tama University Career Support Office</footer>
+
+<!-- ── モーダル群 ── -->
+
+<!-- 🌱まずこれから！就活、何からはじめよう？アセスメント -->
+<div class="modal-overlay" id="modal-hajimeyou">
+  <div class="modal hj-modal">
+    <div class="modal-head">
+      <div class="mic">🧭</div>
+      <div class="mttl">就活、何からはじめよう？</div>
+      <div class="msub">今のあなたの「現在地」を、状態と気持ちの両面から確認します。<br>結果に応じて、次に取り組むとよいことをご提案します。</div>
+    </div>
+    <div class="modal-body" style="padding-top:0;">
+      <div id="hajimeyouApp" class="hj-scope"></div>
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('hajimeyou')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ⑨スカウト・逆求人 -->
+<div class="modal-overlay" id="modal-scout">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">💌</div>
+      <div class="mttl">スカウト・逆求人サービス</div>
+      <div class="msub">プロフィールを登録するだけで企業からスカウトが届く！<br>待つだけで出会いが広がる新しい就活スタイル。</div>
+    </div>
+    <div class="modal-body">
+      <div class="tip"><p><strong>🦉 キャリ爺からひとこと</strong><br>自分から探すだけでなく、「企業から選ばれる」という視点も大切。プロフィールをしっかり書けば、思わぬ企業との出会いがあります。これらのサービスは<strong>URLが固定</strong>なので年度を気にせずいつでも使えます。</p></div>
+
+      <div class="modal-section-title">🎯 総合型・全業種</div>
+      <div class="modal-links">
+        <a href="https://offerbox.jp/" target="_blank" class="modal-btn">
+          <span class="btn-ic">📬</span>
+          <div><div>OfferBox（オファーボックス）</div><div class="btn-sub">学生登録数No.1の逆求人サイト・自己分析ツールも充実</div></div>
+        </a>
+      </div>
+
+      <div class="modal-section-title">💻 IT・ベンチャー・スタートアップ志望</div>
+      <div class="modal-links">
+        <a href="https://www.wantedly.com/projects" target="_blank" class="modal-btn">
+          <span class="btn-ic">🚀</span>
+          <div><div>Wantedly（ウォンテッドリー）</div><div class="btn-sub">IT系・スタートアップに強い・インターンにも使える</div></div>
+        </a>
+        <a href="https://paiza.jp/student" target="_blank" class="modal-btn">
+          <span class="btn-ic">💚</span>
+          <div><div>paiza（パイザ）</div><div class="btn-sub">ITエンジニア・プログラミング系に特化・スキルチェックで企業からスカウト</div></div>
+        </a>
+      </div>
+
+      <!-- ★スカウトを増やすキーアドバイス★ -->
+      <div style="background:linear-gradient(135deg,#1e4d2f,#2d6a4f);border-radius:14px;padding:18px;margin-top:14px;border:2px solid #c9a84c;">
+        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:900;color:#f0d080;margin-bottom:10px;">
+          🦉 キャリ爺より：スカウトを増やす「本当に効く」方法
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:12px;color:#b7e4c7;font-weight:700;margin-bottom:6px;">📊 これは本当のデータです</div>
+          <div style="font-size:12px;color:#d8f3dc;line-height:1.9;">
+            OfferBoxの実績データによると、<br>
+            <strong style="color:#f0d080;font-size:14px;">プロフィール入力率80%以上の学生には、平均41社からスカウトが届いています。</strong><br>
+            逆に言えば、<strong style="color:#f0d080;">「登録しただけ」ではほとんどスカウトは来ません。</strong>
+          </div>
+        </div>
+        <div style="font-size:12px;color:#d8f3dc;line-height:2.0;">
+          <div style="margin-bottom:4px;">✅ <strong style="color:#f0d080;">ガクチカ・自己PR</strong>をしっかり書く（企業がキーワード検索します）</div>
+          <div style="margin-bottom:4px;">✅ <strong style="color:#f0d080;">写真・エピソード</strong>も登録するとプロフィール率がUPします</div>
+          <div style="margin-bottom:4px;">✅ <strong style="color:#f0d080;">定期的にログイン・更新</strong>すると検索上位に表示されやすくなります</div>
+          <div style="margin-bottom:4px;">✅ スカウトが来たら<strong style="color:#f0d080;">必ず返信</strong>しよう（企業の人が直接読んで送っています）</div>
+          <div>✅ paizaは<strong style="color:#f0d080;">プログラミング問題を解いてランクアップ</strong>するとIT企業からのスカウトが増えます</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('scout')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ①自己分析・適性診断 -->
+<div class="modal-overlay" id="modal-meta">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">🔍</div>
+      <div class="mttl">自己分析・適性診断</div>
+      <div class="msub">「やりたいことがない」——それで大丈夫。<br>まず自分を知るところから始めよう。</div>
+    </div>
+    <div class="modal-body">
+      <div class="tip"><p><strong>🦉 キャリ爺からひとこと</strong><br>答えはあなたの中にあります。まず「自分発見ナビ」から始めると、どの診断が向いているか分かりますよ。</p></div>
+
+      <div class="modal-section-title">🌱 まずここから</div>
+      <div class="modal-links">
+        <a href="meta-assessment.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">🌱</span>
+          <div><div>自分発見ナビ（メタアセスメント）</div><div class="btn-sub">12問でどの診断が合うか分かる・まずここから！</div></div>
+        </a>
+      </div>
+
+      <div class="modal-section-title">💼 職業興味検査</div>
+      <div class="modal-links">
+        <a href="vpi-assessment.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">💼</span>
+          <div><div>VPI 職業興味検査</div><div class="btn-sub">ホランド理論・30問・どんな仕事に惹かれる？</div></div>
+        </a>
+      </div>
+
+      <div class="modal-section-title">🔮 性格タイプ診断</div>
+      <div class="modal-links">
+        <a href="mbti-assessment.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">🔮</span>
+          <div><div>MBTI 性格タイプ診断</div><div class="btn-sub">4軸16タイプ・40問・自分の取扱説明書を作ろう</div></div>
+        </a>
+      </div>
+
+      <div class="modal-section-title">💪 強み発見診断</div>
+      <div class="modal-links">
+        <a href="strengths-assessment.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">💪</span>
+          <div><div>強み診断</div><div class="btn-sub">8領域32問・得意なことを言葉にしよう</div></div>
+        </a>
+      </div>
+
+      <div class="modal-section-title">⚓ 価値観・キャリアアンカー</div>
+      <div class="modal-links">
+        <a href="anchor-assessment.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">⚓</span>
+          <div><div>キャリアアンカー診断</div><div class="btn-sub">シャイン理論・32問・就活の軸を見つけよう</div></div>
+        </a>
+      </div>
+
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('meta')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ②羅針盤探し＋jobtag -->
+<div class="modal-overlay" id="modal-rashinban">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">🧭</div>
+      <div class="mttl">自分の羅針盤探し</div>
+      <div class="msub">「やりたいことが分からない」——それで大丈夫。<br>jobtagと羅針盤ツールで方向を見つけよう。</div>
+    </div>
+    <div class="modal-body">
+      <div class="tip"><p><strong>🌱 キャリ爺からひとこと</strong><br>「地図がなくても歩き出せる」。やりたいことは探すより、動きながら見つかるものです。まずjobtagで職業の世界を広げてみよう。</p></div>
+
+      <div class="modal-section-title">🏛️ まずここから：職業を広く知る</div>
+      <div class="modal-links">
+        <a href="jobmatrix16v4.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">🏛️</span>
+          <div><div>jobtag 職業マトリクス診断</div><div class="btn-sub">16マトリクスで職業興味を診断・就活の木オリジナル版</div></div>
+        </a>
+      </div>
+
+      <div class="modal-section-title">🧭 やりたいことが見つからない人へ</div>
+      <div class="modal-links">
+        <a href="shindan_ver14.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">🧭</span>
+          <div><div>自分の羅針盤探しツール</div><div class="btn-sub">就活の木オリジナル・質問に答えながら方向を発見</div></div>
+        </a>
+      </div>
+
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('rashinban')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ③インターン探し -->
+<div class="modal-overlay" id="modal-intern">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">🏢</div>
+      <div class="mttl">インターンシップを探そう</div>
+      <div class="msub">「業界」じゃなくて「職種」で探すのがコツ！<br>正しい使い方を覚えよう。</div>
+    </div>
+    <div class="modal-body">
+      <div class="tip">
+        <p><strong>⚡ 職種検索3ステップ</strong><br>
+        ① サイトにログイン後「インターンシップ」タブへ<br>
+        ② 検索条件で「業界」ではなく <strong>「職種」</strong> を選ぶ<br>
+        ③ 気になる職種（営業・企画・技術・事務など）を選んで検索！</p>
+      </div>
+      <div class="tip">
+        <p><strong>💡 なぜ職種検索がいいの？</strong><br>
+        業界で絞ると視野が狭くなりがち。同じ「企画職」でも食品・IT・メーカーと幅広く比較できるのが職種検索の強みです。</p>
+      </div>
+      <div class="tip"><p><strong>🌳 多摩大学からのひとこと</strong><br>Re就活キャンパスは<strong>多摩大学の先輩たちもよく活用</strong>しているサイトです。2週間インターンなど、長期・実践型の体験先が豊富です！</p></div>
+      <div class="tip" style="border-left-color:#e67e22;background:#fef9f0;">
+        <p><strong>💡 リンクが開かない・404が出た場合</strong><br>
+        就活サイトのURLは毎年4月に更新されます。<br>
+        マイナビの場合：<strong>「トップページへ戻る」</strong>をクリックするとトップに戻れます。<br>
+        リクナビの場合：URLの年度数字（例：<code>2027</code>）を<strong>+1</strong>（例：<code>2028</code>）に変えてみてください。</p>
+      </div>
+      <div class="modal-section-title">🔗 インターンを探す</div>
+      <div class="modal-links">
+        <button class="modal-btn" id="btn-re-intern" onclick="openInternLink('re_intern', currentYear)">
+          <span class="btn-ic">🟢</span>
+          <div>
+            <div>Re就活キャンパスでインターンを探す</div>
+            <div class="btn-sub">多摩大生の先輩も活用中・通年サービス（年度なし）</div>
+          </div>
+        </button>
+        <button class="modal-btn" id="btn-mynavi-intern" onclick="openInternLink('mynavi_intern', currentYear)">
+          <span class="btn-ic">🔵</span>
+          <div>
+            <div>マイナビでインターンを探す</div>
+            <div class="btn-sub">トップ画面→「インターンシップ＆キャリア」から検索・404の場合は「トップへ戻る」でOK</div>
+          </div>
+        </button>
+        <button class="modal-btn" id="btn-rikunabi-intern" onclick="openInternLink('rikunabi_intern', currentYear)">
+          <span class="btn-ic">🔴</span>
+          <div>
+            <div>リクナビでインターンを探す</div>
+            <div class="btn-sub">「職種・仕事タイプ」から検索・404の場合はURLの年度を+1</div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('intern')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ④就活ツール -->
+<div class="modal-overlay" id="modal-tools">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">📋</div>
+      <div class="mttl">就活ツールを使いこなす</div>
+      <div class="msub">マイキャリアボックスとOPEN-ES、<br>ちゃんと使えていますか？</div>
+    </div>
+    <div class="modal-body">
+      <div class="tip"><p><strong>🦉 キャリ爺からひとこと</strong><br>
+      どちらも<strong>一度書いたESを複数社に提出できる</strong>便利なツールです。でも「コピペで使い回し」はNG！企業ごとに必ず内容をカスタマイズしよう。まず使い方動画を見てから始めると迷いません。</p></div>
+
+      <div class="modal-section-title">📦 マイキャリアボックス（マイナビ）</div>
+      <div class="tip"><p><strong>マイナビが提供する共通ES提出ツール。</strong><br>ES・研究概要書をWEB上で一度作成すると、複数の企業にまとめて提出できます。マイナビIDがあればすぐ使えます。</p></div>
+      <div class="modal-links">
+        <a href="https://www.youtube.com/watch?v=NEkvkTWItVA" target="_blank" class="modal-btn">
+          <span class="btn-ic">▶️</span>
+          <div><div>①【紹介動画】マイキャリアボックスとは？</div><div class="btn-sub">まずここから・全体像が1分でわかる</div></div>
+        </a>
+        <a href="https://www.youtube.com/watch?v=e37B9AoXZl4" target="_blank" class="modal-btn">
+          <span class="btn-ic">▶️</span>
+          <div><div>②【初期登録の流れ】登録と内容の作成</div><div class="btn-sub">はじめてのログイン〜ES作成までの手順</div></div>
+        </a>
+        <a href="https://www.youtube.com/watch?v=6ve8oJjbAJ8" target="_blank" class="modal-btn">
+          <span class="btn-ic">▶️</span>
+          <div><div>③【書類提出の流れ】企業への提出方法</div><div class="btn-sub">提出リクエストが来たらここを見よう</div></div>
+        </a>
+        <a href="https://mcbox.mynavi.jp/" target="_blank" class="modal-btn">
+          <span class="btn-ic">🔵</span>
+          <div><div>マイキャリアボックスを開く</div><div class="btn-sub">動画で確認してから登録・ES作成へ</div></div>
+        </a>
+      </div>
+
+      <div class="modal-section-title">📄 OPEN-ES（リクナビ）</div>
+      <div class="tip"><p><strong>リクナビの共通ESシステム。</strong><br>一度書いたESを複数社に提出できます。写真も入れられるのが特徴。まず使い方ガイドを確認しよう。</p></div>
+      <div class="tip" style="border-left-color:#e67e22;background:#fef9f0;">
+        <p><strong>🦉 キャリ爺より：リクナビの「使いやすい点」</strong><br>
+        リクナビは<strong>検索・絞り込み機能が使いやすい</strong>のが強みです。<br>
+        職種・勤務地・業界・企業規模を組み合わせて、自分に合った企業を幅広く探すのに向いています。<br>
+        <strong>「どんな仕事があるか知りたい」「業界をまたいで比べたい」</strong>というときに活用しよう！</p>
+      </div>
+      <div class="modal-links">
+        <a href="https://open-es.com/" target="_blank" class="modal-btn">
+          <span class="btn-ic">📋</span>
+          <div><div>OPEN-ES 公式サイト（登録・ログイン）</div><div class="btn-sub">リクナビIDで登録・使い方はサイト内ヘルプを確認しよう</div></div>
+        </a>
+        <a href="#" target="_blank" class="modal-btn" id="btn-openes">
+          <span class="btn-ic">🔴</span>
+          <div><div>OPEN-ESを開く（リクナビ経由）</div><div class="btn-sub">リクナビにログイン後、マイページからアクセス</div></div>
+        </a>
+      </div>
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('tools')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ⑧キャリアリンク掲示板 -->
+<div class="modal-overlay" id="modal-careerlink">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">📌</div>
+      <div class="mttl">キャリアリンク掲示板</div>
+      <div class="msub">多摩大学キャリア支援課からの最新情報をチェック！<br>エントリー前に対象学年を必ず確認しよう。</div>
+    </div>
+    <div class="modal-body">
+      <div class="tip" style="border-left-color:#e67e22;background:#fef9f0;">
+        <p><strong>⚠️ 3年生のみなさんへ注意！</strong><br>
+        キャリアリンク掲示板は<strong>原則4年生向けの求人情報</strong>が中心です。<br>
+        ただし、3年生向けのインターンシップを開催してくれる企業情報も掲載されています。<strong>エントリー前に必ず対象学年を確認</strong>してからエントリーしてください。</p>
+      </div>
+      <div class="tip">
+        <p><strong>🌱 キャリ爺からひとこと</strong><br>
+        「対象学年が違う」と後から気づいてもエントリーはできません。焦らず、まず学年欄をチェックする習慣をつけよう。</p>
+      </div>
+      <div class="modal-links">
+        <a href="https://tanukin0423.github.io/career-link/" target="_blank" class="modal-btn">
+          <span class="btn-ic">📌</span>
+          <div><div>キャリアリンク掲示板を開く</div><div class="btn-sub">対象学年を確認してからエントリーしよう</div></div>
+        </a>
+      </div>
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('careerlink')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ES作成ツール -->
+<div class="modal-overlay" id="modal-es">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">✍️</div>
+      <div class="mttl" id="es-modal-title">ES作成ツール</div>
+      <div class="msub" id="es-modal-sub">ガクチカ・自己PR・志望動機<br>テーマを選んで、あなただけの言葉で書こう。</div>
+    </div>
+    <div class="modal-body">
+
+      <!-- ══ 画面⓪：エントリー版／本格版 振り分け ══ -->
+      <div id="es-screen0">
+        <div class="tip">
+          <p><strong>🦉 キャリ爺からひとこと</strong><br>
+          ESを書くのが初めてなら「エントリー版」から。すでに書いたことがあるなら「本格版」へどうぞ。<br>
+          どちらからでも、あとでもう一方に切り替えられます。</p>
+        </div>
+
+        <div class="es-level-grid">
+          <button class="es-level-card es-level-entry" onclick="esbShowLevel('entry')">
+            <span class="es-level-badge">まずはここから</span>
+            <span class="es-level-ic">🌱</span>
+            <div class="es-level-ttl">エントリー版</div>
+            <div class="es-level-dsc">プルダウンで選ぶだけ。<br>ESを書いたことがなくてもOK。</div>
+          </button>
+          <button class="es-level-card es-level-pro" onclick="esbShowLevel('pro')">
+            <span class="es-level-badge es-level-badge-pro">じっくり仕上げる</span>
+            <span class="es-level-ic">✍️</span>
+            <div class="es-level-ttl">本格版</div>
+            <div class="es-level-dsc">テーマ・質問に答えて、<br>AI添削プロンプトまで作成。</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ エントリー版（プルダウン選択式） ══ -->
+      <div id="es-screen-entry" style="display:none;">
+        <button class="es-back-btn" onclick="esbBackToLevel()">← レベル選択に戻る</button>
+        <div id="esbApp" class="esb-scope">
+<header>
+    <div class="tree-mark">🌱</div>
+    <h1>ES入門ガイド</h1>
+    <p class="lede">「ESって、何から書けばいいの？」——まずは、こんな感じでOKです。<br>選ぶだけで、自分の文章のタネができていきます。</p>
+    <div class="gold-line"></div>
+  </header>
+
+  <div class="intro-card">
+    <h2>📖 ESって、そもそも何？</h2>
+    <p>エントリーシート（ES）は、「あなたがどんな人か」を企業に伝える最初の自己紹介です。</p>
+    <p>難しい言葉や、特別な経験はいりません。日常のちょっとした出来事から「何を感じ、どう動いたか」を伝えるだけで、立派なESの材料になります。</p>
+    <div class="intro-sample">
+      <div class="label">こんな感じでOK、という例</div>
+      私はゼミ活動で、議論が活発にならないという課題に直面しました。全員が納得できる形にしたいという想いから、発言しやすい雰囲気づくりを工夫した結果、メンバー全員が意見を出せるようになりました。この経験から、周囲を巻き込みながら課題に向き合う力を学びました。仕事の中でチームの足並みが揃わない場面でも、この力を活かしていきたいと考えています。
+    </div>
+  </div>
+
+  <div class="theme-tabs" id="esbThemeTabs"></div>
+
+  <div class="accordion" id="esbAccordion"></div>
+
+  <div class="memo-section">
+    <div class="memo-title-row">
+      <div class="memo-title">📝 あなたの素材メモ</div>
+      <button class="btn-download-all" id="esbDownloadAllBtn" disabled>📄 すべてダウンロード</button>
+    </div>
+    <div id="esbMemoList"><div class="memo-empty">まだメモがありません。下のアコーディオンから、気になるタイプを開いて選んでみましょう。</div></div>
+  </div>
+
+  <div class="next-section">
+    <h3>🌳 次は、本格版でブラッシュアップ</h3>
+    <p>ここで集めた「素材」をもとに、本格版でガクチカ・自己PRをしっかり仕上げていきましょう。</p>
+    <button type="button" class="btn-next" style="border:none;cursor:pointer;font-size:14px;" onclick="esbShowLevel('pro')">本格版に切り替える →</button>
+  </div>
+
+  <footer>就活の木 ｜ Shukatsu no Ki</footer>
+</div>
+      </div>
+
+      <!-- ══ 画面①：テーマ選択（本格版） ══ -->
+      <div id="es-screen1" style="display:none;">
+        <button class="es-back-btn" onclick="esbBackToLevel()">← レベル選択に戻る</button>
+        <div class="tip">
+          <p><strong>🦉 キャリ爺からひとこと</strong><br>
+          「答えはあなたの中にある」——AIは磨くための道具。まず自分の言葉で書いてみよう。<br>
+          テーマを選ぶと、質問に答えるだけでAI添削プロンプトが自動生成されます。</p>
+        </div>
+
+        <!-- ガクチカ -->
+        <div class="modal-section-title">🎯 ガクチカ（学生時代に力を入れたこと）</div>
+        <div class="es-theme-grid">
+          <button class="es-theme-btn" onclick="esSelectTheme('arbeit','☕','アルバイト（飲食・接客）')">
+            <span class="es-th-ic">☕</span>
+            <div class="es-th-name">アルバイト<br><span class="es-th-sub">飲食・接客系</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esSelectTheme('conveni','🏪','アルバイト（販売・コンビニ）')">
+            <span class="es-th-ic">🏪</span>
+            <div class="es-th-name">アルバイト<br><span class="es-th-sub">販売・コンビニ系</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esSelectTheme('zemi','📚','ゼミ・研究')">
+            <span class="es-th-ic">📚</span>
+            <div class="es-th-name">ゼミ・研究<br><span class="es-th-sub">学習・探究</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esSelectTheme('circle','🏃','サークル・部活')">
+            <span class="es-th-ic">🏃</span>
+            <div class="es-th-name">サークル・部活<br><span class="es-th-sub">チーム活動</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esSelectTheme('license','🏅','資格・自主学習')">
+            <span class="es-th-ic">🏅</span>
+            <div class="es-th-name">資格・自主学習<br><span class="es-th-sub">コツコツ努力系</span></div>
+          </button>
+        </div>
+
+        <!-- 自己PR -->
+        <div class="modal-section-title">💪 自己PR（社会人基礎力から選ぼう）</div>
+        <div class="es-pr-groups">
+          <div class="es-pr-group">
+            <div class="es-pr-group-label">🙋 前に踏み出す力</div>
+            <div class="es-theme-grid">
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('shutaisei','🙋','主体性')">
+                <span class="es-th-ic">🙋</span><div class="es-th-name">主体性</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('jikko','🏃','実行力')">
+                <span class="es-th-ic">🏃</span><div class="es-th-name">実行力</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('hataraki','📣','働きかけ力')">
+                <span class="es-th-ic">📣</span><div class="es-th-name">働きかけ力</div>
+              </button>
+            </div>
+          </div>
+          <div class="es-pr-group">
+            <div class="es-pr-group-label">💡 考え抜く力</div>
+            <div class="es-theme-grid">
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('kadai','🔍','課題発見力')">
+                <span class="es-th-ic">🔍</span><div class="es-th-name">課題発見力</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('keikaku','📅','計画力')">
+                <span class="es-th-ic">📅</span><div class="es-th-name">計画力</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('sozo','💡','創造力')">
+                <span class="es-th-ic">💡</span><div class="es-th-name">創造力</div>
+              </button>
+            </div>
+          </div>
+          <div class="es-pr-group">
+            <div class="es-pr-group-label">🫂 チームで働く力</div>
+            <div class="es-theme-grid">
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('hasshin','🎤','発信力')">
+                <span class="es-th-ic">🎤</span><div class="es-th-name">発信力</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('keicho','👂','傾聴力')">
+                <span class="es-th-ic">👂</span><div class="es-th-name">傾聴力</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('junan','🌊','柔軟性')">
+                <span class="es-th-ic">🌊</span><div class="es-th-name">柔軟性</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('jokyo','🧭','情況把握力')">
+                <span class="es-th-ic">🧭</span><div class="es-th-name">情況把握力</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('kyochosei','🫂','協調性')">
+                <span class="es-th-ic">🫂</span><div class="es-th-name">協調性</div>
+              </button>
+              <button class="es-theme-btn es-pr-btn" onclick="esPrSelect('keizoku','🔥','継続力')">
+                <span class="es-th-ic">🔥</span><div class="es-th-name">継続力</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 志望動機 -->
+        <div class="modal-section-title">🧭 志望動機（選んでください）</div>
+        <div class="tip" style="border-left-color:#c9a84c;background:#fef9f0;">
+          <p><strong>💡 書きやすい順に並んでいます</strong><br>「体験したことがある」ものから選ぶと言葉が出やすいですよ。</p>
+        </div>
+        <div class="es-theme-grid" style="margin-top:8px;">
+          <button class="es-theme-btn" onclick="esShSelect('intern','🏢','インターン・OB訪問型')">
+            <span class="es-th-ic">🏢</span>
+            <div class="es-th-name">インターン<br><span class="es-th-sub">OB訪問経験から</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esShSelect('setsumeikai','🎤','説明会参加型')">
+            <span class="es-th-ic">🎤</span>
+            <div class="es-th-name">説明会<br><span class="es-th-sub">社員の話から</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esShSelect('product','🏭','製品・サービス共感型')">
+            <span class="es-th-ic">🏭</span>
+            <div class="es-th-name">製品・サービス<br><span class="es-th-sub">共感・好きから</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esShSelect('culture','👥','人・社風共鳴型')">
+            <span class="es-th-ic">👥</span>
+            <div class="es-th-name">人・社風<br><span class="es-th-sub">雰囲気への共鳴</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esShSelect('social','🌍','課題解決・社会貢献型')">
+            <span class="es-th-ic">🌍</span>
+            <div class="es-th-name">社会貢献<br><span class="es-th-sub">課題解決から</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esShSelect('aptitude','🔎','自己分析・適性型')">
+            <span class="es-th-ic">🔎</span>
+            <div class="es-th-name">自己分析<br><span class="es-th-sub">強み・適性から</span></div>
+          </button>
+          <button class="es-theme-btn" onclick="esShSelect('regional_exp','🗺️','ゼミ・活動経験直結型')">
+            <span class="es-th-ic">🗺️</span>
+            <div class="es-th-name">ゼミ・活動<br><span class="es-th-sub">経験直結から</span></div>
+          </button>
+        </div>
+
+        <!-- 詳細版リンク -->
+        <div style="margin-top:18px;padding:13px 15px;background:linear-gradient(135deg,#1e4d2f,#2d6a4f);border-radius:12px;border:1.5px solid var(--gold);">
+          <div style="font-size:10px;font-weight:700;color:var(--goldl);margin-bottom:6px;">📖 もっと詳しく作りたい人へ</div>
+          <div style="font-size:9px;color:var(--gp);margin-bottom:8px;line-height:1.7;">就活の軸・ES頻出質問・趣味特技など全6種類のツールを収録した詳細版もあります。</div>
+          <a href="https://tanukin0423.github.io/shukatsu-es/" target="_blank" class="modal-btn" style="background:rgba(201,168,76,0.2);border:1.5px solid var(--gold);color:var(--goldl);">
+            <span class="btn-ic">🔗</span>
+            <div><div>ES作成支援カードツール（詳細版）</div><div class="btn-sub">全6種類・就活の軸・頻出質問・趣味特技も収録</div></div>
+          </a>
+        </div>
+      </div>
+
+      <!-- ══ 画面②：ガクチカ STAR+WHY フォーム ══ -->
+      <div id="es-screen2" style="display:none;">
+
+        <!-- 選択テーマ表示バッジ -->
+        <div id="es-selected-badge" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f0faf3;border:2px solid var(--gm);border-radius:10px;margin-bottom:16px;">
+          <span id="es-badge-ic" style="font-size:1.8rem;"></span>
+          <div>
+            <div id="es-badge-name" style="font-size:.95rem;font-weight:700;color:var(--gd);"></div>
+            <div style="font-size:.75rem;color:var(--gm);margin-top:2px;">例文をコピーして編集するか、直接入力してください。</div>
+          </div>
+        </div>
+
+        <div class="es-form-wrap">
+
+          <!-- S -->
+          <div class="es-form-group">
+            <label class="es-label">【S】状況——いつ・どこで・何をしていた？</label>
+            <div class="es-keiji-q">
+              <span class="es-keiji-ql">🌱 キャリ爺から：まず思い出してみて</span>
+              いつ・どこで・誰と・何をしていた？規模・人数・期間など数字を入れると伝わりやすいよ。
+            </div>
+            <textarea id="es-inp-s" class="es-textarea" oninput="esUpdateCnt(this,'es-cnt-s')" placeholder="例：経済学部のゼミで、3人チームで半年間の共同研究に取り組んでいました。"></textarea>
+            <span id="es-cnt-s" class="es-counter">0 文字</span>
+            <div class="es-example-box">
+              <p class="es-example-text" id="es-ex-s"></p>
+              <button class="es-btn-copy-ex" onclick="esCopyEx('es-ex-s','es-inp-s','es-cnt-s')">参考にコピー</button>
+            </div>
+          </div>
+
+          <!-- T -->
+          <div class="es-form-group">
+            <label class="es-label">【T】課題——困ったこと・うまくいかなかったことは？</label>
+            <div class="es-keiji-q">
+              <span class="es-keiji-ql">🌱 キャリ爺から：正直に教えて</span>
+              「なんでこうなるんだろう」とモヤモヤした瞬間は？お客さんや先生から何か言われた？
+            </div>
+            <textarea id="es-inp-t" class="es-textarea" oninput="esUpdateCnt(this,'es-cnt-t')" placeholder="例：中間発表で教授から「データ分析が浅い」と指摘された。残り2ヶ月で大幅に改善が必要だった。"></textarea>
+            <span id="es-cnt-t" class="es-counter">0 文字</span>
+            <div class="es-example-box">
+              <p class="es-example-text" id="es-ex-t"></p>
+              <button class="es-btn-copy-ex" onclick="esCopyEx('es-ex-t','es-inp-t','es-cnt-t')">参考にコピー</button>
+            </div>
+          </div>
+
+          <!-- WHY（核心） -->
+          <div class="es-form-group" style="background:#fffdf4;border:1px solid #e9c46a;border-radius:8px;padding:12px 14px 8px;">
+            <label class="es-label">💡 WHY——なぜ、あなたはその課題を放っておけなかった？<span style="display:inline-block;background:#c9a227;color:white;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:6px;">ここが核心</span></label>
+            <div style="background:#fffbee;border-left:4px solid #e9c46a;padding:8px 12px;font-size:.78rem;color:#7a5c00;line-height:1.7;margin-bottom:8px;border-radius:0 6px 6px 0;">
+              T（課題）からA（行動）への橋渡し。「以前〜という経験があったので」「もともと〜な性格で」など、動いた理由を一言加えると採用担当者に「会いたい」と思わせる核心になります。
+            </div>
+            <textarea id="es-inp-why" class="es-textarea" oninput="esUpdateCnt(this,'es-cnt-why')" placeholder="例：教授から「浅い」と言われた瞬間、悔しさより「どこが浅いのか知りたい」という好奇心が先に湧いてきました。"></textarea>
+            <span id="es-cnt-why" class="es-counter">0 文字</span>
+            <div class="es-example-box">
+              <p class="es-example-text" id="es-ex-why"></p>
+              <button class="es-btn-copy-ex" onclick="esCopyEx('es-ex-why','es-inp-why','es-cnt-why')">参考にコピー</button>
+            </div>
+          </div>
+
+          <!-- A -->
+          <div class="es-form-group">
+            <label class="es-label">【A】行動——あなたが実際にとった行動は？</label>
+            <div class="es-keiji-q">
+              <span class="es-keiji-ql">🌱 キャリ爺から：「私が〜した」と主語を自分に</span>
+              工夫・こだわりが伝わるように。「みんなで〜した」ではなく「私が〜した」で書こう。
+            </div>
+            <textarea id="es-inp-a" class="es-textarea" oninput="esUpdateCnt(this,'es-cnt-a')" placeholder="例：チームの分析手法を見直し、統計ソフトを新たに学習して導入。メンバーと毎日進捗を共有した。"></textarea>
+            <span id="es-cnt-a" class="es-counter">0 文字</span>
+            <div class="es-example-box">
+              <p class="es-example-text" id="es-ex-a"></p>
+              <button class="es-btn-copy-ex" onclick="esCopyEx('es-ex-a','es-inp-a','es-cnt-a')">参考にコピー</button>
+            </div>
+          </div>
+
+          <!-- R -->
+          <div class="es-form-group">
+            <label class="es-label">【R】結果——どんな変化・成果があった？</label>
+            <div class="es-keiji-q">
+              <span class="es-keiji-ql">🌱 キャリ爺から：数字＋周りの反応も加えると深みが出る</span>
+              「〇〇%改善」「〇〇から〇〇に」など数字で表せると説得力が増すよ。
+            </div>
+            <textarea id="es-inp-r" class="es-textarea" oninput="esUpdateCnt(this,'es-cnt-r')" placeholder="例：最終発表で「説得力のある分析だ」と高評価を得て、ゼミの優秀論文に選ばれた。"></textarea>
+            <span id="es-cnt-r" class="es-counter">0 文字</span>
+            <div class="es-example-box">
+              <p class="es-example-text" id="es-ex-r"></p>
+              <button class="es-btn-copy-ex" onclick="esCopyEx('es-ex-r','es-inp-r','es-cnt-r')">参考にコピー</button>
+            </div>
+          </div>
+
+          <!-- F&C -->
+          <div class="es-form-group">
+            <label class="es-label">【F&C】学びと活用——この経験で培った力を仕事でどう活かす？</label>
+            <div class="es-keiji-q">
+              <span class="es-keiji-ql">🌱 キャリ爺から：「〜力を、御社の〇〇で活かしたい」の形で</span>
+              入社後のイメージを具体的に。抽象的にならないように注意しよう。
+            </div>
+            <textarea id="es-inp-fc" class="es-textarea" oninput="esUpdateCnt(this,'es-cnt-fc')" placeholder="例：データに基づいた分析・提案力を、御社の企画職でも活かし、根拠ある改善提案に貢献したいです。"></textarea>
+            <span id="es-cnt-fc" class="es-counter">0 文字</span>
+            <div class="es-example-box">
+              <p class="es-example-text" id="es-ex-fc"></p>
+              <button class="es-btn-copy-ex" onclick="esCopyEx('es-ex-fc','es-inp-fc','es-cnt-fc')">参考にコピー</button>
+            </div>
+          </div>
+
+          <!-- 文字数 -->
+          <div class="es-form-group">
+            <label class="es-label">📏 提出する文字数の目安</label>
+            <select id="es-length" class="es-select">
+              <option value="200文字以内">200文字以内（短め）</option>
+              <option value="300文字以内" selected>300文字以内（標準）</option>
+              <option value="400文字以内">400文字以内（詳しめ）</option>
+              <option value="500文字以内">500文字以内（長め）</option>
+            </select>
+          </div>
+
+          <div id="es-error" style="display:none;color:#c0392b;font-weight:700;font-size:.85rem;text-align:center;padding:8px;"></div>
+          <button class="es-btn-generate" onclick="esGenerate()">🤖 AI添削プロンプトを生成する</button>
+
+          <!-- 結果エリア -->
+          <div id="es-result" style="display:none;margin-top:20px;padding-top:18px;border-top:2px solid #e8f0e8;">
+            <div style="margin-bottom:14px;">
+              <div style="font-size:.88rem;font-weight:700;color:var(--gd);border-left:4px solid var(--gm);padding-left:9px;margin-bottom:6px;">📋 STEP 1｜Claude.aiに貼り付けるプロンプト</div>
+              <div style="font-size:.78rem;color:#666;margin-bottom:6px;">以下をそのままClaude.aiにコピー＆ペーストしてください。</div>
+              <textarea id="es-prompt1" class="es-prompt-area" readonly></textarea>
+              <div style="text-align:right;margin-top:5px;">
+                <button class="es-btn-copy" onclick="esCopyPrompt('es-prompt1',this)">コピー</button>
+              </div>
+            </div>
+            <div style="margin-bottom:14px;">
+              <div style="font-size:.88rem;font-weight:700;color:var(--gd);border-left:4px solid var(--gm);padding-left:9px;margin-bottom:6px;">📋 STEP 2｜AI回答後に続けて貼り付けるプロンプト</div>
+              <div style="font-size:.78rem;color:#666;margin-bottom:6px;">STEP1の回答を受け取ったら、続けて以下を貼り付けてください。</div>
+              <textarea id="es-prompt2" class="es-prompt-area" readonly></textarea>
+              <div style="text-align:right;margin-top:5px;">
+                <button class="es-btn-copy" onclick="esCopyPrompt('es-prompt2',this)">コピー</button>
+              </div>
+            </div>
+            <a href="https://claude.ai/new" target="_blank" class="modal-btn" style="background:var(--gold);color:var(--br);font-weight:700;">
+              <span class="btn-ic">🤖</span>
+              <div><div>Claude.aiを開く（添削してもらおう）</div><div class="btn-sub">コピーしたプロンプトを貼り付けてSTART！</div></div>
+            </a>
+          </div>
+
+        </div><!-- /es-form-wrap -->
+
+        <div style="margin-top:14px;">
+          <button onclick="esGoScreen(1)" style="width:100%;background:none;border:1.5px solid var(--card-border);border-radius:8px;color:var(--gm);font-size:.82rem;font-weight:700;padding:8px;cursor:pointer;">← テーマ選択に戻る</button>
+        </div>
+
+      </div><!-- /es-screen2 ガクチカ -->
+
+      <!-- ══ 画面③：自己PR フォーム ══ -->
+      <div id="es-screen3" style="display:none;">
+        <div id="es-pr-badge" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f0faf3;border:2px solid var(--gm);border-radius:10px;margin-bottom:16px;">
+          <span id="es-pr-badge-ic" style="font-size:1.8rem;"></span>
+          <div>
+            <div id="es-pr-badge-name" style="font-size:.95rem;font-weight:700;color:var(--gd);"></div>
+            <div style="font-size:.75rem;color:var(--gm);margin-top:2px;">例文をコピーして編集するか、直接入力してください。</div>
+          </div>
+        </div>
+        <div class="es-form-wrap">
+          <!-- 活動名 -->
+          <div class="es-form-group">
+            <label class="es-label">📌 強みを発揮した活動名</label>
+            <input id="es-pr-activity" type="text" class="es-select" placeholder="例：カフェのアルバイト、テニスサークル、ゼミ研究 など">
+          </div>
+          <!-- S -->
+          <div class="es-form-group">
+            <label class="es-label">【S】状況——どんな場面・環境でしたか？</label>
+            <div class="es-keiji-q"><span class="es-keiji-ql">🌱 キャリ爺から</span>いつ・どこで・誰と・どんな規模？数字を入れると伝わりやすいよ。</div>
+            <textarea id="es-pr-inp-s" class="es-textarea" oninput="esUpdateCnt(this,'es-pr-cnt-s')" placeholder="その活動の中で、どんな状況・場面でしたか？"></textarea>
+            <span id="es-pr-cnt-s" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-pr-ex-s"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-pr-ex-s','es-pr-inp-s','es-pr-cnt-s')">参考にコピー</button></div>
+          </div>
+          <!-- T -->
+          <div class="es-form-group">
+            <label class="es-label">【T】課題——立ちはだかった壁は？</label>
+            <textarea id="es-pr-inp-t" class="es-textarea" oninput="esUpdateCnt(this,'es-pr-cnt-t')" placeholder="あなたの前にあった課題・壁は何でしたか？"></textarea>
+            <span id="es-pr-cnt-t" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-pr-ex-t"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-pr-ex-t','es-pr-inp-t','es-pr-cnt-t')">参考にコピー</button></div>
+          </div>
+          <!-- WHY -->
+          <div class="es-form-group" style="background:#fffdf4;border:1px solid #e9c46a;border-radius:8px;padding:12px 14px 8px;">
+            <label class="es-label">💡 WHY——なぜ動かずにいられなかった？<span style="display:inline-block;background:#c9a227;color:white;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:6px;">ここが核心</span></label>
+            <textarea id="es-pr-inp-why" class="es-textarea" oninput="esUpdateCnt(this,'es-pr-cnt-why')" placeholder="なぜその課題を放っておけなかったのですか？"></textarea>
+            <span id="es-pr-cnt-why" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-pr-ex-why"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-pr-ex-why','es-pr-inp-why','es-pr-cnt-why')">参考にコピー</button></div>
+          </div>
+          <!-- A -->
+          <div class="es-form-group">
+            <label class="es-label">【A】行動——実際にとった行動は？</label>
+            <textarea id="es-pr-inp-a" class="es-textarea" oninput="esUpdateCnt(this,'es-pr-cnt-a')" placeholder="「私が〜した」と自分が主語で、工夫・こだわりが伝わるように。"></textarea>
+            <span id="es-pr-cnt-a" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-pr-ex-a"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-pr-ex-a','es-pr-inp-a','es-pr-cnt-a')">参考にコピー</button></div>
+          </div>
+          <!-- R -->
+          <div class="es-form-group">
+            <label class="es-label">【R】結果——どんな変化・成果があった？</label>
+            <textarea id="es-pr-inp-r" class="es-textarea" oninput="esUpdateCnt(this,'es-pr-cnt-r')" placeholder="数字＋周りの反応・自分の手ごたえも入れると伝わりやすいです。"></textarea>
+            <span id="es-pr-cnt-r" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-pr-ex-r"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-pr-ex-r','es-pr-inp-r','es-pr-cnt-r')">参考にコピー</button></div>
+          </div>
+          <!-- C 活用法 -->
+          <div class="es-form-group">
+            <label class="es-label">【C】活用——入社後どんな場面で活かす？</label>
+            <textarea id="es-pr-inp-c" class="es-textarea" oninput="esUpdateCnt(this,'es-pr-cnt-c')" placeholder="「〜力を御社の〇〇で活かしたい」という形で。"></textarea>
+            <span id="es-pr-cnt-c" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-pr-ex-c"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-pr-ex-c','es-pr-inp-c','es-pr-cnt-c')">参考にコピー</button></div>
+          </div>
+          <!-- 文字数 -->
+          <div class="es-form-group">
+            <label class="es-label">📏 提出する文字数の目安</label>
+            <select id="es-pr-length" class="es-select">
+              <option value="200文字以内">200文字以内（短め）</option>
+              <option value="300文字以内" selected>300文字以内（標準）</option>
+              <option value="400文字以内">400文字以内（詳しめ）</option>
+              <option value="500文字以内">500文字以内（長め）</option>
+            </select>
+          </div>
+          <div id="es-pr-error" style="display:none;color:#c0392b;font-weight:700;font-size:.85rem;text-align:center;padding:8px;"></div>
+          <button class="es-btn-generate" onclick="esPrGenerate()">🤖 AI添削プロンプトを生成する</button>
+          <!-- 結果 -->
+          <div id="es-pr-result" style="display:none;margin-top:20px;padding-top:18px;border-top:2px solid #e8f0e8;">
+            <div style="margin-bottom:14px;">
+              <div style="font-size:.88rem;font-weight:700;color:var(--gd);border-left:4px solid var(--gm);padding-left:9px;margin-bottom:6px;">📋 STEP 1｜Claude.aiに貼り付けるプロンプト</div>
+              <textarea id="es-pr-prompt1" class="es-prompt-area" readonly></textarea>
+              <div style="text-align:right;margin-top:5px;"><button class="es-btn-copy" onclick="esCopyPrompt('es-pr-prompt1',this)">コピー</button></div>
+            </div>
+            <div style="margin-bottom:14px;">
+              <div style="font-size:.88rem;font-weight:700;color:var(--gd);border-left:4px solid var(--gm);padding-left:9px;margin-bottom:6px;">📋 STEP 2｜AI回答後に続けて貼り付けるプロンプト</div>
+              <textarea id="es-pr-prompt2" class="es-prompt-area" readonly></textarea>
+              <div style="text-align:right;margin-top:5px;"><button class="es-btn-copy" onclick="esCopyPrompt('es-pr-prompt2',this)">コピー</button></div>
+            </div>
+            <a href="https://claude.ai/new" target="_blank" class="modal-btn" style="background:var(--gold);color:var(--br);font-weight:700;">
+              <span class="btn-ic">🤖</span><div><div>Claude.aiを開く（添削してもらおう）</div><div class="btn-sub">コピーしたプロンプトを貼り付けてSTART！</div></div>
+            </a>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <button onclick="esGoScreen(1)" style="width:100%;background:none;border:1.5px solid var(--card-border);border-radius:8px;color:var(--gm);font-size:.82rem;font-weight:700;padding:8px;cursor:pointer;">← テーマ選択に戻る</button>
+        </div>
+      </div><!-- /es-screen3 自己PR -->
+
+      <!-- ══ 画面④：志望動機 フォーム ══ -->
+      <div id="es-screen4" style="display:none;">
+        <div id="es-sh-badge" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f0faf3;border:2px solid var(--gm);border-radius:10px;margin-bottom:16px;">
+          <span id="es-sh-badge-ic" style="font-size:1.8rem;"></span>
+          <div>
+            <div id="es-sh-badge-name" style="font-size:.95rem;font-weight:700;color:var(--gd);"></div>
+            <div style="font-size:.75rem;color:var(--gm);margin-top:2px;">例文をコピーして編集するか、直接入力してください。</div>
+          </div>
+        </div>
+        <div class="es-form-wrap">
+          <!-- 企業名 -->
+          <div class="es-form-group">
+            <label class="es-label">🏢 志望企業名</label>
+            <input id="es-sh-company" type="text" class="es-select" placeholder="例：〇〇株式会社">
+          </div>
+          <!-- きっかけ -->
+          <div class="es-form-group">
+            <label class="es-label">① きっかけ——この会社に惹かれたきっかけは？</label>
+            <div class="es-keiji-q"><span class="es-keiji-ql">🌱 キャリ爺から</span>説明会・製品体験・OB訪問・ニュース…どんな場面でもOK。「あの瞬間」を思い出して。</div>
+            <textarea id="es-sh-inp-1" class="es-textarea" oninput="esUpdateCnt(this,'es-sh-cnt-1')" placeholder="この会社・業界を意識し始めたきっかけは何でしたか？"></textarea>
+            <span id="es-sh-cnt-1" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-sh-ex-1"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-sh-ex-1','es-sh-inp-1','es-sh-cnt-1')">参考にコピー</button></div>
+          </div>
+          <!-- WHY -->
+          <div class="es-form-group" style="background:#fffdf4;border:1px solid #e9c46a;border-radius:8px;padding:12px 14px 8px;">
+            <label class="es-label">💡 WHY——なぜそれがあなたの心に刺さった？<span style="display:inline-block;background:#c9a227;color:white;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:6px;">ここが核心</span></label>
+            <textarea id="es-sh-inp-why" class="es-textarea" oninput="esUpdateCnt(this,'es-sh-cnt-why')" placeholder="あなたの過去の経験・価値観と、どう重なりましたか？"></textarea>
+            <span id="es-sh-cnt-why" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-sh-ex-why"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-sh-ex-why','es-sh-inp-why','es-sh-cnt-why')">参考にコピー</button></div>
+          </div>
+          <!-- 価値観 -->
+          <div class="es-form-group">
+            <label class="es-label">② 価値観——仕事で一番大切にしたいことは？</label>
+            <div class="es-keiji-q"><span class="es-keiji-ql">🌱 キャリ爺から</span>「なぜ他社ではなくこの会社？」への答えになる価値観を。</div>
+            <textarea id="es-sh-inp-2" class="es-textarea" oninput="esUpdateCnt(this,'es-sh-cnt-2')" placeholder="仕事を通じて、あなたが一番大切にしたいことは何ですか？"></textarea>
+            <span id="es-sh-cnt-2" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-sh-ex-2"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-sh-ex-2','es-sh-inp-2','es-sh-cnt-2')">参考にコピー</button></div>
+          </div>
+          <!-- 企業の魅力 -->
+          <div class="es-form-group">
+            <label class="es-label">③ 企業の魅力——「この会社ならでは」の特徴は？</label>
+            <div class="es-keiji-q"><span class="es-keiji-ql">🌱 キャリ爺から</span>「業界トップ」「安定」はNG！説明会・HP・OB訪問・IR資料で調べた具体的な魅力を。</div>
+            <textarea id="es-sh-inp-3" class="es-textarea" oninput="esUpdateCnt(this,'es-sh-cnt-3')" placeholder="説明会・HPなどで知ったこの会社ならではの特徴を教えてください。"></textarea>
+            <span id="es-sh-cnt-3" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-sh-ex-3"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-sh-ex-3','es-sh-inp-3','es-sh-cnt-3')">参考にコピー</button></div>
+          </div>
+          <!-- 貢献 -->
+          <div class="es-form-group">
+            <label class="es-label">④ 貢献——入社後どんな自分が見えますか？</label>
+            <div class="es-keiji-q"><span class="es-keiji-ql">🌱 キャリ爺から</span>自分の強みとこの会社をつなげて、具体的なイメージで。</div>
+            <textarea id="es-sh-inp-4" class="es-textarea" oninput="esUpdateCnt(this,'es-sh-cnt-4')" placeholder="入社後、どんな仕事をしている自分が見えますか？"></textarea>
+            <span id="es-sh-cnt-4" class="es-counter">0 文字</span>
+            <div class="es-example-box"><p class="es-example-text" id="es-sh-ex-4"></p><button class="es-btn-copy-ex" onclick="esCopyEx('es-sh-ex-4','es-sh-inp-4','es-sh-cnt-4')">参考にコピー</button></div>
+          </div>
+          <!-- 文字数 -->
+          <div class="es-form-group">
+            <label class="es-label">📏 提出する文字数の目安</label>
+            <select id="es-sh-length" class="es-select">
+              <option value="200文字以内">200文字以内（短め）</option>
+              <option value="300文字以内" selected>300文字以内（標準）</option>
+              <option value="400文字以内">400文字以内（詳しめ）</option>
+              <option value="500文字以内">500文字以内（長め）</option>
+            </select>
+          </div>
+          <div id="es-sh-error" style="display:none;color:#c0392b;font-weight:700;font-size:.85rem;text-align:center;padding:8px;"></div>
+          <button class="es-btn-generate" onclick="esShGenerate()">🤖 AI添削プロンプトを生成する</button>
+          <!-- 結果 -->
+          <div id="es-sh-result" style="display:none;margin-top:20px;padding-top:18px;border-top:2px solid #e8f0e8;">
+            <div style="margin-bottom:14px;">
+              <div style="font-size:.88rem;font-weight:700;color:var(--gd);border-left:4px solid var(--gm);padding-left:9px;margin-bottom:6px;">📋 STEP 1｜Claude.aiに貼り付けるプロンプト</div>
+              <textarea id="es-sh-prompt1" class="es-prompt-area" readonly></textarea>
+              <div style="text-align:right;margin-top:5px;"><button class="es-btn-copy" onclick="esCopyPrompt('es-sh-prompt1',this)">コピー</button></div>
+            </div>
+            <div style="margin-bottom:14px;">
+              <div style="font-size:.88rem;font-weight:700;color:var(--gd);border-left:4px solid var(--gm);padding-left:9px;margin-bottom:6px;">📋 STEP 2｜AI回答後に続けて貼り付けるプロンプト</div>
+              <textarea id="es-sh-prompt2" class="es-prompt-area" readonly></textarea>
+              <div style="text-align:right;margin-top:5px;"><button class="es-btn-copy" onclick="esCopyPrompt('es-sh-prompt2',this)">コピー</button></div>
+            </div>
+            <a href="https://claude.ai/new" target="_blank" class="modal-btn" style="background:var(--gold);color:var(--br);font-weight:700;">
+              <span class="btn-ic">🤖</span><div><div>Claude.aiを開く（添削してもらおう）</div><div class="btn-sub">コピーしたプロンプトを貼り付けてSTART！</div></div>
+            </a>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <button onclick="esGoScreen(1)" style="width:100%;background:none;border:1.5px solid var(--card-border);border-radius:8px;color:var(--gm);font-size:.82rem;font-weight:700;padding:8px;cursor:pointer;">← テーマ選択に戻る</button>
+        </div>
+      </div><!-- /es-screen4 志望動機 -->
+
+    </div><!-- /modal-body -->
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('es')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<!-- ⑥筆記・SPI -->
+<div class="modal-overlay" id="modal-test">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mic">📝</div>
+      <div class="mttl">筆記・SPI対策</div>
+      <div class="msub">250問ドリルで完全対策！<br>まずやさしいレベルから毎日10分！</div>
+    </div>
+    <div class="modal-body">
+      <div class="tip"><p><strong>🌱 キャリ爺からひとこと</strong><br>筆記試験は「慣れ」が9割。毎日10分でも続けることが合格への近道。まず「やさしい」から始めよう！</p></div>
+      <div class="modal-links">
+        <a href="hikkishiken-drill-v4.html" target="_blank" class="modal-btn">
+          <span class="btn-ic">🌳</span>
+          <div>
+            <div>筆記試験対策ドリル250問</div>
+            <div class="btn-sub">SPI・玉手箱・CAB/GAB・TG-WEB・英語｜Groq AI解説付き</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div style="padding:0 24px 20px;">
+      <button class="modal-close" onclick="closeModal('test')">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── ES作成ツール（ガクチカ・自己PR・志望動機 モーダル内完結） ──
+const ES_CORE=`【最重要指示：「等身大」の文章にすること】
+・「積極的に」「粘り強く」「貢献したい」などの抽象語を具体的な行動・場面に置き換える
+・失敗・葛藤・迷った場面を自然に組み込み、人間らしさを出す
+・T（課題）からA（行動）への橋渡しとして、本人の内面の動機・人格的根拠を必ず織り込む
+・添削後も「本人の原文の感情・視点・言葉の選択」を最大限残す`;
+
+// ── ガクチカ テーマデータ ──
+const ES_THEMES={
+  arbeit:{s:'例：カフェのアルバイトで、新人の教育係をしていた。常連客はいたが新人定着率が低く、月に1〜2名が辞めていく状況だった。',t:'例：新人がすぐに辞めてしまい、定着率が低いことが課題だった。入社後3ヶ月以内の離職が全体の60%を占めていた。',why:'例：新人が辞めていく様子を見て「自分が助けられた恩を返したい」という気持ちが自然に湧き上がったからです。',a:'例：マニュアルが分かりにくいと考え、図や写真入りのものに改訂した。また、週に1回、新人と1対1で話す時間を設けた。',r:'例：半年後、新人の定着率が30%から70%に改善した。新人からも「不安が減った」と言ってもらえた。',fc:'例：この経験で培った「課題を発見し、主体的に改善する力」を、御社の業務でも活かし、サービスの向上に貢献したいです。'},
+  conveni:{s:'例：コンビニエンスストアで2年間アルバイトをしていた。レジ・品出し・在庫管理など多岐にわたる業務を担当していた。',t:'例：レジ待ち時間が長く、お客様からのクレームが週に2〜3件発生していることが課題だった。',why:'例：お客様が舌打ちして去っていく場面を見るたびに、「自分なら変えられる」という気持ちが抑えられませんでした。',a:'例：レジ操作の手順を見直し、スムーズな会計の流れをスタッフ全員で共有した。混雑時間帯を分析しシフト配置を最適化するよう店長に提案した。',r:'例：レジ待ち時間が平均2分から50秒に短縮され、クレームが月1件以下に減少した。店長から「改善提案が助かった」と評価された。',fc:'例：「現場の問題を数字で把握し、改善策を提案・実行する力」を、御社の業務効率化に活かしたいです。'},
+  zemi:{s:'例：経済学部のゼミで、〇〇に関する共同研究（3人チーム）に取り組んでいた。半年間でのデータ収集・分析・発表が課題だった。',t:'例：研究の中間発表で、教授から「データ分析が浅い」と厳しいフィードバックを受けた。残り2ヶ月で分析を大幅に深める必要があった。',why:'例：教授から「浅い」と言われた瞬間、悔しさより「どこが浅いのか知りたい」という好奇心が先に湧いてきました。',a:'例：チームの分析手法を見直し、新たに統計ソフト（SPSS）を学習して導入。メンバーと毎日進捗を共有し、分析をやり直した。',r:'例：最終発表では「説得力のある分析だ」と高評価を得て、ゼミの優秀論文に選ばれた。',fc:'例：データに基づいた戦略立案に貢献したいです。'},
+  circle:{s:'例：テニスサークルで、新入生を集める「新歓係」のリーダーだった。前年の入部者は20名で、今年は30名を目標としていた。',t:'例：例年、新入生の入部数が減少傾向にあることが課題だった。SNSでの発信が弱く、大学内での認知度が低い状態だった。',why:'例：サークルを続けてきた先輩たちの努力を、自分の代で途絶えさせたくないという責任感がありました。',a:'例：SNSでの魅力発信を強化した。また、大学の全クラスを回ってビラを配る「対面」も復活させた。',r:'例：前年比1.5倍の30名の新入生が入部し、サークルの活気を取り戻した。',fc:'例：「対面」と「SNS」を使った広報活動の経験を活かし、御社の営業活動においても多角的なアプローチで成果を出したいです。'},
+  license:{s:'例：専門外の研究分野（データサイエンス）のゼミに飛び込み、周りのメンバーとの知識格差に直面した。入学時はプログラミング経験ゼロだった。',t:'例：基礎知識がないため、チームの議論についていけず、貢献できないことに焦りを感じた。',why:'例：「わからないから仕方ない」という言い訳を自分に使うのが嫌で、できるようになるまでやるしかないと思いました。',a:'例：毎日2時間、オンライン学習サービスを利用して基礎学習を徹底。先輩に週一度質問する時間を設けてキャッチアップした。',r:'例：半年後、チームの機能開発を任せられるレベルに到達。計画的な学習習慣が身についた。',fc:'例：「未知の領域でも、自己学習を通じてキャッチアップする成長意欲」を、御社の業務に活かしたい。'}
+};
+
+// ── 自己PR 強みデータ ──
+const ES_STRENGTHS={
+  shutaisei:{emoji:'🙋',name:'主体性',s:'例：アルバイト先の飲食店で、新メニューの売上が伸び悩んでいた。チームで意見が停滞し、誰も改善策を動き出せない状態が続いていた。',t:'例：誰かが動き出さなければ状況が変わらないが、会議では結論が出ない状態が3週間続いていた。',why:'例：「誰かがやるだろう」という空気が漂い始めると、自分が動かなければという気持ちが自然と湧いてきます。',a:'例：あえて「5年後の成功イメージ」を全員に語ってもらい、そこから逆算して行動計画を主体的に再立案した。',r:'例：新メニューの注文率が前週比で1.5倍に増加した。',c:'例：「指示を待つのではなく、自ら考えて動く主体性」を、御社の業務でも発揮し、チームの目標達成に貢献したいです。'},
+  jikko:{emoji:'🏃',name:'実行力',s:'例：所属するサークルのSNSフォロワー数が伸び悩んでいた。魅力的なコンテンツがあるのに発信できていないという歯痒さがあった。',t:'例：みんな「やろう」と言うが誰も動かず、SNSの更新が週1回以下という状態が半年続いていた。',why:'例：「やると決めたことをやらない自分」を想像すると居心地が悪く、続けることが一番のストレス解消になります。',a:'例：「毎日1回は必ず更新する」という目標を自ら立て、企画カレンダーを作成。1年間欠かさず更新を続けた。',r:'例：フォロワー数が1年で2倍になり、新入生の認知度向上にもつながった。',c:'例：「決めたことを粘り強くやり遂げる実行力」を、御社の業務でも発揮し、着実に成果を積み上げたいです。'},
+  hataraki:{emoji:'📣',name:'働きかけ力',s:'例：文化祭の出店準備で、メンバーの士気が下がり、作業が停滞していた。本番2週間前なのに全体の30%しか準備が進んでいない状態だった。',t:'例：このまま進めても良いものができないという焦りがあったが、誰も声を上げなかった。',why:'例：誰かが悩んでいるのに声をかけない選択肢が、自分には思い浮かびません。',a:'例：個別に「何が不安か」を聞いて回った。その上で全体ミーティングを招集し、役割分担を明確にした。',r:'例：チームの士気が再燃し、当日の売上目標も達成できた。',c:'例：「周りを巻き込み、士気を高める働きかけ力」を、御社のチームでも発揮したいです。'},
+  kadai:{emoji:'🔍',name:'課題発見力',s:'例：所属するゼミの論文提出率が、例年低いことが問題になっていた。毎年3〜4名が提出できずに終わっていた。',t:'例：原因が「テーマ設定の遅れ」にある可能性があると気づいたが、それを証明する方法を考えた。',why:'例：「なんとなくうまくいっていない」という状態を放置しておくことが、自分には耐えられません。',a:'例：過去の論文テーマ一覧を分析・分類し、新入生に配布する「テーマ発見シート」を自主的に作成・提案した。',r:'例：テーマ設定が早期化し、その年の論文提出率は過去最高の100%を達成した。',c:'例：「現状を分析し、問題の根本原因を発見する力」を、御社の企画職として活かしたいです。'},
+  keikaku:{emoji:'📅',name:'計画力',s:'例：大学3年次に、学業と週4日のアルバイト、TOEICの勉強を並行して進める必要があった。',t:'例：全てを並行してこなすには時間が足りず、どれかを犠牲にしなければならない状況だった。',why:'例：行き当たりばったりで失敗した経験が多く、「計画があれば防げた」という後悔を繰り返してきたからです。',a:'例：まず目標（TOEIC800点）を定め、逆算して月間・週間の学習計画を作成。通学中は単語学習、夜は問題集と時間をタスクで区切った。',r:'例：単位を一つも落とさず、アルバイトも継続しながら、TOEIC810点を達成できた。',c:'例：「目標から逆算して計画を立て、実行する力」を、御社の業務においても活かしたいです。'},
+  sozo:{emoji:'💡',name:'創造力',s:'例：地元の図書館でアルバイトをしていた際、若年層の来館者が減少しているという課題があった。',t:'例：従来のイベントでは若者を呼べておらず、「また同じ企画か」という空気が漂っていた。',why:'例：「こうするしかない」という思い込みに気づいた瞬間、別の方法を探したくなる性分です。',a:'例：「eスポーツ体験会」を企画・提案。来館者にデジタルで楽しむ新しい読書体験を提供した。',r:'例：若年層の来館者数が前月比2倍に増加し、新しい利用者層を開拓できた。',c:'例：「異なる要素を結びつけて新しい価値を生み出す創造力」を、御社の企画部門で活かしたい。'},
+  hasshin:{emoji:'🎤',name:'発信力',s:'例：グループワークで議論が複雑化し、メンバーが混乱していた。発表まで残り3日なのに方向性が決まらない状態だった。',t:'例：このまま議論が続いても結論が出ず、発表に間に合わないという危機感があった。',why:'例：「わかったふり」をしている顔が見えた瞬間、黙っていられなくなります。',a:'例：議論を止め、「今、問題なのはA点とB点です」とホワイトボードに図解して説明。議論の交通整理を行った。',r:'例：メンバーから「頭がスッキリした」と言われ、その後の議論がスムーズに進んだ。',c:'例：「複雑な情報を整理し、分かりやすく伝える発信力」を、御社の提案業務などで活かしたいです。'},
+  keicho:{emoji:'👂',name:'傾聴力',s:'例：アルバイト先のカフェで、常連のお客様の様子がいつもと違うことに気づいた。表情が暗く、口数が少なかった。',t:'例：日々の会話からお客様の好みを記憶していたが、今日は何か違うと感じ、どう接するか迷っていた。',why:'例：「いつもと違う」と感じた瞬間、確認せずにいられない性格です。',a:'例：「甘さ控えめが好き」という好みを記憶していたため、新作の「甘さ控えめカスタマイズ」をそっと提案した。',r:'例：非常に喜ばれ、「あなたがいるから来てるよ」という信頼の言葉を頂けた。',c:'例：「相手の言葉にならないニーズを汲み取る傾聴力」を、御社の営業職として活かしたいです。'},
+  junan:{emoji:'🌊',name:'柔軟性',s:'例：アルバイト先のレジで、急なシステムトラブルが発生し、行列ができてしまった。マニュアルに対応手順が載っていない事態だった。',t:'例：マニュアルにない事態で、対応を誤るとクレームになる可能性があった。',why:'例：「想定外だから仕方ない」という言葉で思考を止めることが、自分にはできません。',a:'例：即座に判断し、お客様に謝罪しつつ、手書きの伝票で対応するよう他のスタッフに指示した。',r:'例：大きな混乱なく乗り切ることができ、クレームも最小限に抑えられた。',c:'例：「予期せぬ事態にも今できる最善を考えて行動する柔軟性」を、御社でも活かせます。'},
+  jokyo:{emoji:'🧭',name:'情況把握力',s:'例：サークルのミーティングで、特定のメンバーばかりが発言し、意見が偏っていると感じた。',t:'例：全員の意見を引き出さなければ、多角的な議論にならないという危機感があった。',why:'例：声の大きい人だけの意見で進む議論を見ていると、「全員の声を拾わなければ」という焦りがあります。',a:'例：「〇〇さんはどう思う？」と、まだ発言していないメンバーに話を振る「パス回し」の役割に徹した。',r:'例：全員から多様な意見を引き出すことができ、より良い結論に至った。',c:'例：「全体の状況を把握し、チームが円滑に機能するよう動く力」を、御社のプロジェクトでも発揮したいです。'},
+  kyochosei:{emoji:'🫂',name:'協調性',s:'例：サークルの合宿係として、会計係や企画係など、他の係と連携する必要があった。',t:'例：係同士の情報共有が不足しており、このままでは準備に齟齬が生まれる恐れがあった。',why:'例：自分だけが動いても組織としての成果にならないことを、体験を通じて知っているからです。',a:'例：常に他の係の進捗を気にかけ、「何か手伝えることはないか」と積極的に声をかけた。',r:'例：係同士の連携ミスがなくなり、合宿はトラブルなく成功した。',c:'例：「チーム全体の目標達成のために周りと協力する協調性」を、御社でも発揮したいです。'},
+  keizoku:{emoji:'🔥',name:'継続力',s:'例：大学入学時、英語が苦手でTOEICのスコアが400点だった。就職活動で700点が必要になると知り、大きなギャップを感じた。',t:'例：就職活動に向けて700点以上が必要だとわかり、250点以上のギャップを埋める必要があった。',why:'例：「今日だけ休もう」という誘惑に負けた翌日の自分が嫌いで、続けることで自分を保っている感覚があります。',a:'例：「卒業までに700点」という目標を立て、1日1時間の学習を3年間欠かさず続けた。通学中のスキマ時間を単語学習に充てるなど習慣化した。',r:'例：3年次には750点を取得。大きな成果も日々の小さな積み重ねから生まれると学んだ。',c:'例：「地道な努力をコツコツと継続する力」は、御社の業務においても着実な成果を出すために活かせます。'}
+};
+
+// ── 志望動機 タイプデータ ──
+const ES_SHIBOU={
+  intern:{emoji:'🏢',name:'インターン・OB訪問型',intuition:'例：御社の〇〇インターンシップで実際の業務を体験し、「ここで働きたい」という確信が生まれたこと。',why:'例：インターン中に社員の方々が互いをリスペクトしながら率直に議論している姿を見て、「この人たちと一緒に働いたら成長できる」と感じたからです。',values:'例：就職先を選ぶ上で「実際に見て・感じて・確かめる」ことを最も大切にしており、体験した上で確信を持って決めたかったから。',features:'例：インターン中に感じた、社員の方々が率直に意見を言い合える職場の雰囲気。若手社員でも裁量を持って業務に取り組んでいた姿が印象的でした。',contribution:'例：インターンで学んだ〇〇の知識と実務の流れを活かし、入社初日から即戦力として貢献できるよう準備を進めています。'},
+  setsumeikai:{emoji:'🎤',name:'説明会参加型',intuition:'例：合同説明会で御社のブースに立ち寄ったとき、担当社員の方が「うちの課題はこれで、だからこの事業をやっている」と率直に話してくださったこと。',why:'例：「良い面だけを並べる企業」ではなく、「課題も含めて正直に語れる企業」こそ長く働き続けられる場所だという自分の判断基準に合ったからです。',values:'例：会社の課題も含めて正直に語ってくれる企業風土に強く惹かれる。それが長く働き続けられる場所かどうかの判断基準だから。',features:'例：説明会で感じた社員の方々の率直さと仕事への誇り。失敗談を笑顔で話してくださった姿が御社の風土をそのまま表していると感じました。',contribution:'例：説明会後に自ら調べた知識と私の強みである〇〇力を組み合わせることで、入社後すぐに現場に貢献できると考えております。'},
+  product:{emoji:'🏭',name:'製品・サービス共感型',intuition:'例：御社の〇〇アプリを日常的に使ううちに、「なぜこんなに使いやすいのか」と気になり始めたこと。',why:'例：「便利なものには必ず、誰かの地道な努力が詰まっている」と感じていて、その努力に関わる仕事がしたいと思ったからです。',values:'例：技術は「使いやすさ」という形で人々の日常をそっと支えるべきで、その地道な努力にこそ大きな価値があると考えているから。',features:'例：製品開発における技術力への投資と、顧客の声をダイレクトに反映する開発体制。',contribution:'例：製品のヘビーユーザーとしての視点と、私の強みである〇〇力を活かし、御社の製品改善に貢献したい。'},
+  culture:{emoji:'👥',name:'人・社風共鳴型',intuition:'例：説明会で社員の方々が部署の垣根を越えて率直に意見を言い合っている場面を見て、「ここで働いてみたい」と感じたこと。',why:'例：「意見を言いやすい環境」と「そうでない環境」では自分のパフォーマンスが全然違うと、アルバイト経験で気づいたからです。',values:'例：年齢や経験に関係なく、意見の質で勝負できる環境で最も成長できると信じているから。',features:'例：若手にも大きな裁量権が与えられる評価制度と、ボトムアップの意見を尊重する社風。',contribution:'例：私の協調性と調整力を活かし、御社の活発な組織文化の維持・発展に貢献したい。'},
+  social:{emoji:'🌍',name:'課題解決・社会貢献型',intuition:'例：御社が取り組む「〇〇（社会課題）」の解決という姿勢を知り、自分が感じていた問題意識と重なったこと。',why:'例：ボランティア活動で「自分の行動が誰かの生活を変える」という経験をして以来、仕事でも社会に直接貢献したいという気持ちが強くなったからです。',values:'例：自分の仕事を通じて、多くの人々の生活に良い影響を与えたいという使命感があるから。',features:'例：社会課題解決に特化した事業セグメントと、その分野での実績。利益だけでなく「なぜこの事業をやるのか」を社員全員が語れる文化。',contribution:'例：私の課題発見力を活かし、御社の事業を通じて社会が抱える課題解決にコミットしたい。'},
+  aptitude:{emoji:'🔎',name:'自己分析・適性型',intuition:'例：自己分析を重ねる中で、私の長所である「粘り強い調整力」が御社の〇〇職で求められる適性に合致していると気づいたこと。',why:'例：「自分の強みが組織の役に立っている」という実感が仕事への最大のモチベーションになると、アルバイトの経験から確信しているからです。',values:'例：自分自身の強みが最大限に発揮され、組織の目標達成に直結する環境で働くことに最も大きなモチベーションを感じるから。',features:'例：職種別採用を行っており、入社後のキャリアパスが明確。社員の適性に応じた部署異動の機会が多い点も魅力です。',contribution:'例：私の強みである「粘り強い調整力」を、御社の営業職としてお客様の長期的な信頼関係構築に活かし、収益拡大に貢献したい。'},
+  regional_exp:{emoji:'🗺️',name:'ゼミ・活動経験直結型',intuition:'例：大学のゼミ活動で〇〇地域の活性化プロジェクトに取り組む中で、御社の地域密着型のソリューションに感銘を受けたこと。',why:'例：プロジェクトで「当事者と一緒に考える」ことの大切さを痛感し、その姿勢を持つ企業で働きたいと思ったからです。',values:'例：人々の生活に密着した影響を与えたいという価値観があるから。',features:'例：地域密着型のビジネスモデルと、長年にわたり地元の企業・住民と築いてきた深い信頼関係。',contribution:'例：ゼミで培った「地域住民を巻き込むヒアリング力」を活かし、地域市場の開拓に貢献したい。'}
+};
+
+// ── 共通ユーティリティ ──
+function esGoScreen(n){
+  [1,2,3,4].forEach(i=>{
+    const el=document.getElementById('es-screen'+i);
+    if(el) el.style.display = i===n ? 'block' : 'none';
+  });
+  const overlay=document.getElementById('modal-es');
+  if(overlay) overlay.scrollTop=0;
+}
+
+/* ES作成ツール：エントリー版／本格版の振り分け */
+const ES_ALL_SCREENS = ['es-screen0','es-screen-entry','es-screen1','es-screen2','es-screen3','es-screen4'];
+function esbShowScreen(id){
+  ES_ALL_SCREENS.forEach(sid=>{
+    const el=document.getElementById(sid);
+    if(el) el.style.display = sid===id ? 'block' : 'none';
+  });
+  const overlay=document.getElementById('modal-es');
+  if(overlay) overlay.scrollTop=0;
+}
+function esbShowLevel(level){
+  if(level === 'entry'){
+    esbShowScreen('es-screen-entry');
+    if(window.__esbInit) window.__esbInit();
+  } else {
+    esbShowScreen('es-screen1');
+  }
+}
+function esbBackToLevel(){
+  esbShowScreen('es-screen0');
+}
+
+function esUpdateCnt(ta,cntId){const c=document.getElementById(cntId);if(c)c.textContent=ta.value.length+' 文字';}
+function esCopyEx(exId,taId,cntId){
+  const ex=document.getElementById(exId),ta=document.getElementById(taId);
+  if(!ex||!ta)return;
+  ta.value=ex.textContent;esUpdateCnt(ta,cntId);ta.focus();
+}
+function esCopyPrompt(id,btn){
+  const ta=document.getElementById(id);if(!ta)return;
+  ta.select();try{document.execCommand('copy');btn.textContent='コピー完了！';setTimeout(()=>btn.textContent='コピー',2000);}catch(e){}
+}
+function esShowResult(prefix){document.getElementById(prefix+'-result').style.display='block';document.getElementById(prefix+'-result').scrollIntoView({behavior:'smooth',block:'start'});}
+
+// ── ガクチカ ──
+function esSelectTheme(key,ic,name){
+  const th=ES_THEMES[key];if(!th)return;
+  document.getElementById('es-badge-ic').textContent=ic;
+  document.getElementById('es-badge-name').textContent=name+' を選びました';
+  ['s','t','why','a','r','fc'].forEach(f=>{
+    const ex=document.getElementById('es-ex-'+f);if(ex)ex.textContent=th[f]||'';
+    const inp=document.getElementById('es-inp-'+f);
+    if(inp){inp.value='';const c=document.getElementById('es-cnt-'+f);if(c)c.textContent='0 文字';}
+  });
+  const res=document.getElementById('es-result');if(res)res.style.display='none';
+  const err=document.getElementById('es-error');if(err)err.style.display='none';
+  esGoScreen(2);
+}
+function esGenerate(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+  const s=g('es-inp-s'),t=g('es-inp-t'),why=g('es-inp-why'),a=g('es-inp-a'),r=g('es-inp-r'),fc=g('es-inp-fc');
+  const err=document.getElementById('es-error');
+  if(!s||!t||!a||!r||!fc){err.textContent='S・T・A・R・F&Cを入力してください（WHYは任意）。';err.style.display='block';return;}
+  err.style.display='none';
+  const len=g('es-length')||'300文字以内';
+  const whyTxt=why?`\n・なぜ動いたか（内面の動機）: ${why}`:'';
+  const step1=`# 命令\nあなたは大手企業の採用責任者です。\n以下の【学生のガクチカドラフト】を元に、採用担当者が「会ってみたい」と思うガクチカのベース文章を作成してください。\n\n${ES_CORE}\n\n# 入力されたガクチカドラフト\n・状況(S): ${s}\n・課題(T): ${t}${whyTxt}\n・行動(A): ${a}\n・結果(R): ${r}\n・学びと活用(F&C): ${fc}\n\n# 制約条件\n1. T（課題）からA（行動）への移行に「なぜそう動いたのか」という人格的根拠を必ず組み込む\n2. 課題解決能力と再現性の観点で文章を強化する\n3. 「〜力を学びました」のような紋切り型の結論を本人の言葉に変換する\n\n# 出力フォーマット（厳守）\n## 1. ガクチカ・ベース文章\n## 2. 面接官に刺さるポイント解説`;
+  const step2=`ありがとうございます。\n「1. ガクチカ・ベース文章」を、**厳密に${len}**（±10%許容）に調整してください。\n・「なぜそう動いたのか」という内面の動機は削らないでください\n・文末は「〜です・〜ます」調で統一\n・最後に文字数カウントを記載（例：【295文字】）`;
+  document.getElementById('es-prompt1').value=step1;
+  document.getElementById('es-prompt2').value=step2;
+  esShowResult('es');
+}
+
+// ── 自己PR ──
+let esPrCurrentStr=null;
+function esPrSelect(key,ic,name){
+  esPrCurrentStr=ES_STRENGTHS[key];if(!esPrCurrentStr)return;
+  document.getElementById('es-pr-badge-ic').textContent=ic;
+  document.getElementById('es-pr-badge-name').textContent=name+' を選びました';
+  ['s','t','why','a','r','c'].forEach(f=>{
+    const ex=document.getElementById('es-pr-ex-'+f);if(ex)ex.textContent=esPrCurrentStr[f]||'';
+    const inp=document.getElementById('es-pr-inp-'+f);
+    if(inp){inp.value='';const c=document.getElementById('es-pr-cnt-'+f);if(c)c.textContent='0 文字';}
+  });
+  const act=document.getElementById('es-pr-activity');if(act)act.value='';
+  const res=document.getElementById('es-pr-result');if(res)res.style.display='none';
+  const err=document.getElementById('es-pr-error');if(err)err.style.display='none';
+  esGoScreen(3);
+}
+function esPrGenerate(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+  const activity=g('es-pr-activity'),s=g('es-pr-inp-s'),t=g('es-pr-inp-t'),why=g('es-pr-inp-why'),a=g('es-pr-inp-a'),r=g('es-pr-inp-r'),c=g('es-pr-inp-c');
+  const err=document.getElementById('es-pr-error');
+  if(!activity){err.textContent='活動名を入力してください。';err.style.display='block';return;}
+  if(!s||!a||!r||!c){err.textContent='状況・行動・結果・活用法を入力してください。';err.style.display='block';return;}
+  err.style.display='none';
+  const strName=esPrCurrentStr?esPrCurrentStr.name:'強み';
+  const len=g('es-pr-length')||'300文字以内';
+  const whyTxt=why?`\n・なぜ動いたか（内面の動機）: ${why}`:'';
+  const tTxt=t?`\n・課題(T): ${t}`:'';
+  const step1=`# 命令\nあなたは大手企業の採用責任者です。\n以下の【自己PRドラフト】を元に、採用担当者が「この強みは自社でも再現性がある」と確信するベース文章を作成してください。\n\n${ES_CORE}\n\n# 入力された自己PRドラフト\n・強み: ${strName}\n・強みを発揮した活動: ${activity}\n・状況(S): ${s}${tTxt}${whyTxt}\n・行動(A): ${a}\n・結果(R): ${r}\n・入社後の活用法: ${c}\n\n# 制約条件\n1. 必ず「私の強みは、${activity}で培った${strName}です。」という形式で始める\n2. なぜその行動をとったのかという内面の論理を自然に織り込む\n\n# 出力フォーマット（厳守）\n## 1. 自己PR・ベース文章\n## 2. 評価ポイント解説`;
+  const step2=`ありがとうございます。\n「1. 自己PR・ベース文章」を、**厳密に${len}**（±10%許容）に調整してください。\n・「${activity}で培った${strName}」という書き出しは維持してください\n・文末は「〜です・〜ます」調で統一\n・最後に文字数カウントを記載（例：【295文字】）`;
+  document.getElementById('es-pr-prompt1').value=step1;
+  document.getElementById('es-pr-prompt2').value=step2;
+  esShowResult('es-pr');
+}
+
+// ── 志望動機 ──
+let esShCurrentData=null;
+function esShSelect(key,ic,name){
+  esShCurrentData=ES_SHIBOU[key];if(!esShCurrentData)return;
+  document.getElementById('es-sh-badge-ic').textContent=ic;
+  document.getElementById('es-sh-badge-name').textContent=name+' を選びました';
+  const d=esShCurrentData;
+  const map={1:d.intuition,why:d.why,2:d.values,3:d.features,4:d.contribution};
+  Object.entries(map).forEach(([k,v])=>{
+    const ex=document.getElementById('es-sh-ex-'+k);if(ex)ex.textContent=v||'';
+    const inp=document.getElementById('es-sh-inp-'+k);
+    if(inp){inp.value='';const c=document.getElementById('es-sh-cnt-'+k);if(c)c.textContent='0 文字';}
+  });
+  const co=document.getElementById('es-sh-company');if(co)co.value='';
+  const res=document.getElementById('es-sh-result');if(res)res.style.display='none';
+  const err=document.getElementById('es-sh-error');if(err)err.style.display='none';
+  esGoScreen(4);
+}
+function esShGenerate(){
+  const g=id=>{const e=document.getElementById(id);return e?e.value.trim():'';};
+  const co=g('es-sh-company'),i1=g('es-sh-inp-1'),iwhy=g('es-sh-inp-why'),i2=g('es-sh-inp-2'),i3=g('es-sh-inp-3'),i4=g('es-sh-inp-4');
+  const err=document.getElementById('es-sh-error');
+  if(!co){err.textContent='企業名を入力してください。';err.style.display='block';return;}
+  if(!i1||!i2||!i3||!i4){err.textContent='①〜④の4項目すべてを入力してください。';err.style.display='block';return;}
+  err.style.display='none';
+  const len=g('es-sh-length')||'300文字以内';
+  const typeName=esShCurrentData?esShCurrentData.name:'';
+  const whySh=iwhy?`\n（なぜそこに惹かれたのか・動機）: ${iwhy}`:'';
+  const step1=`# 命令\nあなたは大手企業の採用責任者です。\n以下の【志望動機の4要素】を論理的に結びつけ、「なぜ他社ではなく${co}でなければならないのか」という志望動機のベース文章を作成してください。\n\n【最重要指示】\n・「業界トップ」「グローバル展開」「安定している」などの企業礼賛フレーズを削除する\n・「なぜ他社ではなくこの会社なのか」という差別化ポイントを必ず論理的に示す\n・きっかけ・価値観・企業の魅力・貢献の4要素が一本の線でつながるよう構成する\n\n# 入力された志望動機の4要素（タイプ：${typeName}）\n1. きっかけ・原体験: ${i1}${whySh}\n2. 私の価値観: ${i2}\n3. 企業の魅力（調べたこと）: ${i3}\n4. 入社後の貢献イメージ: ${i4}\n\n# 出力フォーマット（厳守）\n## 1. 志望動機・ベース文章\n## 2. ロジック解説`;
+  const step2=`ありがとうございます。\n「1. 志望動機・ベース文章」を、**厳密に${len}**（±10%許容）に調整してください。\n・「私の価値観」「御社の魅力」「貢献」の3要素は必ず残す\n・文末は「〜です・〜ます」調で統一\n・最後に文字数カウントを記載（例：【295文字】）`;
+  document.getElementById('es-sh-prompt1').value=step1;
+  document.getElementById('es-sh-prompt2').value=step2;
+  esShowResult('es-sh');
+}
+
+// ── 学年・年度管理 ──
+// 卒業年度を計算（4月基準）
+function calcGradYear(grade){
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth()+1; // 1-12
+  // 4月以降が新年度
+  const baseYear = m >= 4 ? y : y - 1;
+  // 4年生=来年卒、3年生=再来年卒
+  return baseYear + (5 - grade);
+}
+
+// 年度別URLテンプレート（YEARを置換）
+const LINKS = {
+  // マイナビ：年度は2桁（28卒→28）
+  mynavi_intern:   'https://job.mynavi.jp/YY/',
+  rikunabi_intern: 'https://job.rikunabi.com/YEAR/internship/',
+  rikunabi_openes: 'https://job.rikunabi.com/YEAR/openes/',
+  mynavi_mcb:      'https://mcbox.mynavi.jp/',
+  // Re就活キャンパス：2025年3月から通年サービス・年度なし固定URL
+  re_intern:       'https://www.gakujo.ne.jp/campus/search/internship/',
+};
+
+function buildUrl(key, year){
+  const url = LINKS[key];
+  // マイナビは2桁年度（2028→28）
+  const yy = String(year).slice(-2);
+  return url.replace('YEAR', year).replace('YY', yy);
+}
+
+// ── インターンリンク：年度付きで直接開く ──
+function openInternLink(key, year){
+  const url = LINKS[key];
+  if(!url) return;
+  if(!url.includes('YEAR') && !url.includes('YY')){
+    // 年度なし（Re就活等）→そのまま開く
+    window.open(url, '_blank');
+    return;
+  }
+  const yy = String(year).slice(-2);
+  const finalUrl = url.replace('YEAR', year).replace('YY', yy);
+  window.open(finalUrl, '_blank');
+}
+
+let currentYear = calcGradYear(3); // グローバル年度（リンク用）
+
+function applyGrade(grade){
+  const year = calcGradYear(grade);
+  currentYear = year; // グローバル更新
+  // ヘッダーバッジ更新
+  document.getElementById('gradeBadge').textContent = `${grade}年生（${year}卒）`;
+
+  // インターンモーダルのリンク更新
+  const mynaviBtn = document.getElementById('btn-mynavi-intern');
+  const rikunaviBtn = document.getElementById('btn-rikunabi-intern');
+  const reBtn = document.getElementById('btn-re-intern');
+  if(mynaviBtn) mynaviBtn.href = buildUrl('mynavi_intern', year);
+  if(rikunaviBtn) rikunaviBtn.href = buildUrl('rikunabi_intern', year);
+
+  // OPEN-ESリンク更新
+  const openesBtn = document.getElementById('btn-openes');
+  if(openesBtn) openesBtn.href = buildUrl('rikunabi_openes', year);
+}
+
+function setGrade(grade){
+  localStorage.setItem('gakusei_grade', grade);
+  applyGrade(grade);
+  document.getElementById('grade-modal').classList.remove('active');
+  document.body.style.overflow='';
+}
+
+function showGradeModal(){
+  // 年度ラベルを更新
+  document.getElementById('label3').textContent = calcGradYear(3)+'卒';
+  document.getElementById('label4').textContent = calcGradYear(4)+'卒';
+  document.getElementById('grade-modal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+
+// 初期化
+(function initGrade(){
+  document.getElementById('label3').textContent = calcGradYear(3)+'卒';
+  document.getElementById('label4').textContent = calcGradYear(4)+'卒';
+  const saved = localStorage.getItem('gakusei_grade');
+  if(saved){
+    applyGrade(parseInt(saved));
+  } else {
+    // 初回は必ず学年選択を表示
+    setTimeout(()=>showGradeModal(), 400);
+  }
+})();
+
+// 時計
+function updateClock(){
+  const n=new Date();
+  document.getElementById('clock').textContent=
+    `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
+}
+updateClock();setInterval(updateClock,1000);
+
+// モーダル
+function openModal(id){
+  document.getElementById('modal-'+id).classList.add('active');
+  document.body.style.overflow='hidden';
+  if(id === 'hajimeyou' && window.__hajimeyouInit) window.__hajimeyouInit();
+  if(id === 'es' && window.esbShowScreen) window.esbShowScreen('es-screen0');
+}
+function closeModal(id){
+  document.getElementById('modal-'+id).classList.remove('active');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click',e=>{
+    if(e.target===el){el.classList.remove('active');document.body.style.overflow='';}
+  });
+});
+
+// PCコネクターライン
+function drawConnectors(){
+  if(window.innerWidth<769)return;
+  const svg=document.getElementById('connectorSvg');
+  const main=document.getElementById('cMain');
+  const cards=['c1','c2','c3','c4','c5','c6','c7','c8','c10','c11'];
+  svg.innerHTML=`<defs><marker id="dot" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5"><circle cx="3.5" cy="3.5" r="2.5" fill="#74c69d" opacity="0.5"/></marker></defs>`;
+  const mr=main.getBoundingClientRect();
+  const mx=mr.left+mr.width/2,my=mr.top+mr.height/2;
+  cards.forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    const r=el.getBoundingClientRect();
+    const cx=r.left+r.width/2,cy=r.top+r.height/2;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M ${mx} ${my} Q ${(mx+cx)/2} ${(my+cy)/2} ${cx} ${cy}`);
+    path.setAttribute('stroke','#74c69d');
+    path.setAttribute('stroke-width','1.5');
+    path.setAttribute('stroke-dasharray','6 4');
+    path.setAttribute('fill','none');
+    path.setAttribute('opacity','0.35');
+    path.setAttribute('marker-end','url(#dot)');
+    svg.appendChild(path);
+  });
+}
+window.addEventListener('load',()=>setTimeout(drawConnectors,300));
+window.addEventListener('resize',drawConnectors);
+
+// URLハッシュからモーダルを自動オープン（例：index.html#intern で「インターン探し」モーダルが自動的に開く）
+function openModalFromHash(){
+  const id = location.hash.replace('#','');
+  if(!id) return;
+  const target = document.getElementById('modal-'+id);
+  if(target) openModal(id);
+}
+window.addEventListener('load', openModalFromHash);
+window.addEventListener('hashchange', openModalFromHash);
+
+// PWA：ホーム画面アイコン登録（インストール）対応のためService Workerを登録
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+/* ============================================================
+   🌱 まずこれから！アセスメント専用ロジック（IIFEでスコープ分離）
+============================================================ */
+(function(){
+
+/* ============================================================
+   就活、何からはじめよう？ アセスメント
+   状態軸（客観）× テーマ軸（主観）の2軸判定
+============================================================ */
+
+const STAGES = [
+  { key:"self",     label:"自己理解",  icon:"🌱" },
+  { key:"industry", label:"業界研究",  icon:"🔍" },
+  { key:"company",  label:"企業選定",  icon:"🎯" },
+  { key:"es",       label:"ES準備",    icon:"✍️" },
+  { key:"selection",label:"選考対策",  icon:"🌳" },
+];
+
+const THEMES = {
+  anxiety:   "自信のなさ・不安",
+  confusion: "迷い・決めきれなさ",
+  lackInfo:  "情報不足感",
+  stuck:     "やる気はあるが動けていない",
+};
+
+/* ---- 業界マスタ（マイナビ/リクナビ風 大分類10業界）----
+   companies: 代表的な企業例（大手＋中堅を混在）。
+   あくまで「業界のイメージをつかむための一例」として結果画面に明記する。
+*/
+const INDUSTRIES = [
+  {
+    key:"it", label:"IT・通信", icon:"💻",
+    companies:["NTTデータ", "サイボウズ", "freee", "SCSK"],
+    note:"自社開発・SES・通信インフラなど、同じ「IT」でも働き方の幅が広い業界です。"
+  },
+  {
+    key:"manufacturer", label:"メーカー", icon:"🏭",
+    companies:["デンソー", "YKK", "ミネベアミツミ", "村田製作所"],
+    note:"BtoB（企業向け）の優良企業が多く、知名度より中身を見ると選択肢が広がります。"
+  },
+  {
+    key:"finance", label:"金融", icon:"🏦",
+    companies:["地方銀行各行", "日本政策金融公庫", "損保ジャパン", "信用金庫"],
+    note:"メガバンクだけでなく、地域に根ざした金融機関も安定した選択肢です。"
+  },
+  {
+    key:"trading", label:"商社・小売", icon:"🛒",
+    companies:["国分グループ", "良品計画", "ベイシア", "三谷商事"],
+    note:"川上から川下まで、ものを「届ける」役割を担う業界です。"
+  },
+  {
+    key:"service", label:"サービス・レジャー", icon:"🎡",
+    companies:["オリエンタルランド", "リゾートトラスト", "ニトリ", "イオン"],
+    note:"人と直接関わる仕事が多く、接客や企画の経験が活きやすい業界です。"
+  },
+  {
+    key:"media", label:"マスコミ・広告", icon:"📺",
+    companies:["博報堂プロダクツ", "サイバーエージェント", "学研", "ぴあ"],
+    note:"狭き門のイメージがありますが、関連職種を含めると間口は意外と広いです。"
+  },
+  {
+    key:"public", label:"公務員・団体", icon:"🏛️",
+    companies:["地方公務員（市区町村）", "JA（農業協同組合）", "社会福祉協議会", "独立行政法人"],
+    note:"地域や生活インフラを支える、安定志向の学生に人気の分野です。"
+  },
+  {
+    key:"infra", label:"インフラ（鉄道・航空・エネルギー）", icon:"🚃",
+    companies:["JR東日本", "東京ガス", "ANA", "東急"],
+    note:"生活の基盤を支える仕事。技術職・総合職どちらの間口もあります。"
+  },
+  {
+    key:"food", label:"食品", icon:"🍙",
+    companies:["明治", "キユーピー", "日清製粉", "ニチレイ"],
+    note:"身近な分、企業ごとの違いが分かりやすく、研究が進めやすい業界です。"
+  },
+  {
+    key:"cosmetics", label:"化粧品・美容", icon:"💄",
+    companies:["資生堂", "コーセー", "マンダム", "アインホールディングス"],
+    note:"人気が高い分、競争も激しめ。職種（研究・営業・販促）まで見ると道は広がります。"
+  },
+];
+
+/* ---- 質問定義 ----
+   type: "single" | "multi"
+   axis: "state" | "theme"
+   stage: 関連する状態軸キー（state質問のみ）
+   options: { label, value, theme(任意) }
+*/
+const QUESTIONS = [
+  {
+    id:"q1", axis:"state", stage:"self", type:"single",
+    text:"自分の「強み」や「大事にしたい価値観」について、人に説明できますか？",
+    options:[
+      {label:"具体的なエピソードと一緒に説明できる", value:3},
+      {label:"なんとなくはあるが、言葉にすると曖昧になる", value:1, theme:"anxiety"},
+      {label:"正直、まだあまり考えたことがない", value:0, theme:"lackInfo"},
+    ]
+  },
+  {
+    id:"q2", axis:"state", stage:"self", type:"single",
+    text:"自己分析ツール（診断系・適性検査など）を使ったことはありますか？",
+    options:[
+      {label:"使った上で、結果を自分の言葉にできている", value:3},
+      {label:"使ったが、結果をどう活かせばいいか分からない", value:1, theme:"confusion"},
+      {label:"まだ使ったことがない", value:0},
+    ]
+  },
+  {
+    id:"q3", axis:"state", stage:"industry", type:"single",
+    text:"興味のある業界・職種は、いくつか挙げられますか？",
+    options:[
+      {label:"3つ以上、理由も含めて挙げられる", value:3},
+      {label:"1〜2個ならあるが、他も気になっている", value:2, theme:"confusion"},
+      {label:"正直、何があるのかもよく分かっていない", value:0, theme:"lackInfo"},
+    ]
+  },
+  {
+    id:"q4", axis:"state", stage:"industry", type:"industryInterest",
+    text:"次の業界の中から、気になる／興味がある業界をすべて選んでください",
+    sub:"知らない業界があっても大丈夫です。「ちょっと気になるかも」程度でOKです。複数選択できます。",
+  },
+  {
+    id:"q5", axis:"state", stage:"company", type:"single",
+    text:"「ここを受けたい」という志望企業は、ある程度絞れていますか？",
+    options:[
+      {label:"第一志望群が決まっている", value:3},
+      {label:"候補はあるが、決め手がなくて迷っている", value:1, theme:"confusion"},
+      {label:"まだ全く絞れていない", value:0},
+    ]
+  },
+  {
+    id:"q6", axis:"theme", stage:"company", type:"single",
+    text:"企業を選ぶとき、一番近い気持ちはどれですか？",
+    options:[
+      {label:"自分の軸で選べている感覚がある", value:2},
+      {label:"知名度や周りの評価が気になってしまう", value:0, theme:"anxiety"},
+      {label:"何を基準に選べばいいか分からない", value:0, theme:"confusion"},
+    ]
+  },
+  {
+    id:"q7", axis:"state", stage:"es", type:"single",
+    text:"エントリーシート（ES）を、実際に書いた経験はありますか？",
+    options:[
+      {label:"複数社分、書いて提出した経験がある", value:3},
+      {label:"書いてみたが、自信を持って出せていない", value:1, theme:"anxiety"},
+      {label:"まだ一度も書いたことがない", value:0},
+    ]
+  },
+  {
+    id:"q8", axis:"state", stage:"es", type:"multi",
+    text:"ESを書くうえで、困っていることをすべて選んでください",
+    sub:"複数選択できます／困っていることがなければ未選択でOK",
+    options:[
+      {label:"何を書けばいいか、ネタが思いつかない", value:0, theme:"lackInfo"},
+      {label:"書いてはみるが、添削してもらったことがない", value:1, theme:"anxiety"},
+      {label:"締切に追われていて、落ち着いて書けていない", value:1, theme:"stuck"},
+      {label:"特に困っていない", value:2},
+    ]
+  },
+  {
+    id:"q9", axis:"state", stage:"selection", type:"single",
+    text:"面接や適性検査（SPIなど）の対策は、進んでいますか？",
+    options:[
+      {label:"模擬面接や問題演習に取り組んでいる", value:3},
+      {label:"対策の必要性は感じているが、手をつけられていない", value:1, theme:"stuck"},
+      {label:"まだ何も着手していない", value:0},
+    ]
+  },
+  {
+    id:"q10", axis:"theme", stage:"selection", type:"single",
+    text:"面接やグループディスカッションを想像すると、どんな気持ちになりますか？",
+    options:[
+      {label:"緊張はするが、前向きに捉えられている", value:2},
+      {label:"何を聞かれるか分からず、漠然とした不安がある", value:0, theme:"anxiety"},
+      {label:"考えるだけで気が重くなってしまう", value:0, theme:"anxiety"},
+    ]
+  },
+  {
+    id:"q11", axis:"theme", stage:null, type:"single",
+    text:"就活全体を振り返って、今いちばん近い気持ちはどれですか？",
+    options:[
+      {label:"やることは見えていて、淡々と進めている", value:2},
+      {label:"焦りはあるが、何から手をつけるべきか分からない", value:0, theme:"confusion"},
+      {label:"周りと比べて、自分は遅れている気がしてしまう", value:0, theme:"anxiety"},
+      {label:"やらなきゃとは思うが、なかなか動き出せない", value:0, theme:"stuck"},
+    ]
+  },
+  {
+    id:"q12", axis:"theme", stage:null, type:"multi",
+    text:"就活について、今のあなたにあてはまるものをすべて選んでください",
+    sub:"複数選択できます",
+    options:[
+      {label:"誰かに相談しながら進めたい", value:0, theme:"anxiety"},
+      {label:"情報が多すぎて、何が正しいか分からなくなる", value:0, theme:"lackInfo"},
+      {label:"一人で抱え込みがちだと思う", value:0, theme:"stuck"},
+      {label:"自分のペースで落ち着いて進められている", value:2},
+    ]
+  },
+];
+
+/* ---- 状態 ---- */
+let current = -1; // -1 = スタート画面
+let answers = {}; // { qid: [values...] }
+let selectedTemp = []; // 現在の質問で選択中の選択肢インデックス
+
+const app = document.getElementById("hajimeyouApp");
+
+function render(){
+  if(current === -1){ renderStart(); return; }
+  if(current === QUESTIONS.length){ renderResult(); return; }
+  renderQuestion();
+}
+
+/* ---------------- スタート画面 ---------------- */
+function renderStart(){
+  app.innerHTML = `
+    <div class="card start-card">
+      <header class="intro">
+        <div class="tree-mark">🌱</div>
+        <h1>就活、何からはじめよう？</h1>
+        <p class="lede">今のあなたの「現在地」を、状態と気持ちの両面から確認します。<br>結果に応じて、次に取り組むとよいことをご提案します。</p>
+        <div class="gold-line"></div>
+      </header>
+      <div class="meta">
+        <span><span class="dot"></span>所要時間 約3分</span>
+        <span><span class="dot"></span>全${QUESTIONS.length}問</span>
+      </div>
+      <button class="btn-primary" id="startBtn">診断をはじめる</button>
+      <p style="text-align:center;font-size:11.5px;color:var(--text-gray);margin-top:14px;line-height:1.6;">
+        正解・不正解はありません。今の気持ちに正直に答えてください。
+      </p>
+    </div>
+  `;
+  document.getElementById("startBtn").onclick = ()=>{ current=0; selectedTemp=[]; render(); };
+}
+
+/* ---------------- 質問画面 ---------------- */
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  if(q.type === "industryInterest"){ renderIndustryQuestion(); return; }
+  const isMulti = q.type === "multi";
+  const axisLabel = q.axis === "state" ? "状態" : "気持ち";
+  const axisClass = q.axis === "state" ? "state" : "theme";
+
+  const optionsHtml = q.options.map((opt, idx)=>{
+    const selected = selectedTemp.includes(idx);
+    return `
+      <div class="option ${isMulti ? "multi" : ""} ${selected ? "selected":""}" data-idx="${idx}">
+        <div class="marker">${selected ? "✓" : ""}</div>
+        <div>${opt.label}</div>
+      </div>
+    `;
+  }).join("");
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span class="progress-label">SHUKATSU NO KI ASSESSMENT</span>
+          <span class="progress-count">${current+1} / ${QUESTIONS.length}</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${((current)/QUESTIONS.length)*100}%"></div></div>
+      </div>
+
+      <span class="q-axis-tag ${axisClass}">${axisLabel}を確認</span>
+      <div class="q-text">${q.text}</div>
+      ${q.sub ? `<div class="q-sub">${q.sub}</div>` : ""}
+      ${isMulti ? `<div class="multi-hint">☑️ あてはまるものをすべて選べます（0個でも可）</div>` : ""}
+
+      <div class="options" id="optionsWrap">${optionsHtml}</div>
+
+      <div class="nav-row">
+        <button class="btn-back" id="backBtn" ${current===0 ? "disabled":""}>戻る</button>
+        <button class="btn-primary btn-next" id="nextBtn" ${!isMulti && selectedTemp.length===0 ? "disabled":""}>
+          ${current === QUESTIONS.length-1 ? "結果を見る" : "次へ"}
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.querySelectorAll(".option").forEach(el=>{
+    el.onclick = ()=>{
+      const idx = parseInt(el.dataset.idx);
+      if(isMulti){
+        const pos = selectedTemp.indexOf(idx);
+        if(pos === -1) selectedTemp.push(idx); else selectedTemp.splice(pos,1);
+      } else {
+        selectedTemp = [idx];
+      }
+      renderQuestion();
+    };
+  });
+
+  document.getElementById("backBtn").onclick = ()=>{
+    if(current>0){
+      current--;
+      const prevAns = answers[QUESTIONS[current].id];
+      selectedTemp = prevAns ? prevAns.idxs : [];
+      render();
+    }
+  };
+
+  document.getElementById("nextBtn").onclick = ()=>{
+    if(!isMulti && selectedTemp.length===0) return;
+    answers[q.id] = { idxs:[...selectedTemp], question:q };
+    current++;
+    industryInterestTemp = null;
+    const nextQ = QUESTIONS[current];
+    if(nextQ){
+      const prevAns = answers[nextQ.id];
+      selectedTemp = prevAns ? prevAns.idxs : [];
+    }
+    render();
+  };
+}
+
+/* ---------------- 業界興味ヒアリング画面（q4専用） ---------------- */
+let industryInterestTemp = null; // { in: [keys], out: [keys] }
+
+function renderIndustryQuestion(){
+  const q = QUESTIONS[current];
+  if(industryInterestTemp === null){
+    const prev = answers[q.id];
+    industryInterestTemp = prev ? { ...prev.industryData } : { in:[], out:[] };
+  }
+  const state = industryInterestTemp;
+
+  const cardsHtml = INDUSTRIES.map(ind=>{
+    const isIn = state.in.includes(ind.key);
+    const isOut = state.out.includes(ind.key);
+    return `
+      <div class="industry-card ${isIn ? "is-in":""} ${isOut ? "is-out":""}" data-key="${ind.key}">
+        <div class="industry-head">
+          <span class="industry-icon">${ind.icon}</span>
+          <span class="industry-name">${ind.label}</span>
+        </div>
+        <div class="industry-toggle-row">
+          <button class="toggle-btn toggle-in" data-key="${ind.key}" data-mode="in">気になる</button>
+          <button class="toggle-btn toggle-out" data-key="${ind.key}" data-mode="out">興味ない</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span class="progress-label">SHUKATSU NO KI ASSESSMENT</span>
+          <span class="progress-count">${current+1} / ${QUESTIONS.length}</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:${((current)/QUESTIONS.length)*100}%"></div></div>
+      </div>
+
+      <span class="q-axis-tag state">状態を確認</span>
+      <div class="q-text">${q.text}</div>
+      <div class="q-sub">${q.sub}</div>
+      <div class="multi-hint">☑️ 「気になる」「興味ない」、どちらも未選択のままでOKです</div>
+
+      <div class="industry-grid" id="industryGrid">${cardsHtml}</div>
+
+      <div class="nav-row">
+        <button class="btn-back" id="backBtn" ${current===0 ? "disabled":""}>戻る</button>
+        <button class="btn-primary btn-next" id="nextBtn">次へ</button>
+      </div>
+    </div>
+  `;
+
+  document.querySelectorAll(".toggle-btn").forEach(btn=>{
+    btn.onclick = ()=>{
+      const key = btn.dataset.key;
+      const mode = btn.dataset.mode; // "in" or "out"
+      const other = mode === "in" ? "out" : "in";
+      // 排他制御：片方を選んだらもう片方からは外す
+      state[other] = state[other].filter(k=>k!==key);
+      const pos = state[mode].indexOf(key);
+      if(pos === -1) state[mode].push(key); else state[mode].splice(pos,1);
+      renderIndustryQuestion();
+    };
+  });
+
+  document.getElementById("backBtn").onclick = ()=>{
+    if(current>0){
+      current--;
+      industryInterestTemp = null;
+      const prevQ = QUESTIONS[current];
+      const prevAns = answers[prevQ.id];
+      selectedTemp = prevAns ? prevAns.idxs : [];
+      render();
+    }
+  };
+
+  document.getElementById("nextBtn").onclick = ()=>{
+    answers[q.id] = { idxs:[], question:q, industryData:{ ...state } };
+    industryInterestTemp = null;
+    current++;
+    const nextQ = QUESTIONS[current];
+    if(nextQ){
+      const prevAns = answers[nextQ.id];
+      selectedTemp = prevAns ? prevAns.idxs : [];
+    }
+    render();
+  };
+}
+
+/* ---------------- 採点ロジック ---------------- */
+function computeResult(){
+  const stageScore = {}; STAGES.forEach(s=>stageScore[s.key]=0);
+  const stageMax = {}; STAGES.forEach(s=>stageMax[s.key]=0);
+  const themeCount = {}; Object.keys(THEMES).forEach(t=>themeCount[t]=0);
+  let industryData = { in:[], out:[] };
+
+  Object.values(answers).forEach(a=>{
+    const q = a.question;
+
+    if(q.type === "industryInterest"){
+      industryData = a.industryData || { in:[], out:[] };
+      // 業界研究ステージへの加点：1業界でも「気になる」があれば前進とみなす
+      const bonus = industryData.in.length > 0 ? 2 : 0;
+      stageScore[q.stage] += bonus;
+      stageMax[q.stage] += 2;
+      if(industryData.in.length === 0 && industryData.out.length === 0){
+        themeCount.lackInfo++;
+      }
+      return;
+    }
+
+    a.idxs.forEach(idx=>{
+      const opt = q.options[idx];
+      if(q.axis === "state" && q.stage){
+        stageScore[q.stage] += opt.value;
+      }
+      if(opt.theme){
+        themeCount[opt.theme]++;
+      }
+    });
+    if(q.axis === "state" && q.stage){
+      const maxVal = Math.max(...q.options.map(o=>o.value));
+      stageMax[q.stage] += maxVal;
+    }
+  });
+
+  // 各ステージの達成率
+  const stageRatio = {};
+  STAGES.forEach(s=>{
+    stageRatio[s.key] = stageMax[s.key] > 0 ? stageScore[s.key]/stageMax[s.key] : 0;
+  });
+
+  // 「現在地」判定：達成率が0.6未満になる最初のステージ＝今いる場所
+  let currentStageIdx = STAGES.length - 1;
+  for(let i=0;i<STAGES.length;i++){
+    if(stageRatio[STAGES[i].key] < 0.6){ currentStageIdx = i; break; }
+  }
+
+  // 二次判定：現在地ステージにおける「強度」
+  // 0.3未満＝準備がほとんど進んでいない（初級向け案内）、0.3以上＝本格ツールへ
+  const currentStageRatio = stageRatio[STAGES[currentStageIdx].key];
+  const intensity = currentStageRatio < 0.3 ? "low" : "high";
+
+  // 主要テーマ（上位2つ、1回以上選ばれたもの）
+  const sortedThemes = Object.entries(themeCount)
+    .filter(([,c])=>c>0)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,2)
+    .map(([key])=>key);
+
+  return { currentStageIdx, stageRatio, sortedThemes, themeCount, industryData, intensity };
+}
+
+/* ---------------- 結果文言・次の一手 生成 ---------------- */
+function buildResultContent(result){
+  const { currentStageIdx, sortedThemes, intensity } = result;
+  const stage = STAGES[currentStageIdx];
+  const hasAnxiety = sortedThemes.includes("anxiety");
+  const hasConfusion = sortedThemes.includes("confusion");
+  const hasLackInfo = sortedThemes.includes("lackInfo");
+  const hasStuck = sortedThemes.includes("stuck");
+  const isLow = intensity === "low";
+
+  let typeName, desc;
+
+  if(currentStageIdx === 0){
+    typeName = isLow ? "自己理解・はじめの一歩タイプ" : "自己理解・スタートタイプ";
+    desc = isLow
+      ? "今はまだ「自分について考え始めたばかり」の段階です。焦らなくて大丈夫です。簡単な質問に答えるところから、少しずつ言葉にしていきましょう。"
+      : "まずは「自分が何を大事にしたいか」を言葉にしていくフェーズです。焦って企業選びに進むより、土台を整える方が、結果的に近道になります。";
+  } else if(currentStageIdx === 1){
+    typeName = isLow ? "業界研究・知るところからタイプ" : "業界研究・探索タイプ";
+    desc = isLow
+      ? "業界の名前自体が、まだあまり馴染みがない段階のようです。難しく考えず、まずは「こんな業界があるんだ」と知ることから始めましょう。"
+      : "自分の方向性をつかみかけている段階です。まずは「知っている業界を増やす」ことから始めましょう。知らない業界には興味の持ちようがないので、視野を広げること自体が次の一歩になります。";
+  } else if(currentStageIdx === 2){
+    typeName = isLow ? "企業選定・これからタイプ" : "企業選定・絞り込みタイプ";
+    desc = isLow
+      ? "企業選びはまだこれからの段階です。インターンシップが何かを知るところから、ゆっくり進めていきましょう。"
+      : "業界の土地勘はある程度ついています。ここからは「インターンシップで実際に調べる」段階です。気になる企業のインターン情報を探すところから始めましょう。";
+  } else if(currentStageIdx === 3){
+    typeName = isLow ? "ES準備・入門タイプ" : "ES準備・実践タイプ";
+    desc = isLow
+      ? "ESはまだ書いたことがない段階のようです。いきなり本格的な対策に進む前に、まずは基本の書き方を知ることから始めましょう。"
+      : "企業選びの軸は見えてきています。ここからは、ESという「形」にしていく作業です。一人で抱えず、添削を受けながら仕上げていきましょう。";
+  } else {
+    typeName = isLow ? "選考対策・準備運動タイプ" : "選考対策・仕上げタイプ";
+    desc = isLow
+      ? "面接対策はまだこれからの段階のようです。いきなり実践練習に入る前に、まずは基本のマナーと心構えを確認しておきましょう。"
+      : "土台はしっかりできています。ここからは面接や適性検査など、本番に向けた実践練習のフェーズです。";
+  }
+
+  // 主観面の補足（タイプ名に心理的な但し書きを添える）
+  let psychNote = "";
+  if(hasAnxiety && currentStageIdx >= 2){
+    psychNote = "進み方そのものは順調ですが、心の中では不安や自信のなさを抱えているようです。状態と気持ちにズレがあるときこそ、人に話してみることが効きます。";
+  } else if(hasStuck && currentStageIdx >= 1){
+    psychNote = "「やるべきことは分かっているけれど、動き出せない」状態が見えます。完璧に準備してから動くより、小さく一歩動かしてみることをおすすめします。";
+  } else if(hasConfusion){
+    psychNote = "複数の選択肢の間で迷っている様子がうかがえます。迷うこと自体は、真剣に考えている証拠でもあります。";
+  } else if(hasLackInfo){
+    psychNote = "情報そのものが不足している段階のようです。一人で集めようとせず、人に聞く・相談することで一気に進みやすくなります。";
+  }
+
+  return { typeName, desc, psychNote, stage, isLow };
+}
+
+/* ---- 業界研究・企業選定フェーズの「案内図」（北山さんの実務フローに準拠） ----
+   業界を知る → インターンシップで調べる → 興味があればオープンカンパニー → 長期インターンへ
+*/
+function buildRoadmap(currentStageIdx){
+  if(currentStageIdx > 2) return null; // 企業選定より先のフェーズでは表示しない
+
+  const allSteps = [
+    { label:"業界を知る", desc:"まずは業界の名前と中身を知ることから", icon:"🌱" },
+    { label:"インターンシップで調べる", desc:"気になる企業のインターン情報を探してみる", icon:"🔍" },
+    { label:"オープンカンパニーに参加", desc:"興味が持てそうなら、まず短期で覗いてみる", icon:"🚪" },
+    { label:"長期インターンシップへ", desc:"手応えがあれば、より深く関われる長期へ", icon:"🌳" },
+  ];
+
+  // 自己理解段階の人は「業界を知る」を起点に、企業選定段階の人は一歩進んだ位置を起点に強調
+  const highlightIdx = currentStageIdx === 0 ? 0 : (currentStageIdx === 1 ? 1 : 2);
+
+  return { steps: allSteps, highlightIdx };
+}
+
+/* 次の一歩の提案ロジック */
+function buildNextActions(result){
+  const { currentStageIdx, sortedThemes, intensity } = result;
+  const actions = [];
+  const isLow = intensity === "low";
+
+  if(currentStageIdx === 0){
+    // 自己理解フェーズ
+    if(isLow){
+      actions.push({
+        badge:"まずはここから",
+        title:"自己分析ツールで「言葉にする」練習をする",
+        desc:"まだ何も手をつけていない段階です。難しく考えず、簡単な質問に答えるところから始めてみましょう。",
+        url:"https://tanukin0423.github.io/meta-assessment/",
+        linkText:"自己分析ツールをひらく",
+        active:true
+      });
+    } else {
+      actions.push({
+        badge:"最優先",
+        title:"自己分析ツールで強み・価値観を言語化する",
+        desc:"VPI・MBTI・キャリアアンカーなど複数の切り口から、自分の言葉を増やしていきましょう。",
+        url:"https://tanukin0423.github.io/meta-assessment/",
+        linkText:"自己分析ツールをひらく",
+        active:true
+      });
+      actions.push({
+        badge:"あわせて",
+        title:"適職診断ツールで自分の傾向を見える化する",
+        desc:"556職種を2軸でマッピングする診断ツールです。自己理解と業界研究を同時に進められます。",
+        url:"https://tanukin0423.github.io/shokugyo-matrix/",
+        linkText:"jobmatrixをひらく",
+        active:true
+      });
+    }
+  } else if(currentStageIdx === 1){
+    // 業界研究フェーズ
+    if(isLow){
+      actions.push({
+        badge:"まずはここから",
+        title:"適職診断ツールで業界の「名前」を知る",
+        desc:"知っている業界がまだ少ない段階です。まずは選択肢を眺めて、世界を広げることから始めましょう。",
+        url:"https://tanukin0423.github.io/shokugyo-matrix/",
+        linkText:"jobmatrixをひらく",
+        active:true
+      });
+    } else {
+      actions.push({
+        badge:"最優先",
+        title:"適職診断ツールで自分の傾向を見える化する",
+        desc:"556職種を2軸でマッピングする診断ツールです。気になる業界・職種の幅を広げる助けになります。",
+        url:"https://tanukin0423.github.io/shokugyo-matrix/",
+        linkText:"jobmatrixをひらく",
+        active:true
+      });
+      actions.push({
+        badge:"あわせて",
+        title:"自己分析ツールで強み・価値観を言語化する",
+        desc:"業界選びに迷ったときは、自分の軸そのものを見直すのも有効です。",
+        url:"https://tanukin0423.github.io/meta-assessment/",
+        linkText:"自己分析ツールをひらく",
+        active:true
+      });
+    }
+  } else if(currentStageIdx === 2){
+    // 企業選定フェーズ
+    if(isLow){
+      actions.push({
+        badge:"まずはここから",
+        title:"インターンシップの探し方を知る",
+        desc:"企業選びはまだこれからの段階です。まずは「インターンシップとは何か」から、パネルで確認してみましょう。",
+        url:"https://tanukin0423.github.io/gakusei-panel/#intern",
+        linkText:"インターン探しパネルをひらく",
+        active:true
+      });
+    } else {
+      actions.push({
+        badge:"最優先",
+        title:"気になる企業のインターンシップを探す",
+        desc:"上の「気になる業界」を手がかりに、まずは1社、インターン情報を調べてみましょう。",
+        url:"https://tanukin0423.github.io/gakusei-panel/#intern",
+        linkText:"インターン探しパネルをひらく",
+        active:true
+      });
+      actions.push({
+        badge:"あわせて",
+        title:"自己分析ツールで軸を再確認する",
+        desc:"企業を選ぶ決め手が見えないときは、自分の価値観に立ち返るのも有効です。",
+        url:"https://tanukin0423.github.io/meta-assessment/",
+        linkText:"自己分析ツールをひらく",
+        active:true
+      });
+    }
+  } else if(currentStageIdx === 3){
+    // ES準備フェーズ
+    if(isLow){
+      actions.push({
+        badge:"まずはここから",
+        title:"ES入門：書き方の基本を知る",
+        desc:"ESをまだ書いたことがない段階です。いきなり本格対策に進まず、まずは基本の型を知るところから始めましょう。",
+        url:"https://tanukin0423.github.io/es-beginner/",
+        linkText:"ES入門ガイドをひらく",
+        active:true
+      });
+    } else {
+      actions.push({
+        badge:"最優先",
+        title:"ES対策ツールで「書く」を進める",
+        desc:"T+STAR+F&Cのフレームで、ガクチカ・自己PRを整理しながら形にしていくツールです。",
+        url:"https://tanukin0423.github.io/shukatsu-es/",
+        linkText:"ES対策ツールをひらく",
+        active:true
+      });
+      actions.push({
+        badge:"あわせて",
+        title:"自己分析ツールでガクチカの素材を増やす",
+        desc:"書くネタに詰まったときは、自己分析に立ち返ると言葉が見つかりやすくなります。",
+        url:"https://tanukin0423.github.io/meta-assessment/",
+        linkText:"自己分析ツールをひらく",
+        active:true
+      });
+    }
+  } else {
+    // 選考対策フェーズ
+    if(isLow){
+      actions.push({
+        badge:"まずはここから",
+        title:"面接の基本マナー・心構えを知る",
+        desc:"面接対策はまだこれからの段階です。いきなり実践練習に入る前に、基本のマナーと心構えを確認しましょう。",
+        url:"https://tanukin0423.github.io/PLACEHOLDER-interview-basics/",
+        linkText:"面接の基本ガイドをひらく",
+        active:true
+      });
+    } else {
+      actions.push({
+        badge:"最優先",
+        title:"15日間面接準備プログラムで練習する",
+        desc:"自己録音した音声を聞き返しながら、15日間かけて面接対策を進めるプログラムです。",
+        url:"https://tanukin0423.github.io/mensetsu-15day/",
+        linkText:"面接準備プログラムをひらく",
+        active:true
+      });
+      actions.push({
+        badge:"あわせて",
+        title:"ESの最終チェック・ブラッシュアップ",
+        desc:"提出前のESを、もう一段仕上げていきましょう。",
+        url:"https://tanukin0423.github.io/shukatsu-es/",
+        linkText:"ES対策ツールをひらく",
+        active:true
+      });
+      actions.push({
+        badge:"あわせて",
+        title:"筆記試験対策に取り組む",
+        desc:"SPI3など適性検査の対策ドリルです。",
+        url:"",
+        linkText:"近日リンク予定",
+        active:false
+      });
+    }
+  }
+
+  return actions;
+}
+
+/* ---------------- 結果画面 ---------------- */
+function renderResult(){
+  const result = computeResult();
+  const content = buildResultContent(result);
+  const nextActions = buildNextActions(result);
+  const roadmap = buildRoadmap(result.currentStageIdx);
+
+  const stageTrackHtml = STAGES.map((s, idx)=>{
+    let cls = "";
+    if(idx < result.currentStageIdx) cls = "done";
+    else if(idx === result.currentStageIdx) cls = "current";
+    return `
+      <div class="stage-node">
+        <div class="stage-dot ${cls}">${idx < result.currentStageIdx ? "✓" : s.icon}</div>
+        <div class="stage-name">${s.label}</div>
+      </div>
+    `;
+  }).join("");
+
+  const themeTagsHtml = result.sortedThemes.length
+    ? result.sortedThemes.map(t=>`<span class="theme-tag">${THEMES[t]}</span>`).join("")
+    : `<span class="theme-tag">特に大きな迷いは見られません</span>`;
+
+  const nextCardsHtml = nextActions.map(a=>`
+    <div class="next-card" ${a.active ? `data-print-url="${a.url}"` : ""}>
+      <div class="next-card-head">
+        <span class="next-badge ${a.badge === "まずはここから" ? "start" : (a.active ? "" : "sub")}">${a.badge}</span>
+        <span class="next-card-title">${a.title}</span>
+      </div>
+      <div class="next-card-desc">${a.desc}</div>
+      ${a.active
+        ? `<a class="next-link" href="${a.url}" target="_blank" rel="noopener">${a.linkText} →</a>`
+        : `<span class="next-link disabled">${a.linkText}</span>`
+      }
+    </div>
+  `).join("");
+
+  // 案内図（業界を知る → インターンで調べる → オープンカンパニー → 長期インターン）
+  const roadmapHtml = roadmap ? `
+    <div class="matrix-box">
+      <div class="matrix-title">業界研究・企業選定の進め方</div>
+      <div class="roadmap-track">
+        ${roadmap.steps.map((s, idx)=>`
+          <div class="roadmap-step ${idx === roadmap.highlightIdx ? "is-current" : (idx < roadmap.highlightIdx ? "is-done" : "")}">
+            <div class="roadmap-icon">${s.icon}</div>
+            <div class="roadmap-body">
+              <div class="roadmap-label">${s.label}</div>
+              <div class="roadmap-desc">${s.desc}</div>
+            </div>
+            ${idx < roadmap.steps.length - 1 ? `<div class="roadmap-arrow">→</div>` : ""}
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  ` : "";
+
+  // 興味業界 × 代表企業例セクション
+  const interestedIndustries = INDUSTRIES.filter(ind => result.industryData.in.includes(ind.key));
+  const industryResultHtml = interestedIndustries.length > 0 ? `
+    <div class="next-section">
+      <div class="next-title">🔍 気になる業界の「調べてみるきっかけ」</div>
+      ${interestedIndustries.map(ind => `
+        <div class="next-card">
+          <div class="next-card-head">
+            <span class="next-badge">${ind.icon} ${ind.label}</span>
+          </div>
+          <div class="next-card-desc">${ind.note}</div>
+          <div class="company-chip-row">
+            ${ind.companies.map(c=>`<span class="company-chip">${c}</span>`).join("")}
+          </div>
+        </div>
+      `).join("")}
+      <p class="company-disclaimer">※ 企業名はあくまで業界のイメージをつかむための一例です。「内定が出やすい」という意味ではありません。実際の応募先は、インターンシップ等を通じてあらためて調べていきましょう。</p>
+    </div>
+  ` : (result.industryData.in.length === 0 && currentStageHasIndustryStep(result) ? `
+    <div class="counselor-note">
+      今回は「気になる業界」が選ばれませんでした。それ自体も大事な情報です。まずは業界の名前を知るところから、一緒に始めましょう。
+    </div>
+  ` : "");
+
+  app.innerHTML = `
+    <div class="card">
+      <div class="print-only">
+        <div class="print-title-row">
+          <span class="print-brand">🌱 就活の木 ｜ 面談資料</span>
+          <span class="print-date">作成日：${formatTodayJP()}</span>
+        </div>
+        <div class="print-heading">就活、何からはじめよう？ アセスメント結果</div>
+      </div>
+
+      <div class="result-header">
+        <div class="result-eyebrow">YOUR CURRENT POSITION</div>
+        <div class="result-type">🌳 ${content.typeName}</div>
+      </div>
+      <p class="result-desc">${content.desc}</p>
+      ${content.psychNote ? `<p class="result-desc" style="margin-top:14px;">${content.psychNote}</p>` : ""}
+
+      <div class="matrix-box">
+        <div class="matrix-title">就活ステップ上の現在地</div>
+        <div class="stage-track">${stageTrackHtml}</div>
+      </div>
+
+      <div class="matrix-box">
+        <div class="matrix-title">今、心の中にあるテーマ</div>
+        <div class="theme-tags">${themeTagsHtml}</div>
+      </div>
+
+      ${roadmapHtml}
+
+      ${industryResultHtml}
+
+      <div class="next-section">
+        <div class="next-title">🌱 次にやるとよいこと</div>
+        ${nextCardsHtml}
+      </div>
+
+      <div class="counselor-note">
+        <strong>この結果について</strong><br>
+        診断はあくまで現在地を知るための「地図」です。答えはあなたの中にあります。気になることがあれば、ぜひ次回の面談で一緒に確認しましょう。
+      </div>
+
+      <div class="retry-row">
+        <button class="btn-secondary" id="retryBtn">もう一度診断する</button>
+      </div>
+      <div class="print-row">
+        <button class="btn-print" id="printBtn">🖨️ 面談資料として印刷する</button>
+      </div>
+    </div>
+    <footer>就活の木 ｜ Shukatsu no Ki</footer>
+  `;
+
+  document.getElementById("retryBtn").onclick = ()=>{
+    current = -1; answers = {}; selectedTemp = [];
+    render();
+  };
+
+  document.getElementById("printBtn").onclick = ()=>{
+    openPrintWindow(app.querySelector(".card").innerHTML);
+  };
+}
+
+/* 結果カードのHTMLを別ウィンドウに書き出して印刷する */
+function openPrintWindow(cardInnerHtml){
+  const printCss = `
+:root{
+  /* ベース：白〜ライトグレー基調 */
+  --page-bg:#f4f6f5;
+  --card-bg:#ffffff;
+  --card-border:#e2e8e4;
+  --text-main:#1f2d26;
+  --text-sub:#5c6b63;
+  --text-faint:#8b988f;
+
+  /* アクセント：就活の木グリーン（ボタン・タグ・進捗バーなどに限定使用） */
+  --accent-deep:#2d6b4a;
+  --accent-mid:#3d8a5f;
+  --accent-soft:#e9f3ed;
+  --accent-soft-border:#bfdfcd;
+  --gold:#c79a3a;
+  --gold-soft:#fbf2dd;
+  --mint:#2f9e72;
+  --mint-soft:#e6f7ef;
+
+  --white:#ffffff;
+  --shadow:rgba(31,45,38,0.08);
+
+  /* 旧変数名のエイリアス（互換維持） */
+  --text-gray:var(--text-sub);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:"Hiragino Sans","Yu Gothic",sans-serif;
+  background:var(--page-bg);
+  min-height:100vh;
+  color:var(--text-main);
+  display:flex;
+  justify-content:center;
+  padding:24px 16px 60px;
+}
+.app{
+  width:100%;
+  max-width:640px;
+}
+
+/* ---------- 共通カード ---------- */
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  border-radius:20px;
+  padding:32px 28px;
+  box-shadow:0 8px 24px var(--shadow);
+}
+
+/* ---------- ヘッダー ---------- */
+header.intro{
+  text-align:center;
+  margin-bottom:28px;
+}
+.tree-mark{
+  font-size:38px;
+  display:inline-block;
+  margin-bottom:10px;
+  filter:drop-shadow(0 4px 8px rgba(31,45,38,0.15));
+}
+h1{
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:0.02em;
+  margin-bottom:8px;
+  line-height:1.5;
+  color:var(--text-main);
+}
+.lede{
+  font-size:14px;
+  color:var(--text-sub);
+  line-height:1.8;
+}
+.gold-line{
+  width:48px;
+  height:3px;
+  background:var(--gold);
+  border-radius:2px;
+  margin:18px auto;
+}
+
+/* ---------- スタート画面 ---------- */
+.start-card .meta{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin:22px 0 28px;
+  font-size:12.5px;
+  color:var(--text-sub);
+}
+.meta span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--mint);}
+
+.btn-primary{
+  width:100%;
+  background:var(--accent-deep);
+  color:#ffffff;
+  border:none;
+  border-radius:14px;
+  padding:16px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  box-shadow:0 6px 16px rgba(45,107,74,0.22);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(45,107,74,0.3);background:var(--accent-mid);}
+.btn-primary:active{transform:translateY(0);}
+
+.btn-secondary{
+  width:100%;
+  background:transparent;
+  color:var(--text-sub);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:12px;
+  transition:background .15s ease, color .15s ease;
+}
+.btn-secondary:hover{background:var(--accent-soft);color:var(--accent-deep);border-color:var(--accent-soft-border);}
+
+/* ---------- 進捗バー ---------- */
+.progress-wrap{
+  margin-bottom:22px;
+}
+.progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:8px;
+}
+.progress-label{font-size:12px;color:var(--text-faint);letter-spacing:0.04em;}
+.progress-count{font-size:13px;font-weight:700;color:var(--accent-deep);}
+.progress-track{
+  height:6px;
+  background:#eef1ef;
+  border-radius:4px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--mint),var(--accent-deep));
+  border-radius:4px;
+  transition:width .35s ease;
+}
+
+/* ---------- 質問画面 ---------- */
+.q-axis-tag{
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.05em;
+  padding:4px 10px;
+  border-radius:999px;
+  margin-bottom:14px;
+}
+.q-axis-tag.state{background:var(--mint-soft);color:var(--mint);border:1px solid #b9e6d2;}
+.q-axis-tag.theme{background:var(--gold-soft);color:var(--gold);border:1px solid #ecdcae;}
+
+.q-text{
+  font-size:17px;
+  font-weight:700;
+  line-height:1.7;
+  margin-bottom:22px;
+  color:var(--text-main);
+}
+.q-sub{
+  font-size:12.5px;
+  color:var(--text-sub);
+  margin-top:-14px;
+  margin-bottom:20px;
+  line-height:1.6;
+}
+
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:24px;
+}
+.option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:#fafbfa;
+  border:1.5px solid var(--card-border);
+  border-radius:12px;
+  cursor:pointer;
+  transition:border-color .15s ease, background .15s ease;
+  font-size:14.5px;
+  line-height:1.6;
+  color:var(--text-main);
+}
+.option:hover{border-color:var(--mint);background:var(--mint-soft);}
+.option.selected{
+  border-color:var(--gold);
+  background:var(--gold-soft);
+}
+.option .marker{
+  flex:0 0 auto;
+  width:20px;height:20px;
+  border-radius:50%;
+  border:2px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;
+  transition:all .15s ease;
+  background:#fff;
+}
+.option.selected .marker{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#ffffff;
+  font-weight:900;
+}
+.option.multi .marker{border-radius:6px;}
+
+.multi-hint{
+  font-size:12px;
+  color:var(--mint);
+  margin:-12px 0 16px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* ---------- 業界興味ヒアリング専用カード ---------- */
+.industry-grid{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:24px;
+}
+.industry-card{
+  background:#fafbfa;
+  border:1.5px solid var(--card-border);
+  border-radius:12px;
+  padding:14px 16px;
+  transition:border-color .15s ease, background .15s ease;
+}
+.industry-card.is-in{border-color:var(--gold);background:var(--gold-soft);}
+.industry-card.is-out{border-color:var(--card-border);background:#f3f4f3;opacity:0.65;}
+.industry-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.industry-icon{font-size:20px;}
+.industry-name{font-size:14.5px;font-weight:700;color:var(--text-main);}
+.industry-toggle-row{
+  display:flex;
+  gap:8px;
+}
+.toggle-btn{
+  flex:1;
+  font-size:12.5px;
+  font-weight:700;
+  padding:9px 10px;
+  border-radius:9px;
+  border:1.5px solid var(--card-border);
+  background:#fff;
+  color:var(--text-sub);
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.toggle-btn.toggle-in:hover{border-color:var(--gold);color:var(--gold);}
+.toggle-btn.toggle-out:hover{border-color:var(--text-sub);}
+.industry-card.is-in .toggle-in{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#ffffff;
+}
+.industry-card.is-out .toggle-out{
+  background:#e7e9e7;
+  border-color:#d4d8d5;
+  color:var(--text-main);
+}
+
+.nav-row{
+  display:flex;
+  gap:10px;
+}
+.btn-back{
+  flex:0 0 auto;
+  background:transparent;
+  border:1px solid var(--card-border);
+  color:var(--text-sub);
+  border-radius:14px;
+  padding:14px 18px;
+  font-size:14px;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+.btn-back:hover{background:var(--accent-soft);color:var(--accent-deep);}
+.btn-back:disabled{opacity:0.35;cursor:not-allowed;}
+.btn-next{flex:1;}
+.btn-next:disabled{
+  opacity:0.4;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+.btn-next:disabled:hover{transform:none;}
+
+/* ---------- 結果画面 ---------- */
+.result-header{
+  text-align:center;
+  margin-bottom:24px;
+}
+.result-eyebrow{
+  font-size:12px;
+  letter-spacing:0.1em;
+  color:var(--mint);
+  margin-bottom:10px;
+  font-weight:700;
+}
+.result-type{
+  font-size:24px;
+  font-weight:800;
+  margin-bottom:10px;
+  line-height:1.5;
+  color:var(--text-main);
+}
+.result-desc{
+  font-size:14px;
+  color:var(--text-sub);
+  line-height:1.85;
+  text-align:left;
+  margin-bottom:6px;
+}
+
+/* 状態×テーマ可視化 */
+.matrix-box{
+  background:#f7f9f7;
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:20px;
+  margin:22px 0;
+}
+.matrix-title{
+  font-size:12px;
+  color:var(--accent-deep);
+  font-weight:700;
+  letter-spacing:0.04em;
+  margin-bottom:14px;
+}
+.stage-track{
+  display:flex;
+  justify-content:space-between;
+  position:relative;
+  margin-bottom:6px;
+}
+.stage-track::before{
+  content:"";
+  position:absolute;
+  top:11px;left:14px;right:14px;
+  height:2px;
+  background:var(--card-border);
+  z-index:0;
+}
+.stage-node{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  flex:1;
+}
+.stage-dot{
+  width:22px;height:22px;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid var(--card-border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;
+}
+.stage-dot.done{background:var(--mint);border-color:var(--mint);color:#fff;}
+.stage-dot.current{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:0 0 0 4px var(--gold-soft);}
+.stage-name{font-size:10px;color:var(--text-sub);text-align:center;line-height:1.4;}
+
+.theme-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
+}
+.theme-tag{
+  font-size:11.5px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:var(--gold-soft);
+  color:var(--gold);
+  border:1px solid #ecdcae;
+  font-weight:600;
+}
+
+/* 次の一歩カード */
+.next-section{
+  margin-top:26px;
+}
+.next-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--text-main);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.next-card{
+  background:#fafbfa;
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:12px;
+}
+.next-card-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+.next-badge{
+  font-size:10.5px;
+  font-weight:800;
+  padding:3px 9px;
+  border-radius:999px;
+  background:var(--mint);
+  color:#ffffff;
+  letter-spacing:0.03em;
+}
+.next-badge.sub{background:#e7e9e7;color:var(--text-sub);}
+.next-badge.start{background:var(--gold);color:#ffffff;}
+.next-card-title{font-size:15px;font-weight:700;color:var(--text-main);}
+.next-card-desc{font-size:13px;color:var(--text-sub);line-height:1.7;margin-bottom:12px;}
+.next-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:13px;
+  font-weight:700;
+  color:#ffffff;
+  background:var(--accent-deep);
+  padding:10px 16px;
+  border-radius:10px;
+  text-decoration:none;
+  transition:background .15s ease;
+}
+.next-link:hover{background:var(--accent-mid);}
+.next-link.disabled{
+  background:#e7e9e7;
+  color:var(--text-faint);
+  cursor:default;
+  pointer-events:none;
+}
+
+/* ---------- 案内図（ロードマップ） ---------- */
+.roadmap-track{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.roadmap-step{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:10px 4px;
+  position:relative;
+}
+.roadmap-icon{
+  flex:0 0 auto;
+  width:34px;height:34px;
+  border-radius:50%;
+  background:#eceeec;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.roadmap-step.is-done .roadmap-icon{background:var(--mint);}
+.roadmap-step.is-current .roadmap-icon{
+  background:var(--gold);
+  box-shadow:0 0 0 4px var(--gold-soft);
+}
+.roadmap-body{flex:1;padding-top:4px;}
+.roadmap-label{font-size:13.5px;font-weight:700;margin-bottom:3px;color:var(--text-main);}
+.roadmap-step.is-current .roadmap-label{color:var(--gold);}
+.roadmap-desc{font-size:12px;color:var(--text-sub);line-height:1.6;}
+.roadmap-arrow{
+  position:absolute;
+  left:14px;
+  top:44px;
+  font-size:13px;
+  color:var(--card-border);
+  transform:rotate(90deg);
+}
+
+/* ---------- 興味業界の企業例チップ ---------- */
+.company-chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:4px;
+}
+.company-chip{
+  font-size:12px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#eef1ef;
+  color:var(--text-main);
+  border:1px solid var(--card-border);
+}
+.company-disclaimer{
+  font-size:11px;
+  color:var(--text-faint);
+  line-height:1.7;
+  margin-top:10px;
+  padding:0 2px;
+}
+
+.counselor-note{
+  margin-top:24px;
+  background:var(--mint-soft);
+  border:1px solid #b9e6d2;
+  border-radius:14px;
+  padding:18px 20px;
+  font-size:13px;
+  line-height:1.85;
+  color:var(--text-sub);
+}
+.counselor-note strong{color:var(--mint);}
+
+.retry-row{
+  margin-top:26px;
+  display:flex;
+  gap:10px;
+}
+
+footer{
+  text-align:center;
+  margin-top:24px;
+  font-size:11.5px;
+  color:var(--text-faint);
+  letter-spacing:0.04em;
+}
+
+
+/* ---------- 印刷ボタン ---------- */
+.print-row{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+.btn-print{
+  flex:1;
+  background:#fff;
+  border:1px solid var(--accent-deep);
+  color:var(--accent-deep);
+  border-radius:14px;
+  padding:14px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:background .15s ease;
+}
+.btn-print:hover{background:var(--accent-soft);}
+
+/* 印刷用の面談資料ヘッダー（画面では非表示） */
+.print-only{display:block;}
+
+/* ---------- 印刷スタイル：結果画面をA4面談資料として整形 ---------- */
+
+@media print{
+  @page{
+    size:A4;
+    margin:14mm 12mm;
+  }
+  body{
+    background:#fff;
+    padding:0;
+    display:block;
+  }
+  .app{max-width:none;width:100%;}
+
+  /* 操作系UIは印刷しない */
+  .retry-row,
+  .print-row,
+  .next-link,
+  footer{
+    display:none !important;
+  }
+  .next-link.disabled{display:none !important;}
+
+  .card{
+    box-shadow:none;
+    border:none;
+    border-radius:0;
+    padding:0;
+  }
+
+  .print-only{
+    display:block;
+    margin-bottom:18px;
+    padding-bottom:14px;
+    border-bottom:2px solid var(--accent-deep);
+  }
+  .print-only .print-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  .print-only .print-brand{
+    font-size:13px;
+    font-weight:700;
+    color:var(--accent-deep);
+    letter-spacing:0.04em;
+  }
+  .print-only .print-date{
+    font-size:11px;
+    color:var(--text-faint);
+  }
+  .print-only .print-heading{
+    font-size:18px;
+    font-weight:800;
+    color:var(--text-main);
+    margin-top:8px;
+  }
+
+  .matrix-box{break-inside:avoid;}
+  .next-card{break-inside:avoid;}
+  .roadmap-step{break-inside:avoid;}
+  .counselor-note{break-inside:avoid;}
+
+  /* リンク先URLを併記して紙面でも追跡できるようにする */
+  .next-card[data-print-url]::after{
+    content:"URL: " attr(data-print-url);
+    display:block;
+    font-size:10.5px;
+    color:var(--text-faint);
+    margin-top:8px;
+    word-break:break-all;
+  }
+}
+`;
+  const win = window.open("", "_blank");
+  if(!win){
+    alert("ポップアップがブロックされました。ブラウザの設定でポップアップを許可してください。");
+    return;
+  }
+  win.document.write(`<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>就活、何からはじめよう？ アセスメント結果｜面談資料</title>
+<style>${printCss}
+.retry-row,.print-row{display:none !important;}
+.next-link{display:none !important;}
+.next-link.disabled{display:none !important;}
+</style>
+</head>
+<body>
+<div class="app"><div class="card">${cardInnerHtml}</div></div>
+` + '<scr' + 'ipt>\n' + `
+window.onload = function(){
+  setTimeout(function(){ window.print(); }, 300);
+};
+` + '<\/scr' + 'ipt>\n' + `
+</body>
+</html>`);
+  win.document.close();
+}
+
+function formatTodayJP(){
+  const d = new Date();
+  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+}
+
+function currentStageHasIndustryStep(result){
+  return result.currentStageIdx <= 2;
+}
+
+
+
+window.__hajimeyouInit = function(){
+  if(window.__hajimeyouInitialized) return;
+  window.__hajimeyouInitialized = true;
+  render();
+};
+})();
+
+/* ============================================================
+   ✍️ ES入門ガイド（エントリー版）専用ロジック（IIFEでスコープ分離）
+============================================================ */
+(function(){
+
+/* ============================================================
+   ES入門ガイド：プルダウン選択 → 文章自動生成
+============================================================ */
+
+const THEMES = [
+  { key:"gakuchika", label:"ガクチカ", icon:"💪" },
+  { key:"jikopr",    label:"自己PR",   icon:"✨" },
+  { key:"shibo",     label:"志望動機", icon:"🎯" },
+];
+
+const TYPES = [
+  { key:"zemi",   label:"ゼミ・学び編", icon:"📚" },
+  { key:"arbeit", label:"アルバイト",   icon:"💼" },
+  { key:"bukatsu",label:"部活・サークル", icon:"⚽" },
+  { key:"nichijo",label:"日常の出来事", icon:"🌤️" },
+  { key:"manabi", label:"勉強・資格",   icon:"✏️" },
+];
+
+/* ---- データ構造 ----
+   DATA[typeKey][themeKey] = {
+     questions: [
+       { label, options: ["選択肢1", ...] },
+       ...3問
+     ],
+     template: (a,b,c) => "文章"
+   }
+*/
+const DATA = {
+  zemi: {
+    gakuchika: {
+      questions: [
+        { label:"① 何に取り組みましたか？", options:[
+          "ゼミの研究発表","ゼミのグループワーク","ゼミの輪読・文献発表","ゼミ合宿の運営","ゼミの対外発表会","ゼミでのディスカッション","卒業論文のテーマ設定","ゼミ長としての運営"
+        ]},
+        { label:"② どんな課題がありましたか？", options:[
+          "意見がまとまらなかったこと","メンバーの参加意欲にばらつきがあったこと","議論が活発にならなかったこと","役割分担があいまいだったこと","期限に間に合わなそうだったこと","知識・経験不足を感じたこと","チーム内の温度差があったこと","発表内容がまとまらなかったこと"
+        ]},
+        { label:"③ どう乗り越えましたか？", options:[
+          "発言しやすい雰囲気づくりを工夫した","役割を明確に分担し直した","事前準備の量を増やした","メンバーに個別に声をかけた","スケジュールを細かく区切った","他のメンバーの意見を積極的に聞いた","自分から率先して動いた","第三者の視点を取り入れた"
+        ]},
+        { label:"④ なぜそうしようと思いましたか？（大切にしていた想い）", options:[
+          "全員が納得できる形にしたかったから","誰か一人に負担が偏るのは避けたかったから","せっかくの機会を中途半端に終わらせたくなかったから","一人ひとりの意見を大事にしたかったから","チームとして良い成果を出したかったから","自分にできることから逃げたくなかったから","お互いに気持ちよく取り組める環境にしたかったから","視野を広げて本質を捉えたかったから"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私はゼミ活動で、${a}に取り組む中で、${b}という課題に直面しました。${d}という想いから、${c}結果、状況を改善することができました。この経験から、課題に向き合いながら周囲と協力する力を学びました。仕事の中でチームの足並みが揃わない場面でも、この力を活かしていきたいと考えています。`
+    },
+    jikopr: {
+      questions: [
+        { label:"① 自分の強みは何だと思いますか？", options:[
+          "粘り強さ","協調性","論理的に考える力","行動力","傾聴力","発想力","責任感","柔軟性"
+        ]},
+        { label:"② その強みをゼミでどう発揮しましたか？", options:[
+          "難しい文献も最後まで読み込んだこと","意見が対立した際に間に入って調整したこと","データを整理して分かりやすく伝えたこと","誰もやりたがらない作業を率先して引き受けたこと","メンバーの話をじっくり聞いて意見を引き出したこと","新しい切り口でテーマを提案したこと","発表の準備を最後まで責任を持って進めたこと","状況に応じてやり方を変えたこと"
+        ]},
+        { label:"③ なぜそう行動しようと思いましたか？（大切にしていた想い）", options:[
+          "中途半端で終わらせたくなかったから","チーム全体が納得できる形にしたかったから","誰かの役に立ちたいという気持ちがあったから","自分にできることはやり切りたかったから","相手の立場に立って考えたかったから","現状を良くしたいという思いがあったから","任された以上は最後まで責任を持ちたかったから","状況に合わせて最善を尽くしたかったから"
+        ]},
+        { label:"④ その強みを仕事でどう活かせそうですか？", options:[
+          "粘り強く課題に取り組む姿勢として","チームをまとめる場面で","物事を整理し説明する場面で","新しい挑戦に踏み出す場面で","顧客や同僚の声を引き出す場面で","新しい企画を考える場面で","任された仕事をやり遂げる場面で","変化に対応する場面で"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私の強みは${a}です。ゼミ活動では、${c}という想いから、${b}という形でこの強みを発揮してきました。社会人になってからも、${d}、強みである${a}を発揮していきたいと考えています。`
+    },
+    shibo: {
+      questions: [
+        { label:"① ゼミでの学びを通じて、どんな分野に興味を持ちましたか？", options:[
+          "人と関わる仕事","ものごとを分析する仕事","新しい価値を生み出す仕事","人を支える仕事","チームをまとめる仕事","専門知識を活かす仕事","社会課題に関わる仕事","幅広い人と接する仕事"
+        ]},
+        { label:"② なぜそう思うようになりましたか？", options:[
+          "研究を通じて社会との繋がりを実感したから","ゼミでの議論が刺激的だったから","文献を通じて業界の魅力を知ったから","発表を通じて伝える楽しさを知ったから","メンバーとの協働にやりがいを感じたから","テーマを深掘りする過程が面白かったから","ゼミの先生の話に影響を受けたから","研究を通じて課題意識を持ったから"
+        ]},
+        { label:"③ 入社後、何を実現したいですか？", options:[
+          "学んだ知識を実務で活かしたい","人と関わりながら成長したい","課題解決に貢献したい","チームの一員として価値を生み出したい","専門性を磨いていきたい","新しい挑戦を続けたい","お客様の役に立ちたい","社会に良い影響を与えたい"
+        ]},
+        { label:"④ その想いの根っこには、どんな大切にしたいことがありますか？", options:[
+          "誰かの役に立っている実感を持ちたい","学んだことを社会で活かしたい","自分自身も成長し続けたい","人と人との繋がりを大事にしたい","現状に満足せず挑戦し続けたい","専門性を持って信頼される人になりたい","チームで成果を出す喜びを感じたい","社会の課題に向き合い続けたい"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私はゼミでの学びを通じて、${a}に興味を持つようになりました。${b}という経験が、その原点です。これは「${d}」という想いにも繋がっています。貴社に入社後は、そうした場面で${c}と考えております。`
+    },
+  },
+  arbeit: {
+    gakuchika: {
+      questions: [
+        { label:"① 何に取り組みましたか？", options:[
+          "接客対応の改善","新人スタッフの教育","売上向上の取り組み","シフト調整・管理","クレーム対応","在庫・発注の管理","イベント企画","チームの雰囲気づくり"
+        ]},
+        { label:"② どんな課題がありましたか？", options:[
+          "忙しい時間帯に対応が追いつかなかったこと","スタッフ間の連携がうまくいかなかったこと","お客様からの要望に応えきれなかったこと","新人がなかなか定着しなかったこと","売上目標に届かなかったこと","ミスが重なってしまったこと","モチベーションの差があったこと","業務が属人化していたこと"
+        ]},
+        { label:"③ どう乗り越えましたか？", options:[
+          "マニュアルを作って共有した","声かけを増やしてコミュニケーションを密にした","業務の流れを見直して効率化した","お客様の立場に立って対応を変えた","スタッフの意見を聞いて改善した","小さな成功体験を積み重ねてもらった","自分が率先して手本を見せた","役割分担を明確にした"
+        ]},
+        { label:"④ なぜそうしようと思いましたか？（大切にしていた想い）", options:[
+          "お客様に気持ちよく過ごしてほしかったから","一緒に働く仲間を大事にしたかったから","自分だけでなくチーム全体で良くしたかったから","誰かが困っている状況を放っておけなかったから","お店としての信頼を守りたかったから","同じ失敗を繰り返したくなかったから","みんなが安心して働ける環境にしたかったから","責任を持って最後までやり切りたかったから"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私はアルバイトで${a}に取り組む中、${b}という課題に直面しました。${d}という想いから、${c}結果、状況を改善することができました。この経験から、現場で課題を見つけ、改善していく力を身につけました。仕事の現場で同じような課題に出会った場面でも、この力を活かしていきたいと考えています。`
+    },
+    jikopr: {
+      questions: [
+        { label:"① 自分の強みは何だと思いますか？", options:[
+          "気配り力","臨機応変な対応力","継続力","コミュニケーション力","責任感","観察力","向上心","チームワーク力"
+        ]},
+        { label:"② その強みをアルバイトでどう発揮しましたか？", options:[
+          "お客様の様子を見て先回りして対応したこと","忙しい状況でも冷静に判断したこと","長期間休まず続けてきたこと","スタッフ・お客様と良好な関係を築いたこと","任された仕事を最後までやり遂げたこと","小さな変化にもすぐ気づいたこと","自分から新しい業務に挑戦したこと","周りと協力して目標を達成したこと"
+        ]},
+        { label:"③ なぜそう行動しようと思いましたか？（大切にしていた想い）", options:[
+          "お客様に気持ちよく過ごしてもらいたかったから","一緒に働く仲間を困らせたくなかったから","自分で決めたことは続けたかったから","信頼関係を大切にしたかったから","任された責任を果たしたかったから","小さな違和感も見逃したくなかったから","現状維持で満足したくなかったから","一人より皆で成果を出したかったから"
+        ]},
+        { label:"④ その強みを仕事でどう活かせそうですか？", options:[
+          "お客様や同僚への気配りとして","変化の多い環境で柔軟に動く場面で","長期的な目標に向き合う場面で","社内外との関係構築の場面で","任された業務をやり遂げる場面で","課題や変化にいち早く気づく場面で","新しいことに挑戦する場面で","チームで成果を出す場面で"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私の強みは${a}です。アルバイトでは、${c}という想いから、${b}という形でこの強みを発揮してきました。社会人になってからも、${d}、強みである${a}を発揮していきたいと考えています。`
+    },
+    shibo: {
+      questions: [
+        { label:"① アルバイトを通じて、どんな分野に興味を持ちましたか？", options:[
+          "接客・サービス業","人をマネジメントする仕事","現場の改善に関わる仕事","お客様の満足を追求する仕事","チームで成果を出す仕事","効率化を考える仕事","新しい価値を提供する仕事","人を育てる仕事"
+        ]},
+        { label:"② なぜそう思うようになりましたか？", options:[
+          "お客様に喜んでもらえた経験があったから","現場を改善する面白さを知ったから","チームで目標を達成する楽しさを知ったから","後輩の成長を見て嬉しかったから","効率化によって成果が出た経験があったから","接客の奥深さに気づいたから","お店の雰囲気づくりに携われたから","現場の声を形にする経験をしたから"
+        ]},
+        { label:"③ 入社後、何を実現したいですか？", options:[
+          "現場で培った力を活かしたい","お客様に価値を届けたい","チームをまとめていきたい","現場の改善に貢献したい","人を育てる側に回りたい","効率的な仕組みを作りたい","新しい挑戦を続けたい","お客様や同僚から信頼される存在になりたい"
+        ]},
+        { label:"④ その想いの根っこには、どんな大切にしたいことがありますか？", options:[
+          "誰かに喜んでもらえることに価値を感じたい","現場の声を大事にし続けたい","チームで一緒に成果を喜びたい","人の成長に関わり続けたい","より良い仕組みを作り続けたい","お客様の期待を超えていきたい","現状に満足せず挑戦し続けたい","信頼される存在であり続けたい"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私はアルバイトでの経験を通じて、${a}に興味を持つようになりました。${b}という経験が、その原点です。これは「${d}」という想いにも繋がっています。貴社に入社後は、そうした場面で${c}と考えております。`
+    },
+  },
+  bukatsu: {
+    gakuchika: {
+      questions: [
+        { label:"① 何に取り組みましたか？", options:[
+          "大会・試合に向けた練習","チームの戦術づくり","後輩の指導","部の運営・マネジメント","練習メニューの改善","チームの目標設定","怪我からの復帰","新入部員の勧誘"
+        ]},
+        { label:"② どんな課題がありましたか？", options:[
+          "チームの成績が伸び悩んでいたこと","メンバーの足並みが揃わなかったこと","練習へのモチベーションに差があったこと","限られた時間で成果を出す必要があったこと","怪我で思うように動けなかったこと","上下関係の難しさがあったこと","部員数の減少に悩んだこと","目標と現実にギャップがあったこと"
+        ]},
+        { label:"③ どう乗り越えましたか？", options:[
+          "練習メニューを見直して効率化した","メンバーと話し合いの場を設けた","目標を小さく区切って取り組んだ","自分にできることを地道に続けた","リハビリと並行してできることを探した","対話を重ねて関係性を築いた","新しい取り組みを企画・提案した","現実的な目標に立て直した"
+        ]},
+        { label:"④ なぜそうしようと思いましたか？（大切にしていた想い）", options:[
+          "チーム全員で目標を達成したかったから","誰か一人が我慢する状況にしたくなかったから","最後まで諦めたくなかったから","仲間の頑張りを無駄にしたくなかったから","また同じ場所に立ちたいと強く思ったから","上下関係に関係なく信頼し合いたかったから","部の歴史や伝統を絶やしたくなかったから","現実から目を逸らしたくなかったから"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私は部活動で${a}に取り組む中、${b}という課題に直面しました。${d}という想いから、${c}結果、状況を改善することができました。この経験から、困難な状況でも粘り強く取り組む力を学びました。仕事の中で思うようにいかない場面でも、この力を活かしていきたいと考えています。`
+    },
+    jikopr: {
+      questions: [
+        { label:"① 自分の強みは何だと思いますか？", options:[
+          "粘り強さ","リーダーシップ","目標達成力","チームワーク力","ストイックさ","柔軟な発想力","支える力","継続力"
+        ]},
+        { label:"② その強みを部活でどう発揮しましたか？", options:[
+          "苦しい練習でも最後までやり抜いたこと","チームをまとめて方向性を示したこと","目標から逆算して計画を立てたこと","チームメイトと協力して成果を出したこと","日々の練習を欠かさず続けたこと","新しい練習方法を取り入れたこと","後輩や仲間を支えたこと","長期間モチベーションを保ち続けたこと"
+        ]},
+        { label:"③ なぜそう行動しようと思いましたか？（大切にしていた想い）", options:[
+          "途中で投げ出したくなかったから","チーム全員で同じ方向を向きたかったから","目標を本気で達成したかったから","仲間を信じて頼りたかったから","自分に妥協したくなかったから","現状に満足せず成長し続けたかったから","誰かを支えることにやりがいを感じたから","ここまで積み上げてきたものを大切にしたかったから"
+        ]},
+        { label:"④ その強みを仕事でどう活かせそうですか？", options:[
+          "困難な状況でも粘り強く取り組む姿勢として","チームを牽引する場面で","目標に向けて計画的に動く場面で","チームで成果を出す場面で","地道な努力を積み重ねる場面で","新しい発想で課題を解決する場面で","後輩や同僚をサポートする場面で","長期的な目標に取り組む場面で"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私の強みは${a}です。部活動では、${c}という想いから、${b}という形でこの強みを発揮してきました。社会人になってからも、${d}、強みである${a}を発揮していきたいと考えています。`
+    },
+    shibo: {
+      questions: [
+        { label:"① 部活動を通じて、どんな分野に興味を持ちましたか？", options:[
+          "チームで成果を出す仕事","人を育成する仕事","目標達成を支援する仕事","体力・精神力が求められる仕事","人と深く関わる仕事","競争のある業界","裏方として支える仕事","結果が見える仕事"
+        ]},
+        { label:"② なぜそう思うようになりましたか？", options:[
+          "チームで目標を達成した経験があったから","後輩の成長を支える喜びを知ったから","努力が結果に結びつく経験をしたから","仲間と支え合うことの大切さを知ったから","厳しい環境で成長を実感したから","裏方の重要性に気づいたから","結果にこだわる姿勢が身についたから","部活を通じて視野が広がったから"
+        ]},
+        { label:"③ 入社後、何を実現したいですか？", options:[
+          "部活で培った力を仕事でも発揮したい","チームに貢献できる人材になりたい","目標に向けて努力し続けたい","後輩や同僚を支えていきたい","結果にこだわって取り組みたい","粘り強く成長していきたい","チームの一員として信頼されたい","新しい挑戦を続けたい"
+        ]},
+        { label:"④ その想いの根っこには、どんな大切にしたいことがありますか？", options:[
+          "仲間と共に成果を喜び合いたい","誰かの成長を支える側でありたい","努力を結果に繋げ続けたい","支え合える関係を大事にしたい","厳しい環境でも成長し続けたい","目立たない部分にも誠実でありたい","結果に対して責任を持ちたい","新しい目標に挑み続けたい"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私は部活動での経験を通じて、${a}に興味を持つようになりました。${b}という経験が、その原点です。これは「${d}」という想いにも繋がっています。貴社に入社後は、そうした場面で${c}と考えております。`
+    },
+  },
+  nichijo: {
+    gakuchika: {
+      questions: [
+        { label:"① 何に取り組みましたか？", options:[
+          "一人暮らしでの生活管理","家族・友人との関わり","趣味の継続","健康管理・生活習慣の改善","地域activities・ボランティア","SNSでの発信","旅行の計画・実行","家計管理"
+        ]},
+        { label:"② どんな課題がありましたか？", options:[
+          "思うように時間が確保できなかったこと","継続することが難しかったこと","周囲の理解を得るのが大変だったこと","失敗から立て直す必要があったこと","予算内でやりくりする必要があったこと","一人で抱え込んでしまったこと","予定通りに進まなかったこと","新しい環境に慣れる必要があったこと"
+        ]},
+        { label:"③ どう乗り越えましたか？", options:[
+          "スケジュールを見直して工夫した","小さな目標を立てて積み重ねた","周囲に相談しながら進めた","失敗を振り返って改善した","計画を立てて実行した","人に頼ることも取り入れた","柔軟に予定を変更した","少しずつ慣れる工夫をした"
+        ]},
+        { label:"④ なぜそうしようと思いましたか？（大切にしていた想い）", options:[
+          "自分の生活には自分で責任を持ちたかったから","途中で投げ出したくなかったから","周りの人を心配させたくなかったから","同じ失敗を繰り返したくなかったから","限られた中でも納得できる選択をしたかったから","一人で無理をするより良い結果を出したかったから","状況に流されず自分のペースを保ちたかったから","新しい環境でも前向きに過ごしたかったから"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私は${a}に取り組む中、${b}という課題に直面しました。${d}という想いから、${c}結果、状況を改善することができました。この経験から、日々の生活の中でも工夫し続ける力を学びました。仕事の中で予定通りにいかない場面でも、この力を活かしていきたいと考えています。`
+    },
+    jikopr: {
+      questions: [
+        { label:"① 自分の強みは何だと思いますか？", options:[
+          "自己管理力","計画力","継続力","適応力","誠実さ","前向きさ","好奇心","行動力"
+        ]},
+        { label:"② その強みを日常生活でどう発揮しましたか？", options:[
+          "生活リズムを整えて維持したこと","計画を立てて物事を進めたこと","小さな習慣を続けてきたこと","新しい環境にもすぐ慣れたこと","約束や期限を守り続けたこと","困難な状況でも前向きに捉えたこと","新しいことに興味を持って挑戦したこと","思い立ったらすぐ行動に移したこと"
+        ]},
+        { label:"③ なぜそう行動しようと思いましたか？（大切にしていた想い）", options:[
+          "自分の生活には自分で責任を持ちたかったから","計画通りに物事を進めたかったから","小さなことでも積み重ねを大切にしたいから","環境のせいにしたくなかったから","信頼を裏切りたくなかったから","どんな状況でも前を向いていたいから","知らないことを知る楽しさを大切にしたいから","考えるより先に行動したいタイプだから"
+        ]},
+        { label:"④ その強みを仕事でどう活かせそうですか？", options:[
+          "自己管理が求められる場面で","計画的に業務を進める場面で","地道な取り組みを続ける場面で","新しい環境に対応する場面で","信頼関係を築く場面で","困難な状況でも前向きに取り組む場面で","新しい知識を吸収する場面で","スピーディに行動する場面で"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私の強みは${a}です。日常生活の中でも、${c}という想いから、${b}という形でこの強みを発揮してきました。社会人になってからも、${d}、強みである${a}を発揮していきたいと考えています。`
+    },
+    shibo: {
+      questions: [
+        { label:"① 日々の生活を通じて、どんな分野に興味を持ちましたか？", options:[
+          "人の生活を支える仕事","暮らしを豊かにする仕事","効率や工夫が活きる仕事","人と関わる仕事","コツコツ積み上げる仕事","新しい挑戦ができる仕事","地域や社会に関わる仕事","柔軟な対応が求められる仕事"
+        ]},
+        { label:"② なぜそう思うようになりましたか？", options:[
+          "生活の中で工夫する楽しさに気づいたから","人に支えられて生活していることを実感したから","小さな積み重ねの大切さを知ったから","新しい環境に飛び込む経験をしたから","誰かの役に立てた経験があったから","計画通りに進める達成感を知ったから","地域との関わりに興味を持ったから","柔軟に対応する力がついたから"
+        ]},
+        { label:"③ 入社後、何を実現したいですか？", options:[
+          "日常で培った力を仕事に活かしたい","人の生活を支える存在になりたい","誠実に物事に取り組み続けたい","新しい環境でも力を発揮したい","誰かの役に立つ仕事をしたい","コツコツ成果を積み上げたい","地域や社会に貢献したい","柔軟に対応できる人材になりたい"
+        ]},
+        { label:"④ その想いの根っこには、どんな大切にしたいことがありますか？", options:[
+          "支えられている分、誰かを支えたい","日常を少しでも豊かにしたい","小さな積み重ねを大事にしたい","新しい環境でも前向きでいたい","役に立てることに喜びを感じたい","誠実に物事に向き合い続けたい","地域や社会との繋がりを大切にしたい","変化にしなやかに対応し続けたい"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私は日々の生活の中で、${a}に興味を持つようになりました。${b}という経験が、その原点です。これは「${d}」という想いにも繋がっています。貴社に入社後は、そうした場面で${c}と考えております。`
+    },
+  },
+  manabi: {
+    gakuchika: {
+      questions: [
+        { label:"① 何に取り組みましたか？", options:[
+          "資格取得の勉強","語学学習","専門科目の学習","卒業研究・論文","オンライン講座での学習","苦手科目の克服","プログラミング学習","勉強会・サークルでの学び"
+        ]},
+        { label:"② どんな課題がありましたか？", options:[
+          "なかなか結果が出なかったこと","モチベーションの維持が難しかったこと","学習時間の確保が難しかったこと","理解が追いつかなかったこと","一人で学習を進める孤独感があったこと","目標との距離を感じたこと","継続できずに挫折しかけたこと","効果的な学習方法が分からなかったこと"
+        ]},
+        { label:"③ どう乗り越えましたか？", options:[
+          "学習計画を細かく立て直した","小さな目標を設定して積み重ねた","隙間時間を活用する工夫をした","分からない部分を整理して質問した","仲間と一緒に学習する環境を作った","目標を分解して取り組んだ","学習方法を見直して改善した","自分に合うやり方を試行錯誤した"
+        ]},
+        { label:"④ なぜそうしようと思いましたか？（大切にしていた想い）", options:[
+          "途中で諦めたくなかったから","自分で決めた目標に責任を持ちたかったから","今の自分を変えたいと思ったから","学んだことを無駄にしたくなかったから","結果が出るまでやり切りたかったから","理解せずに済ませたくなかったから","成長を実感したかったから","自分のペースを大切にしたかったから"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私は${a}に取り組む中、${b}という課題に直面しました。${d}という想いから、${c}結果、目標を達成することができました。この経験から、地道な努力を継続する力を身につけました。仕事の中で成果がすぐに出ない場面でも、この力を活かしていきたいと考えています。`
+    },
+    jikopr: {
+      questions: [
+        { label:"① 自分の強みは何だと思いますか？", options:[
+          "継続力","計画力","探究心","集中力","目標達成力","自己分析力","粘り強さ","学習意欲"
+        ]},
+        { label:"② その強みを学習でどう発揮しましたか？", options:[
+          "長期間コツコツと学習を続けたこと","逆算して学習計画を立てたこと","疑問をそのままにせず深掘りしたこと","限られた時間で集中して取り組んだこと","目標スコア・資格を達成したこと","自分の弱点を分析して対策したこと","壁にぶつかっても諦めなかったこと","新しい知識を積極的に吸収したこと"
+        ]},
+        { label:"③ なぜそう行動しようと思いましたか？（大切にしていた想い）", options:[
+          "自分で決めた目標を達成したかったから","計画なく進めて後悔したくなかったから","分からないままにしておきたくなかったから","限られた時間を最大限活かしたかったから","努力を結果に結びつけたかったから","弱点から目を逸らしたくなかったから","ここで諦めたら後悔すると思ったから","成長し続けることに価値を感じていたから"
+        ]},
+        { label:"④ その強みを仕事でどう活かせそうですか？", options:[
+          "継続的なスキルアップの場面で","計画的に業務を進める場面で","課題の本質を探る場面で","限られた時間で成果を出す場面で","目標に向けて取り組む場面で","自分の課題を客観視する場面で","困難な状況でも粘り強く取り組む場面で","新しい知識を学び続ける場面で"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私の強みは${a}です。学習の場面では、${c}という想いから、${b}という形でこの強みを発揮してきました。社会人になってからも、${d}、強みである${a}を発揮していきたいと考えています。`
+    },
+    shibo: {
+      questions: [
+        { label:"① 学習を通じて、どんな分野に興味を持ちましたか？", options:[
+          "専門性を活かせる仕事","論理的思考が求められる仕事","継続的な学びがある仕事","語学を活かせる仕事","技術を扱う仕事","研究・分析に関わる仕事","知識を人に伝える仕事","資格を活かせる仕事"
+        ]},
+        { label:"② なぜそう思うようになりましたか？", options:[
+          "学習を通じて専門分野の面白さに気づいたから","論理的に考えることに楽しさを感じたから","学び続けることに喜びを感じるから","語学学習を通じて視野が広がったから","技術を学ぶ過程に夢中になったから","研究を通じて探究する面白さを知ったから","人に教える経験を通じて達成感を得たから","資格取得を通じて自信がついたから"
+        ]},
+        { label:"③ 入社後、何を実現したいですか？", options:[
+          "学んだ知識を実務で活かしたい","論理的に課題を解決していきたい","学び続ける姿勢を大切にしたい","語学力を活かして活躍したい","技術力を磨いていきたい","探究心を持って業務に取り組みたい","知識や経験を周囲と共有したい","専門性を高めていきたい"
+        ]},
+        { label:"④ その想いの根っこには、どんな大切にしたいことがありますか？", options:[
+          "学んだことを誰かの役に立てたい","物事の本質を見極めたい","成長し続けることに価値を感じたい","異なる文化や価値観を理解したい","専門性で信頼される人になりたい","探究心を持ち続けたい","知識を独り占めせず共有したい","資格や知識を実践に繋げたい"
+        ]},
+      ],
+      template:(a,b,c,d)=>`私は学習を通じて、${a}に興味を持つようになりました。${b}という経験が、その原点です。これは「${d}」という想いにも繋がっています。貴社に入社後は、そうした場面で${c}と考えております。`
+    },
+  },
+};
+
+/* ---- 状態 ---- */
+let currentTheme = "gakuchika";
+let selections = {}; // { "typeKey-themeKey": [選択肢1, 選択肢2, 選択肢3] }
+let savedMemos = []; // { type, theme, text }
+
+/* ---- レンダリング：テーマタブ ---- */
+function renderThemeTabs(){
+  const wrap = document.getElementById("esbThemeTabs");
+  wrap.innerHTML = THEMES.map(t=>`
+    <div class="theme-tab ${t.key===currentTheme?'active':''}" data-key="${t.key}">${t.icon} ${t.label}</div>
+  `).join("");
+  wrap.querySelectorAll(".theme-tab").forEach(el=>{
+    el.onclick = ()=>{
+      currentTheme = el.dataset.key;
+      renderThemeTabs();
+      renderAccordion();
+    };
+  });
+}
+
+/* ---- レンダリング：アコーディオン（5タイプ） ---- */
+let openType = null;
+
+function renderAccordion(){
+  const wrap = document.getElementById("esbAccordion");
+  wrap.innerHTML = TYPES.map(t=>{
+    const isOpen = openType === t.key;
+    const data = DATA[t.key][currentTheme];
+    const selKey = `${t.key}-${currentTheme}`;
+    const qCount = data.questions.length;
+    const sel = selections[selKey] || new Array(qCount).fill(null);
+
+    const questionsHtml = data.questions.map((q, qi)=>`
+      <div class="q-block">
+        <div class="q-label">${q.label}</div>
+        <select class="q-select" data-type="${t.key}" data-qi="${qi}">
+          <option value="" ${sel[qi]===null?"selected":""}>選んでください</option>
+          ${q.options.map(opt=>`<option value="${opt}" ${sel[qi]===opt?"selected":""}>${opt}</option>`).join("")}
+        </select>
+      </div>
+    `).join("");
+
+    const allSelected = sel.length === qCount && sel.every(s=>s!==null && s!==undefined);
+    const previewText = allSelected
+      ? data.template(...sel)
+      : `<span class="blank">${qCount}つすべて選ぶと、ここに文章が表示されます。</span>`;
+
+    return `
+      <div class="acc-item ${isOpen?'open':''}" data-type="${t.key}">
+        <div class="acc-head" data-toggle="${t.key}">
+          <span class="acc-icon">${t.icon}</span>
+          <span class="acc-title">${t.label}</span>
+          <span class="acc-chevron">▼</span>
+        </div>
+        <div class="acc-body">
+          <div class="acc-body-inner">
+            ${questionsHtml}
+            <div class="preview-box">
+              <div class="preview-label">✏️ こんな文章になるよ</div>
+              <div class="preview-text">${previewText}</div>
+              <div class="save-row">
+                <button class="btn-save" data-type="${t.key}" ${allSelected?"":"disabled"}>この素材をメモに保存</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  // アコーディオン開閉
+  wrap.querySelectorAll("[data-toggle]").forEach(el=>{
+    el.onclick = ()=>{
+      const key = el.dataset.toggle;
+      openType = (openType === key) ? null : key;
+      renderAccordion();
+    };
+  });
+
+  // プルダウン変更
+  wrap.querySelectorAll(".q-select").forEach(el=>{
+    el.onchange = ()=>{
+      const type = el.dataset.type;
+      const qi = parseInt(el.dataset.qi);
+      const selKey = `${type}-${currentTheme}`;
+      const qCount = DATA[type][currentTheme].questions.length;
+      if(!selections[selKey]) selections[selKey] = new Array(qCount).fill(null);
+      selections[selKey][qi] = el.value || null;
+      renderAccordion();
+    };
+  });
+
+  // 保存ボタン
+  wrap.querySelectorAll(".btn-save").forEach(el=>{
+    el.onclick = ()=>{
+      const type = el.dataset.type;
+      const selKey = `${type}-${currentTheme}`;
+      const sel = selections[selKey];
+      const data = DATA[type][currentTheme];
+      const text = data.template(...sel);
+      const typeLabel = TYPES.find(t=>t.key===type).label;
+      const themeLabel = THEMES.find(t=>t.key===currentTheme).label;
+      savedMemos.push({ type: typeLabel, theme: themeLabel, text });
+      renderMemoList();
+      el.textContent = "保存しました ✓";
+      el.classList.add("saved");
+      setTimeout(()=>{
+        el.textContent = "この素材をメモに保存";
+        el.classList.remove("saved");
+      }, 1500);
+    };
+  });
+}
+
+/* ---- レンダリング：素材メモ一覧 ---- */
+function renderMemoList(){
+  const wrap = document.getElementById("esbMemoList");
+  const downloadBtn = document.getElementById("esbDownloadAllBtn");
+  if(downloadBtn) downloadBtn.disabled = savedMemos.length === 0;
+
+  if(savedMemos.length === 0){
+    wrap.innerHTML = `<div class="memo-empty">まだメモがありません。下のアコーディオンから、気になるタイプを開いて選んでみましょう。</div>`;
+    return;
+  }
+  wrap.innerHTML = savedMemos.map((m, idx)=>`
+    <div class="memo-card">
+      <div class="memo-card-head">
+        <span class="memo-tag">${m.theme}・${m.type}</span>
+        <button class="memo-delete" data-idx="${idx}">削除</button>
+      </div>
+      <div class="memo-text">${m.text}</div>
+    </div>
+  `).join("");
+  wrap.querySelectorAll(".memo-delete").forEach(el=>{
+    el.onclick = ()=>{
+      const idx = parseInt(el.dataset.idx);
+      savedMemos.splice(idx, 1);
+      renderMemoList();
+    };
+  });
+}
+
+/* ---- 素材メモを Word（.doc）として一括ダウンロード ---- */
+function formatTodayJP_ESB(){
+  const d = new Date();
+  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+}
+
+function downloadAllMemosAsDoc(){
+  if(savedMemos.length === 0) return;
+
+  const grouped = {};
+  savedMemos.forEach(m=>{
+    if(!grouped[m.theme]) grouped[m.theme] = [];
+    grouped[m.theme].push(m);
+  });
+
+  const themeOrder = ["ガクチカ", "自己PR", "志望動機"];
+  let bodyHtml = "";
+  themeOrder.forEach(themeName=>{
+    const items = grouped[themeName];
+    if(!items || items.length === 0) return;
+    bodyHtml += `<h2 style="font-size:16pt;color:#2d6b4a;border-bottom:2px solid #2d6b4a;padding-bottom:4px;margin-top:28px;">${themeName}</h2>`;
+    items.forEach((m)=>{
+      bodyHtml += `
+        <div style="margin-top:14px;margin-bottom:14px;">
+          <p style="font-size:10.5pt;color:#c79a3a;font-weight:bold;margin-bottom:4px;">【${m.type}】</p>
+          <p style="font-size:11.5pt;line-height:1.9;color:#1f2d26;margin:0;">${m.text}</p>
+        </div>
+      `;
+    });
+  });
+
+  const docHtml = `
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<title>ES素材メモ</title>
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+</w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+  body{ font-family:"游ゴシック","Yu Gothic","Hiragino Sans",sans-serif; }
+</style>
+</head>
+<body>
+  <div style="text-align:center;border-bottom:3px solid #2d6b4a;padding-bottom:14px;margin-bottom:20px;">
+    <p style="font-size:11pt;color:#2d6b4a;font-weight:bold;margin:0;">🌱 就活の木｜ES素材メモ</p>
+    <p style="font-size:18pt;font-weight:bold;color:#1f2d26;margin:8px 0 0;">エントリー版で集めた素材一覧</p>
+    <p style="font-size:9.5pt;color:#8b988f;margin:6px 0 0;">作成日：${formatTodayJP_ESB()}</p>
+  </div>
+  ${bodyHtml}
+  <div style="margin-top:32px;padding-top:14px;border-top:1px solid #e2e8e4;">
+    <p style="font-size:9.5pt;color:#8b988f;">※ これはES入門ガイド（エントリー版）で作成した「素材」です。本格版でさらに磨き込んでいきましょう。</p>
+  </div>
+</body>
+</html>
+  `;
+
+  const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ES素材メモ_${formatTodayJP_ESB()}.doc`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* ---- 初期化 ---- */
+window.__esbInit = function(){
+  if(window.__esbInitialized) return;
+  window.__esbInitialized = true;
+  renderThemeTabs();
+  renderAccordion();
+  renderMemoList();
+  const downloadBtn = document.getElementById("esbDownloadAllBtn");
+  if(downloadBtn) downloadBtn.addEventListener("click", downloadAllMemosAsDoc);
+};
+
+})();
+</script>
+</body>
+</html>
