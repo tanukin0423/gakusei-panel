@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+
+  <!-- 背景 -->
+  <rect width="192" height="192" rx="42" ry="42" fill="#1a3d28"/>
+  <rect width="192" height="192" rx="42" ry="42" fill="#2d6b4a" opacity="0.7"/>
+
+  <!-- 白カード -->
+  <rect x="11" y="34" width="170" height="148" rx="11" fill="#ffffff"/>
+
+  <!-- タブバー -->
+  <rect x="11" y="34" width="170" height="24" rx="11" fill="#2d6b4a"/>
+  <rect x="11" y="44"  width="170" height="14" fill="#2d6b4a"/>
+  <line x1="96" y1="35" x2="96" y2="58" stroke="#6de0b0" stroke-width="0.8" opacity="0.4"/>
+  <rect x="12" y="35" width="83" height="22" rx="9" fill="#ffffff" opacity="0.15"/>
+  <text x="53" y="50" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="8.5" font-weight="700" fill="#ffffff">ツール一覧</text>
+  <text x="138" y="50" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="8" font-weight="400" fill="#6de0b0" opacity="0.85">今日の相談</text>
+
+  <!-- Row1: 予約 / カルテv5 / 管理 -->
+  <rect x="16" y="62" width="52" height="36" rx="6" fill="#e8f5e9"/>
+  <rect x="16" y="62" width="52" height="36" rx="6" fill="none" stroke="#5aaa7a" stroke-width="1.2"/>
+  <rect x="20" y="66" width="18" height="18" rx="4" fill="#c8e6c9"/>
+  <text x="29" y="78" text-anchor="middle" font-size="12" font-family="serif" fill="#2d6b4a">📅</text>
+  <text x="42" y="73" font-family="'Noto Sans JP',sans-serif" font-size="7" font-weight="700" fill="#1a3d28">予約</text>
+  <text x="42" y="83" font-family="'Noto Sans JP',sans-serif" font-size="6" fill="#4a7a55">フォーム</text>
+
+  <rect x="72" y="62" width="52" height="36" rx="6" fill="#e0f5ee"/>
+  <rect x="72" y="62" width="52" height="36" rx="6" fill="none" stroke="#3ab890" stroke-width="1.2"/>
+  <rect x="76" y="66" width="18" height="18" rx="4" fill="#b2e8d8"/>
+  <text x="85" y="78" text-anchor="middle" font-size="12" font-family="serif" fill="#0f6e56">☁️</text>
+  <text x="98" y="73" font-family="'Noto Sans JP',sans-serif" font-size="7" font-weight="700" fill="#0d4a38">カルテ</text>
+  <text x="98" y="83" font-family="'Noto Sans JP',sans-serif" font-size="6" fill="#2a7a60">v5</text>
+
+  <rect x="128" y="62" width="52" height="36" rx="6" fill="#fee8e2"/>
+  <rect x="128" y="62" width="52" height="36" rx="6" fill="none" stroke="#e0806a" stroke-width="1.2"/>
+  <rect x="132" y="66" width="18" height="18" rx="4" fill="#fcc8b8"/>
+  <text x="141" y="78" text-anchor="middle" font-size="12" font-family="serif" fill="#993c1d">🔧</text>
+  <text x="154" y="73" font-family="'Noto Sans JP',sans-serif" font-size="7" font-weight="700" fill="#6a2810">管理</text>
+  <text x="154" y="83" font-family="'Noto Sans JP',sans-serif" font-size="6" fill="#9a5040">画面</text>
+
+  <!-- Row2: ES / 職業 / 筆記 -->
+  <rect x="16" y="102" width="52" height="36" rx="6" fill="#eff6ff"/>
+  <rect x="16" y="102" width="52" height="36" rx="6" fill="none" stroke="#6090d8" stroke-width="1.2"/>
+  <rect x="20" y="106" width="18" height="18" rx="4" fill="#bfdbfe"/>
+  <text x="29" y="118" text-anchor="middle" font-size="12" font-family="serif" fill="#1d4ed8">✏️</text>
+  <text x="42" y="113" font-family="'Noto Sans JP',sans-serif" font-size="7" font-weight="700" fill="#0f2a80">ES</text>
+  <text x="42" y="123" font-family="'Noto Sans JP',sans-serif" font-size="6" fill="#4060a0">添削</text>
+
+  <rect x="72" y="102" width="52" height="36" rx="6" fill="#e8f5e9"/>
+  <rect x="72" y="102" width="52" height="36" rx="6" fill="none" stroke="#5aaa7a" stroke-width="1.2"/>
+  <rect x="76" y="106" width="18" height="18" rx="4" fill="#c8e6c9"/>
+  <text x="85" y="118" text-anchor="middle" font-size="12" font-family="serif" fill="#2d6b4a">🌳</text>
+  <text x="98" y="113" font-family="'Noto Sans JP',sans-serif" font-size="7" font-weight="700" fill="#1a3d28">職業</text>
+  <text x="98" y="123" font-family="'Noto Sans JP',sans-serif" font-size="6" fill="#4a7a55">マトリクス</text>
+
+  <rect x="128" y="102" width="52" height="36" rx="6" fill="#fef3c7"/>
+  <rect x="128" y="102" width="52" height="36" rx="6" fill="none" stroke="#d4a843" stroke-width="1.2"/>
+  <rect x="132" y="106" width="18" height="18" rx="4" fill="#fde68a"/>
+  <text x="141" y="118" text-anchor="middle" font-size="12" font-family="serif" fill="#b45309">📝</text>
+  <text x="154" y="113" font-family="'Noto Sans JP',sans-serif" font-size="7" font-weight="700" fill="#7a3800">筆記</text>
+  <text x="154" y="123" font-family="'Noto Sans JP',sans-serif" font-size="6" fill="#9a6020">対策</text>
+
+  <!-- Row3: 自己分析 / 業界研究 / 一覧表示 -->
+  <rect x="16" y="142" width="52" height="27" rx="6" fill="#fef3c7"/>
+  <rect x="16" y="142" width="52" height="27" rx="6" fill="none" stroke="#d4a843" stroke-width="1.2"/>
+  <text x="24" y="158" font-size="11" font-family="serif" fill="#b45309">🧠</text>
+  <text x="38" y="155" font-family="'Noto Sans JP',sans-serif" font-size="6.5" font-weight="700" fill="#7a3800">自己分析</text>
+
+  <rect x="72" y="142" width="52" height="27" rx="6" fill="#e0f5ee"/>
+  <rect x="72" y="142" width="52" height="27" rx="6" fill="none" stroke="#3ab890" stroke-width="1.2"/>
+  <text x="80" y="158" font-size="11" font-family="serif" fill="#0f6e56">🏭</text>
+  <text x="94" y="155" font-family="'Noto Sans JP',sans-serif" font-size="6.5" font-weight="700" fill="#0d4a38">業界研究</text>
+
+  <rect x="128" y="142" width="52" height="27" rx="6" fill="#ede9fe"/>
+  <rect x="128" y="142" width="52" height="27" rx="6" fill="none" stroke="#9f7ae0" stroke-width="1.2"/>
+  <text x="136" y="158" font-size="11" font-family="serif" fill="#7c3aed">📋</text>
+  <text x="150" y="155" font-family="'Noto Sans JP',sans-serif" font-size="6.5" font-weight="700" fill="#4a1090">一覧表示</text>
+
+  <!-- 🌳ロゴ（タブ上部） -->
+  <circle cx="96" cy="19" r="13" fill="#d4a843" opacity="0.22"/>
+  <circle cx="96" cy="19" r="9"  fill="#d4a843" opacity="0.18"/>
+  <rect x="93" y="21" width="6" height="8" rx="1.5" fill="#d4a843"/>
+  <polygon points="96,4 104,18 88,18" fill="#6de0b0"/>
+  <polygon points="96,8 102,19 90,19" fill="#4da070" opacity="0.6"/>
+  <polygon points="96,2 106,20 86,20" fill="#3d8a5f" opacity="0.4"/>
+
+  <!-- フッター -->
+  <rect x="11" y="172" width="170" height="10" rx="0" fill="#f0faf4"/>
+  <rect x="11" y="176" width="170" height="6"  rx="0" fill="#2d6b4a" opacity="0.12"/>
+  <text x="96" y="180" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="6" font-weight="700" fill="#2d6b4a" letter-spacing="0.5">就活の木　管理ランチャー</text>
+
+  <!-- 外枠 -->
+  <rect width="192" height="192" rx="42" ry="42" fill="none" stroke="#5aaa7a" stroke-width="2" opacity="0.35"/>
+
+  <!-- ゴールドコーナードット -->
+  <circle cx="20"  cy="20"  r="4" fill="#d4a843" opacity="0.7"/>
+  <circle cx="172" cy="20"  r="4" fill="#d4a843" opacity="0.7"/>
+  <circle cx="20"  cy="172" r="3" fill="#d4a843" opacity="0.45"/>
+  <circle cx="172" cy="172" r="3" fill="#d4a843" opacity="0.45"/>
+
+</svg>

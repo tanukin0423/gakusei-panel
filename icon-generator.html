@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>就活の木 ランチャーアイコン生成</title>
+<style>
+body{font-family:'Noto Sans JP',sans-serif;background:#f0fdf0;padding:30px;text-align:center;margin:0;}
+h2{color:#2d6b4a;margin-bottom:6px;font-size:18px;}
+p{color:#555;font-size:13px;margin:6px 0;}
+.wrap{display:flex;justify-content:center;align-items:flex-end;gap:32px;margin:20px 0;flex-wrap:wrap;}
+.item{text-align:center;}
+.lbl{font-size:12px;color:#5a8a6a;font-weight:700;margin-top:8px;}
+canvas{display:block;margin:0 auto;}
+.btn{display:inline-block;margin:8px 4px;padding:11px 20px;background:#2d6b4a;color:#fff;
+     border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;
+     text-decoration:none;font-family:'Noto Sans JP',sans-serif;}
+.btn:hover{background:#4da070;}
+.note{background:#e8f5e9;border:1px solid #5aaa7a;border-radius:10px;
+      padding:12px 18px;max-width:480px;margin:16px auto;text-align:left;
+      font-size:12px;color:#1a3d28;line-height:1.8;}
+code{background:#c8e6c9;padding:1px 5px;border-radius:4px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h2>🌳 就活の木 管理ランチャー｜アイコン生成ツール</h2>
+<p>ランチャーのUI（タブバー＋グリッドボタン）を凝縮したデザインです。</p>
+
+<div class="wrap">
+  <div class="item">
+    <canvas id="c512" width="512" height="512"></canvas>
+    <div class="lbl">512 × 512 px</div>
+    <a id="dl512" class="btn">💾 icon-512 ダウンロード</a>
+  </div>
+  <div class="item">
+    <canvas id="c192" width="192" height="192"></canvas>
+    <div class="lbl">192 × 192 px</div>
+    <a id="dl192" class="btn">💾 icon-192 ダウンロード</a>
+  </div>
+  <div class="item">
+    <canvas id="c96" width="96" height="96"></canvas>
+    <div class="lbl">96px（参考）</div>
+  </div>
+</div>
+
+<div class="note">
+  <strong>📁 配置場所：</strong><code>shukatsu-no-ki-system/</code> フォルダ<br>
+  <strong>ファイル名：</strong><code>icon-192-counselor.png</code>・<code>icon-512-counselor.png</code><br>
+  <strong>launcher-X.html：</strong>変更不要（既に参照先が設定済み）
+</div>
+
+<script>
+function draw(canvas, S) {
+  const ctx = canvas.getContext('2d');
+  const p = v => v * S / 192;
+
+  function rrect(x,y,w,h,r,fill,stroke,sw){
+    ctx.beginPath();
+    ctx.moveTo(p(x+r),p(y));
+    ctx.lineTo(p(x+w-r),p(y)); ctx.quadraticCurveTo(p(x+w),p(y),p(x+w),p(y+r));
+    ctx.lineTo(p(x+w),p(y+h-r)); ctx.quadraticCurveTo(p(x+w),p(y+h),p(x+w-r),p(y+h));
+    ctx.lineTo(p(x+r),p(y+h)); ctx.quadraticCurveTo(p(x),p(y+h),p(x),p(y+h-r));
+    ctx.lineTo(p(x),p(y+r)); ctx.quadraticCurveTo(p(x),p(y),p(x+r),p(y));
+    ctx.closePath();
+    if(fill){ctx.fillStyle=fill;ctx.fill();}
+    if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=p(sw||1);ctx.stroke();}
+  }
+
+  function txt(str,x,y,size,weight,color,anchor){
+    ctx.font=`${weight||400} ${p(size)}px 'Noto Sans JP',sans-serif`;
+    ctx.fillStyle=color;
+    ctx.textAlign=anchor||'left';
+    ctx.fillText(str,p(x),p(y));
+  }
+
+  function emoji(str,x,y,size){
+    ctx.font=`${p(size)}px serif`;
+    ctx.textAlign='center';
+    ctx.fillStyle='#000';
+    ctx.fillText(str,p(x),p(y));
+  }
+
+  // 背景
+  rrect(0,0,192,192,42,'#1a3d28');
+  ctx.globalAlpha=0.7; rrect(0,0,192,192,42,'#2d6b4a'); ctx.globalAlpha=1;
+
+  // 白カード
+  rrect(11,34,170,148,11,'#ffffff');
+
+  // タブバー（上角丸のみ）
+  ctx.beginPath();
+  ctx.moveTo(p(11+11),p(34));
+  ctx.lineTo(p(181-11),p(34)); ctx.quadraticCurveTo(p(181),p(34),p(181),p(34+11));
+  ctx.lineTo(p(181),p(58)); ctx.lineTo(p(11),p(58));
+  ctx.lineTo(p(11),p(34+11)); ctx.quadraticCurveTo(p(11),p(34),p(11+11),p(34));
+  ctx.closePath(); ctx.fillStyle='#2d6b4a'; ctx.fill();
+
+  // タブ区切り
+  ctx.beginPath(); ctx.moveTo(p(96),p(35)); ctx.lineTo(p(96),p(58));
+  ctx.strokeStyle='rgba(109,224,176,0.4)'; ctx.lineWidth=p(0.8); ctx.stroke();
+
+  // アクティブタブ背景
+  ctx.globalAlpha=0.15; rrect(12,35,83,22,9,'#ffffff'); ctx.globalAlpha=1;
+
+  // タブ文字
+  txt('ツール一覧',53,50,8.5,700,'#ffffff','center');
+  ctx.globalAlpha=0.85;
+  txt('今日の相談',138,50,8,400,'#6de0b0','center');
+  ctx.globalAlpha=1;
+
+  // ── グリッドボタン描画関数 ──
+  function btn(x,y,w,h,bg,bd,icon,name,sub){
+    rrect(x,y,w,h,6,bg,bd,1.2);
+    // アイコン背景（bg少し暗め）
+    rrect(x+4,y+4,18,18,4,bd+'33');
+    emoji(icon,x+13,y+15.5,12);
+    txt(name,x+25,y+12,7,700,'#1a3028');
+    if(sub) txt(sub,x+25,y+22,6,400,'#4a7060');
+  }
+
+  // Row1
+  btn(16,62,52,36,'#e8f5e9','#5aaa7a','📅','予約','フォーム');
+  btn(72,62,52,36,'#e0f5ee','#3ab890','☁️','カルテ','v5');
+  btn(128,62,52,36,'#fee8e2','#e0806a','🔧','管理','画面');
+  // Row2
+  btn(16,102,52,36,'#eff6ff','#6090d8','✏️','ES','添削');
+  btn(72,102,52,36,'#e8f5e9','#5aaa7a','🌳','職業','マトリクス');
+  btn(128,102,52,36,'#fef3c7','#d4a843','📝','筆記','対策');
+  // Row3（slim h=27）
+  function btnS(x,y,bg,bd,icon,name){
+    rrect(x,y,52,27,6,bg,bd,1.2);
+    emoji(icon,x+11,y+17,11);
+    txt(name,x+24,y+16,6.5,700,'#1a3028');
+  }
+  btnS(16,142,'#fef3c7','#d4a843','🧠','自己分析');
+  btnS(72,142,'#e0f5ee','#3ab890','🏭','業界研究');
+  btnS(128,142,'#ede9fe','#9f7ae0','📋','一覧表示');
+
+  // 🌳ロゴ（タブ上）
+  ctx.beginPath(); ctx.arc(p(96),p(19),p(13),0,Math.PI*2);
+  ctx.fillStyle='rgba(212,168,67,0.22)'; ctx.fill();
+  ctx.beginPath(); ctx.arc(p(96),p(19),p(9),0,Math.PI*2);
+  ctx.fillStyle='rgba(212,168,67,0.18)'; ctx.fill();
+  // 幹
+  rrect(93,21,6,8,1.5,'#d4a843');
+  // 葉（三角形3層）
+  function tri(pts,fill,alpha){
+    ctx.beginPath();
+    ctx.moveTo(p(pts[0]),p(pts[1]));
+    ctx.lineTo(p(pts[2]),p(pts[3]));
+    ctx.lineTo(p(pts[4]),p(pts[5]));
+    ctx.closePath();
+    ctx.globalAlpha=alpha||1;
+    ctx.fillStyle=fill; ctx.fill();
+    ctx.globalAlpha=1;
+  }
+  tri([96,4,104,18,88,18],'#6de0b0');
+  tri([96,8,102,19,90,19],'#4da070',0.6);
+  tri([96,2,106,20,86,20],'#3d8a5f',0.4);
+
+  // フッター
+  rrect(11,172,170,10,0,'#f0faf4');
+  ctx.fillStyle='rgba(45,107,74,0.12)';
+  ctx.fillRect(p(11),p(176),p(170),p(6));
+  txt('就活の木　管理ランチャー',96,180,6,700,'#2d6b4a','center');
+
+  // 外枠
+  ctx.globalAlpha=0.35;
+  rrect(0,0,192,192,42,null,'#5aaa7a',2);
+  ctx.globalAlpha=1;
+
+  // ゴールドドット
+  [[20,20,4,0.7],[172,20,4,0.7],[20,172,3,0.45],[172,172,3,0.45]].forEach(([cx,cy,r,a])=>{
+    ctx.beginPath(); ctx.arc(p(cx),p(cy),p(r),0,Math.PI*2);
+    ctx.globalAlpha=a; ctx.fillStyle='#d4a843'; ctx.fill(); ctx.globalAlpha=1;
+  });
+}
+
+window.addEventListener('load',()=>{
+  [512,192,96].forEach(s=>{
+    const c=document.getElementById('c'+s);
+    if(c) draw(c,s);
+  });
+  ['192','512'].forEach(s=>{
+    const c=document.getElementById('c'+s);
+    const dl=document.getElementById('dl'+s);
+    dl.href=c.toDataURL('image/png');
+    dl.download=`icon-${s}-counselor.png`;
+  });
+});
+</script>
+</body>
+</html>
