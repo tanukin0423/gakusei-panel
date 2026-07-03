@@ -143,6 +143,50 @@ body{
 }
 .page1-footer span{color:var(--gd);font-weight:700;}
 
+/* ── PWAインストールバナー ── */
+#pwa-install-bar{
+  display:none;
+  align-items:center;justify-content:space-between;gap:10px;
+  background:linear-gradient(135deg,#1a3d28,#2d6b4a);
+  color:white;padding:10px 16px;
+  border-bottom:2px solid #6de0b0;
+}
+#pwa-install-bar .pwa-msg{
+  font-size:0.78rem;font-weight:700;line-height:1.4;
+  flex:1;
+}
+#pwa-install-bar .pwa-msg small{
+  display:block;font-size:0.65rem;font-weight:400;opacity:0.8;margin-top:2px;
+}
+#pwa-install-btn{
+  background:#d4a843;color:#1a3d28;border:none;border-radius:8px;
+  padding:8px 14px;font-size:0.78rem;font-weight:900;
+  font-family:'Noto Sans JP',sans-serif;cursor:pointer;white-space:nowrap;
+  flex-shrink:0;
+}
+#pwa-install-btn:hover{background:#e8c060;}
+#pwa-dismiss-btn{
+  background:none;border:none;color:rgba(255,255,255,0.6);
+  font-size:1rem;cursor:pointer;padding:4px;flex-shrink:0;
+}
+
+/* iOS用インストールガイド */
+#ios-guide{
+  display:none;
+  background:#1a3d28;color:white;
+  padding:12px 16px;font-size:0.75rem;line-height:1.7;
+  border-bottom:2px solid #6de0b0;
+  text-align:center;
+}
+#ios-guide strong{color:#d4a843;}
+#ios-guide-close{
+  display:inline-block;margin-top:6px;
+  background:rgba(255,255,255,0.15);border:none;
+  color:white;border-radius:6px;padding:4px 12px;
+  font-size:0.72rem;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;
+}
+
 /* ── お役立ちシリーズ専用 ── */
 .badge-new{
   position:absolute;top:6px;right:7px;
@@ -383,6 +427,24 @@ body{
   </div>
 </div>
 
+<!-- PWAインストールバナー（Android Chrome用） -->
+<div id="pwa-install-bar">
+  <div class="pwa-msg">
+    📲 ホーム画面に追加できます
+    <small>アプリとして使うと快適です</small>
+  </div>
+  <button id="pwa-install-btn">インストール</button>
+  <button id="pwa-dismiss-btn" title="閉じる">✕</button>
+</div>
+
+<!-- iOS Safari用ガイド -->
+<div id="ios-guide">
+  📱 iPhoneでホーム画面に追加する方法<br>
+  Safari下部の <strong>共有ボタン（□↑）</strong> をタップ →<br>
+  「<strong>ホーム画面に追加</strong>」を選択してください
+  <br><button id="ios-guide-close">閉じる</button>
+</div>
+
 <div class="card-wrap">
   <!-- ロゴ -->
   <div class="logo">
@@ -495,6 +557,11 @@ body{
         <div class="btn-icon">💼</div>
         <div class="btn-body"><div class="btn-name">職種研究</div><div class="btn-desc">20職種・仕事内容を知る</div></div>
       </button>
+      <button class="btn teal" onclick="showQrCard('https://tanukin0423.github.io/shukatsu-no-ki-system/it-shokushu.html','IT職種マップ','💻','IT業界の職種を体系整理')">
+        <span class="badge-new">NEW</span>
+        <div class="btn-icon">💻</div>
+        <div class="btn-body"><div class="btn-name">IT職種マップ</div><div class="btn-desc">IT業界の職種を体系整理</div></div>
+      </button>
       <button class="btn amber" onclick="showQrCard('https://tanukin0423.github.io/semi-setsumeishiryou-2026/','ガントチャート','📊','28卒 就活タイムライン')">
         
         <div class="btn-icon">📊</div>
@@ -515,6 +582,11 @@ body{
         <div class="btn-icon">✏️</div>
         <div class="btn-body"><div class="btn-name">筆記対策ドリル 旧版</div><div class="btn-desc">固定問題＋AI出題｜無料</div></div>
       </button>
+      <button class="btn purple" onclick="showQrCard('https://tanukin0423.github.io/seikaku-test/','性格診断テスト','🎭','就活に活かす性格タイプ診断')">
+        <span class="badge-new">NEW</span>
+        <div class="btn-icon">🎭</div>
+        <div class="btn-body"><div class="btn-name">性格診断テスト</div><div class="btn-desc">就活に活かす性格タイプ診断</div></div>
+      </button>
     </div>
 
     <div class="section-label">🌱 企業研究・インターン・ES対策 <span style="font-size:0.6rem;font-weight:700;color:var(--amber);background:var(--amber-pale);border:1px solid var(--amber);border-radius:4px;padding:1px 5px;margin-left:4px;letter-spacing:0.04em;">NEW</span></div>
@@ -523,6 +595,11 @@ body{
         <span class="badge-new">NEW</span>
         <div class="btn-icon">🌱</div>
         <div class="btn-body"><div class="btn-name">企業研究＆ES対策プロンプトGEN</div><div class="btn-desc">インターン・本選考・説明会・OB訪問対応</div></div>
+      </button>
+      <button class="btn amber" onclick="showQrCard('https://tanukin0423.github.io/intern-es-generator/es-prompt-hub.html','できることMAP','🗺️','使い方をパネルで一覧・学生への配布にも')">
+        <span class="badge-new">NEW</span>
+        <div class="btn-icon">🗺️</div>
+        <div class="btn-body"><div class="btn-name">できることMAP</div><div class="btn-desc">使い方をパネルで一覧・学生への配布にも</div></div>
       </button>
     </div>
 
@@ -542,6 +619,11 @@ body{
         
         <div class="btn-icon">⚖️</div>
         <div class="btn-body"><div class="btn-name">ES添削 比較版</div><div class="btn-desc">Claude＆Gemini 同時比較</div></div>
+      </button>
+      <button class="btn green" onclick="showQrCard('https://tanukin0423.github.io/shukatsu-no-ki-system/es-tensaku-prompt.html','ES添削プロンプト作成','🌱','API不要｜ChatGPT・Claude・Gemini対応')">
+        
+        <div class="btn-icon">🌱</div>
+        <div class="btn-body"><div class="btn-name">ES添削プロンプト作成</div><div class="btn-desc">API不要｜どのAIでも使える</div></div>
       </button>
     </div>
 
@@ -819,6 +901,7 @@ const flows = {
       { id:'tool_tensaku_gemini', icon:'✨', color:'ch-teal',   name:'ES添削 Gemini版',  desc:'無料・配布用' },
       { id:'tool_tensaku_claude', icon:'🤖', color:'ch-coral',  name:'ES添削 キャリ爺版', desc:'対話形式で一緒に作成' },
       { id:'tool_tensaku_hikaku', icon:'⚖️', color:'ch-purple', name:'ES添削 比較版',    desc:'Claude＆Gemini 同時比較' },
+      { id:'tool_tensaku_prompt', icon:'🌱', color:'ch-green',  name:'ES添削プロンプト作成', desc:'API不要｜どのAIでも使える' },
     ]
   },
 
@@ -878,8 +961,9 @@ const flows = {
       doshi:'「答えは、君の中にある。強みは与えられるものではなく、日常の中から掘り起こすものです。」'
     },
     choices: [
-      { id:'tool_meta',   icon:'🧠', color:'ch-green',  name:'メタアセスメント',    desc:'強み診断・VPI・MBTI' },
-      { id:'tool_matrix', icon:'🔲', color:'ch-purple', name:'16分割マトリクス診断', desc:'2軸×16セルで適職発見' },
+      { id:'tool_meta',     icon:'🧠', color:'ch-green',  name:'メタアセスメント',    desc:'強み診断・VPI・MBTI' },
+      { id:'tool_seikaku',  icon:'🎭', color:'ch-purple', name:'性格診断テスト',       desc:'就活に活かす性格タイプ診断' },
+      { id:'tool_matrix',   icon:'🔲', color:'ch-purple', name:'16分割マトリクス診断', desc:'2軸×16セルで適職発見' },
     ]
   },
 
@@ -1268,6 +1352,7 @@ const flows = {
   tool_tensaku_gemini: { isToolLink: true, url:'https://tanukin0423.github.io/es-tensaku-all/', name:'ES添削 Gemini版', icon:'✨', desc:'Gemini APIを使ったES添削ツール。無料で使えるので学生に配布可能。' },
   tool_tensaku_claude: { isToolLink: true, url:'https://tanukin0423.github.io/es-bunseki/', name:'ES添削 キャリ爺版', icon:'🤖', desc:'キャリ爺監修のES添削ツール。学生と対話形式で一緒にESを作成。' },
   tool_tensaku_hikaku: { isToolLink: true, url:'https://tanukin0423.github.io/es-tensaku/', name:'ES添削 比較版', icon:'⚖️', desc:'Claude＆Geminiを同時比較できる添削ツール。2つのAIの視点を活用。' },
+  tool_tensaku_prompt: { isToolLink: true, url:'https://tanukin0423.github.io/shukatsu-no-ki-system/es-tensaku-prompt.html', name:'ES添削プロンプト作成', icon:'🌱', desc:'APIキー不要。ChatGPT・Claude・Geminiなど、どのAIでも使える添削プロンプトを自動生成。単項目・複数項目一括に対応。' },
   tool_mentai15:   { isToolLink: true, url:'https://tanukin0423.github.io/mentai15days/', name:'15日間の面接練習サイト', icon:'📅', desc:'1日1問・15日間で面接の頻出質問を完全攻略。毎日声に出して練習しよう。' },
   tool_mentai_pdf: { isToolLink: true, url:'https://tanukin0423.github.io/claude-2603/mentai15sheet.pdf', name:'面接質問15選攻略ノート（PDF）', icon:'⬇️', desc:'面接頻出15問の攻略ノート。印刷して手元に置いて使おう。' },
   tool_webtest_guide: { isToolLink: true, url:'https://tanukin0423.github.io/shukatsu-6-test/webtest-guide.html', name:'Webテスト見分け方ガイド', icon:'🔍', desc:'URLでテスト種別を即判定。業界別傾向・受検前チェックリスト付き。' },
@@ -1282,6 +1367,9 @@ const flows = {
 
   // ★新ツール：企業研究＆ES対策プロンプトジェネレーター
   tool_intern_es_gen: { isToolLink: true, url:'https://tanukin0423.github.io/intern-es-generator/', name:'企業研究＆ES対策プロンプトジェネレーター', icon:'🌱', desc:'インターン事前準備・本選考ES・説明会・OB訪問　すべてに対応。企業名とコース名を入力→AIへのプロンプトを自動生成→Claude.aiへ貼付けするだけ！6段論法・文例テンプレ付き。3年生・4年生どちらも使える万能ツール。' },
+
+  // ★新ツール：性格診断テスト
+  tool_seikaku: { isToolLink: true, url:'https://tanukin0423.github.io/seikaku-test/', name:'性格診断テスト', icon:'🎭', desc:'就活に活かす性格タイプ診断。自分の性格特性を知ることで、自己PR・志望動機・面接対策に活用できます。' },
 };
 
 // ========================
@@ -1494,6 +1582,61 @@ function printToolCard(icon, name, desc, url) {
 // 初期表示
 render('start');
 
+</script>
+
+<!-- PWA インストールプロンプト制御 -->
+<script>
+(function(){
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isInStandalone = window.navigator.standalone === true;
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  // iOS Safari：スタンドアロンでなければガイドを表示
+  if (isIOS && isSafari && !isInStandalone) {
+    // 一度閉じたら24時間は出さない
+    const lastDismiss = localStorage.getItem('ios-guide-dismissed');
+    if (!lastDismiss || Date.now() - parseInt(lastDismiss) > 86400000) {
+      document.getElementById('ios-guide').style.display = 'block';
+    }
+    document.getElementById('ios-guide-close').addEventListener('click', function(){
+      document.getElementById('ios-guide').style.display = 'none';
+      localStorage.setItem('ios-guide-dismissed', Date.now());
+    });
+    return;
+  }
+
+  // Android Chrome：beforeinstallprompt をキャッチ
+  let deferredPrompt = null;
+  const bar = document.getElementById('pwa-install-bar');
+  const installBtn = document.getElementById('pwa-install-btn');
+  const dismissBtn = document.getElementById('pwa-dismiss-btn');
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+    bar.style.display = 'flex';
+  });
+
+  installBtn.addEventListener('click', async function(){
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('[PWA] インストール結果:', outcome);
+    deferredPrompt = null;
+    bar.style.display = 'none';
+  });
+
+  dismissBtn.addEventListener('click', function(){
+    bar.style.display = 'none';
+    deferredPrompt = null;
+  });
+
+  // インストール完了後
+  window.addEventListener('appinstalled', function(){
+    bar.style.display = 'none';
+    console.log('[PWA] インストール完了');
+  });
+})();
 </script>
 
 <!-- PWA Service Worker 登録 -->
