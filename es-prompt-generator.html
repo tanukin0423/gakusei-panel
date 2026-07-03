@@ -291,6 +291,34 @@ footer span{color:var(--gold);}
 .nav-row{display:flex;gap:8px;margin-top:4px;}
 .btn-nav{flex:1;padding:10px;font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;border:2px solid var(--blue-br);border-radius:9px;background:#fff;color:var(--blue-deep);cursor:pointer;transition:all .2s;}
 .btn-nav:hover{background:var(--blue-deep);color:#fff;border-color:var(--blue-deep);}
+
+/* 冒頭：全体の使い方ガイド */
+.top-guide{max-width:700px;margin:14px auto 0;padding:0 13px;}
+.top-guide-inner{background:linear-gradient(135deg,#eef8f1,#e8f0fb);border:1.5px solid var(--card-br);border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(45,107,74,.10);}
+.top-guide-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;gap:10px;}
+.top-guide-title{font-size:13px;font-weight:900;color:var(--deep);display:flex;align-items:center;gap:6px;line-height:1.5;}
+.top-guide-sub{display:block;font-size:10px;font-weight:400;color:#7aaa8a;margin-top:2px;}
+.top-guide-toggle-icon{font-size:13px;color:var(--deep);transition:transform .3s;flex-shrink:0;}
+.top-guide-toggle-icon.closed{transform:rotate(180deg);}
+.top-guide-body{padding:0 16px 16px;}
+.top-guide-body.closed{display:none;}
+.top-guide-lead{font-size:11.5px;line-height:1.8;color:var(--gray);margin-bottom:14px;padding:10px 12px;background:#fff;border-radius:9px;border:1px dashed var(--gold);}
+.top-guide-lead a{color:var(--gold);font-weight:700;text-decoration:none;}
+.top-guide-lead a:hover{text-decoration:underline;}
+.top-guide-flow{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
+.flow-step{background:#fff;border-radius:11px;padding:12px 14px;}
+.flow-step.green{border:1.5px solid var(--card-br);}
+.flow-step.blue{border:1.5px solid var(--blue-br);}
+.flow-step-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px;font-weight:900;}
+.flow-step.green .flow-step-head{color:var(--deep);}
+.flow-step.blue .flow-step-head{color:var(--blue-deep);}
+.flow-step-icon{font-size:19px;line-height:1;}
+.flow-step-desc{font-size:11px;color:var(--gray);line-height:1.7;padding-left:27px;}
+.flow-step-desc b{color:var(--gold);}
+.flow-arrow-down{text-align:center;font-size:15px;color:var(--gold);line-height:1;}
+.top-guide-tips{display:flex;flex-direction:column;gap:7px;}
+.top-guide-tip{font-size:11px;line-height:1.7;color:var(--gray);background:#fff;border-radius:8px;padding:8px 11px;border-left:3px solid var(--gold);}
+.top-guide-tip strong{color:var(--deep);}
 </style>
 </head>
 <body>
@@ -300,6 +328,49 @@ footer span{color:var(--gold);}
   <h1>企業研究 ＆ <span>ES対策</span>　プロンプトジェネレーター</h1>
   <p>インターン・本選考・説明会・OB訪問　すべてに対応</p>
 </header>
+
+<!-- 冒頭：全体の使い方ガイド -->
+<div class="top-guide">
+  <div class="top-guide-inner">
+    <div class="top-guide-header" onclick="toggleTopGuide()">
+      <div class="top-guide-title">📖 はじめての方はこちら
+        <span class="top-guide-sub">タップして開く・閉じる｜このツール全体の使い方</span>
+      </div>
+      <div class="top-guide-toggle-icon" id="topGuideIcon">▲</div>
+    </div>
+    <div class="top-guide-body" id="topGuideBody">
+      <div class="top-guide-lead">🌳 会員登録・APIキーは<b>不要</b>です。下のフォームに入力してプロンプトを作り、それを <a href="https://claude.ai" target="_blank">claude.ai</a>（無料アカウントでOK）にコピー＆ペーストするだけで使えます。</div>
+
+      <div class="top-guide-flow">
+        <div class="flow-step green">
+          <div class="flow-step-head">🌱 STEP A　企業研究・事前準備タブ</div>
+          <div class="flow-step-desc">企業名などを入力 → <b>プロンプト生成</b> → claude.aiに貼付け → 企業研究シート完成</div>
+        </div>
+        <div class="flow-arrow-down">▼　（Claudeの回答をコピーして下へ）</div>
+        <div class="flow-step blue">
+          <div class="flow-step-head">📝 STEP B　エントリーシート対策タブ</div>
+          <div class="flow-step-desc">STEP Aの結果を貼付け（なくてもOK）→ 設問ごとにネタを入力 → <b>プロンプト生成</b> → claude.aiに貼付け → ES下書き完成</div>
+        </div>
+      </div>
+
+      <div class="top-guide-tips">
+        <div class="top-guide-tip">💡 <strong>ES対策だけでよい人：</strong>STEP Aは飛ばして、いきなり📝タブから始めてもOKです。</div>
+        <div class="top-guide-tip">💡 <strong>もうESを書いた人：</strong>📝タブの中で「既存ES貼付け（添削モード）」を選ぶと、Claudeが添削してくれます。</div>
+        <div class="top-guide-tip">💾 <strong>入力内容は自動保存：</strong>同じブラウザなら次回開いたときも続きから始められます。</div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  try{
+    if(localStorage.getItem('shukatsu_no_ki_usage_closed')==='1'){
+      document.getElementById('topGuideBody').classList.add('closed');
+      document.getElementById('topGuideIcon').classList.add('closed');
+    }
+  }catch(e){}
+})();
+</script>
 
 <!-- メインタブ -->
 <div class="main-tab-bar">
@@ -568,6 +639,15 @@ footer span{color:var(--gold);}
 
 <script>
 // =========== タブ ===========
+// =========== 冒頭：使い方ガイドの開閉 ===========
+function toggleTopGuide() {
+  const body = document.getElementById('topGuideBody');
+  const icon = document.getElementById('topGuideIcon');
+  const closed = body.classList.toggle('closed');
+  icon.classList.toggle('closed', closed);
+  try { localStorage.setItem('shukatsu_no_ki_usage_closed', closed ? '1' : '0'); } catch(e) {}
+}
+
 function switchMainTab(id, btn) {
   document.querySelectorAll('.main-tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.main-tab-btn').forEach(b=>b.classList.remove('active'));
@@ -580,7 +660,8 @@ function switchSubTab(id, btn) {
   document.querySelectorAll('.sub-tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  const bar = document.querySelector('.sub-tab-bar');
+  if (bar) bar.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 // =========== コンボ ===========
@@ -1235,8 +1316,37 @@ function restoreData(data) {
   }
 }
 
+// =========== ハブページからの入口リンク対応（#company / #solo / #create / #tensaku / #kaizen）===========
+function handleEntryHash() {
+  const h = (location.hash || '').replace('#','');
+  if (!h) return;
+  const mtab1Btn = document.querySelector('.main-tab-btn.t1');
+  const mtab2Btn = document.querySelector('.main-tab-btn.t2');
+  const stab2Btn = document.getElementById('stab2_btn');
+
+  function ensureBlockAndRoute(routeNum) {
+    if (accCount === 0) addAccBlock();
+    const id = accCount;
+    if (routeNum) switchRoute(id, routeNum);
+    return id;
+  }
+
+  if (h === 'company') {
+    switchMainTab('mtab1', mtab1Btn);
+  } else if (h === 'solo' || h === 'es') {
+    switchMainTab('mtab2', mtab2Btn);
+    switchSubTab('stab2', stab2Btn);
+  } else if (h === 'create' || h === 'tensaku' || h === 'kaizen') {
+    switchMainTab('mtab2', mtab2Btn);
+    const routeNum = h === 'create' ? 2 : (h === 'kaizen' ? 3 : 1);
+    const id = ensureBlockAndRoute(routeNum);
+    switchSubTab('stab2', stab2Btn);
+    setTimeout(() => { document.getElementById('acc_' + id)?.scrollIntoView({behavior:'smooth', block:'center'}); }, 350);
+  }
+}
+
 // 起動時に復元
-window.addEventListener('load', loadSave);
+window.addEventListener('load', () => { loadSave(); handleEntryHash(); });
 </script>
 </body>
 </html>

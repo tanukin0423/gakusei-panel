@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企業研究＆ESプロンプトジェネレーター｜活用パターン図解ガイド</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700;900&display=swap');
+
+:root{
+  --page-bg1:#f3faf6; --page-bg2:#eef4fb;
+  --deep:#2d6b4a; --mid:#3d8a5f; --light:#4da070; --mint:#6de0b0;
+  --gold:#c8922a; --gold2:#d4a843;
+  --blue-deep:#2d5fa8; --blue-mid:#4178c8; --blue-br:#a8c0e8;
+  --card-br:#a8d8be;
+  --text:#24402f; --muted:#6f8f7c;
+  --s1:#5aaa7a; --s1-bg:#eefaf3; --s1-tint:#dff5e8;
+  --s2:#3d8a5f; --s2-bg:#eaf6ef; --s2-tint:#d8eee2;
+  --s3:#2d6b4a; --s3-bg:#e7f2ec; --s3-tint:#cfe9de;
+  --s4:#b8811f; --s4-bg:#fdf8ea; --s4-tint:#f6e9c6;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Noto Sans JP',sans-serif;color:var(--text);
+  background:linear-gradient(160deg,var(--page-bg1),var(--page-bg2) 70%);
+  min-height:100vh; padding-bottom:70px;
+}
+a{color:inherit;}
+
+/* ===== HERO ===== */
+.hero{
+  position:relative; overflow:hidden;
+  background:linear-gradient(135deg,#1f4d33,var(--deep) 55%,var(--mid));
+  padding:56px 20px 64px; text-align:center; color:#fff;
+  border-bottom:4px solid var(--gold2);
+}
+.hero::before{
+  content:'🌳'; position:absolute; font-size:260px; opacity:.06;
+  top:-60px; left:-40px; transform:rotate(-8deg);
+}
+.hero::after{
+  content:'🌱'; position:absolute; font-size:180px; opacity:.07;
+  bottom:-50px; right:-20px; transform:rotate(10deg);
+}
+.hero-tag{
+  display:inline-block; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.35);
+  color:#f0e6c0; font-size:11.5px; font-weight:700; letter-spacing:.14em;
+  padding:5px 16px; border-radius:999px; margin-bottom:18px;
+}
+.hero h1{
+  font-family:'Noto Serif JP',serif; font-weight:900;
+  font-size:clamp(22px,4.6vw,38px); line-height:1.5; margin-bottom:14px;
+  position:relative;
+}
+.hero h1 em{font-style:normal; color:#f3dfa0;}
+.hero p{font-size:14px; color:#d8f0e2; max-width:560px; margin:0 auto; line-height:1.9; position:relative;}
+.hero .hero-note{
+  margin-top:20px; display:inline-block; font-size:12px; color:#f3dfa0;
+  background:rgba(0,0,0,.12); padding:7px 16px; border-radius:999px; position:relative;
+}
+
+/* ===== INTRO ===== */
+.wrap{max-width:840px; margin:0 auto; padding:0 18px;}
+.intro{
+  background:#fff; border:1.5px solid var(--card-br); border-radius:18px;
+  padding:26px 26px; margin:-30px auto 46px; box-shadow:0 10px 30px rgba(45,107,74,.10);
+  position:relative; z-index:2;
+}
+.intro-title{font-size:13px; font-weight:900; color:var(--deep); letter-spacing:.06em; margin-bottom:10px; display:flex; align-items:center; gap:7px;}
+.intro p{font-size:13px; line-height:2; color:var(--text); margin-bottom:8px;}
+.intro p:last-child{margin-bottom:0;}
+.intro strong{color:var(--gold);}
+.intro-badges{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;}
+.intro-badge{font-size:11px; font-weight:700; padding:5px 12px; border-radius:999px; background:var(--s2-bg); color:var(--s2); border:1px solid var(--card-br);}
+
+/* ===== SECTION LABEL ===== */
+.section-label{
+  text-align:center; font-size:12px; font-weight:900; letter-spacing:.16em; color:var(--muted);
+  margin:0 0 30px; text-transform:uppercase;
+}
+.section-label span{display:block; font-family:'Noto Serif JP',serif; font-size:19px; letter-spacing:.02em; color:var(--deep); margin-top:6px; text-transform:none;}
+
+/* ===== GROWTH PATH ===== */
+.growth-path{position:relative; padding-left:0;}
+.growth-path::before{
+  content:''; position:absolute; left:27px; top:14px; bottom:14px; width:3px;
+  background:linear-gradient(to bottom,#bfe6cf,var(--deep) 55%,var(--gold2));
+  border-radius:3px;
+}
+.stage{position:relative; padding-left:70px; margin-bottom:40px;}
+.stage:last-child{margin-bottom:0;}
+.stage-icon{
+  position:absolute; left:0; top:0; width:56px; height:56px; border-radius:50%;
+  background:#fff; display:flex; align-items:center; justify-content:center;
+  font-size:26px; box-shadow:0 4px 12px rgba(45,107,74,.18); z-index:2;
+  border:3px solid var(--stage-c);
+}
+.stage-card{
+  background:#fff; border:1.5px solid var(--stage-br); border-radius:16px;
+  padding:22px 24px 24px; box-shadow:0 6px 20px rgba(45,107,74,.07);
+}
+.stage-eyebrow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px;}
+.stage-level{
+  font-size:10.5px; font-weight:900; letter-spacing:.08em; color:#fff;
+  background:var(--stage-c); padding:3px 11px; border-radius:6px;
+}
+.stage-name{font-family:'Noto Serif JP',serif; font-weight:900; font-size:19px; color:var(--stage-c);}
+.stage-target{font-size:12px; color:var(--muted); margin-bottom:18px; line-height:1.8;}
+.stage-target b{color:var(--text);}
+
+/* ---- flow diagram (linear) ---- */
+.pf-flow{display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin-bottom:16px;}
+.pf-step{
+  flex:1 1 150px; background:var(--stage-bg); border:1.5px solid var(--stage-br); border-radius:11px;
+  padding:12px 13px; position:relative; min-width:140px;
+}
+.pf-step-num{
+  width:19px; height:19px; border-radius:50%; background:var(--stage-c); color:#fff;
+  font-size:10px; font-weight:900; display:flex; align-items:center; justify-content:center;
+  margin-bottom:7px;
+}
+.pf-step-txt{font-size:11.5px; line-height:1.6; color:var(--text); font-weight:500;}
+.pf-arrow{
+  flex:0 0 auto; display:flex; align-items:center; justify-content:center;
+  width:26px; color:var(--stage-c); font-size:15px; font-weight:900;
+}
+@media (max-width:600px){
+  .pf-flow{flex-direction:column;}
+  .pf-arrow{width:100%; height:18px; transform:rotate(90deg);}
+}
+
+/* ---- mode branch cards (stage 3) ---- */
+.branch-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;}
+.branch-card{background:var(--stage-bg); border:1.5px solid var(--stage-br); border-radius:12px; padding:13px 14px;}
+.branch-head{font-size:12px; font-weight:900; color:var(--stage-c); margin-bottom:7px; display:flex; align-items:center; gap:5px;}
+.branch-desc{font-size:11px; line-height:1.7; color:var(--text);}
+@media (max-width:640px){.branch-grid{grid-template-columns:1fr;}}
+
+/* ---- pro use-case cards (stage 4) ---- */
+.usecase-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;}
+.usecase-card{background:var(--stage-bg); border:1.5px solid var(--stage-br); border-radius:13px; padding:15px 15px 16px;}
+.usecase-icon{font-size:22px; margin-bottom:8px;}
+.usecase-title{font-size:12.5px; font-weight:900; color:var(--stage-c); margin-bottom:7px;}
+.usecase-desc{font-size:11px; line-height:1.8; color:var(--text);}
+@media (max-width:640px){.usecase-grid{grid-template-columns:1fr;}}
+
+.stage-tip{
+  font-size:11.5px; line-height:1.8; color:var(--text); background:var(--stage-tint);
+  border-left:3px solid var(--stage-c); border-radius:8px; padding:10px 13px;
+}
+
+/* ===== CLOSING ===== */
+.closing{
+  max-width:840px; margin:56px auto 0; padding:0 18px; text-align:center;
+}
+.closing-card{
+  background:linear-gradient(135deg,var(--deep),var(--mid)); color:#fff; border-radius:18px;
+  padding:32px 26px; box-shadow:0 10px 30px rgba(45,107,74,.18);
+}
+.closing-card h2{font-family:'Noto Serif JP',serif; font-size:18px; margin-bottom:10px; font-weight:900;}
+.closing-card p{font-size:12.5px; line-height:1.9; color:#dcf3e6; max-width:520px; margin:0 auto;}
+.closing-mark{margin-top:16px; font-size:12px; color:#f3dfa0; font-weight:700;}
+footer{text-align:center; font-size:11px; color:var(--muted); margin-top:22px;}
+
+/* section spacing */
+.section{margin-bottom:54px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">就活の木 ツールシリーズ｜活用ガイド</div>
+  <h1>企業研究＆ESプロンプトジェネレーターで<br><em>できること</em></h1>
+  <p>使い方は、ひとつではありません。学生が一人で1問だけ試す日もあれば、面談の中でカウンセラーと一緒に育てる日もある。</p>
+  <div class="hero-note">🌳 木を育てるように、使い方も少しずつ広げていけます</div>
+</div>
+
+<div class="wrap">
+  <div class="intro">
+    <div class="intro-title">🌿 このツールについて</div>
+    <p>企業研究とエントリーシート作成のための<strong>「Claude.aiに渡すプロンプト」</strong>を、フォームに入力するだけで自動生成するツールです。会員登録もAPIキーも不要。生成されたプロンプトをコピーして <strong>claude.ai</strong>（無料アカウントでOK）に貼り付けるだけで、企業研究シートやESの下書きが手に入ります。</p>
+    <p>使い方の幅はとても広く、初めて使う学生が最短ルートで1問だけ試す使い方から、キャリアカウンセラーが面談やセミナーで活用する使い方まで対応できます。ここでは4つの成長段階に分けて、活用パターンをご紹介します。</p>
+    <div class="intro-badges">
+      <span class="intro-badge">🌱 基礎編</span>
+      <span class="intro-badge">🌿 標準編</span>
+      <span class="intro-badge">🌳 応用編</span>
+      <span class="intro-badge">🌲 プロ仕様</span>
+    </div>
+  </div>
+
+  <div class="section-label">4つの成長段階で見る<span>活用パターン</span></div>
+
+  <div class="growth-path">
+
+    <!-- STAGE 1 -->
+    <div class="stage" style="--stage-c:var(--s1); --stage-bg:var(--s1-bg); --stage-br:var(--card-br); --stage-tint:var(--s1-tint);">
+      <div class="stage-icon">🌱</div>
+      <div class="stage-card">
+        <div class="stage-eyebrow">
+          <span class="stage-level">基礎編</span>
+          <span class="stage-name">発芽期｜まず1問だけ試す</span>
+        </div>
+        <div class="stage-target">こんな人に：<b>初めてツールを使う学生／「使える」実感をまず持ちたい人</b></div>
+
+        <div class="pf-flow">
+          <div class="pf-step"><div class="pf-step-num">1</div><div class="pf-step-txt">ES対策タブを開く</div></div>
+          <div class="pf-arrow">▶</div>
+          <div class="pf-step"><div class="pf-step-num">2</div><div class="pf-step-txt">設問を1つだけ入力（６段論法・作成モード）</div></div>
+          <div class="pf-arrow">▶</div>
+          <div class="pf-step"><div class="pf-step-num">3</div><div class="pf-step-txt">プロンプトを生成してコピー</div></div>
+          <div class="pf-arrow">▶</div>
+          <div class="pf-step"><div class="pf-step-num">4</div><div class="pf-step-txt">claude.aiに貼付け → ESの下書き完成</div></div>
+        </div>
+
+        <div class="stage-tip">💡 企業研究タブは飛ばしてOK。まずは最短ルートで「使える」ことを体感するのが目的です。</div>
+      </div>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div class="stage" style="--stage-c:var(--s2); --stage-bg:var(--s2-bg); --stage-br:var(--card-br); --stage-tint:var(--s2-tint);">
+      <div class="stage-icon">🌿</div>
+      <div class="stage-card">
+        <div class="stage-eyebrow">
+          <span class="stage-level">標準編</span>
+          <span class="stage-name">若葉期｜企業研究から本格対策へ</span>
+        </div>
+        <div class="stage-target">こんな人に：<b>本格的に選考対策を進めたい学生／企業ごとに内容を作り込みたい人</b></div>
+
+        <div class="pf-flow">
+          <div class="pf-step"><div class="pf-step-num">1</div><div class="pf-step-txt">企業研究タブで情報を入力</div></div>
+          <div class="pf-arrow">▶</div>
+          <div class="pf-step"><div class="pf-step-num">2</div><div class="pf-step-txt">プロンプト生成→claude.aiで研究シート完成</div></div>
+          <div class="pf-arrow">▶</div>
+          <div class="pf-step"><div class="pf-step-num">3</div><div class="pf-step-txt">結果をES対策タブに貼付け</div></div>
+          <div class="pf-arrow">▶</div>
+          <div class="pf-step"><div class="pf-step-num">4</div><div class="pf-step-txt">設問ごとにネタ・６段論法を入力→ES下書き完成</div></div>
+        </div>
+
+        <div class="stage-tip">💡 企業研究の内容を土台にすることで、その企業の価値観に合ったESが生成されやすくなります。</div>
+      </div>
+    </div>
+
+    <!-- STAGE 3 -->
+    <div class="stage" style="--stage-c:var(--s3); --stage-bg:var(--s3-bg); --stage-br:var(--blue-br); --stage-tint:var(--s3-tint);">
+      <div class="stage-icon">🌳</div>
+      <div class="stage-card">
+        <div class="stage-eyebrow">
+          <span class="stage-level">応用編</span>
+          <span class="stage-name">枝葉を広げる｜3つのモードを使い分ける</span>
+        </div>
+        <div class="stage-target">こんな人に：<b>すでにESを書いた学生／複数企業を並行して受けている学生</b></div>
+
+        <div class="branch-grid">
+          <div class="branch-card">
+            <div class="branch-head">✏️ 添削モード</div>
+            <div class="branch-desc">完成済みESを貼付け → AIが評価・改善点・ブラッシュアップ版を提示</div>
+          </div>
+          <div class="branch-card">
+            <div class="branch-head">🌱 作成モード</div>
+            <div class="branch-desc">ネタ＋６段論法を入力 → AIがゼロから下書きを作成</div>
+          </div>
+          <div class="branch-card">
+            <div class="branch-head">🔀 改善モード</div>
+            <div class="branch-desc">完成済みES＋補足情報 → AIが既存の内容をベースに磨き上げ</div>
+          </div>
+        </div>
+
+        <div class="stage-tip">💡 同じ設問でも進捗状況に応じてモードを使い分ければ、何度でも磨き直せます。応募企業ごとの使い回しにも便利です。</div>
+      </div>
+    </div>
+
+    <!-- STAGE 4 -->
+    <div class="stage" style="--stage-c:var(--s4); --stage-bg:var(--s4-bg); --stage-br:#e8d8a0; --stage-tint:var(--s4-tint);">
+      <div class="stage-icon">🌲</div>
+      <div class="stage-card">
+        <div class="stage-eyebrow">
+          <span class="stage-level">プロ仕様</span>
+          <span class="stage-name">大樹に育つ｜カウンセラーとしての活用</span>
+        </div>
+        <div class="stage-target">こんな人に：<b>現役のキャリアカウンセラー・就職支援担当者</b></div>
+
+        <div class="usecase-grid">
+          <div class="usecase-card">
+            <div class="usecase-icon">🗣️</div>
+            <div class="usecase-title">個別面談で使う</div>
+            <div class="usecase-desc">相談者と画面を見ながら設問を一緒に設計 → その場でプロンプト生成 → 持ち帰ってclaude.aiで下書き作成 → 次回面談で添削</div>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">📤</div>
+            <div class="usecase-title">学生に配布する</div>
+            <div class="usecase-desc">URLを共有するだけで、誰でもすぐ使えるセルフワークツールとして配布。相談前の事前準備として活用してもらう</div>
+          </div>
+          <div class="usecase-card">
+            <div class="usecase-icon">🏫</div>
+            <div class="usecase-title">セミナー・講義で使う</div>
+            <div class="usecase-desc">参加者に一斉にツールを開かせ、設問生成〜プロンプト作成までを体験させる演習として活用する</div>
+          </div>
+        </div>
+
+        <div class="stage-tip">💡 相談件数が多いほど、「型」を渡すこのツールがカウンセラーの時間を守ってくれます。個別対応の質はそのままに、対応できる人数を増やせます。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="closing">
+  <div class="closing-card">
+    <h2>答えは、学生自身の中にある。</h2>
+    <p>このツールは「代わりに答えを作る」ものではなく、学生が自分の言葉でESを育てるための土台です。基礎編から少しずつ、あなた自身の使い方を育てていってください。</p>
+    <div class="closing-mark">🌳 答えは、君の中にある。</div>
+  </div>
+  <footer>就活の木 ｜ Produced by キャリ爺 北山四郎</footer>
+</div>
+
+</body>
+</html>
