@@ -295,8 +295,8 @@ footer span{color:var(--gold);}
       <div class="panel-inner">
         <div class="panel-icon">🔀</div>
         <div class="panel-badge">改善モード</div>
-        <div class="panel-title">ESを磨き上げる</div>
-        <div class="panel-desc">既存ES＋補足情報でブラッシュアップ</div>
+        <div class="panel-title">ESを別企業向けに作り替える</div>
+        <div class="panel-desc">企業名を指定して内容を寄せる</div>
       </div>
     </button>
 
@@ -304,8 +304,8 @@ footer span{color:var(--gold);}
       <div class="panel-inner">
         <div class="panel-icon">🏫</div>
         <div class="panel-badge">プロ仕様</div>
-        <div class="panel-title">セミナー・講義で使う</div>
-        <div class="panel-desc">一斉演習として体験させる</div>
+        <div class="panel-title">説明会前10分ワークの進行法</div>
+        <div class="panel-desc">時間配分・声かけの台本つき</div>
       </div>
     </button>
 
@@ -393,10 +393,10 @@ const PANELS = {
   },
   kaizen:{
     color:'blue', icon:'🔀', badge:'改善モード',
-    title:'ESを磨き上げる',
-    target:'こんな人に：<b>ある程度書けたが、もう一段よくしたい学生</b>／複数企業に使い回したい人',
-    flow:['完成済みのESを貼り付ける','補足エピソードや６段論法を追加入力','プロンプトを生成','claude.aiで既存ESをベースに磨き上げ'],
-    desc:'応募企業ごとに少しずつ内容を変えて使い回したいときにも便利です。',
+    title:'ESを別企業向けに作り替える',
+    target:'こんな人に：<b>ベースのESは書けたが、複数企業に応募するので、企業ごとに内容を近づけたい学生</b>',
+    flow:['完成済みのESを貼り付ける','作り替えたい企業名を入力する（他の設問と別企業でもOK）','補足エピソードや６段論法があれば追加入力','プロンプトを生成 → claude.aiでその企業向けに作り替えたES下書きが完成'],
+    desc:'添削モードとの違いは「企業名を指定できること」。同じベースのESを、応募先ごとに内容を寄せて使い回せます。',
     cta:'🚀 改善モードでツールを開く', href:'es-prompt-generator.html#kaizen'
   },
   counselor_menkyou:{
@@ -409,10 +409,15 @@ const PANELS = {
   },
   counselor_seminar:{
     color:'amber', icon:'🏫', badge:'プロ仕様',
-    title:'セミナー・講義で使う',
-    target:'こんな人に：<b>就活講座やガイダンスを担当するカウンセラー</b>',
-    flow:['参加者に一斉にツールを開いてもらう','その場で設問を1つ入力させる','プロンプト生成〜貼付けまでを体験させる','演習として結果を各自持ち帰る'],
-    desc:'「使い方を説明する」より「その場で1回使わせる」ほうが定着します。',
+    title:'説明会前の10分ワークとして仕切る',
+    target:'こんな人に：<b>就活講座・ガイダンスを担当するカウンセラー</b>（進行のコツも含みます）',
+    flow:[
+      '【導入・1分】「聞いてから調べる、ではなく調べてから聞く、に変えるだけで質問の質が変わります」と伝える',
+      '【個人ワーク・5分】各自ツールを開かせ、企業研究タブに社名と「聞きたいこと」だけ入力させる（欲張らず1社に絞らせる）',
+      '【生成・3分】プロンプトを生成させ、claude.aiに貼り付けて簡易研究シートを作らせる',
+      '【共有・1分】「できた質問リストを、説明会のメモ用紙に貼っておこう」と声をかけて締める'
+    ],
+    desc:'進行のコツ：①複数社にすると時間切れになるので初回は1社に絞らせる　②机間巡視では「企業名がまだ決まっていない学生」を最優先で助ける　③「できた／できなかった」を最後に一言ずつ聞くと、やり切った感が出て次回への定着率が上がります。',
     cta:'🚀 ツールを開く', href:'es-prompt-generator.html'
   },
   counselor_share:{

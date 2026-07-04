@@ -216,6 +216,9 @@ select option{background:#fff;color:#2d4a38;}
 .tpl-btn.tpl-recommended{background:#fff8e6;border-width:2px;box-shadow:0 0 0 2px rgba(212,168,67,.25);font-weight:900;color:var(--gold);}
 .tpl-btn.tpl-recommended:hover,.tpl-btn.tpl-recommended.selected{background:var(--gold);color:#fff;}
 .neta-guide-note{font-size:10.5px;line-height:1.7;color:#6a8ac0;background:#eef4fc;border-left:3px solid var(--blue-mid);border-radius:6px;padding:7px 10px;margin-top:8px;}
+.field-flash{display:none;margin-left:5px;font-size:12px;animation:flashPulse 1.1s ease-in-out infinite;}
+.field-flash.show{display:inline-block;}
+@keyframes flashPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(1.35);}}
 .tpl-must-note{font-size:10.5px;line-height:1.7;color:#a05a10;background:#fff3e0;border:1px solid #f0c080;border-radius:8px;padding:8px 11px;margin-bottom:10px;}
 .tpl-must-note strong{color:#c0410f;}
 .tpl-star{font-size:9px;font-weight:900;}
@@ -421,13 +424,13 @@ footer span{color:var(--gold);}
     <div class="card green">
       <div class="card-title">STEP 1　企業・コース情報を入力</div>
       <div class="form-group">
-        <label class="form-label">企業名<span class="badge req">必須</span></label>
-        <input type="text" id="t1_company" placeholder="例：株式会社サイボウズ" oninput="autoSave()">
+        <label class="form-label">企業名<span class="badge req">必須</span><span class="field-flash" id="flash_t1_company">👉</span></label>
+        <input type="text" id="t1_company" placeholder="例：株式会社サイボウズ" oninput="updateT1Flashes();autoSave()">
       </div>
       <div class="form-group">
-        <label class="form-label">コース名・目的<span class="badge req">必須</span></label>
+        <label class="form-label">コース名・目的<span class="badge req">必須</span><span class="field-flash" id="flash_t1_course">👉</span></label>
         <div class="combo-wrap">
-          <select id="t1_course_sel" onchange="syncCombo('t1_course_sel','t1_course_txt');autoSave()">
+          <select id="t1_course_sel" onchange="syncCombo('t1_course_sel','t1_course_txt');updateT1Flashes();autoSave()">
             <option value="">── 典型例から選ぶ ──</option>
             <option>ビジネス課題解決コース</option><option>営業体験コース</option>
             <option>企画・マーケティングコース</option><option>エンジニアリングコース</option>
@@ -435,7 +438,7 @@ footer span{color:var(--gold);}
             <option>会社説明会（本選考）</option><option>OB・OG訪問</option>
           </select>
           <div class="combo-or">または直接入力</div>
-          <input type="text" id="t1_course_txt" placeholder="コース名・目的を直接入力" oninput="autoSave()">
+          <input type="text" id="t1_course_txt" placeholder="コース名・目的を直接入力" oninput="updateT1Flashes();autoSave()">
         </div>
       </div>
       <div class="form-group">
@@ -576,8 +579,8 @@ footer span{color:var(--gold);}
       <div class="card blue blue-form">
         <div class="card-title">企業研究・事前準備の内容を貼り付け</div>
         <div class="form-group">
-          <label class="form-label blue-label">企業名<span class="badge req">必須</span></label>
-          <input type="text" id="t2_company" placeholder="例：株式会社〇〇" oninput="autoSave()">
+          <label class="form-label blue-label">企業名<span class="badge req">必須</span><span class="field-flash" id="flash_t2_company">👉</span></label>
+          <input type="text" id="t2_company" placeholder="例：株式会社〇〇" oninput="updateT2Flashes();autoSave()">
         </div>
         <div class="form-group">
           <label class="form-label blue-label">企業研究・Claudeの回答内容<span class="badge opt">任意</span></label>
@@ -1264,7 +1267,7 @@ function addAccBlock(data) {
       <div class="acc-warn" id="acc_warn_${id}"></div>
       <div class="blue-form">
         <div class="form-group">
-          <label class="form-label" style="color:var(--blue-deep);font-size:11px;">設問項目<span class="badge req">必須</span></label>
+          <label class="form-label" style="color:var(--blue-deep);font-size:11px;">設問項目<span class="badge req">必須</span><span class="field-flash" id="flash_acc_q_${id}">👉</span></label>
           <div class="combo-wrap">
             <select id="acc_q_sel_${id}" onchange="syncCombo('acc_q_sel_${id}','acc_q_txt_${id}');updateAccHeader(${id});updateNetaOptions(${id});autoSave()">
               <option value="">── 典型例から選ぶ ──</option>
@@ -1275,7 +1278,7 @@ function addAccBlock(data) {
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label" style="color:var(--blue-deep);font-size:11px;">文字数<span class="badge req">必須</span></label>
+          <label class="form-label" style="color:var(--blue-deep);font-size:11px;">文字数<span class="badge req">必須</span><span class="field-flash" id="flash_acc_c_${id}">👉</span></label>
           <div class="combo-wrap">
             <select id="acc_c_sel_${id}" onchange="syncCombo('acc_c_sel_${id}','acc_c_txt_${id}');updateAccHeader(${id});autoSave()">
               <option value="">── 典型例から選ぶ ──</option>
@@ -1301,7 +1304,7 @@ function addAccBlock(data) {
           <div class="route-content active" id="route1_${id}">
             <div class="route-hint">✏️ <strong>添削モード：</strong>作成済みのESをそのまま貼り付けてください。AIが評価・改善点・ブラッシュアップ版を提示します。</div>
             <div class="form-group">
-              <label class="form-label" style="color:#c8922a;font-size:11px;">作成済みES<span class="badge req">貼付け</span></label>
+              <label class="form-label" style="color:#c8922a;font-size:11px;">作成済みES<span class="badge req">貼付け</span><span class="field-flash" id="flash_acc_es_${id}">👉</span></label>
               <textarea class="existing-es-area" id="acc_es_${id}" placeholder="作成済みのエントリーシートをここに貼り付けてください。&#10;&#10;AIが以下を行います：&#10;・評価できる点のフィードバック&#10;・改善点の指摘&#10;・ブラッシュアップ版の提示" oninput="updateAccHeader(${id});autoSave()"></textarea>
             </div>
           </div>
@@ -1310,7 +1313,7 @@ function addAccBlock(data) {
           <div class="route-content" id="route2_${id}">
             <div class="route-hint">🌱 <strong>作成モード：</strong>ネタを選んで６段論法を入力してください。AIがESを作成します。文例テンプレートを参考に書いてみよう。</div>
             <div class="form-group">
-              <label class="form-label" style="color:var(--deep);font-size:11px;">ESのネタ（エピソード）<span class="badge req">必須</span></label>
+              <label class="form-label" style="color:var(--deep);font-size:11px;">ESのネタ（エピソード）<span class="badge req">必須</span><span class="field-flash" id="flash_acc_n_${id}">👉</span></label>
               <div class="combo-wrap">
                 <select id="acc_n_sel_${id}" onchange="syncCombo('acc_n_sel_${id}','acc_n_txt_${id}');updateAccHeader(${id});maybeRefreshTemplate(${id});autoSave()">
                   <option value="">── 典型例から選ぶ ──</option>
@@ -1342,10 +1345,15 @@ function addAccBlock(data) {
 
           <!-- ルート③：両方（改善） -->
           <div class="route-content" id="route3_${id}">
-            <div class="route-hint">🔀 <strong>改善モード：</strong>作成済みESと６段論法の詳細情報を両方入力。AIが既存ESをベースにより良いESに仕上げます。</div>
+            <div class="route-hint">🔀 <strong>改善モード：</strong>作成済みESをベースに、別の企業向けに作り替えたり、補足情報を加えてより良いESに仕上げます。</div>
             <div class="form-group">
-              <label class="form-label" style="color:var(--blue-deep);font-size:11px;">作成済みES<span class="badge req">貼付け</span></label>
-              <textarea class="existing-es-area" id="acc_es3_${id}" placeholder="作成済みのESを貼り付けてください" oninput="autoSave()"></textarea>
+              <label class="form-label" style="color:var(--blue-deep);font-size:11px;">作成済みES<span class="badge req">貼付け</span><span class="field-flash" id="flash_acc_es3_${id}">👉</span></label>
+              <textarea class="existing-es-area" id="acc_es3_${id}" placeholder="作成済みのESを貼り付けてください" oninput="updateAccHeader(${id});autoSave()"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="color:#c8922a;font-size:11px;">この設問だけ、別の企業向けに作り替える場合</label>
+              <input type="text" id="acc_company3_${id}" placeholder="例：株式会社△△（空欄なら「ES対策タブ」の企業名のまま使用）" oninput="autoSave()">
+              <div style="font-size:10px;color:#a08050;margin-top:4px;">💡 同じベースのESを複数企業に使い回したいとき、ここにその企業名を入れると、その企業向けの内容に近づけて作り替えます。</div>
             </div>
             <div class="form-group">
               <label class="form-label" style="color:var(--deep);font-size:11px;">ESのネタ（補足情報）</label>
@@ -1390,9 +1398,15 @@ function addAccBlock(data) {
     updateNetaOptions(id);
     setVal('acc_n_txt_'+id, data.n);
     for(let i=1;i<=6;i++) setVal('rd'+i+'_'+id, data['rd'+i]||'');
-    updateAccHeader(id);
+    setVal('acc_es_'+id, data.existingEs);
+    setVal('acc_es3_'+id, data.existingEs3);
+    setVal('acc_company3_'+id, data.company3);
+    setVal('acc_n3_txt_'+id, data.n3);
+    for(let i=1;i<=6;i++) setVal('rd3_'+i+'_'+id, data['rd3_'+i]||'');
+    if(data.route) switchRoute(id, data.route);
     if(!data.open) { toggleAcc(id); }
   }
+  updateAccHeader(id);
 }
 
 function delAcc(id) {
@@ -1439,6 +1453,16 @@ function updateAccHeader(id) {
   // カラー更新
   const block=document.getElementById('acc_'+id);
   if(block){ block.className='acc-block '+getColor(q); }
+
+  // フラッシュアイコン（未入力の必須項目を光らせる）
+  setFlash('flash_acc_q_'+id, !q);
+  setFlash('flash_acc_c_'+id, !c);
+  const r1active=document.getElementById('rtab1_'+id)?.classList.contains('active');
+  const r2active=document.getElementById('rtab2_'+id)?.classList.contains('active');
+  const r3active=document.getElementById('rtab3_'+id)?.classList.contains('active');
+  setFlash('flash_acc_es_'+id, r1active && !es1);
+  setFlash('flash_acc_n_'+id, r2active && !n);
+  setFlash('flash_acc_es3_'+id, r3active && !es3);
 }
 function toggleRokdan(id) {
   const w=document.getElementById('rd_wrap_'+id);
@@ -1521,6 +1545,14 @@ function doSave() {
   } catch(e) { showSaveStatus('⚠️ 保存できませんでした'); }
 }
 function v(id){ const el=document.getElementById(id); return el?el.value:''; }
+function setFlash(elId, empty){ const el=document.getElementById(elId); if(el) el.classList.toggle('show', !!empty); }
+function updateT1Flashes(){
+  setFlash('flash_t1_company', !v('t1_company'));
+  setFlash('flash_t1_course', !(v('t1_course_txt')||v('t1_course_sel')));
+}
+function updateT2Flashes(){
+  setFlash('flash_t2_company', !v('t2_company'));
+}
 function collectBlocks() {
   const result=[];
   document.querySelectorAll('.acc-block').forEach(block=>{
@@ -1537,6 +1569,7 @@ function collectBlocks() {
       n:v('acc_n_txt_'+id),
       existingEs:v('acc_es_'+id),
       existingEs3:v('acc_es3_'+id),
+      company3:v('acc_company3_'+id),
       n3:v('acc_n3_txt_'+id),
       rd1:v('rd1_'+id),rd2:v('rd2_'+id),rd3:v('rd3_'+id),
       rd4:v('rd4_'+id),rd5:v('rd5_'+id),rd6:v('rd6_'+id),
@@ -1777,9 +1810,11 @@ function generateTab2() {
 
     } else if(b.route===3 && b.existingEs3){
       // 改善モード
+      const targetCompany = b.company3 || company;
       p+=`\n\n### 設問${i+1}【改善モード】`;
       if(b.q) p+=`\n- 設問：${b.q}`;
       if(b.c) p+=`\n- 文字数：${b.c}`;
+      if(b.company3) p+=`\n- ⚠️この設問は「${targetCompany}」向けに作り替えてください（他の設問とは別企業です）`;
       p+=`\n\n**【作成済みES（ベースとして使用）】**\n${b.existingEs3}`;
       if(b.n3) p+=`\n\n**【補足エピソード・ネタ】**\n${b.n3}`;
       const rd3=[b.rd3_1,b.rd3_2,b.rd3_3,b.rd3_4,b.rd3_5,b.rd3_6];
@@ -1787,7 +1822,7 @@ function generateTab2() {
         p+=`\n\n**【６段論法による補足情報】**`;
         rd3.forEach((r,j)=>{ if(r) p+=`\n${rdLabels[j]}：${r}`; });
       }
-      p+=`\n\n**【改善の依頼】**\n作成済みESをベースに、補足情報を活かしてより説得力のあるESに改善してください。企業の求める人物像に合わせ、文字数を厳守してください。`;
+      p+=`\n\n**【改善の依頼】**\n作成済みESをベースに、補足情報を活かして「${targetCompany}」が求める人物像に合わせて改善してください。文字数を厳守してください。`;
 
     } else {
       // 作成モード（デフォルト）
@@ -1896,7 +1931,7 @@ function handleEntryHash() {
 }
 
 // 起動時に復元
-window.addEventListener('load', () => { loadSave(); handleEntryHash(); });
+window.addEventListener('load', () => { loadSave(); updateT1Flashes(); updateT2Flashes(); handleEntryHash(); });
 </script>
 </body>
 </html>
