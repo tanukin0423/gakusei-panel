@@ -688,6 +688,33 @@ function getColor(q){
 }
 const NETA_OPTIONS=['部活動・サークル活動','ゼミ・研究活動','アルバイト経験','ボランティア・社会貢献活動','留学・海外経験','資格取得・自己学習','インターンシップ経験','起業・プロジェクト立ち上げ','学業（成績・授業への取り組み）'];
 
+// 設問項目ごとに適したネタ（エピソード）の選択肢
+const NETA_MAP={
+  '志望動機':['説明会・OB訪問で感じたこと','企業の商品・サービスとの原体験','経営理念・社風への共感','業界に興味を持ったきっかけ','将来のキャリアビジョンとの一致','企業の事業内容への関心'],
+  '自己PR':['部活動・サークル活動','アルバイト経験','ゼミ・研究活動','資格取得・自己学習','起業・プロジェクト立ち上げ','学業（成績・授業への取り組み）'],
+  'ガクチカ':['部活動・サークル活動','ゼミ・研究活動','アルバイト経験','ボランティア・社会貢献活動','留学・海外経験','インターンシップ経験','起業・プロジェクト立ち上げ','学業（成績・授業への取り組み）'],
+  '入社後にやりたいこと':['将来のキャリアビジョン','インターンで見えた業務イメージ','学業・研究で得た専門性','説明会で知った事業内容への関心','資格・スキルを活かしたい分野'],
+  '強み・弱み':['部活動・サークル活動','アルバイト経験','ゼミ・研究活動','チームでの経験','資格取得・自己学習'],
+  'インターン志望動機':['説明会・企業HPで知った事業内容','業界に興味を持ったきっかけ','学業・専攻との関連','将来のキャリアビジョンとの一致','企業の商品・サービスとの原体験'],
+  'チームでの経験':['部活動・サークル活動','ゼミ・研究活動','アルバイト経験','ボランティア・社会貢献活動','起業・プロジェクト立ち上げ'],
+  '困難を乗り越えた経験':['部活動・サークル活動','アルバイト経験','ゼミ・研究活動','留学・海外経験','資格取得・自己学習','起業・プロジェクト立ち上げ'],
+  '大切にしている価値観':['家族・育った環境での経験','部活動・サークル活動','アルバイト経験','ボランティア・社会貢献活動','留学・海外経験'],
+};
+function getNetaList(q){
+  if(!q) return NETA_OPTIONS;
+  for(const key in NETA_MAP){ if(q.includes(key.substring(0,4))) return NETA_MAP[key]; }
+  return NETA_OPTIONS;
+}
+function updateNetaOptions(id){
+  const q = document.getElementById('acc_q_txt_'+id)?.value || document.getElementById('acc_q_sel_'+id)?.value || '';
+  const list = getNetaList(q);
+  const sel = document.getElementById('acc_n_sel_'+id);
+  if(!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">── 典型例から選ぶ ──</option>' + list.map(o=>`<option>${o}</option>`).join('');
+  if(list.includes(current)) sel.value = current;
+}
+
 const TEMPLATES=[
   // 0: ガクチカ
   {rd1:'私が学生時代に最も力を入れたことは「〇〇部での活動」です。',rd2:'高校から続けてきた〇〇が好きで、大学でも続けたいと思い入部しました。',rd3:'週〇回の練習に加え、自主練習も欠かさず行いました。また、チームのために〇〇という工夫をしました。',rd4:'レギュラーを争う競争が激しく、思うような結果が出ない時期が続きました。',rd5:'最終的に〇〇大会で〇位という結果を残すことができました。',rd6:'この経験から「継続と工夫の大切さ」を学びました。御社でも〇〇の場面でこの強みを活かしたいです。'},
@@ -734,12 +761,12 @@ function addAccBlock(data) {
         <div class="form-group">
           <label class="form-label" style="color:var(--blue-deep);font-size:11px;">設問項目<span class="badge req">必須</span></label>
           <div class="combo-wrap">
-            <select id="acc_q_sel_${id}" onchange="syncCombo('acc_q_sel_${id}','acc_q_txt_${id}');updateAccHeader(${id});autoSave()">
+            <select id="acc_q_sel_${id}" onchange="syncCombo('acc_q_sel_${id}','acc_q_txt_${id}');updateAccHeader(${id});updateNetaOptions(${id});autoSave()">
               <option value="">── 典型例から選ぶ ──</option>
               ${Q_OPTIONS.map(o=>`<option>${o}</option>`).join('')}
             </select>
             <div class="combo-or">または直接入力</div>
-            <input type="text" id="acc_q_txt_${id}" placeholder="設問をそのまま貼り付けてもOK" oninput="updateAccHeader(${id});autoSave()">
+            <input type="text" id="acc_q_txt_${id}" placeholder="設問をそのまま貼り付けてもOK" oninput="updateAccHeader(${id});updateNetaOptions(${id});autoSave()">
           </div>
         </div>
         <div class="form-group">
@@ -852,6 +879,7 @@ function addAccBlock(data) {
     const setVal=(elId,val)=>{ const el=document.getElementById(elId); if(el&&val!==undefined) el.value=val; };
     setVal('acc_q_txt_'+id, data.q);
     setVal('acc_c_txt_'+id, data.c);
+    updateNetaOptions(id);
     setVal('acc_n_txt_'+id, data.n);
     for(let i=1;i<=6;i++) setVal('rd'+i+'_'+id, data['rd'+i]||'');
     updateAccHeader(id);
