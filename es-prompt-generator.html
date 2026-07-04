@@ -1335,6 +1335,7 @@ function handleEntryHash() {
     switchMainTab('mtab1', mtab1Btn);
   } else if (h === 'solo' || h === 'es') {
     switchMainTab('mtab2', mtab2Btn);
+    ensureBlockAndRoute(2);
     switchSubTab('stab2', stab2Btn);
   } else if (h === 'create' || h === 'tensaku' || h === 'kaizen') {
     switchMainTab('mtab2', mtab2Btn);
