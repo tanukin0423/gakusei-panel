@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金太郎飴チェッカー｜ES独自性診断｜就活の木</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@600;700;900&display=swap');
+:root{
+  --bg:#e8f5ee; --deep:#3d8a5f; --mid:#4da070; --gold:#c8922a;
+  --card-br:#a8d8be; --gray:#2d4a38; --muted:#6e8378; --shadow:rgba(45,107,74,0.12);
+  --tint:#f1faf5;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--gray);min-height:100vh;padding-bottom:60px;line-height:1.7;}
+
+header{background:linear-gradient(135deg,#2d6b4a,var(--deep));padding:22px 24px 18px;text-align:center;border-bottom:3px solid var(--gold);position:relative;overflow:hidden;}
+header::after{content:"🍬";position:absolute;right:-6px;bottom:-14px;font-size:80px;opacity:.12;transform:rotate(-15deg);}
+.header-tag{display:inline-block;background:var(--gold);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1em;padding:3px 13px;border-radius:20px;margin-bottom:9px;}
+header h1{font-family:'Noto Serif JP',serif;font-size:clamp(17px,4.4vw,24px);color:#fff;line-height:1.4;margin-bottom:6px;font-weight:900;}
+header p{font-size:12px;color:#d9f0e3;line-height:1.7;max-width:560px;margin:0 auto;}
+
+.wrap{max-width:680px;margin:0 auto;padding:20px 16px 0;}
+
+.intro{background:var(--tint);border:1.5px solid var(--card-br);border-radius:14px;padding:15px 17px;margin-bottom:20px;}
+.intro-title{font-family:'Noto Serif JP',serif;font-weight:900;font-size:14px;color:var(--deep);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.intro p{font-size:12px;color:var(--gray);line-height:1.9;}
+.intro b{color:var(--deep);}
+.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin-top:12px;}
+.flow-step{flex:1 1 90px;background:#fff;border:1.5px solid var(--card-br);border-radius:10px;padding:8px 9px;text-align:center;min-width:84px;}
+.flow-step .n{width:18px;height:18px;border-radius:50%;background:var(--deep);color:#fff;font-size:9.5px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;}
+.flow-step span{font-size:10px;font-weight:600;line-height:1.4;}
+.flow-arrow{flex:0 0 auto;width:20px;text-align:center;color:var(--deep);font-weight:900;font-size:13px;}
+
+.card{background:#fff;border:1.5px solid var(--card-br);border-radius:16px;padding:20px 20px 22px;box-shadow:0 6px 20px var(--shadow);margin-bottom:18px;}
+.card-title{font-family:'Noto Serif JP',serif;font-weight:900;font-size:15px;color:var(--deep);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card-title::before{content:"";width:5px;height:18px;background:var(--gold);border-radius:3px;}
+
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--deep);margin-bottom:6px;}
+.badge{font-size:9.5px;font-weight:900;padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:middle;}
+.badge.req{background:#e2453a;color:#fff;}
+.badge.opt{background:#eef3f0;color:var(--muted);}
+input[type="text"],textarea{width:100%;background:#f6faf8;border:1.5px solid var(--card-br);border-radius:9px;padding:10px 12px;color:var(--gray);font-size:13px;font-family:'Noto Sans JP',sans-serif;transition:border-color .2s,box-shadow .2s;outline:none;line-height:1.7;}
+input[type="text"]:focus,textarea:focus{border-color:var(--deep);box-shadow:0 0 0 3px rgba(61,138,95,.14);}
+textarea{resize:vertical;min-height:150px;}
+.hint{font-size:10.5px;color:var(--muted);margin-top:5px;line-height:1.7;}
+.hint b{color:var(--deep);}
+.charcount{float:right;font-size:10.5px;color:var(--muted);font-weight:700;}
+
+.seg{display:flex;gap:7px;flex-wrap:wrap;}
+.seg label{flex:1 1 100px;min-width:96px;position:relative;cursor:pointer;}
+.seg input{position:absolute;opacity:0;}
+.seg span{display:block;text-align:center;font-size:12px;font-weight:700;padding:9px 6px;border:1.5px solid var(--card-br);border-radius:9px;background:#f6faf8;color:var(--muted);transition:all .15s;line-height:1.4;}
+.seg small{display:block;font-size:9px;font-weight:400;margin-top:2px;opacity:.8;}
+.seg input:checked + span{background:var(--deep);border-color:var(--deep);color:#fff;box-shadow:0 3px 9px rgba(61,138,95,.25);}
+
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt-group{font-size:10.5px;font-weight:900;letter-spacing:.03em;margin:6px 0 1px;display:flex;align-items:center;gap:6px;}
+.opt-group.g1{color:var(--deep);}
+.opt-group.g2{color:var(--gold);}
+.opt-group .pill{font-size:9px;font-weight:900;color:#fff;padding:2px 8px;border-radius:20px;}
+.opt-group.g1 .pill{background:var(--deep);}
+.opt-group.g2 .pill{background:var(--gold);}
+.opt-item{display:flex;align-items:flex-start;gap:9px;background:#f6faf8;border:1.5px solid var(--card-br);border-radius:9px;padding:10px 12px;cursor:pointer;transition:all .15s;}
+.opt-item:hover{border-color:var(--mid);}
+.opt-item input{width:16px;height:16px;accent-color:var(--deep);margin-top:1px;flex-shrink:0;cursor:pointer;}
+.opt-item .ot{font-size:12px;font-weight:700;color:var(--gray);}
+.opt-item .od{font-size:10.5px;color:var(--muted);line-height:1.6;margin-top:2px;}
+.opt-item.on{background:var(--tint);border-color:var(--mid);}
+
+.btn-generate{width:100%;padding:14px;font-size:15px;font-weight:900;font-family:'Noto Sans JP',sans-serif;border:none;border-radius:11px;cursor:pointer;letter-spacing:.04em;color:#fff;background:linear-gradient(135deg,#2d6b4a,var(--mid));box-shadow:0 4px 14px rgba(61,138,95,.35);transition:transform .15s,box-shadow .15s;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px;}
+.btn-generate:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(61,138,95,.42);}
+.btn-generate:active{transform:translateY(0);}
+
+#output{display:none;}
+.prompt-box{background:#f6faf8;border:1.5px solid var(--card-br);border-radius:10px;padding:14px 15px;font-size:12px;line-height:1.85;color:var(--gray);white-space:pre-wrap;word-break:break-word;max-height:340px;overflow-y:auto;font-family:'Noto Sans JP',sans-serif;}
+.btn-row{display:flex;gap:8px;margin-top:12px;}
+.btn-copy{flex:3;padding:12px;font-size:13px;font-weight:900;font-family:'Noto Sans JP',sans-serif;border:none;border-radius:10px;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--deep),var(--mid));transition:opacity .15s;}
+.btn-copy:hover{opacity:.9;}
+.btn-clear{flex:1;padding:12px;font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;border:1.5px solid var(--card-br);border-radius:10px;cursor:pointer;background:#fff;color:var(--muted);}
+.howto{margin-top:14px;background:var(--tint);border-left:3px solid var(--deep);border-radius:8px;padding:12px 14px;}
+.howto h3{font-size:12px;color:var(--deep);margin-bottom:7px;font-weight:900;}
+.howto ol{margin-left:17px;font-size:11.5px;line-height:1.9;color:var(--gray);}
+.howto a{color:var(--deep);font-weight:700;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+footer{text-align:center;font-size:11px;color:var(--muted);margin-top:26px;line-height:1.9;}
+.mark{color:var(--gold);font-weight:700;font-family:'Noto Serif JP',serif;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">就活の木 ツールシリーズ</div>
+  <h1>🍬 金太郎飴チェッカー</h1>
+  <p>指摘して終わりにしない。<b style="color:#fff;">問いかけ → あなたの答え → 修正版</b><br>答え方の"例"も出すので、言葉にするのが苦手でも大丈夫。</p>
+</header>
+
+<div class="wrap">
+
+  <div class="intro">
+    <div class="intro-title">🌳 このツールについて</div>
+    <p>あなたのESを、AIが<b>論理的に的確に診断</b>するプロンプトを自動生成します。ただし<b>修正版をいきなり見せません</b>。まず「考えるための問い」を返し、<b>あなたが一言でも答えて初めて</b>「その答えを踏まえるとこう書ける」という修正版を提示します。問いには<b>答え方のサンプル例</b>も付くので、選ぶだけ・一言でもOK。言葉にするのが苦手でも進められます。</p>
+    <div class="flow">
+      <div class="flow-step"><div class="n">1</div><span>ESを貼付け</span></div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step"><div class="n">2</div><span>プロンプト生成</span></div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step"><div class="n">3</div><span>指摘＋問い（例つき）</span></div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step"><div class="n">4</div><span>選ぶ/一言で答える</span></div>
+      <div class="flow-arrow">▶</div>
+      <div class="flow-step"><div class="n">5</div><span>回答反映の修正版</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">診断したいESを入力</div>
+
+    <div class="form-group">
+      <label class="form-label">ESの設問<span class="badge opt">任意</span></label>
+      <input type="text" id="question" placeholder="例：学生時代に力を入れたことを教えてください（400字）" oninput="autoSave()">
+    </div>
+
+    <div class="form-group" style="display:flex;gap:12px;">
+      <div style="flex:1;">
+        <label class="form-label">文字数の目安<span class="badge opt">任意</span></label>
+        <input type="text" id="length" placeholder="例：400字" oninput="autoSave()">
+      </div>
+      <div style="flex:2;">
+        <label class="form-label">応募企業名<span class="badge opt">任意</span></label>
+        <input type="text" id="company" placeholder="例：株式会社〇〇（空欄でもOK）" oninput="autoSave()">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">あなたのES本文<span class="badge req">必須</span><span class="charcount" id="cc">0 字</span></label>
+      <textarea id="estext" rows="9" placeholder="診断したいESの本文をそのまま貼り付けてください。&#10;&#10;※下書き・書きかけでもOK。むしろ「これでいいのか不安」な段階での診断がおすすめです。" oninput="updateCount();autoSave()"></textarea>
+      <div class="hint">💡 <b>まだ書けていない</b>人は、思いつくままの箇条書きでも大丈夫。診断で"問い"をもらってから書き始めるのも有効です。</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">診断の厳しさ</label>
+      <div class="seg">
+        <label><input type="radio" name="sev" value="soft" onchange="autoSave()"><span>やさしめ<small>励まし多め</small></span></label>
+        <label><input type="radio" name="sev" value="std" checked onchange="autoSave()"><span>標準<small>おすすめ</small></span></label>
+        <label><input type="radio" name="sev" value="hard" onchange="autoSave()"><span>辛口<small>採用担当目線</small></span></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">出力に含める内容</label>
+      <div class="opts" id="opts">
+        <div class="opt-group g1"><span class="pill">まず出る</span>指摘と問いかけ（ここで一旦止まります）</div>
+        <label class="opt-item on"><input type="checkbox" data-k="score" checked onchange="syncOpt(this);autoSave()"><span><span class="ot">🍬 金太郎飴度スコア＆論理性の評価</span><span class="od">独自性を100点満点で採点＋論理構成（主張・根拠・具体の整合）を的確に判定</span></span></label>
+        <label class="opt-item on"><input type="checkbox" data-k="generic" checked onchange="syncOpt(this);autoSave()"><span><span class="ot">🔍 弱い箇所の指摘</span><span class="od">"誰でも書ける・論理が甘い"箇所を実際に引用し、なぜ弱いのかを根拠つきで説明</span></span></label>
+        <label class="opt-item on"><input type="checkbox" data-k="why" checked onchange="syncOpt(this);autoSave()"><span><span class="ot">❓ 考えさせる問いかけ（回答サンプル例つき）</span><span class="od">WHY・具体を引き出す問い。答え方の例（選択肢2〜3個）を添えるので、選ぶだけ・一言でもOK</span></span></label>
+        <div class="opt-group g2"><span class="pill">答えたら出る</span>あなたの回答を踏まえてから提示</div>
+        <label class="opt-item on"><input type="checkbox" data-k="advice" checked onchange="syncOpt(this);autoSave()"><span><span class="ot">💡 改善アドバイス（では、どう直すか）</span><span class="od">抽象論で終わらせず「こう直す」具体策（足すべき数字・場面・論理）を提示</span></span></label>
+        <label class="opt-item on"><input type="checkbox" data-k="rewrite" checked onchange="syncOpt(this);autoSave()"><span><span class="ot">✏️ 修正版ES（ビフォー→アフター）</span><span class="od">回答を反映した"こう書ける"完成例＋想定スコア。最後は自分の言葉で仕上げる前提</span></span></label>
+      </div>
+      <div class="hint" style="margin-top:8px;">🔒 「答えたら出る」項目は、<b>あなたが問いに一言でも答えるまで表示されません</b>（AIが代わりに書いてしまわないための設計です）。</div>
+    </div>
+
+    <button class="btn-generate" onclick="generate()">🍬 診断プロンプトを生成する</button>
+  </div>
+
+  <div class="card" id="output">
+    <div class="card-title">生成されたプロンプト</div>
+    <div class="prompt-box" id="promptBox"></div>
+    <div class="btn-row">
+      <button class="btn-copy" id="copyBtn" onclick="copyPrompt()">📋 プロンプトをコピーする</button>
+      <button class="btn-clear" onclick="clearOutput()">🗑️ 消す</button>
+    </div>
+    <div class="howto">
+      <h3>🚀 次のステップ</h3>
+      <ol>
+        <li>上の「コピーする」を押す</li>
+        <li><a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> を開く（無料アカウントでOK）</li>
+        <li>チャット欄に貼り付けて送信</li>
+        <li>診断結果と<b>深掘りの問い</b>が返ってきます</li>
+        <li>問いに自分の言葉で答えて、ESを磨き直そう✏️</li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    答えは、代わりに作る文章の中ではなく、<br><span class="mark">🌳 君自身の中にある。</span><br><br>
+    就活の木 ｜ Produced by キャリ爺 北山四郎
+  </footer>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+function v(id){ const e=$(id); return e ? e.value.trim() : ''; }
+
+function updateCount(){
+  const n = ($('estext').value || '').length;
+  $('cc').textContent = n.toLocaleString() + ' 字';
+}
+function syncOpt(cb){ cb.closest('.opt-item').classList.toggle('on', cb.checked); }
+
+function getSeverity(){
+  const s = (document.querySelector('input[name="sev"]:checked')||{}).value || 'std';
+  if(s==='soft') return '【やさしめ】まず良い点を具体的に褒めてから、最も重要な指摘を2〜3点に絞って、学生が前向きになれる言葉で伝えてください。';
+  if(s==='hard') return '【辛口】何千枚もESを読んできた採用担当者の視点で、遠慮なく診断してください。ありがちな表現・通用しない箇所は容赦なく指摘してかまいません。ただし人格否定はせず、必ず「どう直せばよいか」まで示してください。';
+  return '【標準】良い点と課題をバランスよく、忖度なく、しかし建設的に伝えてください。';
+}
+
+function checked(k){ return document.querySelector('input[data-k="'+k+'"]').checked; }
+
+function generate(){
+  const es = v('estext');
+  if(!es){ alert('ESの本文を入力してください🌳'); $('estext').focus(); return; }
+
+  const q = v('question'), len = v('length'), company = v('company');
+
+  const wantS2 = checked('advice') || checked('rewrite'); // 修正版/アドバイス＝ゲート対象（回答後）
+  const askQ  = checked('why') || wantS2;                 // ゲート成立には問いかけ必須
+
+  let p = '# エントリーシートの独自性・論理 診断（対話で進めてください）\n\n';
+  p += 'あなたは、何千枚ものエントリーシートを読んできた採用担当者であり、就活のプロコーチです。\n';
+  p += '以下のESが「誰でも書ける・AIが作ったような"金太郎飴"の文章」になっていないかを、感覚ではなく論理的に的確に診断してください。\n\n';
+
+  if(wantS2){
+    p += '## 【進行ルール｜最重要・厳守】\n';
+    p += '- これは対話型の添削です。1回の返信で全部を書かないでください。\n';
+    p += '- 【第1ステップ】まず「指摘」と「問いかけ」だけを出力し、そこで必ず一旦停止してください。\n';
+    p += '- 各問いかけには必ず "回答サンプル例（選択肢2〜3個）" を添えてください。\n';
+    p += '  ・サンプルは「答え方の型」を示す短い例に留め、完成文章にはしないこと。\n';
+    p += '  ・そのESの内容に即して具体化し、汎用の穴埋めにしないこと。\n';
+    p += '  ・「この中に近いものはある？ 別のことをした？ 自由に書いてもOK」と、選択と自由記述の両方を促すこと。\n';
+    p += '- 学生から一言でも回答をもらうまで、修正版ES（ビフォー→アフター）や完成文の書き直しは絶対に書かないでください。先回りして代筆しないこと。\n';
+    p += '- 学生の回答が「番号だけ／一言」で具体が薄い場合は、すぐ修正版に進まず、その回答に対して"もう一段だけ"具体を尋ねてください（例：「先生に相談したんですね。何を聞きましたか？」）。ただし深掘りは1往復までとし、それ以上は催促しないこと。\n';
+    p += '- 1往復したら、得られた範囲の情報を最大限に活かして修正版を作ってください（情報が薄くても、そこまでの回答を活かして生成すること）。\n';
+    p += '- サンプル例はあくまで"答え方の型"の提示であり、学生の実体験に基づく回答を最優先してください。\n';
+    p += '- 学生が答えない・急かしても、修正版は出さず、やさしく回答を促してください。\n\n';
+  }
+
+  p += '## 【診断対象のES】\n';
+  if(q)   p += '- 設問：' + q + '\n';
+  if(len) p += '- 文字数の目安：' + len + '\n';
+  p += '- 応募企業：' + (company ? company : '（特定の企業は指定なし。特定企業に依存しない、汎用的な観点で診断してください）') + '\n';
+  p += '\n**【本文】**\n' + es + '\n\n';
+
+  p += '## 【診断のスタンス】\n' + getSeverity() + '\n\n';
+
+  p += (wantS2 ? '## 【第1ステップで出す内容｜ここまで出したら一旦停止】\n' : '## 【出力してほしい内容】\n');
+  let i = 0;
+  if(checked('score')){
+    i++; p += i + '. **🍬 金太郎飴度スコア＆論理性の評価**：まず独自性を100点満点で採点（＝ビフォー点数）し、その理由を述べてください。あわせて「他の就活生の何割が似たことを書きそうか」を推定し、論理構成（主張→理由→具体→結果→学びの流れに飛躍・矛盾がないか、結論ファーストか、抽象と具体のバランス）を論理的に的確に評価してください。\n';
+  }
+  if(checked('generic')){
+    i++; p += i + '. **🔍 弱い箇所の指摘**：本文から"誰でも書ける・論理が甘い"箇所を**実際に引用**し、それぞれがなぜ弱いのか（没個性なのか／論理が飛躍しているのか）を根拠とともに説明してください。\n';
+  }
+  if(askQ){
+    i++; p += i + '. **❓ 考えさせる問いかけ（回答サンプル例つき）**：本人の"なぜ"と具体を引き出す問いを投げてください。各問いは必ず次の形式で出してください。\n';
+    p += '   ❓ 問いかけ本文\n';
+    p += '   💬 ①（答え方の型の例） ②（型の例） ③（型の例）\n';
+    p += '   ✏️ この中に近いものはある？ 別のことをした？ 自由に書いてもOKです。\n';
+    if(wantS2) p += '   → すべての問いを出し終えたら「この問いに一言でも答えてください。答えをもらえたら、それを踏まえた修正版を作ります」と伝えて、ここで停止してください。\n';
+  }
+
+  if(wantS2){
+    p += '\n## 【第2ステップ｜学生の回答を受け取ってから実行】\n';
+    p += '（※回答が薄ければ具体を1往復だけ深掘りしてから、以下を出す）\n';
+    let j = i;
+    if(checked('advice')){
+      j++; p += j + '. **💡 回答を踏まえた改善アドバイス**：学生の回答をもとに、抽象論ではなく「こう直す」という具体的な打ち手を示してください（足すべき数字・固有名詞・場面・感情、補強すべき論理のつながり）。\n';
+    }
+    if(checked('rewrite')){
+      j++; p += j + '. **✏️ 回答を踏まえた修正版ES（ビフォー→アフター）**：学生の回答（その言葉と事実）を最大限に活かし、「あなたの回答を踏まえるとこう書ける」という形で、設問・文字数に合わせた修正版を作成してください。修正版の前に〈想定スコア（アフター点数）〉と〈ビフォーから良くなった点〉を簡潔に添え、修正版の最後に必ず「これは到達イメージの一例です。ここで使った具体はあなた自身の事実に置き換え、最終的にはあなたの言葉で仕上げてください」と明記してください。\n';
+    }
+  }
+
+  if(i===0 && !wantS2){ p += '（※出力内容が選ばれていません。総合的に診断してください。）\n'; }
+
+  p += '\n## 【お願い】\n';
+  p += '- 就活生に寄り添う、あたたかい口調で。とくに言葉にするのが苦手な学生を置いていかないこと。\n';
+  p += '- 指摘は「ダメ出し」で終わらせず、必ず次の一歩がわかるようにしてください。\n\n';
+  p += '答えは、君の中にある。🌳';
+
+  $('promptBox').textContent = p;
+  const out = $('output');
+  out.style.display = 'block';
+  out.style.animation = 'fadeUp .4s ease';
+  out.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function copyPrompt(){
+  const txt = $('promptBox').textContent;
+  navigator.clipboard.writeText(txt).then(function(){
+    const b = $('copyBtn'); const o = b.textContent;
+    b.textContent = '✅ コピーしました！';
+    setTimeout(function(){ b.textContent = o; }, 1600);
+  }).catch(function(){
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); alert('コピーしました！'); }catch(e){ alert('コピーに失敗しました。手動で選択してコピーしてください。'); }
+    document.body.removeChild(ta);
+  });
+}
+
+function clearOutput(){
+  $('output').style.display = 'none';
+  $('promptBox').textContent = '';
+}
+
+const KEY = 'kintaroame_checker_v2';
+function autoSave(){
+  try{
+    const data = {
+      question:v('question'), length:v('length'), company:v('company'), estext:$('estext').value,
+      sev:(document.querySelector('input[name="sev"]:checked')||{}).value||'std',
+      opts:[].map.call(document.querySelectorAll('#opts input[type="checkbox"]'), function(c){return c.checked;})
+    };
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }catch(e){}
+}
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem(KEY)||'null');
+    if(!d) return;
+    if(d.question) $('question').value=d.question;
+    if(d.length) $('length').value=d.length;
+    if(d.company) $('company').value=d.company;
+    if(d.estext) $('estext').value=d.estext;
+    if(d.sev){ const r=document.querySelector('input[name="sev"][value="'+d.sev+'"]'); if(r) r.checked=true; }
+    if(Array.isArray(d.opts)){
+      const boxes=[].slice.call(document.querySelectorAll('#opts input[type="checkbox"]'));
+      d.opts.forEach(function(ch,idx){ if(boxes[idx]){ boxes[idx].checked=ch; syncOpt(boxes[idx]); } });
+    }
+  }catch(e){}
+}
+load();
+updateCount();
+</script>
+</body>
+</html>
