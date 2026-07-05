@@ -170,6 +170,80 @@ footer{text-align:center; font-size:11px; color:var(--muted); margin-top:22px;}
 }
 .preview-btn:hover{background:var(--stage-c); color:#fff;}
 
+/* ---- step jump icons（操作箇所へジャンプ）---- */
+.step-jumps{margin-top:16px; padding-top:15px; border-top:1px dashed var(--stage-br);}
+.step-jumps-label{
+  font-size:11px; font-weight:700; color:var(--stage-c);
+  margin-bottom:11px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+}
+.step-jumps-label span{font-weight:400; color:var(--muted); font-size:10px;}
+.step-jumps-row{display:flex; align-items:flex-start; gap:2px; flex-wrap:nowrap; overflow-x:auto; padding:22px 0 4px;}
+.step-jump{
+  flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:6px;
+  background:none; border:none; cursor:pointer; padding:2px 2px 4px; width:78px; text-align:center;
+  font-family:'Noto Sans JP',sans-serif;
+}
+.step-jump-num{
+  width:36px; height:36px; border-radius:50%; background:#fff;
+  border:2px solid var(--stage-c); color:var(--stage-c);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; font-weight:900; transition:all .15s;
+  box-shadow:0 2px 7px rgba(45,107,74,.16);
+}
+.step-jump:hover .step-jump-num{background:var(--stage-c); color:#fff; transform:translateY(-2px); box-shadow:0 5px 12px rgba(45,107,74,.28);}
+.step-jump:active .step-jump-num{transform:translateY(0);}
+.step-jump-txt{font-size:9.5px; line-height:1.4; color:var(--text); font-weight:600;}
+.step-jump-arrow{flex:0 0 auto; align-self:flex-start; margin-top:9px; color:var(--stage-c); font-size:12px; font-weight:900;}
+.step-jump{position:relative;}
+.step-jump-num{position:relative;}
+/* 進捗テキスト & リセット */
+.step-progress{font-weight:900; color:var(--stage-c); font-size:11px; background:var(--stage-tint); padding:2px 9px; border-radius:999px;}
+.step-reset{
+  margin-left:auto; background:none; border:1px solid var(--stage-br); color:var(--muted);
+  font-size:9.5px; font-weight:700; padding:3px 9px; border-radius:999px; cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif; transition:all .15s;
+}
+.step-reset:hover{background:var(--stage-tint); color:var(--stage-c); border-color:var(--stage-c);}
+/* ① 済 */
+.step-jump.done .step-jump-num{background:var(--stage-c); color:#fff; border-color:var(--stage-c); box-shadow:0 2px 6px rgba(45,107,74,.18);}
+.step-jump.done .step-jump-num::after{
+  content:'✓'; position:absolute; right:-4px; top:-4px; width:16px; height:16px;
+  background:#fff; color:var(--stage-c); border:1.5px solid var(--stage-c); border-radius:50%;
+  font-size:9px; font-weight:900; display:flex; align-items:center; justify-content:center;
+}
+.step-jump.done .step-jump-txt{color:var(--stage-c);}
+/* ② 現在（光る）＋「次はここ」ラベル */
+.step-jump.current .step-jump-num{border-color:var(--stage-c); color:var(--stage-c); background:var(--stage-tint); animation:stepPulse 1.3s ease-in-out infinite;}
+.step-jump.current .step-jump-txt{font-weight:900; color:var(--stage-c);}
+.step-jump.current::before{
+  content:'👉 次はここ'; position:absolute; top:-20px; left:50%; transform:translateX(-50%);
+  background:var(--stage-c); color:#fff; font-size:8.5px; font-weight:700; letter-spacing:.02em;
+  padding:2px 8px; border-radius:999px; white-space:nowrap; z-index:3;
+  animation:nextBob 1s ease-in-out infinite; box-shadow:0 2px 5px rgba(0,0,0,.15);
+}
+@keyframes stepPulse{
+  0%{box-shadow:0 0 0 0 rgba(45,107,74,.55), 0 2px 7px rgba(45,107,74,.18);}
+  70%{box-shadow:0 0 0 9px rgba(45,107,74,0), 0 2px 12px rgba(45,107,74,.32);}
+  100%{box-shadow:0 0 0 0 rgba(45,107,74,0), 0 2px 7px rgba(45,107,74,.18);}
+}
+@keyframes nextBob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,-3px);}}
+/* ③ 未来（これから）*/
+.step-jump.upcoming{opacity:.5;}
+.step-jump.upcoming .step-jump-num{border-color:var(--stage-br); color:var(--muted); box-shadow:none;}
+/* 矢印：通過済みは濃く、未通過は淡く */
+.step-jump-arrow{opacity:.35; transition:opacity .2s;}
+.step-jump-arrow.passed{opacity:1;}
+/* 全ステップ完了 */
+.step-jumps.all-done .step-progress{background:var(--stage-c); color:#fff;}
+@media (prefers-reduced-motion: reduce){
+  .step-jump.current .step-jump-num{animation:none; box-shadow:0 0 0 3px rgba(45,107,74,.4);}
+  .step-jump.current::before{animation:none;}
+}
+@media (max-width:600px){
+  .step-jump{width:66px;}
+  .step-jump-num{width:32px; height:32px; font-size:14px;}
+}
+
 .preview-overlay{
   display:none; position:fixed; inset:0; background:rgba(20,40,30,.65);
   z-index:200; align-items:center; justify-content:center; padding:24px;
@@ -237,6 +311,26 @@ footer{text-align:center; font-size:11px; color:var(--muted); margin-top:22px;}
         </div>
 
         <div class="stage-tip">💡 企業研究タブは飛ばしてOK。まずは最短ルートで「使える」ことを体感するのが目的です。</div>
+
+        <div class="step-jumps" data-stage="s1">
+          <div class="step-jumps-label">
+            🧭 操作の手順（順番に案内します）
+            <span class="step-progress"></span>
+            <button class="step-reset" onclick="resetSteps('s1')" title="最初からやり直す">↺ 最初から</button>
+          </div>
+          <div class="step-jumps-row">
+            <button class="step-jump" data-idx="1" data-key="s1-1" onclick="onStepClick(this)"><div class="step-jump-num">1</div><div class="step-jump-txt">ES対策タブを開く</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="2" data-key="s1-2" onclick="onStepClick(this)"><div class="step-jump-num">2</div><div class="step-jump-txt">設問を入力</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="3" data-key="s1-3" onclick="onStepClick(this)"><div class="step-jump-num">3</div><div class="step-jump-txt">ネタを入力</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="4" data-key="s1-4" onclick="onStepClick(this)"><div class="step-jump-num">4</div><div class="step-jump-txt">プロンプト生成</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="5" data-key="s1-5" onclick="onStepClick(this)"><div class="step-jump-num">5</div><div class="step-jump-txt">コピーする</div></button>
+          </div>
+        </div>
+
         <button class="preview-btn" onclick="openPreview('solo','🌱 基礎編：ES対策タブ・作成モードの画面')">🖼 実際の画面を見る</button>
       </div>
     </div>
@@ -262,6 +356,26 @@ footer{text-align:center; font-size:11px; color:var(--muted); margin-top:22px;}
         </div>
 
         <div class="stage-tip">💡 企業研究の内容を土台にすることで、その企業の価値観に合ったESが生成されやすくなります。</div>
+
+        <div class="step-jumps" data-stage="s2">
+          <div class="step-jumps-label">
+            🧭 操作の手順（順番に案内します）
+            <span class="step-progress"></span>
+            <button class="step-reset" onclick="resetSteps('s2')" title="最初からやり直す">↺ 最初から</button>
+          </div>
+          <div class="step-jumps-row">
+            <button class="step-jump" data-idx="1" data-key="s2-1" onclick="onStepClick(this)"><div class="step-jump-num">1</div><div class="step-jump-txt">企業研究を入力</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="2" data-key="s2-2" onclick="onStepClick(this)"><div class="step-jump-num">2</div><div class="step-jump-txt">生成→コピー</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="3" data-key="s2-3" onclick="onStepClick(this)"><div class="step-jump-num">3</div><div class="step-jump-txt">ES対策タブに貼付</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="4" data-key="s2-4" onclick="onStepClick(this)"><div class="step-jump-num">4</div><div class="step-jump-txt">設問を入力</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="5" data-key="s2-5" onclick="onStepClick(this)"><div class="step-jump-num">5</div><div class="step-jump-txt">生成→コピー</div></button>
+          </div>
+        </div>
+
         <button class="preview-btn" onclick="openPreview('company','🌿 標準編：企業研究タブの画面')">🖼 実際の画面を見る</button>
       </div>
     </div>
@@ -292,6 +406,22 @@ footer{text-align:center; font-size:11px; color:var(--muted); margin-top:22px;}
         </div>
 
         <div class="stage-tip">💡 同じ設問でも進捗状況に応じてモードを使い分ければ、何度でも磨き直せます。応募企業ごとの使い回しにも便利です。</div>
+
+        <div class="step-jumps" data-stage="s3">
+          <div class="step-jumps-label">
+            🧭 モードを順番に体験 <span>（3モードを切替）</span>
+            <span class="step-progress"></span>
+            <button class="step-reset" onclick="resetSteps('s3')" title="最初からやり直す">↺ 最初から</button>
+          </div>
+          <div class="step-jumps-row">
+            <button class="step-jump" data-idx="1" data-key="s3-1" onclick="onStepClick(this)"><div class="step-jump-num">1</div><div class="step-jump-txt">✏️ 添削モード</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="2" data-key="s3-2" onclick="onStepClick(this)"><div class="step-jump-num">2</div><div class="step-jump-txt">🌱 作成モード</div></button>
+            <div class="step-jump-arrow">▶</div>
+            <button class="step-jump" data-idx="3" data-key="s3-3" onclick="onStepClick(this)"><div class="step-jump-num">3</div><div class="step-jump-txt">🔀 改善モード</div></button>
+          </div>
+        </div>
+
         <button class="preview-btn" onclick="openPreview('routes','🌳 応用編：添削・作成・改善の3モード切替画面')">🖼 実際の画面を見る</button>
       </div>
     </div>
@@ -366,6 +496,82 @@ function closePreview(){
   document.getElementById('previewOverlay').classList.remove('open');
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closePreview(); });
+
+// 手順アイコン → 実際のツール画面（es-prompt-generator.html）の該当箇所へジャンプ
+// 同一の名前付きタブ 'shukatsu-tool' を再利用（ハッシュのみ変更でリロードなし）
+function jumpToTool(key){
+  // nonce を付けて、同じステップの再クリックでも必ず hashchange を発火させる
+  const w = window.open('es-prompt-generator.html#jump=' + key + '&n=' + Date.now(), 'shukatsu-tool');
+  if (w) { try { w.focus(); } catch(e){} }
+}
+
+/* ============ 手順アイコンの順番案内（進行状態管理） ============ */
+// STEP_CUR[stage] = 次に行う（＝現在光っている）ステップ番号(1始まり)。それ未満は「済」。
+const STEP_CUR = {};
+
+function stepTotal(stage){
+  return document.querySelectorAll('.step-jumps[data-stage="'+stage+'"] .step-jump').length;
+}
+
+function renderSteps(stage){
+  const box = document.querySelector('.step-jumps[data-stage="'+stage+'"]');
+  if(!box) return;
+  const cur = STEP_CUR[stage];
+  const total = stepTotal(stage);
+  box.querySelectorAll('.step-jump').forEach(btn=>{
+    const idx = parseInt(btn.dataset.idx,10);
+    btn.classList.remove('done','current','upcoming');
+    if(idx < cur)      btn.classList.add('done');
+    else if(idx===cur) btn.classList.add('current');
+    else               btn.classList.add('upcoming');
+  });
+  // 矢印：左側のステップが済なら濃く
+  box.querySelectorAll('.step-jump-arrow').forEach((ar,i)=>{
+    ar.classList.toggle('passed', (i+1) < cur);
+  });
+  // 進捗表示
+  const prog = box.querySelector('.step-progress');
+  if(prog) prog.textContent = (cur>total) ? ('✓ 完了 '+total+'/'+total) : ('ステップ '+cur+' / '+total);
+  box.classList.toggle('all-done', cur>total);
+}
+
+function saveStep(stage){
+  try{ localStorage.setItem('shukatsu_step_'+stage, String(STEP_CUR[stage])); }catch(e){}
+}
+
+function onStepClick(btn){
+  const box = btn.closest('.step-jumps');
+  const stage = box.dataset.stage;
+  const idx = parseInt(btn.dataset.idx,10);
+  // 実ツールへジャンプ
+  jumpToTool(btn.dataset.key);
+  // 進行：クリックしたstep までを「済」にし、次を「現在（光る）」へ
+  STEP_CUR[stage] = Math.max(STEP_CUR[stage]||1, idx+1);
+  saveStep(stage);
+  renderSteps(stage);
+}
+
+function resetSteps(stage){
+  STEP_CUR[stage] = 1;
+  saveStep(stage);
+  renderSteps(stage);
+}
+
+function initSteps(){
+  document.querySelectorAll('.step-jumps').forEach(box=>{
+    const stage = box.dataset.stage;
+    let saved = 1;
+    try{ saved = parseInt(localStorage.getItem('shukatsu_step_'+stage)||'1',10); }catch(e){}
+    STEP_CUR[stage] = (isNaN(saved)||saved<1) ? 1 : saved;
+    renderSteps(stage);
+  });
+}
+// スクリプトは </body> 直前にあるため通常は即時実行で確実に初期化される
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initSteps);
+} else {
+  initSteps();
+}
 </script>
 </body>
 </html>

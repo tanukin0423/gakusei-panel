@@ -219,6 +219,14 @@ select option{background:#fff;color:#2d4a38;}
 .field-flash{display:none;margin-left:5px;font-size:12px;animation:flashPulse 1.1s ease-in-out infinite;}
 .field-flash.show{display:inline-block;}
 @keyframes flashPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(1.35);}}
+/* ガイドの手順アイコンからのジャンプ時ハイライト */
+.jump-highlight{animation:jumpGlow 1.1s ease-out 2;border-radius:10px;position:relative;z-index:5;scroll-margin-top:90px;}
+@keyframes jumpGlow{
+  /* 白い隙間リング＋緑リングで、緑/青ボタンなど背景色を問わず必ず見えるようにする */
+  0%{box-shadow:0 0 0 0 rgba(255,255,255,0),0 0 0 0 rgba(45,107,74,0),0 0 0 0 rgba(45,107,74,0);}
+  25%{box-shadow:0 0 0 3px #fff,0 0 0 7px rgba(45,107,74,.95),0 0 22px 9px rgba(45,107,74,.5);}
+  100%{box-shadow:0 0 0 3px rgba(255,255,255,0),0 0 0 7px rgba(45,107,74,0),0 0 0 0 rgba(45,107,74,0);}
+}
 .tpl-must-note{font-size:10.5px;line-height:1.7;color:#a05a10;background:#fff3e0;border:1px solid #f0c080;border-radius:8px;padding:8px 11px;margin-bottom:10px;}
 .tpl-must-note strong{color:#c0410f;}
 .tpl-star{font-size:9px;font-weight:900;}
@@ -474,7 +482,7 @@ footer span{color:var(--gold);}
         <label class="form-label">自由メモ<span class="badge opt">任意</span></label>
         <textarea id="t1_memo" rows="3" placeholder="気になること・聞きたいことなど" oninput="autoSave()"></textarea>
       </div>
-      <button class="btn-generate green" onclick="generateTab1()">🌱 企業研究プロンプトを生成する</button>
+      <button class="btn-generate green" id="t1_genBtn" onclick="generateTab1()">🌱 企業研究プロンプトを生成する</button>
     </div>
     <div class="output-section" id="t1_output">
       <div class="card green">
@@ -579,8 +587,9 @@ footer span{color:var(--gold);}
       <div class="card blue blue-form">
         <div class="card-title">企業研究・事前準備の内容を貼り付け</div>
         <div class="form-group">
-          <label class="form-label blue-label">企業名<span class="badge req">必須</span><span class="field-flash" id="flash_t2_company">👉</span></label>
-          <input type="text" id="t2_company" placeholder="例：株式会社〇〇" oninput="updateT2Flashes();autoSave()">
+          <label class="form-label blue-label">企業名<span class="badge opt">任意</span></label>
+          <input type="text" id="t2_company" placeholder="例：株式会社〇〇（決まっていなければ空欄でOK）" oninput="updateT2Flashes();autoSave()">
+          <div class="hint blue">応募の企業名が決まっていれば入力してください。<b>空欄でもESは作成できます</b>👌</div>
         </div>
         <div class="form-group">
           <label class="form-label blue-label">企業研究・Claudeの回答内容<span class="badge opt">任意</span></label>
@@ -611,7 +620,7 @@ footer span{color:var(--gold);}
       <div class="card blue">
         <div class="card-title">ESプロンプトを生成する</div>
         <p style="font-size:12px;color:var(--blue-deep);margin-bottom:14px;">入力した全設問をまとめてプロンプトに変換します。</p>
-        <button class="btn-generate blue" onclick="generateTab2()">📝 ESプロンプトを生成する</button>
+        <button class="btn-generate blue" id="t2_genBtn" onclick="generateTab2()">📝 ESプロンプトを生成する</button>
         <div class="nav-row" style="margin-top:12px;">
           <button class="btn-nav" onclick="switchSubTab('stab2',document.getElementById('stab2_btn'))">◀ ES作成・添削へ戻る</button>
         </div>
@@ -1551,7 +1560,7 @@ function updateT1Flashes(){
   setFlash('flash_t1_course', !(v('t1_course_txt')||v('t1_course_sel')));
 }
 function updateT2Flashes(){
-  setFlash('flash_t2_company', !v('t2_company'));
+  // 企業名は任意入力のため、未入力フラッシュ（👉）は表示しない
 }
 function collectBlocks() {
   const result=[];
@@ -1790,11 +1799,16 @@ function generateTab1() {
 // =========== TAB2 生成 ===========
 function generateTab2() {
   const company=v('t2_company'); const research=v('t2_research');
-  if(!company){ alert('企業研究タブで企業名を入力してください🌿'); switchSubTab('stab1',document.getElementById('stab1_btn')); return; }
+  // 企業名は任意。空欄でもES作成を進められる（設問だけは必須）
   const blocks=collectBlocks();
   if(blocks.length===0||!blocks[0].q){ alert('ES作成・添削タブで設問を入力してください🌿'); switchSubTab('stab2',document.getElementById('stab2_btn')); return; }
 
-  let p=`# エントリーシート作成のお願い\n\n以下の情報をもとに、${company}のエントリーシートを作成してください。\n\n## 【企業名】\n${company}`;
+  let p=`# エントリーシート作成のお願い\n\n`;
+  if(company){
+    p+=`以下の情報をもとに、${company}のエントリーシートを作成してください。\n\n## 【企業名】\n${company}`;
+  } else {
+    p+=`以下の情報をもとに、エントリーシートを作成してください。\n\n## 【企業名】\n（特定の企業は指定なし。特定企業に依存しない、どの企業にも応用しやすい汎用的な内容で作成してください）`;
+  }
   if(research) p+=`\n\n## 【企業研究・事前準備の情報】\n以下を参考に、企業の価値観や求める人物像に合ったESを作成してください。\n\n${research}`;
   p+=`\n\n## 【ES設問一覧】`;
   blocks.forEach((b,i)=>{
@@ -1822,7 +1836,7 @@ function generateTab2() {
         p+=`\n\n**【６段論法による補足情報】**`;
         rd3.forEach((r,j)=>{ if(r) p+=`\n${rdLabels[j]}：${r}`; });
       }
-      p+=`\n\n**【改善の依頼】**\n作成済みESをベースに、補足情報を活かして「${targetCompany}」が求める人物像に合わせて改善してください。文字数を厳守してください。`;
+      p+=`\n\n**【改善の依頼】**\n作成済みESをベースに、補足情報を活かして` + (targetCompany ? `「${targetCompany}」が求める人物像に合わせて` : `より説得力が増すように`) + `改善してください。文字数を厳守してください。`;
 
     } else {
       // 作成モード（デフォルト）
@@ -1900,19 +1914,131 @@ function restoreData(data) {
   }
 }
 
-// =========== ハブページからの入口リンク対応（#company / #solo / #create / #tensaku / #kaizen）===========
+// =========== 要素を一時ハイライトしてスクロール ===========
+function jumpHighlightEl(el) {
+  if (!el) return;
+  // 非表示要素なら、表示されている祖先まで遡ってそこを対象にする
+  let vis = el;
+  while (vis && vis.offsetParent === null && vis.parentElement) vis = vis.parentElement;
+  vis = vis || el;
+  vis.scrollIntoView({behavior:'smooth', block:'center'});
+  vis.classList.remove('jump-highlight');
+  void vis.offsetWidth;            // アニメーション再生をリセット
+  vis.classList.add('jump-highlight');
+  setTimeout(() => vis.classList.remove('jump-highlight'), 2600);
+}
+function jumpHighlight(id) { jumpHighlightEl(document.getElementById(id)); }
+
+// =========== ガイドの手順アイコンからのジャンプ（#jump=xxx）===========
+function handleJump(key, ctx) {
+  const { mtab1Btn, mtab2Btn, stab1Btn, stab2Btn, stab3Btn, ensureBlockAndRoute } = ctx;
+  const after = (fn) => setTimeout(fn, 520);   // タブ切替の自動スクロール後にハイライト
+  switch (key) {
+    /* ---- 🌱 基礎編（作成モード）---- */
+    case 's1-1':  // ES対策タブを開く
+      switchMainTab('mtab2', mtab2Btn);
+      after(() => jumpHighlightEl(mtab2Btn));
+      break;
+    case 's1-2': { // 設問を入力
+      switchMainTab('mtab2', mtab2Btn);
+      const id = ensureBlockAndRoute(2);
+      switchSubTab('stab2', stab2Btn);
+      after(() => jumpHighlight('acc_q_txt_' + id));
+      break;
+    }
+    case 's1-3': { // ネタ（六段論法）を入力
+      switchMainTab('mtab2', mtab2Btn);
+      const id = ensureBlockAndRoute(2);
+      switchSubTab('stab2', stab2Btn);
+      after(() => jumpHighlight('acc_n_txt_' + id));
+      break;
+    }
+    case 's1-4':  // プロンプト生成
+      switchMainTab('mtab2', mtab2Btn);
+      switchSubTab('stab3', stab3Btn);
+      after(() => jumpHighlight('t2_genBtn'));
+      break;
+    case 's1-5':  // プロンプトをコピー
+      switchMainTab('mtab2', mtab2Btn);
+      switchSubTab('stab3', stab3Btn);
+      after(() => jumpHighlightEl(document.getElementById('t2_copyBtn') || document.getElementById('t2_genBtn')));
+      break;
+
+    /* ---- 🌿 標準編 ---- */
+    case 's2-1':  // 企業研究タブで情報を入力
+      switchMainTab('mtab1', mtab1Btn);
+      after(() => jumpHighlight('t1_company'));
+      break;
+    case 's2-2':  // 企業研究プロンプト生成→コピー
+      switchMainTab('mtab1', mtab1Btn);
+      after(() => jumpHighlight('t1_genBtn'));
+      break;
+    case 's2-3':  // 結果をES対策タブに貼付け
+      switchMainTab('mtab2', mtab2Btn);
+      switchSubTab('stab1', stab1Btn);
+      after(() => jumpHighlight('t2_research'));
+      break;
+    case 's2-4': { // 設問ごとに入力
+      switchMainTab('mtab2', mtab2Btn);
+      const id = ensureBlockAndRoute(2);
+      switchSubTab('stab2', stab2Btn);
+      after(() => jumpHighlight('acc_q_txt_' + id));
+      break;
+    }
+    case 's2-5':  // ESプロンプト生成→コピー
+      switchMainTab('mtab2', mtab2Btn);
+      switchSubTab('stab3', stab3Btn);
+      after(() => jumpHighlight('t2_genBtn'));
+      break;
+
+    /* ---- 🌳 応用編（3モード切替）---- */
+    case 's3-1': { // 添削モード
+      switchMainTab('mtab2', mtab2Btn);
+      const id = ensureBlockAndRoute(1);
+      switchSubTab('stab2', stab2Btn);
+      after(() => jumpHighlight('rtab1_' + id));
+      break;
+    }
+    case 's3-2': { // 作成モード
+      switchMainTab('mtab2', mtab2Btn);
+      const id = ensureBlockAndRoute(2);
+      switchSubTab('stab2', stab2Btn);
+      after(() => jumpHighlight('rtab2_' + id));
+      break;
+    }
+    case 's3-3': { // 改善モード
+      switchMainTab('mtab2', mtab2Btn);
+      const id = ensureBlockAndRoute(3);
+      switchSubTab('stab2', stab2Btn);
+      after(() => jumpHighlight('rtab3_' + id));
+      break;
+    }
+  }
+}
+
+// =========== ハブページ／ガイドからの入口リンク対応 ===========
+// （#company / #solo / #create / #tensaku / #kaizen / #jump=xxx）
 function handleEntryHash() {
   const h = (location.hash || '').replace('#','');
   if (!h) return;
   const mtab1Btn = document.querySelector('.main-tab-btn.t1');
   const mtab2Btn = document.querySelector('.main-tab-btn.t2');
+  const stab1Btn = document.getElementById('stab1_btn');
   const stab2Btn = document.getElementById('stab2_btn');
+  const stab3Btn = document.getElementById('stab3_btn');
 
   function ensureBlockAndRoute(routeNum) {
     if (accCount === 0) addAccBlock();
     const id = accCount;
     if (routeNum) switchRoute(id, routeNum);
     return id;
+  }
+
+  // ガイドの手順アイコンからのジャンプ（#jump=xxx&n=... の nonce を除去）
+  if (h.startsWith('jump=')) {
+    const key = h.slice(5).split('&')[0];
+    handleJump(key, { mtab1Btn, mtab2Btn, stab1Btn, stab2Btn, stab3Btn, ensureBlockAndRoute });
+    return;
   }
 
   if (h === 'company') {
@@ -1932,6 +2058,8 @@ function handleEntryHash() {
 
 // 起動時に復元
 window.addEventListener('load', () => { loadSave(); updateT1Flashes(); updateT2Flashes(); handleEntryHash(); });
+// 既に開いているタブへ再ジャンプ（ハッシュのみ変更→リロードなし）
+window.addEventListener('hashchange', handleEntryHash);
 </script>
 </body>
 </html>
