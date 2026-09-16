@@ -31,7 +31,8 @@ table.state-table tr:nth-child(even) td{background:#fbfdfc;}
 
 /* ツール一覧 */
 .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.tool-card{border:1.3px solid var(--gl);border-radius:10px;padding:12px 14px;background:var(--glight);}
+.tool-card{border:1.3px solid var(--gl);border-radius:10px;padding:12px 14px;background:var(--glight);display:block;text-decoration:none;color:inherit;transition:transform 0.12s,box-shadow 0.12s;}
+.tool-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(45,106,79,0.15);border-color:var(--gd);}
 .tool-card .step{display:inline-block;font-size:9.5px;font-weight:700;color:var(--br);background:var(--gold);border-radius:8px;padding:1px 7px;margin-bottom:5px;}
 .tool-card .name{font-size:13px;font-weight:700;color:var(--gd);margin-bottom:3px;}
 .tool-card .target{font-size:11px;color:#4a6a56;margin-bottom:3px;}
@@ -43,11 +44,14 @@ footer{margin-top:28px;font-size:10px;color:#9aa8a0;text-align:center;border-top
   body{background:#fff;padding:0;}
   .sheet{box-shadow:none;padding:14px 18px;}
   .tool-grid{gap:6px;}
+  .sheet > a{display:none!important;}
 }
 </style>
 </head>
 <body>
 <div class="sheet">
+
+  <a href="index.html" style="display:inline-block;margin-bottom:14px;font-size:12.5px;color:var(--gd);background:var(--glight);border:1px solid var(--gl);border-radius:20px;padding:5px 14px;text-decoration:none;">← 学生サポートパネルに戻る／閉じる</a>
 
   <header>
     <div class="tag">🌳 就活の木｜キャリア支援課 内部資料</div>
@@ -99,96 +103,96 @@ footer{margin-top:28px;font-size:10px;color:#9aa8a0;text-align:center;border-top
   <h2 class="section-title">② ツール一覧・対象学生と使いどころ</h2>
   <div class="tool-grid">
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#hajimeyou" target="_blank">
       <span class="step">入口</span>
       <div class="name">🧭 何から始めればいいか分からないあなたへ</div>
       <div class="target">対象：進路・自己理解ともに未着手の学生</div>
       <div class="desc">3分の簡易診断で「今の自分の現在地」を可視化。迷っている学生には最初にこれを勧める。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="https://tanukin0423.github.io/shukatsu-no-ki-system/index.html" target="_blank">
       <span class="step">予約</span>
       <div class="name">🌳 キャリ爺に相談予約する</div>
       <div class="target">対象：個別相談を希望する学生全般</div>
       <div class="desc">相談内容を簡単に記入して予約するフォーム。ツールで解決しない・込み入った相談はここへ。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#scout" target="_blank">
       <span class="step">NEW</span>
       <div class="name">💌 スカウト・逆求人サービス</div>
       <div class="target">対象：応募だけでなく企業からのアプローチも試したい学生</div>
       <div class="desc">OfferBox・Wantedly・paizaを紹介。自分から動くのが苦手な学生にも有効。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#meta" target="_blank">
       <span class="step">STEP①</span>
       <div class="name">🔍 自己分析・適性診断</div>
       <div class="target">対象：自己理解が浅い学生</div>
       <div class="desc">MBTI・職業興味検査・キャリアアンカー・強み診断をまとめて提供。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#rashinban" target="_blank">
       <span class="step">STEP②</span>
       <div class="name">🧭 自分の羅針盤探し</div>
       <div class="target">対象：やりたいことが見つかっていない学生</div>
       <div class="desc">jobtag職業診断で興味の方向性を探る。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="jobmatrix_556.html" target="_blank">
       <span class="step">NEW</span>
       <div class="name">📊 職種マトリクス556</div>
       <div class="target">対象：候補職種を具体的に絞りたい学生</div>
       <div class="desc">556職種を2軸で分析し、自分に合う仕事を探せる。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#intern" target="_blank">
       <span class="step">STEP③</span>
       <div class="name">🏢 インターンシップを探そう</div>
       <div class="target">対象：インターン探しでつまずいている学生</div>
       <div class="desc">マイナビ・リクナビでの正しい検索の仕方を解説。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#tools" target="_blank">
       <span class="step">STEP④</span>
       <div class="name">📋 就活ツールを使いこなす</div>
       <div class="target">対象：エントリー準備段階の学生</div>
       <div class="desc">マイキャリアボックス・OPEN-ESの使い方を解説。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="es-prompt-hub.html" target="_blank">
       <span class="step">NEW</span>
       <div class="name">🌱 企業研究＆ESジェネレーター</div>
       <div class="target">対象：ES着手前・企業研究から始めたい学生</div>
       <div class="desc">企業研究からES設問・プロンプト生成まで一気通貫でサポート。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#es" target="_blank">
       <span class="step">STEP⑤</span>
       <div class="name">✍️ ES作成ツール</div>
       <div class="target">対象：ガクチカ・自己PR・志望動機で行き詰まっている学生</div>
       <div class="desc">エントリー版(素材集め)→本格版(仕上げ)の2段階でAIブラッシュアップ。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#test" target="_blank">
       <span class="step">STEP⑥</span>
       <div class="name">📝 筆記・SPI対策</div>
       <div class="target">対象：筆記試験に不安がある学生</div>
       <div class="desc">筆記試験ドリル＋SPI3完全対策(全19単元)。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="https://tanukin0423.github.io/mensetsu-15day/" target="_blank">
       <span class="step">STEP⑦</span>
       <div class="name">🎤 面接対策プログラム</div>
       <div class="target">対象：面接直前・面接に苦手意識がある学生</div>
       <div class="desc">キャリ爺の音声ガイド付きで15日間かけて準備できる。</div>
-    </div>
+    </a>
 
-    <div class="tool-card">
+    <a class="tool-card" href="index.html#careerlink" target="_blank">
       <span class="step">STEP⑧</span>
       <div class="name">📌 キャリアリンク掲示板</div>
       <div class="target">対象：求人・説明会情報を探している学生</div>
       <div class="desc">掲載情報は対象学年を必ず確認するよう学生に伝える。</div>
-    </div>
+    </a>
 
   </div>
 
