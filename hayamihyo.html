@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>就活の木｜支援ツール早見表(カウンセラー用)</title>
+<style>
+:root{
+  --gd:#2d6a4f; --gm:#52b788; --gl:#74c69d; --gp:#b7e4c7;
+  --gbg:#f7fbf8; --glight:#e6f5ea; --gold:#c9a84c; --br:#3a2c0a; --wh:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--gbg);color:#1f2d26;padding:24px;}
+.sheet{max-width:960px;margin:0 auto;background:var(--wh);border-radius:14px;box-shadow:0 4px 20px rgba(45,106,79,0.12);padding:32px 36px;}
+header{text-align:center;border-bottom:3px solid var(--gd);padding-bottom:16px;margin-bottom:24px;}
+header .tag{font-size:12px;color:var(--gm);font-weight:700;letter-spacing:0.1em;}
+header h1{font-size:22px;color:var(--gd);margin-top:4px;}
+header .note{font-size:11px;color:#88998f;margin-top:6px;}
+
+h2.section-title{
+  font-size:15px;color:var(--wh);background:var(--gd);
+  display:inline-block;padding:5px 16px;border-radius:20px;margin:26px 0 14px;
+}
+
+/* 状態別テーブル */
+table.state-table{width:100%;border-collapse:collapse;margin-bottom:8px;}
+table.state-table th{background:var(--glight);color:var(--gd);font-size:12px;text-align:left;padding:8px 10px;border:1px solid var(--gl);}
+table.state-table td{font-size:12.5px;padding:9px 10px;border:1px solid #dcece1;vertical-align:top;line-height:1.6;}
+table.state-table tr:nth-child(even) td{background:#fbfdfc;}
+.tool-name{font-weight:700;color:var(--gd);}
+
+/* ツール一覧 */
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tool-card{border:1.3px solid var(--gl);border-radius:10px;padding:12px 14px;background:var(--glight);}
+.tool-card .step{display:inline-block;font-size:9.5px;font-weight:700;color:var(--br);background:var(--gold);border-radius:8px;padding:1px 7px;margin-bottom:5px;}
+.tool-card .name{font-size:13px;font-weight:700;color:var(--gd);margin-bottom:3px;}
+.tool-card .target{font-size:11px;color:#4a6a56;margin-bottom:3px;}
+.tool-card .desc{font-size:10.5px;color:#5a7566;line-height:1.5;}
+
+footer{margin-top:28px;font-size:10px;color:#9aa8a0;text-align:center;border-top:1px solid #e2e8e4;padding-top:10px;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .sheet{box-shadow:none;padding:14px 18px;}
+  .tool-grid{gap:6px;}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="tag">🌳 就活の木｜キャリア支援課 内部資料</div>
+    <h1>学生支援ツール 早見表</h1>
+    <div class="note">どのカウンセラーが対応しても、同じ水準で案内できるように — 迷ったらこの表を見てください</div>
+  </header>
+
+  <h2 class="section-title">① 学生の状態別・推奨ツール</h2>
+  <table class="state-table">
+    <tr><th style="width:26%;">学生の状態</th><th>まず案内するツール</th></tr>
+    <tr>
+      <td>何から始めればいいか分からない／進路が全く見えていない</td>
+      <td><span class="tool-name">「何から始めればいいか分からないあなたへ」診断</span>(3分の現在地診断)、続いて<span class="tool-name">自己分析・適性診断</span>(MBTI・強み診断等)</td>
+    </tr>
+    <tr>
+      <td>自己理解はできたが、やりたい仕事の方向性が絞れない</td>
+      <td><span class="tool-name">自分の羅針盤探し</span>(jobtag職業診断)、<span class="tool-name">職種マトリクス556</span></td>
+    </tr>
+    <tr>
+      <td>インターン・企業をどう探せばいいか分からない</td>
+      <td><span class="tool-name">インターンシップを探そう</span>(マイナビ・リクナビの探し方)、<span class="tool-name">就活ツールを使いこなす</span>(マイキャリアボックス・OPEN-ES)</td>
+    </tr>
+    <tr>
+      <td>企業からのアプローチも試したい</td>
+      <td><span class="tool-name">スカウト・逆求人サービス</span>(OfferBox・Wantedly・paiza)</td>
+    </tr>
+    <tr>
+      <td>ES・ガクチカ・自己PR・志望動機が書けない／止まっている</td>
+      <td><span class="tool-name">企業研究＆ESジェネレーター</span>で企業研究から設問生成、その後<span class="tool-name">ES作成ツール</span>(エントリー版→本格版)でブラッシュアップ</td>
+    </tr>
+    <tr>
+      <td>筆記試験・SPIが不安</td>
+      <td><span class="tool-name">筆記・SPI対策</span>(ドリル＋SPI3全19単元)</td>
+    </tr>
+    <tr>
+      <td>面接が近い／面接に不安がある</td>
+      <td><span class="tool-name">面接対策プログラム</span>(キャリ爺の音声ガイド付き15日間)</td>
+    </tr>
+    <tr>
+      <td>求人・説明会情報を探している</td>
+      <td><span class="tool-name">キャリアリンク掲示板</span>(⚠️対象学年を必ず確認)</td>
+    </tr>
+    <tr>
+      <td>個別にじっくり相談したい様子</td>
+      <td><span class="tool-name">キャリ爺に相談予約する</span>(相談予約フォーム)</td>
+    </tr>
+  </table>
+
+  <h2 class="section-title">② ツール一覧・対象学生と使いどころ</h2>
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <span class="step">入口</span>
+      <div class="name">🧭 何から始めればいいか分からないあなたへ</div>
+      <div class="target">対象：進路・自己理解ともに未着手の学生</div>
+      <div class="desc">3分の簡易診断で「今の自分の現在地」を可視化。迷っている学生には最初にこれを勧める。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">予約</span>
+      <div class="name">🌳 キャリ爺に相談予約する</div>
+      <div class="target">対象：個別相談を希望する学生全般</div>
+      <div class="desc">相談内容を簡単に記入して予約するフォーム。ツールで解決しない・込み入った相談はここへ。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">NEW</span>
+      <div class="name">💌 スカウト・逆求人サービス</div>
+      <div class="target">対象：応募だけでなく企業からのアプローチも試したい学生</div>
+      <div class="desc">OfferBox・Wantedly・paizaを紹介。自分から動くのが苦手な学生にも有効。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP①</span>
+      <div class="name">🔍 自己分析・適性診断</div>
+      <div class="target">対象：自己理解が浅い学生</div>
+      <div class="desc">MBTI・職業興味検査・キャリアアンカー・強み診断をまとめて提供。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP②</span>
+      <div class="name">🧭 自分の羅針盤探し</div>
+      <div class="target">対象：やりたいことが見つかっていない学生</div>
+      <div class="desc">jobtag職業診断で興味の方向性を探る。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">NEW</span>
+      <div class="name">📊 職種マトリクス556</div>
+      <div class="target">対象：候補職種を具体的に絞りたい学生</div>
+      <div class="desc">556職種を2軸で分析し、自分に合う仕事を探せる。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP③</span>
+      <div class="name">🏢 インターンシップを探そう</div>
+      <div class="target">対象：インターン探しでつまずいている学生</div>
+      <div class="desc">マイナビ・リクナビでの正しい検索の仕方を解説。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP④</span>
+      <div class="name">📋 就活ツールを使いこなす</div>
+      <div class="target">対象：エントリー準備段階の学生</div>
+      <div class="desc">マイキャリアボックス・OPEN-ESの使い方を解説。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">NEW</span>
+      <div class="name">🌱 企業研究＆ESジェネレーター</div>
+      <div class="target">対象：ES着手前・企業研究から始めたい学生</div>
+      <div class="desc">企業研究からES設問・プロンプト生成まで一気通貫でサポート。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP⑤</span>
+      <div class="name">✍️ ES作成ツール</div>
+      <div class="target">対象：ガクチカ・自己PR・志望動機で行き詰まっている学生</div>
+      <div class="desc">エントリー版(素材集め)→本格版(仕上げ)の2段階でAIブラッシュアップ。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP⑥</span>
+      <div class="name">📝 筆記・SPI対策</div>
+      <div class="target">対象：筆記試験に不安がある学生</div>
+      <div class="desc">筆記試験ドリル＋SPI3完全対策(全19単元)。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP⑦</span>
+      <div class="name">🎤 面接対策プログラム</div>
+      <div class="target">対象：面接直前・面接に苦手意識がある学生</div>
+      <div class="desc">キャリ爺の音声ガイド付きで15日間かけて準備できる。</div>
+    </div>
+
+    <div class="tool-card">
+      <span class="step">STEP⑧</span>
+      <div class="name">📌 キャリアリンク掲示板</div>
+      <div class="target">対象：求人・説明会情報を探している学生</div>
+      <div class="desc">掲載情報は対象学年を必ず確認するよう学生に伝える。</div>
+    </div>
+
+  </div>
+
+  <footer>
+    就活の木｜学生サポートパネルと連動 ／ 迷ったときはこの早見表→キャリ爺(北山)へ相談、の順で対応してください
+  </footer>
+
+</div>
+</body>
+</html>
