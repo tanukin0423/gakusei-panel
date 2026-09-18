@@ -738,25 +738,26 @@
             
             <div class="other-assessments">
                 <h3>他の診断も試してみる</h3>
-                <p style="text-align: center; color: #666; margin-bottom: 20px;">推奨診断以外にも興味があれば、こちらからアクセスできます</p>
+                <p style="text-align: center; color: #666; margin-bottom: 8px;">推奨診断以外にも興味があれば、こちらからアクセスできます</p>
+                <p style="text-align: center; color: #888; font-size: 12px; margin-bottom: 20px;">🔗 クリックすると、より詳しい診断ページに移動します。診断が終わったら、ブラウザの「戻る」ボタンでこのページに戻れます。</p>
                 <div class="assessment-links">
-                    <a href="vpi-assessment-3.html" target="_blank" class="assessment-link" id="link-A">
+                    <a href="vpi-assessment-3.html" class="assessment-link" id="link-A">
                         <div class="assessment-link-title">A. VPI診断</div>
                         <div class="assessment-link-desc">興味・関心から職を探す</div>
                     </a>
-                    <a href="mbti-assessment-3.html" target="_blank" class="assessment-link" id="link-B">
+                    <a href="mbti-assessment-3.html" class="assessment-link" id="link-B">
                         <div class="assessment-link-title">B. MBTI診断</div>
                         <div class="assessment-link-desc">性格タイプを知る</div>
                     </a>
-                    <a href="career-anchor-assessment-3.html" target="_blank" class="assessment-link" id="link-C">
+                    <a href="career-anchor-assessment-3.html" class="assessment-link" id="link-C">
                         <div class="assessment-link-title">C. キャリア・アンカー</div>
                         <div class="assessment-link-desc">価値観を明確にする</div>
                     </a>
-                    <a href="strengths-assessment-3.html" target="_blank" class="assessment-link" id="link-D">
+                    <a href="strengths-assessment-3.html" class="assessment-link" id="link-D">
                         <div class="assessment-link-title">D. 強み診断</div>
                         <div class="assessment-link-desc">あなたの強みを発見</div>
                     </a>
-                    <a href="narrative-assessment-3.html" target="_blank" class="assessment-link" id="link-E">
+                    <a href="narrative-assessment-3.html" class="assessment-link" id="link-E">
                         <div class="assessment-link-title">E. ナラティブ診断</div>
                         <div class="assessment-link-desc">ストーリーから探る</div>
                     </a>
@@ -1387,9 +1388,12 @@
                         </ul>
                     </div>
                     <div style="text-align: center; margin-top: 20px;">
-                        <a href="${{A: 'vpi-assessment-3.html', B: 'mbti-assessment-3.html', C: 'career-anchor-assessment-3.html', D: 'strengths-assessment-3.html', E: 'narrative-assessment-3.html'}[topRecommendation.type]}" target="_blank" class="recommended-link">
+                        <a href="${{A: 'vpi-assessment-3.html', B: 'mbti-assessment-3.html', C: 'career-anchor-assessment-3.html', D: 'strengths-assessment-3.html', E: 'narrative-assessment-3.html'}[topRecommendation.type]}" class="recommended-link">
                             ${assessmentInfo[topRecommendation.type].shortTitle}を開始する →
                         </a>
+                        <p style="margin-top: 10px; font-size: 12px; color: #888;">
+                            🔗 クリックすると、より詳しい診断ページに移動します。診断が終わったら、ブラウザの「戻る」ボタンでこのページに戻れます。
+                        </p>
                     </div>
                 </div>
             `;
@@ -1423,27 +1427,30 @@
             const otherAssessmentsHTML = `
                 <div class="other-assessments">
                     <h3>他の診断も試してみる</h3>
-                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                    <p style="text-align: center; color: #666; margin-bottom: 8px;">
                         推奨診断以外にも興味があれば、こちらからアクセスできます。複数の診断を組み合わせることで、より深い自己理解が得られます。
                     </p>
+                    <p style="text-align: center; color: #888; font-size: 12px; margin-bottom: 20px;">
+                        🔗 クリックすると、より詳しい診断ページに移動します。診断が終わったら、ブラウザの「戻る」ボタンでこのページに戻れます。
+                    </p>
                     <div class="assessment-links">
-                        <a href="vpi-assessment-3.html" target="_blank" class="assessment-link ${topRecommendation.type === 'A' ? 'recommended' : ''}" id="link-A">
+                        <a href="vpi-assessment-3.html" class="assessment-link ${topRecommendation.type === 'A' ? 'recommended' : ''}" id="link-A">
                             <div class="assessment-link-title">A. VPI診断</div>
                             <div class="assessment-link-desc">興味・関心から職を探す</div>
                         </a>
-                        <a href="mbti-assessment-3.html" target="_blank" class="assessment-link ${topRecommendation.type === 'B' ? 'recommended' : ''}" id="link-B">
+                        <a href="mbti-assessment-3.html" class="assessment-link ${topRecommendation.type === 'B' ? 'recommended' : ''}" id="link-B">
                             <div class="assessment-link-title">B. MBTI診断</div>
                             <div class="assessment-link-desc">性格タイプを知る</div>
                         </a>
-                        <a href="career-anchor-assessment-3.html" target="_blank" class="assessment-link ${topRecommendation.type === 'C' ? 'recommended' : ''}" id="link-C">
+                        <a href="career-anchor-assessment-3.html" class="assessment-link ${topRecommendation.type === 'C' ? 'recommended' : ''}" id="link-C">
                             <div class="assessment-link-title">C. キャリア・アンカー</div>
                             <div class="assessment-link-desc">価値観を明確にする</div>
                         </a>
-                        <a href="strengths-assessment-3.html" target="_blank" class="assessment-link ${topRecommendation.type === 'D' ? 'recommended' : ''}" id="link-D">
+                        <a href="strengths-assessment-3.html" class="assessment-link ${topRecommendation.type === 'D' ? 'recommended' : ''}" id="link-D">
                             <div class="assessment-link-title">D. 強み診断</div>
                             <div class="assessment-link-desc">あなたの強みを発見</div>
                         </a>
-                        <a href="narrative-assessment-3.html" target="_blank" class="assessment-link ${topRecommendation.type === 'E' ? 'recommended' : ''}" id="link-E">
+                        <a href="narrative-assessment-3.html" class="assessment-link ${topRecommendation.type === 'E' ? 'recommended' : ''}" id="link-E">
                             <div class="assessment-link-title">E. ナラティブ診断</div>
                             <div class="assessment-link-desc">ストーリーから探る</div>
                         </a>
