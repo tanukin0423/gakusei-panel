@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>就活の木｜学生サポートパネル ポスター</title>
+<style>
+:root{
+  --sky:#7ec8e3; --yellow:#ffc94d; --coral:#ff8a65; --cream:#fff6e5;
+  --navy:#223142; --gray:#6a7b87; --white:#ffffff; --green:#1f3d30;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#e9edf0;padding:24px;}
+.poster{
+  width:210mm;min-height:297mm;margin:0 auto;background:var(--cream);
+  border-radius:0;box-shadow:0 8px 30px rgba(0,0,0,0.15);
+  padding:16mm 14mm;position:relative;overflow:hidden;
+}
+.deco-top{position:absolute;top:0;left:0;right:0;height:52mm;background:var(--sky);z-index:0;}
+.deco-circle-1{position:absolute;left:-14mm;top:30mm;width:44mm;height:44mm;border-radius:50%;background:var(--yellow);z-index:0;}
+.deco-circle-2{position:absolute;right:8mm;top:4mm;width:26mm;height:26mm;border-radius:50%;background:var(--coral);z-index:0;}
+
+.content{position:relative;z-index:1;}
+
+.header{margin-top:8mm;margin-bottom:10mm;}
+.header .tag{display:inline-block;background:var(--white);color:var(--green);font-weight:700;font-size:12pt;padding:2mm 6mm;border-radius:8mm;}
+.header h1{font-size:26pt;font-weight:700;color:var(--navy);margin-top:5mm;line-height:1.3;}
+.header p{font-size:12pt;color:var(--gray);margin-top:3mm;}
+
+.grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-bottom:8mm;}
+.cat-card{background:var(--white);border-radius:5mm;padding:6mm 4mm;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.cat-card .ic{font-size:22pt;}
+.cat-card .ttl{font-size:10.5pt;font-weight:700;color:var(--navy);margin-top:2mm;line-height:1.4;}
+.cat-card.b-sky{border-top:1.5mm solid var(--sky);}
+.cat-card.b-yellow{border-top:1.5mm solid var(--yellow);}
+.cat-card.b-coral{border-top:1.5mm solid var(--coral);}
+
+.flow{display:flex;align-items:center;justify-content:space-between;background:var(--white);border-radius:5mm;padding:6mm;margin-bottom:8mm;}
+.flow .step{display:flex;flex-direction:column;align-items:center;gap:2mm;flex:1;}
+.flow .step .ic{font-size:18pt;}
+.flow .step p{font-size:9.5pt;font-weight:700;color:var(--navy);text-align:center;}
+.flow .arrow{font-size:16pt;color:#c9d0d6;padding:0 2mm;}
+
+.message-box{background:var(--sky);border-radius:5mm;padding:7mm 8mm;text-align:center;margin-bottom:8mm;}
+.message-box p{font-size:13pt;font-weight:700;color:#1a2733;line-height:1.6;}
+
+.support-box{background:var(--white);border-radius:5mm;padding:6mm 8mm;display:flex;align-items:center;gap:6mm;}
+.support-box .ic{font-size:26pt;}
+.support-box .txt p:first-child{font-size:12pt;font-weight:700;color:var(--navy);}
+.support-box .txt p:last-child{font-size:10pt;color:var(--gray);margin-top:1mm;}
+
+.footer{position:absolute;bottom:10mm;left:14mm;right:14mm;text-align:center;font-size:9pt;color:#a3aeb5;}
+
+@media print{
+  body{background:#fff;padding:0;}
+  .poster{box-shadow:none;margin:0;width:210mm;min-height:297mm;}
+  @page{size:A4;margin:0;}
+}
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="deco-top"></div>
+  <div class="deco-circle-1"></div>
+  <div class="deco-circle-2"></div>
+
+  <div class="content">
+    <div class="header">
+      <span class="tag">🌳 就活の木</span>
+      <h1>学生サポートパネル<br>まるわかりMAP</h1>
+      <p>迷ったら、ここへ。就活の「どうしよう」がぜんぶまとまってるよ。</p>
+    </div>
+
+    <div class="grid6">
+      <div class="cat-card b-sky"><div class="ic">🧭</div><div class="ttl">①今の自分を知る</div></div>
+      <div class="cat-card b-yellow"><div class="ic">🔍</div><div class="ttl">②自分を知る</div></div>
+      <div class="cat-card b-coral"><div class="ic">🏢</div><div class="ttl">③仕事を探す</div></div>
+      <div class="cat-card b-sky"><div class="ic">✍️</div><div class="ttl">④ES・書類を作る</div></div>
+      <div class="cat-card b-yellow"><div class="ic">📝</div><div class="ttl">⑤試験・面接に備える</div></div>
+      <div class="cat-card b-coral"><div class="ic">📌</div><div class="ttl">⑥情報収集・相談</div></div>
+    </div>
+
+    <div class="flow">
+      <div class="step"><div class="ic">👆</div><p>気になるカードを<br>タップ</p></div>
+      <span class="arrow">→</span>
+      <div class="step"><div class="ic">🧩</div><p>診断・ツールが<br>すぐ開く</p></div>
+      <span class="arrow">→</span>
+      <div class="step"><div class="ic">📖</div><p>迷ったら<br>使い方ガイドへ</p></div>
+      <span class="arrow">→</span>
+      <div class="step"><div class="ic">🌳</div><p>それでも迷ったら<br>相談員へ</p></div>
+    </div>
+
+    <div class="message-box">
+      <p>全部やらなくてOK。<br>今のあなたに必要なところから、気軽にどうぞ。</p>
+    </div>
+
+    <div class="support-box">
+      <div class="ic">🤗</div>
+      <div class="txt">
+        <p>ひとりで抱えなくていいよ</p>
+        <p>ツールで解決しないことがあれば、担当の相談員・職員にいつでも相談してね</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">🌳 就活の木 学生サポートパネル | Tama University Career Support Office</div>
+</div>
+</body>
+</html>
