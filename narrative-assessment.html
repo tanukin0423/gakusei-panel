@@ -82,7 +82,10 @@ footer{margin-top:20px;font-size:10.5px;color:#9aa8a0;text-align:center;}
       </div>
       <div class="info-box">
         <b>⏱ 所要時間・質問数</b><br>
-        簡易版は<b>6つの質問</b>に答えるだけ、約5分で完了します。じっくり取り組みたい方は、後述の詳細版もあります。
+        基本の6つの質問に加え、「なぜそう感じたか」「実際に行動できたか」を振り返る深掘り質問が3つ、合計<b>9つの質問</b>に答えます。約8分で完了します。じっくり取り組みたい方は、後述の詳細版もあります。
+      </div>
+      <div style="text-align:center;margin-bottom:6px;">
+        <a href="narrative-assessment-guide.html" style="font-size:12.5px;color:var(--gd);text-decoration:underline;">📖 ナラティブ診断とは？（サビカスの理論をもっと詳しく）</a>
       </div>
       <button class="btn-main" onclick="showScreen('quiz')">診断をはじめる →</button>
     </div>
@@ -177,6 +180,29 @@ const QUESTIONS = [
 let current = 0;
 const answers = {};
 
+// ── 深掘り質問（本人の回答を引用しながら「なぜ」「実際に行動できたか」を問う） ──
+const FOLLOWUPS = [
+  {
+    key: "hero_why",
+    getTitle: () => `Q7. Q1で挙げた「${answers.hero || "その人物"}」について、なぜ惹かれたのですか？`,
+    getHint: () => `見た目・能力・生き方など、具体的にどんなところが良いと思ったか書いてみましょう。`,
+  },
+  {
+    key: "hero_action",
+    getTitle: () => `Q8. その憧れを、実際に行動に移そうとしたことはありますか？`,
+    getHint: () => `「近づこうと努力した」「真似してみた」経験でも、逆に「結局何もしなかった」でも構いません。正直に書いてください。`,
+  },
+  {
+    key: "motto_action",
+    getTitle: () => `Q9. Q3で挙げた「${answers.motto || "その言葉"}」通りに、実際に行動できた場面はありましたか？`,
+    getHint: () => `その言葉通りにできて良かった経験、逆に「言葉だけで終わってしまった」経験、どちらでも構いません。`,
+  },
+];
+
+function allSteps(){
+  return [...QUESTIONS, ...FOLLOWUPS];
+}
+
 function showScreen(name){
   document.getElementById('screen-intro').classList.add('hidden');
   document.getElementById('screen-quiz').classList.add('hidden');
@@ -190,28 +216,35 @@ function showScreen(name){
 }
 
 function renderQuestion(){
-  const q = QUESTIONS[current];
+  const steps = allSteps();
+  const q = steps[current];
+  const isFollowup = current >= QUESTIONS.length;
+  const title = isFollowup ? q.getTitle() : q.title;
+  const hint = isFollowup ? q.getHint() : q.hint;
   const area = document.getElementById('questionArea');
   area.innerHTML = `
-    <div class="q-title">${q.title}</div>
-    <div class="q-hint">${q.hint}</div>
+    ${isFollowup && current === QUESTIONS.length ? '<div class="info-box" style="margin-bottom:16px;">🔍 <b>ここからは深掘り質問です。</b>「なぜ」「実際にどうだったか」を振り返ることで、あなた自身の価値観がより明確になります。</div>' : ''}
+    <div class="q-title">${title}</div>
+    <div class="q-hint">${hint}</div>
     <textarea id="ans-${q.key}" placeholder="ここに書いてみましょう…">${answers[q.key] || ''}</textarea>
   `;
-  document.getElementById('progressLabel').textContent = `質問 ${current+1} / ${QUESTIONS.length}`;
-  document.getElementById('progressFill').style.width = `${((current+1)/QUESTIONS.length)*100}%`;
+  document.getElementById('progressLabel').textContent = `質問 ${current+1} / ${steps.length}`;
+  document.getElementById('progressFill').style.width = `${((current+1)/steps.length)*100}%`;
   document.getElementById('prevBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
-  document.getElementById('nextBtn').textContent = current === QUESTIONS.length-1 ? '結果を見る →' : '次へ →';
+  document.getElementById('nextBtn').textContent = current === steps.length-1 ? '結果を見る →' : '次へ →';
 }
 
 function saveCurrentAnswer(){
-  const q = QUESTIONS[current];
+  const steps = allSteps();
+  const q = steps[current];
   const el = document.getElementById('ans-'+q.key);
   if(el) answers[q.key] = el.value;
 }
 
 function nextQuestion(){
   saveCurrentAnswer();
-  if(current < QUESTIONS.length-1){
+  const steps = allSteps();
+  if(current < steps.length-1){
     current++;
     renderQuestion();
   } else {
@@ -234,17 +267,30 @@ function showResult(){
   const success = answers.success || "";
   const worry = answers.worry || "";
   const future = answers.future || "";
+  const heroWhy = answers.hero_why || "";
+  const heroAction = answers.hero_action || "";
+  const mottoAction = answers.motto_action || "";
 
-  const summary = `幼い頃は「${hero || "特定の誰か"}」に憧れ、「${story || "印象に残る物語"}」に心を動かされてきたあなた。` +
+  let summary = `幼い頃は「${hero || "特定の誰か"}」に憧れ、「${story || "印象に残る物語"}」に心を動かされてきたあなた。` +
     `「${motto || "大切にしている言葉"}」を胸に、「${success || "これまでの頑張り"}」という経験を積み重ねてきました。` +
-    `今は「${worry || "これからのこと"}」に不安を感じながらも、「${future || "新しい挑戦"}」に向かおうとしています。` +
-    `この一貫した物語の中にこそ、あなたらしいキャリアの選び方のヒントがあります。`;
+    `今は「${worry || "これからのこと"}」に不安を感じながらも、「${future || "新しい挑戦"}」に向かおうとしています。`;
+
+  if(heroWhy || heroAction || mottoAction){
+    summary += ` さらに深掘りすると、${heroWhy ? `「${hero}」に惹かれた理由は「${heroWhy}」というものでした。` : ""}` +
+      `${heroAction ? `その憧れについて、あなたは「${heroAction}」という形で向き合ってきました。` : ""}` +
+      `${mottoAction ? `また、「${motto}」という言葉については、「${mottoAction}」という経験があるようです。` : ""}`;
+  }
+
+  summary += ` この一貫した物語の中にこそ、あなたらしいキャリアの選び方のヒントがあります。`;
 
   document.getElementById('narrativeSummary').textContent = summary;
 
   const keywords = [];
   if(hero) keywords.push("憧れの人物像：" + hero);
+  if(heroWhy) keywords.push("惹かれた理由：" + heroWhy);
+  if(heroAction) keywords.push("憧れへの向き合い方：" + heroAction);
   if(motto) keywords.push("大切な価値観：" + motto);
+  if(mottoAction) keywords.push("価値観の実践度：" + mottoAction);
   if(success) keywords.push("充実感を得た経験：" + success);
   if(future) keywords.push("今後の方向性：" + future);
   document.getElementById('keywordSummary').innerHTML = keywords.length
