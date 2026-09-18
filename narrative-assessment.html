@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ナラティブ診断（簡易版）｜就活の木</title>
+<style>
+:root{
+  --gd:#2d6a4f; --gm:#52b788; --gl:#74c69d; --gp:#b7e4c7;
+  --gbg:#f7fbf8; --glight:#e6f5ea; --gold:#c9a84c; --br:#3a2c0a; --wh:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:var(--gbg);color:#1f2d26;padding:20px;}
+.wrap{max-width:640px;margin:0 auto;}
+
+.card{background:var(--wh);border-radius:18px;padding:28px 24px;box-shadow:0 4px 20px rgba(45,106,79,0.10);margin-bottom:16px;}
+
+header{text-align:center;margin-bottom:20px;}
+header .tag{font-size:12px;color:var(--gm);font-weight:700;letter-spacing:0.08em;}
+header h1{font-size:22px;color:var(--gd);margin-top:6px;line-height:1.4;}
+header p{font-size:13px;color:#6a7b73;margin-top:8px;line-height:1.7;}
+
+.hidden{display:none;}
+
+.btn-back{background:none;border:none;color:var(--gd);font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px;padding:0;}
+.btn-back:hover{text-decoration:underline;}
+
+.info-box{background:var(--glight);border-radius:12px;padding:16px 18px;font-size:13px;line-height:1.8;color:#3a4a41;margin:16px 0;}
+.info-box b{color:var(--gd);}
+
+.btn-main{
+  display:block;width:100%;background:var(--gd);color:var(--wh);border:none;
+  padding:14px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;
+  margin-top:18px;transition:background 0.2s;
+}
+.btn-main:hover{background:var(--gm);}
+.btn-main:disabled{background:#c9d6cf;cursor:not-allowed;}
+
+.progress{font-size:12px;color:var(--gm);font-weight:700;margin-bottom:8px;}
+.progress-bar{height:6px;background:var(--glight);border-radius:3px;overflow:hidden;margin-bottom:20px;}
+.progress-bar-fill{height:100%;background:var(--gm);transition:width 0.3s;}
+
+.q-title{font-size:16px;font-weight:700;color:var(--gd);margin-bottom:6px;line-height:1.6;}
+.q-hint{font-size:12px;color:#8a9a86;margin-bottom:14px;line-height:1.6;}
+textarea{
+  width:100%;min-height:90px;border:1.5px solid var(--gp);border-radius:10px;
+  padding:12px;font-size:14px;font-family:inherit;color:#1f2d26;resize:vertical;
+}
+textarea:focus{outline:none;border-color:var(--gm);}
+
+.nav-row{display:flex;gap:10px;margin-top:20px;}
+.btn-sub{
+  flex:1;background:var(--wh);color:var(--gd);border:1.5px solid var(--gp);
+  padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;
+}
+.btn-sub:hover{background:var(--glight);}
+
+.result-block{background:var(--glight);border-radius:14px;padding:20px;margin-bottom:16px;}
+.result-block h3{font-size:14px;color:var(--gd);margin-bottom:8px;}
+.result-block p{font-size:14px;line-height:1.9;color:#2f3e36;}
+
+.next-box{background:linear-gradient(160deg,#fffdf6,#fff8e6);border:2px solid var(--gold);border-radius:14px;padding:20px;text-align:center;margin-top:20px;}
+.next-box p{font-size:13px;color:#5a4a2a;line-height:1.7;margin-bottom:12px;}
+
+footer{margin-top:20px;font-size:10.5px;color:#9aa8a0;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ── イントロ画面 ── -->
+  <div id="screen-intro">
+    <header>
+      <div class="tag">🌱 就活の木｜自己分析ツール</div>
+      <h1>ナラティブ診断（簡易版）</h1>
+      <p>あなたのこれまでの「物語」を振り返ることで、大切にしている価値観やキャリアのヒントが見えてきます。</p>
+    </header>
+    <div class="card">
+      <div class="info-box">
+        <b>📖 ナラティブ診断とは？</b><br>
+        キャリア心理学者サビカスの「キャリア構築理論」をベースにした自己理解の方法です。憧れの人物や好きな物語、座右の銘など、あなた自身のエピソードを振り返ることで、言葉にしにくかった価値観や強みが見えてきます。
+      </div>
+      <div class="info-box">
+        <b>⏱ 所要時間・質問数</b><br>
+        簡易版は<b>6つの質問</b>に答えるだけ、約5分で完了します。じっくり取り組みたい方は、後述の詳細版もあります。
+      </div>
+      <button class="btn-main" onclick="showScreen('quiz')">診断をはじめる →</button>
+    </div>
+    <footer>🌳 就活の木 学生サポートパネル</footer>
+  </div>
+
+  <!-- ── 質問画面 ── -->
+  <div id="screen-quiz" class="hidden">
+    <div class="card">
+      <button class="btn-back" onclick="showScreen('intro')">← 最初の画面に戻る</button>
+      <div class="progress" id="progressLabel">質問 1 / 6</div>
+      <div class="progress-bar"><div class="progress-bar-fill" id="progressFill" style="width:16.6%;"></div></div>
+
+      <div id="questionArea"></div>
+
+      <div class="nav-row">
+        <button class="btn-sub" id="prevBtn" onclick="prevQuestion()">← 前へ</button>
+        <button class="btn-main" id="nextBtn" style="margin-top:0;" onclick="nextQuestion()">次へ →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 結果画面 ── -->
+  <div id="screen-result" class="hidden">
+    <header>
+      <div class="tag">🌱 診断結果</div>
+      <h1>あなたの「物語」</h1>
+      <p>今回の回答をもとに、あなたのキャリアのヒントをまとめました。</p>
+    </header>
+
+    <div class="card">
+      <div class="result-block">
+        <h3>🌟 あなたの物語（サマリー）</h3>
+        <p id="narrativeSummary"></p>
+      </div>
+      <div class="result-block">
+        <h3>💡 見えてきたキーワード</h3>
+        <p id="keywordSummary"></p>
+      </div>
+      <div class="result-block">
+        <h3>📝 次の一歩</h3>
+        <p>ここで見えてきた価値観やキーワードを、自己PRやガクチカの「軸」として使ってみましょう。「なぜそれを大切にしているのか」を深掘りすると、より説得力のある文章になります。</p>
+      </div>
+
+      <div class="next-box">
+        <p>もっとじっくり、時間をかけて自分の物語を深掘りしたい人へ。<br>
+        30〜60分でじっくり取り組む<b>詳細版ナラティブ診断</b>もあります。</p>
+        <button class="btn-main" style="margin-top:0;" onclick="window.open('https://tanukin0423.github.io/meta-assessment/narrative-assessment-3.html','_blank')">詳細版に挑戦する →</button>
+      </div>
+
+      <button class="btn-sub" style="width:100%;margin-top:14px;" onclick="restart()">もう一度診断する</button>
+    </div>
+    <footer>🌳 就活の木 学生サポートパネル</footer>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    key: "hero",
+    title: "Q1. 子どもの頃、憧れていた人・好きだったキャラクターは誰ですか？",
+    hint: "アニメ・漫画・スポーツ選手・親戚など、誰でもOKです。なぜ憧れていたかも書けると◎",
+  },
+  {
+    key: "story",
+    title: "Q2. 好きだった本・映画・番組はありますか？",
+    hint: "覚えている範囲で大丈夫です。どんな場面・展開が好きだったかも書いてみましょう。",
+  },
+  {
+    key: "motto",
+    title: "Q3. 好きな言葉・座右の銘はありますか？",
+    hint: "誰かに言われた言葉、自分の中で大事にしている考え方でもOKです。",
+  },
+  {
+    key: "success",
+    title: "Q4. これまでで一番「頑張ってよかった」と思う経験は？",
+    hint: "小さなことでも構いません。部活・勉強・アルバイトなど、何でもOKです。",
+  },
+  {
+    key: "worry",
+    title: "Q5. 就活で今、一番悩んでいること・不安なことは？",
+    hint: "漠然とした不安でも大丈夫です。思いつくまま書いてみましょう。",
+  },
+  {
+    key: "future",
+    title: "Q6. これから挑戦してみたいこと・なりたい姿は？",
+    hint: "仕事に限らず、どんな自分になりたいかを自由に書いてください。",
+  },
+];
+
+let current = 0;
+const answers = {};
+
+function showScreen(name){
+  document.getElementById('screen-intro').classList.add('hidden');
+  document.getElementById('screen-quiz').classList.add('hidden');
+  document.getElementById('screen-result').classList.add('hidden');
+  document.getElementById('screen-'+name).classList.remove('hidden');
+  window.scrollTo(0,0);
+  if(name === 'quiz'){
+    current = 0;
+    renderQuestion();
+  }
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  const area = document.getElementById('questionArea');
+  area.innerHTML = `
+    <div class="q-title">${q.title}</div>
+    <div class="q-hint">${q.hint}</div>
+    <textarea id="ans-${q.key}" placeholder="ここに書いてみましょう…">${answers[q.key] || ''}</textarea>
+  `;
+  document.getElementById('progressLabel').textContent = `質問 ${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('progressFill').style.width = `${((current+1)/QUESTIONS.length)*100}%`;
+  document.getElementById('prevBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = current === QUESTIONS.length-1 ? '結果を見る →' : '次へ →';
+}
+
+function saveCurrentAnswer(){
+  const q = QUESTIONS[current];
+  const el = document.getElementById('ans-'+q.key);
+  if(el) answers[q.key] = el.value;
+}
+
+function nextQuestion(){
+  saveCurrentAnswer();
+  if(current < QUESTIONS.length-1){
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion(){
+  saveCurrentAnswer();
+  if(current > 0){
+    current--;
+    renderQuestion();
+  }
+}
+
+function showResult(){
+  const hero = answers.hero || "";
+  const story = answers.story || "";
+  const motto = answers.motto || "";
+  const success = answers.success || "";
+  const worry = answers.worry || "";
+  const future = answers.future || "";
+
+  const summary = `幼い頃は「${hero || "特定の誰か"}」に憧れ、「${story || "印象に残る物語"}」に心を動かされてきたあなた。` +
+    `「${motto || "大切にしている言葉"}」を胸に、「${success || "これまでの頑張り"}」という経験を積み重ねてきました。` +
+    `今は「${worry || "これからのこと"}」に不安を感じながらも、「${future || "新しい挑戦"}」に向かおうとしています。` +
+    `この一貫した物語の中にこそ、あなたらしいキャリアの選び方のヒントがあります。`;
+
+  document.getElementById('narrativeSummary').textContent = summary;
+
+  const keywords = [];
+  if(hero) keywords.push("憧れの人物像：" + hero);
+  if(motto) keywords.push("大切な価値観：" + motto);
+  if(success) keywords.push("充実感を得た経験：" + success);
+  if(future) keywords.push("今後の方向性：" + future);
+  document.getElementById('keywordSummary').innerHTML = keywords.length
+    ? keywords.map(k => "・" + k).join("<br>")
+    : "回答からキーワードを抽出できませんでした。もう一度、具体的なエピソードを書いてみましょう。";
+
+  showScreen('result');
+}
+
+function restart(){
+  current = 0;
+  for(const k in answers) delete answers[k];
+  showScreen('intro');
+}
+</script>
+</body>
+</html>
