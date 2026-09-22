@@ -216,19 +216,55 @@ footer{margin-top:28px;font-size:10px;color:#9aa8a0;text-align:center;border-top
       <div class="talk"><b>💬</b>「求人や説明会の情報はここにまとまっているよ。対象学年は必ず確認してね」</div>
     </a>
 
-    <div class="tool-card">
+    <div class="tool-card" style="grid-column:1 / -1;">
       <span class="step">NEW</span>
       <div class="name">🌱 働くとは？ AI壁打ち</div>
       <div class="target">対象：何を相談していいかもまだ分からない学生／面談の入口</div>
       <div class="desc">診断の前段階として、AIとの対話で「働く」について考えを言葉にしてもらうゼロ段階ツール。</div>
       <div class="tool-dual-btns">
         <a class="tool-mini-btn tool-mini-counselor" href="https://claude.ai/artifact/9jSG6NuGSQck3GfGqXsWKN" target="_blank">🧑‍🏫 面談伴走版<br>(先生の画面で)</a>
+        <a class="tool-mini-btn tool-mini-student" href="https://claude.ai/artifact/XHc3hhPMK4m8uvvhjqK7on" target="_blank">🎓 宿題版<br>(学生が一人で)</a>
         <a class="tool-mini-btn tool-mini-student" href="ai-kabeuchi-prompt.html" target="_blank">📋 プロンプト版<br>(学生の好きなAIで)</a>
       </div>
+      <button type="button" id="copy-shukudai-mail" class="tool-mini-btn tool-mini-counselor" style="display:block;width:100%;margin-top:8px;border:none;cursor:pointer;font-family:inherit;">✉️ 宿題版を勧めるメール文面をコピー</button>
+      <span id="copy-shukudai-mail-note" style="display:none;font-size:10.5px;color:var(--gd);margin-top:4px;">コピーしました。メールソフトに貼り付けてください。</span>
       <div class="talk"><b>💬</b>「まだ何とも言えない、でも大丈夫。少し話しながら言葉にしてみようか」</div>
     </div>
 
   </div>
+
+  <script>
+  (function () {
+    var MAIL_TEXT = "件名: 「働くとは？」を考えてみませんか\n\n〇〇さん\n\n先日お話しした、「働くとは？」を考えるためのAIとの対話ツールです。\n次の面談までに、少し時間のある時にご自身のペースで試してみてください。\n\n▼ こちらから開けます\nhttps://claude.ai/artifact/XHc3hhPMK4m8uvvhjqK7on\n\n・診断ではありません。AIは問いを返すだけで、結論は出しません。\n・対話の記録は、そのまま次の面談に持ってきてください。\n・初めて開くと、無料のClaudeというサービスへの登録画面が出ます。メールアドレスかGoogleアカウントがあれば、1分もかからず登録できます(クレジットカード等は不要です)。\n\nキャリア支援課 北山";
+    var btn = document.getElementById('copy-shukudai-mail');
+    var note = document.getElementById('copy-shukudai-mail-note');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      function shown() {
+        note.style.display = 'block';
+        clearTimeout(btn._t);
+        btn._t = setTimeout(function () { note.style.display = 'none'; }, 2500);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(MAIL_TEXT).then(shown, function () { fallback(); });
+      } else {
+        fallback();
+      }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = MAIL_TEXT;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        shown();
+      }
+    });
+  })();
+  </script>
 
   <footer>
     就活の木｜学生サポートパネルと連動 ／ 迷ったときはこの早見表→キャリ爺(北山)へ相談、の順で対応してください
