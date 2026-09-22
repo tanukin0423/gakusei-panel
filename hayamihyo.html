@@ -40,6 +40,13 @@ table.state-table tr:nth-child(even) td{background:#fbfdfc;}
 .tool-card .talk{font-size:10.5px;color:var(--gd);line-height:1.5;margin-top:6px;padding-top:6px;border-top:1px dashed var(--gl);}
 .tool-card .talk b{color:var(--br);}
 
+/* AI壁打ちカード：2つの版（先生用／学生用）を選べるミニボタン */
+.tool-dual-btns{display:flex;gap:6px;margin-top:8px;}
+.tool-mini-btn{flex:1;text-align:center;font-size:10px;font-weight:700;padding:6px 7px;border-radius:8px;text-decoration:none;transition:transform 0.12s;line-height:1.4;}
+.tool-mini-btn:hover{transform:translateY(-1px);}
+.tool-mini-counselor{background:var(--gd);color:#fff;}
+.tool-mini-student{background:var(--wh);color:var(--gd);border:1.3px solid var(--gl);}
+
 footer{margin-top:28px;font-size:10px;color:#9aa8a0;text-align:center;border-top:1px solid #e2e8e4;padding-top:10px;}
 
 @media print{
@@ -208,6 +215,18 @@ footer{margin-top:28px;font-size:10px;color:#9aa8a0;text-align:center;border-top
       <div class="desc">掲載情報は対象学年を必ず確認するよう学生に伝える。</div>
       <div class="talk"><b>💬</b>「求人や説明会の情報はここにまとまっているよ。対象学年は必ず確認してね」</div>
     </a>
+
+    <div class="tool-card">
+      <span class="step">NEW</span>
+      <div class="name">🌱 働くとは？ AI壁打ち</div>
+      <div class="target">対象：何を相談していいかもまだ分からない学生／面談の入口</div>
+      <div class="desc">診断の前段階として、AIとの対話で「働く」について考えを言葉にしてもらうゼロ段階ツール。</div>
+      <div class="tool-dual-btns">
+        <a class="tool-mini-btn tool-mini-counselor" href="https://claude.ai/artifact/9jSG6NuGSQck3GfGqXsWKN" target="_blank">🧑‍🏫 面談伴走版<br>(先生の画面で)</a>
+        <a class="tool-mini-btn tool-mini-student" href="ai-kabeuchi-prompt.html" target="_blank">📋 プロンプト版<br>(学生の好きなAIで)</a>
+      </div>
+      <div class="talk"><b>💬</b>「まだ何とも言えない、でも大丈夫。少し話しながら言葉にしてみようか」</div>
+    </div>
 
   </div>
 

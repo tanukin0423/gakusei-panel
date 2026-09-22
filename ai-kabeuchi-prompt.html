@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>働くとは？ AI壁打ち — プロンプト版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F1EFE4;
+    --paper: #FBFAF4;
+    --ink: #22281F;
+    --ink-soft: #55594C;
+    --forest: #2F4A3C;
+    --forest-soft: #E7ECE4;
+    --bark: #8B6A4A;
+    --gold: #B98B3E;
+    --line: #DCD7C6;
+    box-sizing: border-box;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1B1E19; --paper: #232720; --ink: #EDEAE0; --ink-soft: #B7B4A6;
+      --forest: #8FB89E; --forest-soft: #2B342B; --bark: #C3A480; --gold: #D9B466; --line: #3A3E34;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1B1E19; --paper: #232720; --ink: #EDEAE0; --ink-soft: #B7B4A6;
+    --forest: #8FB89E; --forest-soft: #2B342B; --bark: #C3A480; --gold: #D9B466; --line: #3A3E34;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", "Hiragino Sans", sans-serif;
+    line-height: 1.8;
+    display: flex;
+    justify-content: center;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .app {
+    width: 100%;
+    max-width: 640px;
+    min-height: 100%;
+    background: var(--paper);
+  }
+  header {
+    padding: 26px 24px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { font-size: 13px; color: var(--bark); letter-spacing: .04em; margin-bottom: 4px; }
+  h1 {
+    font-family: "Shippori Mincho", serif;
+    font-weight: 700;
+    font-size: 23px;
+    margin: 0;
+  }
+  h1 small {
+    display: block;
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 5px;
+  }
+  main { padding: 24px 24px 48px; }
+
+  .lead {
+    font-family: "Shippori Mincho", serif;
+    font-size: 17px;
+    line-height: 1.9;
+    margin: 0 0 14px;
+  }
+
+  .intent {
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--gold);
+    margin: 0 0 26px;
+  }
+  .intent b { font-weight: 700; }
+
+  .steps { list-style: none; margin: 0 0 30px; padding: 0; counter-reset: step; }
+  .steps li {
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .steps li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--forest-soft);
+    color: var(--forest);
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .steps li b { display: block; margin-bottom: 2px; }
+  .steps li span { color: var(--ink-soft); font-size: 13.5px; }
+  .step-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .step-text { flex: 1; min-width: 180px; }
+  .step-row .btn-secondary { flex-shrink: 0; }
+  .step-row .copied-note {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 4px;
+  }
+
+  .launch-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .launch-btn {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 10px;
+    font-size: 13.5px;
+    transition: border-color .2s ease;
+  }
+  .launch-btn:hover { border-color: var(--forest); }
+
+  .prompt-block {
+    margin-bottom: 14px;
+  }
+  .prompt-label {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  textarea#prompt-text {
+    width: 100%;
+    height: 260px;
+    resize: vertical;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: "Zen Kaku Gothic New", sans-serif;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--ink);
+    background: var(--bg);
+    white-space: pre-wrap;
+  }
+  textarea#prompt-text:focus { outline: 2px solid var(--forest); outline-offset: 1px; }
+
+  .action-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--forest);
+    color: var(--paper);
+    border: none;
+    padding: 13px 20px;
+    font-size: 14.5px;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+  .btn-primary:hover { opacity: .9; }
+  .btn-text {
+    background: none;
+    border: none;
+    color: var(--bark);
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 6px 0;
+  }
+  .copied-note {
+    font-size: 13px;
+    color: var(--forest);
+    opacity: 0;
+    transition: opacity .2s ease;
+  }
+  .copied-note.show { opacity: 1; }
+
+  .note {
+    font-size: 13px;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--forest);
+    padding-left: 14px;
+    margin: 0 0 26px;
+  }
+
+  .time-note {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 26px;
+  }
+
+  .reminder {
+    font-size: 13.5px;
+    color: var(--ink);
+    background: var(--forest-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 0 0 26px;
+  }
+  .reminder b { color: var(--forest); }
+  .reminder-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .btn-secondary {
+    background: var(--paper);
+    color: var(--forest);
+    border: 1.3px solid var(--forest);
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+  .btn-secondary:hover { background: var(--forest-soft); }
+
+  :focus-visible { outline: 2px solid var(--forest); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">就活の木 ｜ キャリア支援ツール</div>
+    <h1>働くとは？<small>AI壁打ち — プロンプトをコピーして、お使いのAIチャットで</small></h1>
+  </header>
+
+  <main>
+    <p class="lead">働くということ。<br>あなたはどう考えていますか？</p>
+
+    <p class="intent">これは、点数や結果が出る診断ではありません。「向いている仕事」を判定するものでもありません。<b>AIと言葉を交わしながら、あなた自身とゆっくり向き合ってみる</b>——そのための時間です。うまく答えようとしなくて大丈夫です。</p>
+
+    <p class="note">このプロンプトは、AIに診断や結論を出させないためのものです。AIは問いを返すだけで、「あなたの軸は〇〇です」とは言いません。対話の記録は、そのまま面談に持ってきていただけます。</p>
+
+    <p class="time-note">⏳ かかる時間は、話す深さによって変わります。5分程度で終わる人もいれば、30分近く話し込む人もいます。急ぐ必要はないので、ご自身のペースで進めてください。</p>
+
+    <ol class="steps">
+      <li>
+        <span class="step-row">
+          <span class="step-text"><b>右のプロンプトコピーを押す</b><span>ボタンを押すだけで、プロンプトがコピーされます。</span></span>
+          <button class="btn-secondary" id="copy-btn">📋 プロンプトをコピーする</button>
+          <span class="copied-note" id="copied-note">コピーしました</span>
+        </span>
+      </li>
+      <li><b>お使いのAIチャットに貼り付けて送る</b><span>ChatGPT・Claude・Geminiなど、普段使っているところで大丈夫です。</span></li>
+      <li><b>そのまま対話を続ける</b><span>この対話は自然には終わりません。放っておくとずっと質問が続くので、区切りをつけたいタイミングで、自分から「そろそろまとめてください」と送ってください。そこで初めて、それまでの話を振り返った「まとめ」が出てきます。</span></li>
+    </ol>
+
+    <div class="launch-row">
+      <a class="launch-btn" href="https://chatgpt.com/" target="_blank" rel="noopener">ChatGPTを開く</a>
+      <a class="launch-btn" href="https://claude.ai/new" target="_blank" rel="noopener">Claudeを開く</a>
+      <a class="launch-btn" href="https://gemini.google.com/app" target="_blank" rel="noopener">Geminiを開く</a>
+    </div>
+
+    <p class="reminder">⏰ <b>対話は自動では終わりません。</b>途中でこのページに戻ってきたら、「もう十分話したな」と思ったタイミングで下のボタンを押して、AIチャットに貼り付けて送ってください。
+      <span class="reminder-btn-row">
+        <button class="btn-secondary" id="end-copy-btn">「そろそろまとめてください」をコピー</button>
+        <span class="copied-note" id="end-copied-note">コピーしました</span>
+      </span>
+    </p>
+
+    <div class="prompt-block">
+      <div class="prompt-label">コピーするプロンプト</div>
+      <textarea id="prompt-text" readonly></textarea>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-text" id="save-btn">テキストで保存する</button>
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  const PROMPT_TEXT = `これから、私と一緒に「なぜ働くのか」「自分は仕事を通じて何を大切にしたいのか」を考えるための対話をしてください。あなたの役割は以下の通りです。
+
+【あなたの役割】
+・あなたは診断者ではありません。「あなたの仕事選びの軸は〇〇です」のような結論・診断・分析結果は、いかなる時も述べないでください。
+・助言や正解も提示しないでください。あなたの役割は、私の話をいったん受け止めた上で、問いを返すことだけです。
+・一度の返答につき、質問は1つだけにしてください。
+・返答は3〜4文以内。短い受け止めの一言＋問い、という短い形にしてください。
+・私の言葉を否定せず、まず受け止めてから問いを重ねてください。
+・表面的な答え(例:「お金のため」)が出たら、否定せずに一歩深める問いを重ねてください(例:「では、生活に困らないだけのお金がすでにあったとしても、働きたいと思いますか？」)。
+・問いの方向性の例:「なぜそう思いますか」「具体的にどんな経験からそう感じましたか」「それは自分自身の考えですか、それとも誰かの影響を受けた考えですか」「逆に、そう思わなかった経験はありますか」
+・私や、この対話の外にある情報(あなたが記憶している他の会話、一般的な事例、よくありそうな回答)を、私が話したことであるかのように扱わないでください。使ってよいのは、今回のこの対話の中で、私が実際に述べたことだけです。
+
+【私が詰まったとき】
+・私が「わからない」「特にない」「思いつかない」のように答えたときは、同じ抽象度のまま聞き直さないでください。代わりに、具体的な選択肢や例を2〜3個示し、近いものがあれば選べるようにしてください(例:「たとえば、人から感謝されたとき、新しいことができるようになったとき、誰かと一緒に頑張れたとき…この中で近いものはありますか？どれも違えば、それも教えてください」)。
+・その問いでもなお「わからない」と答えたときは、そこにはこだわらず、別の角度・別の話題の問いに移ってください。同じ点を粘って掘り下げ続けないでください。「わからない」という反応自体は否定せず、そのまま受け止めてください。
+
+【対話の終え方】
+・あなたから対話を締めくくったり、お礼やまとめを述べたりしないでください。「答えが見つかりましたね」のように結論を示唆する表現も使わないでください。
+・私が「そろそろまとめてください」と言うまで、対話を続けてください。
+
+【まとめ方】
+私が「そろそろまとめてください」と言ったら、それまでの対話を踏まえて、以下の形式だけで「対話の記録」を作成してください。診断・結論・分析は書かないでください。このまとめは、今回のこの対話でやり取りした内容だけに基づいて作成してください。あなたが記憶している他の会話や、一般的にありそうな内容を、私が話したことのように書かないでください。
+
+## 今回の対話で、話していたこと
+(箇条書き3〜5個。私が実際に話した内容を、話した順に事実として振り返るだけにしてください。推測や決めつけは加えないでください)
+
+## まだ考えがまとまっていないこと
+(箇条書き1〜3個。あてはまるものがなければ、この見出しごと省略してください)
+
+## これから、考えてみましょう
+(私が今後、自分自身やカウンセラーとの面談で考えを深めるための問いを、箇条書きで2〜3個)
+
+【はじめ方】
+それでは、最初の問いから始めてください。まず「あなたは、なぜ働くのだと思いますか？」と聞くところから始めてください。`;
+
+  const promptEl = document.getElementById('prompt-text');
+  promptEl.value = PROMPT_TEXT;
+
+  const copiedNote = document.getElementById('copied-note');
+  let copiedTimer = null;
+  function flashCopied() {
+    copiedNote.classList.add('show');
+    clearTimeout(copiedTimer);
+    copiedTimer = setTimeout(() => copiedNote.classList.remove('show'), 2200);
+  }
+
+  document.getElementById('copy-btn').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(PROMPT_TEXT);
+      flashCopied();
+    } catch (e) {
+      promptEl.focus();
+      promptEl.select();
+      try {
+        document.execCommand('copy');
+        flashCopied();
+      } catch (e2) {
+        copiedNote.textContent = 'コピーできませんでした。テキストを選択してコピーしてください';
+        flashCopied();
+      }
+    }
+  });
+
+  const END_TEXT = 'そろそろまとめてください';
+  const endCopiedNote = document.getElementById('end-copied-note');
+  let endCopiedTimer = null;
+  function flashEndCopied(msg) {
+    endCopiedNote.textContent = msg || 'コピーしました';
+    endCopiedNote.classList.add('show');
+    clearTimeout(endCopiedTimer);
+    endCopiedTimer = setTimeout(() => endCopiedNote.classList.remove('show'), 2200);
+  }
+  document.getElementById('end-copy-btn').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(END_TEXT);
+      flashEndCopied();
+    } catch (e) {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = END_TEXT;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        flashEndCopied();
+      } catch (e2) {
+        flashEndCopied('コピーできませんでした。「そろそろまとめてください」と入力してください');
+      }
+    }
+  });
+
+  document.getElementById('save-btn').addEventListener('click', async () => {
+    let downloads = null;
+    try { downloads = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) {}
+    if (!downloads) {
+      const blob = new Blob([PROMPT_TEXT], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = '働くとは_AI壁打ちプロンプト.txt';
+      a.click();
+      return;
+    }
+    try {
+      await downloads.save({ filename: '働くとは_AI壁打ちプロンプト.txt', data: PROMPT_TEXT });
+    } catch (e) { /* viewer declined or unavailable */ }
+  });
+})();
+</script>
+</body>
+</html>
