@@ -113,6 +113,9 @@
   }
   .steps li b { display: block; margin-bottom: 2px; }
   .steps li span { color: var(--ink-soft); font-size: 13.5px; }
+  .step-plain { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; }
+  .step-plain b { display: inline; margin-bottom: 0; flex: 0 0 auto; }
+  .step-plain span { flex: 1 1 180px; min-width: 180px; }
   .step-row {
     display: flex;
     align-items: center;
@@ -282,8 +285,8 @@
           <span class="copied-note" id="copied-note">コピーしました</span>
         </span>
       </li>
-      <li><b>お使いのAIチャットに貼り付けて送る</b><span>ChatGPT・Claude・Geminiなど、普段使っているところで大丈夫です。</span></li>
-      <li><b>そのまま対話を続ける</b><span>この対話は自然には終わりません。放っておくとずっと質問が続くので、区切りをつけたいタイミングで、自分から「そろそろまとめてください」と送ってください。そこで初めて、それまでの話を振り返った「まとめ」が出てきます。</span></li>
+      <li class="step-plain"><b>お使いのAIチャットに貼り付けて送る</b><span>ChatGPT・Claude・Geminiなど、普段使っているところで大丈夫です。</span></li>
+      <li class="step-plain"><b>そのまま対話を続ける</b><span>この対話は自然には終わりません。放っておくとずっと質問が続くので、区切りをつけたいタイミングで、自分から「そろそろまとめてください」と送ってください。そこで初めて、それまでの話を振り返った「まとめ」が出てきます。</span></li>
     </ol>
 
     <div class="launch-row">
@@ -345,7 +348,7 @@
 (私が今後、自分自身やカウンセラーとの面談で考えを深めるための問いを、箇条書きで2〜3個)
 
 【はじめ方】
-それでは、最初の問いから始めてください。まず「あなたは、なぜ働くのだと思いますか？」と聞くところから始めてください。`;
+それでは、最初に一言、(このAIは診断も結果も出しません。ただ、一緒に考える相手です)という趣旨を短く添えてから、「あなたは、なぜ働くのだと思いますか？」と聞くところから始めてください。`;
 
   const promptEl = document.getElementById('prompt-text');
   promptEl.value = PROMPT_TEXT;
